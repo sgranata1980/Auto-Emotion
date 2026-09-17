@@ -39,6 +39,7 @@ h6 {
 	text-transform: uppercase;
 	letter-spacing: 0.0230em;
 	line-height: 1;
+	overflow-wrap: break-word;
 }
 
 /* Black für große Bühnen-Headlines, Bold für kleinere Zwischenüberschriften –
@@ -496,6 +497,7 @@ body.has-transparent-header .site-header.is-scrolled {
 
 .section-heading {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
 	gap: var(--spacing-24);
@@ -618,7 +620,7 @@ body.has-transparent-header .site-main {
 }
 
 .event-banner__headline {
-	font-size: var(--text-display);
+	font-size: clamp(28px, 6vw, var(--text-display));
 	margin-bottom: var(--spacing-24);
 }
 
