@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function auto_emotion_assets() {
 	wp_enqueue_style(
 		'auto-emotion-fonts',
-		'https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400&family=Open+Sans:wght@400&display=swap',
+		'https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&family=Open+Sans:wght@400&display=swap',
 		array(),
 		null
 	);

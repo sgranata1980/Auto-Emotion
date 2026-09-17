@@ -26,11 +26,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</button>
 
 	<div class="site-branding">
-		<?php if ( is_front_page() && is_home() ) : ?>
-			<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
-		<?php else : ?>
-			<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
-		<?php endif; ?>
+		<?php
+		$auto_emotion_logo_tag = is_front_page() && is_home() ? 'h1' : 'p';
+		?>
+		<<?php echo $auto_emotion_logo_tag; ?> class="site-title">
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
+				<img
+					class="site-logo"
+					src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/logo-icon-white.png' ); ?>"
+					alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>"
+					width="35"
+					height="37"
+				>
+			</a>
+		</<?php echo $auto_emotion_logo_tag; ?>>
 	</div>
 
 	<div class="header-actions">

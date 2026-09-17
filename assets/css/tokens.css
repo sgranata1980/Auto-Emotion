@@ -14,8 +14,11 @@
 	--color-ash-border: #969696;
 	--color-anvil: #313131;
 
-	/* Typography — Font Families (LamboType substitute: Barlow Condensed) */
-	--font-lambotype: 'Barlow Condensed', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	/* Typography — Font Families (LamboType substitute: Archivo).
+	   Archivo statt Barlow Condensed, weil es wie die reale Interstate-Schrift
+	   (Font Bureau, auf Lamborghini.com lizenziert) echte Black-/Bold-Schnitte
+	   mitbringt – Hierarchie entsteht so über Gewicht UND Größe, nicht nur Größe. */
+	--font-lambotype: 'Archivo', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 	--font-open-sans: 'Open Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
 	/* Typography — Scale */
@@ -47,8 +50,11 @@
 	--leading-hero: 0.92;
 	--tracking-hero: 2.76px;
 
-	/* Typography — Weights */
+	/* Typography — Weights (angelehnt an die reale Interstate-Nutzung:
+	   Black für Headlines, Bold für Nav/Buttons, Regular für Fließtext) */
 	--font-weight-regular: 400;
+	--font-weight-bold: 700;
+	--font-weight-black: 900;
 
 	/* Spacing */
 	--spacing-unit: 8px;
