@@ -317,63 +317,120 @@ body.has-transparent-header .site-header.is-scrolled {
 }
 
 /* ---------------------------------------------------------------- */
-/* Vehicle Strip (Bild-Menü unter dem Header, Cupra → Seat → Nissan) */
+/* Model Showcase (Fahrzeug-Detailkarte, Lamborghini-Referenzmuster) */
 /* ---------------------------------------------------------------- */
 
-.vehicle-strip {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 1px;
-	background: var(--color-graphite-border);
-}
-
-@media (max-width: 700px) {
-	.vehicle-strip {
-		grid-template-columns: 1fr;
-	}
-}
-
-.vehicle-strip__item {
-	display: block;
+.model-showcase {
 	background: var(--surface-canvas-white);
-	padding-bottom: var(--spacing-16);
+	text-align: center;
+	padding: var(--spacing-64) var(--spacing-24) var(--spacing-40);
 }
 
-.vehicle-strip__image {
-	aspect-ratio: 4 / 3;
-	width: 100%;
-	object-fit: cover;
-	margin-bottom: var(--spacing-16);
+.model-showcase__slide {
+	max-width: 720px;
+	margin: 0 auto;
 }
 
-.vehicle-strip__placeholder {
-	aspect-ratio: 4 / 3;
-	width: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background: var(--surface-marble);
-	color: var(--color-steel-mid);
-	margin-bottom: var(--spacing-16);
-	font-size: var(--text-caption);
+.model-showcase__badge {
+	font-size: var(--text-heading-sm);
+	font-weight: var(--font-weight-black);
 	text-transform: uppercase;
 	letter-spacing: 0.0230em;
+	margin-bottom: var(--spacing-16);
 }
 
-.vehicle-strip__brand {
+.model-showcase__eyebrow {
 	display: block;
-	padding: 0 var(--spacing-16);
 	font-size: var(--text-caption);
+	font-weight: var(--font-weight-bold);
 	color: var(--color-steel-mid);
 	text-transform: uppercase;
 	letter-spacing: 0.0230em;
 	margin-bottom: var(--spacing-8);
 }
 
-.vehicle-strip__title {
-	padding: 0 var(--spacing-16);
-	margin: 0;
-	font-size: var(--text-heading-sm);
+.model-showcase__headline {
+	font-family: var(--font-lambotype);
+	font-weight: var(--font-weight-black);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	font-size: clamp(28px, 4vw, var(--text-heading-lg));
+	line-height: 1.1;
+	margin-bottom: var(--spacing-32);
+}
+
+.model-showcase__photo {
+	width: 100%;
+	max-width: 640px;
+	margin: 0 auto var(--spacing-32);
+}
+
+.model-showcase__cta {
+	width: 100%;
+	justify-content: center;
+	margin-bottom: var(--spacing-24);
+}
+
+.model-showcase__links {
+	border-top: 1px solid var(--color-ash-border);
+}
+
+.model-showcase__link {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--spacing-16);
+	width: 100%;
+	padding: var(--spacing-24) 0;
+	border-bottom: 1px solid var(--color-ash-border);
+	font-size: var(--text-subheading);
+	font-weight: var(--font-weight-bold);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+}
+
+.model-showcase__link svg {
+	flex-shrink: 0;
+}
+
+.model-showcase__dots {
+	display: flex;
+	justify-content: center;
+	gap: var(--spacing-8);
+	margin: var(--spacing-40) 0 var(--spacing-24);
+}
+
+.model-showcase__dot {
+	width: 32px;
+	height: 2px;
+	background: var(--color-ash-border);
+	border: none;
+	padding: 0;
+}
+
+.model-showcase__dot[aria-current="true"] {
+	background: var(--color-carbony-black);
+}
+
+.model-showcase__disclaimer {
+	max-width: 720px;
+	margin: 0 auto;
+	font-size: var(--text-caption);
+	color: var(--color-steel-mid);
+}
+
+.model-showcase__placeholder-photo {
+	aspect-ratio: 16 / 9;
+	max-width: 640px;
+	margin: 0 auto var(--spacing-32);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--surface-marble);
+	color: var(--color-steel-mid);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	font-size: var(--text-caption);
 }
 
 /* ---------------------------------------------------------------- */

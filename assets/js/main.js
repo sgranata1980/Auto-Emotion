@@ -33,4 +33,24 @@ document.addEventListener('DOMContentLoaded', function () {
 		updateHeaderState();
 		window.addEventListener('scroll', updateHeaderState, { passive: true });
 	}
+
+	// Model Showcase: Dots wechseln die sichtbare Marken-Slide.
+	var showcase = document.querySelector('.model-showcase');
+	if (showcase) {
+		var slides = showcase.querySelectorAll('.model-showcase__slide');
+		var dots = showcase.querySelectorAll('.model-showcase__dot');
+
+		dots.forEach(function (dot) {
+			dot.addEventListener('click', function () {
+				var target = dot.getAttribute('data-slide-target');
+
+				slides.forEach(function (slide) {
+					slide.hidden = slide.getAttribute('data-slide') !== target;
+				});
+				dots.forEach(function (d) {
+					d.setAttribute('aria-current', String(d === dot));
+				});
+			});
+		});
+	}
 });
