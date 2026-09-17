@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<?php wp_head(); ?>
 </head>
-<body <?php body_class(); ?>>
+<body <?php body_class( is_front_page() ? array( 'has-transparent-header' ) : array() ); ?>>
 <?php wp_body_open(); ?>
 
 <a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Zum Inhalt springen', 'auto-emotion' ); ?></a>
@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<div class="site-branding">
 		<?php
-		$auto_emotion_logo_tag = is_front_page() && is_home() ? 'h1' : 'p';
+		$auto_emotion_logo_tag = is_front_page() ? 'h1' : 'p';
 		?>
 		<<?php echo $auto_emotion_logo_tag; ?> class="site-title">
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">

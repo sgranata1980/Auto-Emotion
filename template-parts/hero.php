@@ -7,7 +7,9 @@
  *     @type string $headline Hero headline text.
  *     @type string $cta_text Label for the Giallo CTA button.
  *     @type string $cta_url  URL for the Giallo CTA button.
- *     @type string $image    Background image URL.
+ *     @type string $image    Background/poster image URL.
+ *     @type string $video    Optional background video URL (mp4). Falls back
+ *                            to $image as poster/still when not set.
  * }
  */
 
@@ -23,10 +25,24 @@ $auto_emotion_hero = wp_parse_args(
 		'cta_text' => __( 'Marken entdecken', 'auto-emotion' ),
 		'cta_url'  => '#marken',
 		'image'    => AUTO_EMOTION_URI . '/assets/images/hero-cupra-01.jpg',
+		'video'    => '',
 	)
 );
 ?>
 <section class="hero-stage" style="background-image:url('<?php echo esc_url( $auto_emotion_hero['image'] ); ?>')">
+	<?php if ( $auto_emotion_hero['video'] ) : ?>
+		<video
+			class="hero-stage__video"
+			autoplay
+			muted
+			loop
+			playsinline
+			poster="<?php echo esc_url( $auto_emotion_hero['image'] ); ?>"
+		>
+			<source src="<?php echo esc_url( $auto_emotion_hero['video'] ); ?>" type="video/mp4">
+		</video>
+	<?php endif; ?>
+
 	<div class="hero-stage__content">
 		<p class="hero-stage__eyebrow"><?php echo esc_html( $auto_emotion_hero['eyebrow'] ); ?></p>
 		<h1 class="hero-stage__headline"><?php echo esc_html( $auto_emotion_hero['headline'] ); ?></h1>

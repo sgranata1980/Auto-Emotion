@@ -70,9 +70,11 @@ button {
 /* ---------------------------------------------------------------- */
 
 .site-header {
-	position: sticky;
+	position: fixed;
 	top: 0;
-	z-index: 10;
+	left: 0;
+	right: 0;
+	z-index: 20;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -81,6 +83,17 @@ button {
 	padding: 0 var(--spacing-24);
 	background: var(--surface-carbony);
 	color: var(--surface-canvas-white);
+	transition: background-color 0.3s ease;
+}
+
+/* Startseite: Header startet transparent mit Verlauf über dem Hero-Bild
+   und wird erst beim Scrollen (Klasse .is-scrolled, per JS gesetzt) fest. */
+body.has-transparent-header .site-header {
+	background: linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+body.has-transparent-header .site-header.is-scrolled {
+	background: var(--surface-carbony);
 }
 
 .nav-toggle {
@@ -374,11 +387,21 @@ button {
 	content: "";
 	position: absolute;
 	inset: 0;
+	z-index: 1;
 	background: linear-gradient(0deg, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.1) 55%);
+}
+
+.hero-stage__video {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 
 .hero-stage__content {
 	position: relative;
+	z-index: 2;
 	max-width: 50%;
 }
 
@@ -461,11 +484,24 @@ button {
 .site-main {
 	max-width: var(--page-max-width);
 	margin: 0 auto;
-	padding: 0 var(--spacing-24);
+	padding: 64px var(--spacing-24) 0;
+}
+
+body.has-transparent-header .site-main {
+	padding-top: 0;
 }
 
 .site-main > * + * {
 	margin-top: var(--section-gap);
+}
+
+/* Vollflächige Sektionen (Hero, Fahrzeug-Streifen) aus dem
+   max-width/padding-Container von .site-main ausbrechen lassen. */
+.hero-stage,
+.vehicle-strip {
+	width: 100vw;
+	margin-left: calc(50% - 50vw);
+	margin-right: calc(50% - 50vw);
 }
 
 /* ---------------------------------------------------------------- */
