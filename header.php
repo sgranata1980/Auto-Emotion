@@ -66,3 +66,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 </header>
 
 <main id="primary" class="site-main">
+<?php if ( ! is_front_page() ) : ?>
+<div class="container">
+<?php endif; ?>

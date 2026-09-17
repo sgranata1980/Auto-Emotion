@@ -7,6 +7,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
+<?php if ( ! is_front_page() ) : ?>
+</div>
+<?php endif; ?>
 </main>
 
 <footer id="colophon" class="site-footer">

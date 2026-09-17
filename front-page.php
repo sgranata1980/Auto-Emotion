@@ -21,7 +21,7 @@ $auto_emotion_marken = get_terms(
 ?>
 
 <?php if ( ! is_wp_error( $auto_emotion_marken ) && $auto_emotion_marken ) : ?>
-	<section id="marken" aria-labelledby="marken-heading">
+	<section id="marken" class="container" aria-labelledby="marken-heading">
 		<div class="section-heading">
 			<h2 id="marken-heading" class="section-heading__title"><?php esc_html_e( 'Unsere Marken', 'auto-emotion' ); ?></h2>
 		</div>
@@ -47,7 +47,7 @@ $auto_emotion_angebote = new WP_Query(
 );
 ?>
 <?php if ( $auto_emotion_angebote->have_posts() ) : ?>
-	<section aria-labelledby="angebote-heading">
+	<section class="container" aria-labelledby="angebote-heading">
 		<div class="section-heading">
 			<h2 id="angebote-heading" class="section-heading__title"><?php esc_html_e( 'Aktuelle Angebote', 'auto-emotion' ); ?></h2>
 			<a class="btn btn-ghost" href="<?php echo esc_url( get_post_type_archive_link( 'angebot' ) ); ?>">
@@ -80,7 +80,7 @@ $auto_emotion_news = new WP_Query(
 );
 ?>
 <?php if ( $auto_emotion_news->have_posts() ) : ?>
-	<section aria-labelledby="news-heading">
+	<section class="container" aria-labelledby="news-heading">
 		<div class="section-heading">
 			<h2 id="news-heading" class="section-heading__title"><?php esc_html_e( 'News', 'auto-emotion' ); ?></h2>
 			<?php $auto_emotion_blog_page_id = (int) get_option( 'page_for_posts' ); ?>

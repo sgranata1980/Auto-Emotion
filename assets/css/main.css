@@ -481,10 +481,12 @@ body.has-transparent-header .site-header.is-scrolled {
 /* Layout containers                                                 */
 /* ---------------------------------------------------------------- */
 
+/* .site-main bleibt selbst ungebunden (volle Fensterbreite), damit
+   vollflächige Sektionen (Hero, Fahrzeug-Streifen) ohne vw-Rechentricks
+   echt Rand-an-Rand sitzen. Begrenzte Inhalte bekommen die .container-
+   Klasse (max-width + zentriert + Seitenabstand). */
 .site-main {
-	max-width: var(--page-max-width);
-	margin: 0 auto;
-	padding: 64px var(--spacing-24) 0;
+	padding-top: 64px;
 }
 
 body.has-transparent-header .site-main {
@@ -495,13 +497,14 @@ body.has-transparent-header .site-main {
 	margin-top: var(--section-gap);
 }
 
-/* Vollflächige Sektionen (Hero, Fahrzeug-Streifen) aus dem
-   max-width/padding-Container von .site-main ausbrechen lassen. */
-.hero-stage,
-.vehicle-strip {
-	width: 100vw;
-	margin-left: calc(50% - 50vw);
-	margin-right: calc(50% - 50vw);
+.container {
+	max-width: var(--page-max-width);
+	margin: 0 auto;
+	padding: 0 var(--spacing-24);
+}
+
+.container > * + * {
+	margin-top: var(--section-gap);
 }
 
 /* ---------------------------------------------------------------- */
