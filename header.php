@@ -20,9 +20,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 <a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Zum Inhalt springen', 'auto-emotion' ); ?></a>
 
 <header id="masthead" class="site-header">
-	<button type="button" class="nav-toggle" aria-controls="site-navigation" aria-expanded="false">
+	<button type="button" class="nav-toggle" aria-controls="site-navigation" aria-expanded="false" aria-label="<?php esc_attr_e( 'Menu', 'auto-emotion' ); ?>">
 		<span class="nav-toggle-icon"></span>
-		<?php esc_html_e( 'Menu', 'auto-emotion' ); ?>
+		<span class="nav-toggle-label"><?php esc_html_e( 'Menu', 'auto-emotion' ); ?></span>
 	</button>
 
 	<div class="site-branding">

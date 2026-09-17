@@ -137,6 +137,15 @@ body.has-transparent-header .site-header.is-scrolled {
 	top: 6px;
 }
 
+/* Auf schmalen Screens nur das Icon zeigen: sonst ist die linke Seite
+   (Icon + "MENU") breiter als die rechte (nur Suche) und das mittig
+   positionierte Logo wirkt dadurch nicht zentriert. */
+@media (max-width: 480px) {
+	.nav-toggle-label {
+		display: none;
+	}
+}
+
 .site-branding .site-title {
 	margin: 0;
 	line-height: 0;
