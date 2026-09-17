@@ -1,0 +1,18 @@
+---
+// Organization-Basisdaten für strukturierte Daten (JSON-LD).
+// WICHTIG: Nichts erfinden. Platzhalter erst mit bestätigten Fakten ersetzen
+// (Firmierung, Adresse, Kontakt, Social-Profile) – siehe README "Offene Fakten".
+
+const siteUrl = Astro.site ?? new URL("https://www.auto-emotion.example");
+
+const organization = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Auto-Emotion",
+  url: siteUrl.toString(),
+  // logo: new URL("/logo.svg", siteUrl).toString(), // TODO: Logo ergänzen
+  // sameAs: [], // TODO: bestätigte Social-/Profil-Links ergänzen
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(organization)} />

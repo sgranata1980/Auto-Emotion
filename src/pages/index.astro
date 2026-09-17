@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import heroImage from "../assets/images/hero-cupra-01.png";
+import { Image } from "astro:assets";
+---
+
+<BaseLayout
+  title="Auto-Emotion"
+  description="TODO: prägnante Meta-Beschreibung (ca. 150–160 Zeichen) mit Angebot, Zielgruppe und Standort ergänzen, sobald bestätigt."
+  path="/"
+>
+  <section class="hero">
+    <Image src={heroImage} alt="TODO: aussagekräftigen Alt-Text für das Hero-Bild ergänzen" width={2000} height={1342} priority />
+    <div class="container">
+      <h1>Auto-Emotion</h1>
+      <p>
+        TODO: Value Proposition ergänzen – wer ist Auto-Emotion, was wird angeboten, für wen,
+        und wo. Nichts erfinden, bis die Fakten bestätigt sind.
+      </p>
+    </div>
+  </section>
+
+  <section class="container">
+    <h2>Leistungen</h2>
+    <p>TODO: reale Leistungen auflisten, sobald bestätigt (siehe README "Offene Fakten").</p>
+  </section>
+
+  <section class="container">
+    <h2>Kontakt</h2>
+    <p>
+      TODO: Kontaktmöglichkeit ergänzen oder auf <a href="/kontakt/">Kontaktseite</a> verweisen,
+      sobald Kontaktdaten bestätigt sind.
+    </p>
+  </section>
+</BaseLayout>

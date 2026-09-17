@@ -1,0 +1,28 @@
+---
+const { pathname } = Astro.url;
+
+const navItems = [
+  { href: "/", label: "Start" },
+  { href: "/leistungen/", label: "Leistungen" },
+  { href: "/kontakt/", label: "Kontakt" },
+];
+---
+
+<header class="site-header">
+  <div class="container">
+    <a href="/" class="site-logo">Auto-Emotion</a>
+    <nav class="site-nav" aria-label="Hauptnavigation">
+      <ul>
+        {
+          navItems.map((item) => (
+            <li>
+              <a href={item.href} aria-current={pathname === item.href ? "page" : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
