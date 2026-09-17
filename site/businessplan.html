@@ -1,0 +1,544 @@
+<meta charset="UTF-8">
+<title>Businessplan Auto Emotion</title>
+<style>
+header.wp-block-template-part{ display:none !important; }
+
+  :root{
+    --bg: #000000;
+    --surface: #181818;
+    --surface-2: #181818;
+    --ink: #ffffff;
+    --ink-muted: #8f8f8f;
+    --ink-faint: #666666;
+    --line: #303030;
+    --line-strong: #303030;
+    --accent: #da291c;
+    --accent-bright: #da291c;
+    --accent-dim: #9d2211;
+    --accent-tint: rgba(218,41,28,0.08);
+    --good: #2f9e6f;
+    --good-tint: rgba(47,158,111,0.12);
+    --focus: #ffffff;
+    --btn-ink: #ffffff;
+    --chart-paid: #da291c;
+    --chart-organic: #b3b3b3;
+    --display: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --body-f: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono-f: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+  body{
+    background: var(--bg); color: var(--ink); font-family: var(--body-f);
+    font-size: 13px; line-height: 1.78; -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3{ font-family: var(--display); font-weight: 500; text-transform: uppercase; letter-spacing: 0.005em; text-wrap: balance; margin: 0; }
+  a{ color: var(--ink); text-decoration: none; }
+  ::selection{ background: var(--accent); color: #fff; }
+
+  .sheet{ max-width: 920px; margin: 0 auto; padding: 0 24px 96px; }
+
+  .subnav{ display:flex; flex-wrap:wrap; gap:18px; padding:16px 24px; max-width:920px; margin:0 auto; font-family:var(--mono-f); font-size:11px; letter-spacing:0.083em; text-transform:uppercase; }
+  .subnav a{ color:var(--ink-faint); }
+  .subnav a:hover{ color:var(--accent); }
+  .subnav a.current{ color:var(--ink); pointer-events:none; }
+
+  /* ---------- Cover ---------- */
+  .cover{ position: relative; border-bottom: 1px solid var(--line); padding: 40px 0 28px; margin-bottom: 8px; }
+  .cover::after{ content:""; position:absolute; left:0; bottom:-1px; height:2px; width:140px; background: var(--accent); }
+  .cover-eyebrow{
+    font-family: var(--mono-f); font-size: 11px; letter-spacing: 0.091em; text-transform: uppercase; color: var(--ink-faint);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 22px;
+  }
+  .cover-eyebrow span:first-child{ display:flex; align-items:center; gap:10px; }
+  .cover-eyebrow span:first-child::before{ content:""; width:22px; height:1px; background:var(--ink-faint); display:inline-block; }
+  .btn{
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono-f); font-size: 12px; letter-spacing: 0.083em; text-transform: uppercase;
+    color: var(--ink); background: transparent; border: 0; padding: 5px 0; border-radius: 0;
+    margin-top: 22px; transition: color 0.2s ease;
+  }
+  .btn::after{ content:"→"; transition: transform 0.2s ease; }
+  .btn:hover{ color: var(--accent); }
+  .btn:hover::after{ transform: translateX(3px); }
+  .cover h1{ font-size: clamp(26px, 4.4vw, 40px); line-height: 1.15; color: var(--ink); font-weight: 500; }
+  .cover .sub{ margin-top: 14px; font-size: 14px; color: var(--ink-muted); max-width: 62ch; letter-spacing: 0.015em; text-transform: none; }
+  .spec-row{ margin-top: 26px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .spec-cell{ background: var(--surface); padding: 12px 14px; }
+  .spec-cell .k{ font-family: var(--mono-f); font-size: 10px; letter-spacing: 0.083em; text-transform: uppercase; color: var(--ink-faint); display: block; margin-bottom: 4px; }
+  .spec-cell .v{ font-weight: 500; font-size: 13.5px; color: var(--ink); }
+
+  /* ---------- Index ---------- */
+  .index{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; border-top: 1px solid var(--line); margin-top: 28px; }
+  .index a{ color: var(--ink); display: flex; gap: 12px; align-items: baseline; padding: 11px 4px; border-bottom: 1px solid var(--line); font-size: 13px; }
+  .index a:nth-child(odd){ border-right: 1px solid var(--line); padding-right: 16px; }
+  .index a:nth-child(even){ padding-left: 16px; }
+  .index .num{ font-family: var(--mono-f); color: var(--ink-faint); font-weight: 500; font-size: 12px; }
+  .index a:hover{ color: var(--accent); }
+  .index a:hover .num{ color: var(--accent); }
+
+  /* ---------- Chapters ---------- */
+  .chapter{ padding-top: 64px; scroll-margin-top: 20px; }
+  .chapter-head{ display: flex; align-items: flex-end; gap: 16px; border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 22px; }
+  .chapter-num{ font-family: var(--mono-f); font-size: 13px; font-weight: 500; color: var(--ink); border: 1px solid var(--line); padding: 3px 9px; border-radius: 0; }
+  .chapter-head h2{ font-size: clamp(18px, 2.6vw, 24px); }
+  .chapter p{ max-width: 68ch; }
+  .chapter p + p{ margin-top: 12px; }
+  .lede{ font-size: 14.5px; color: var(--ink-muted); max-width: 64ch; letter-spacing: 0.015em; }
+
+  .callout{ background: var(--surface); border: 1px solid var(--line); border-left: 2px solid var(--accent); padding: 16px 18px; margin: 20px 0; border-radius: 0; }
+  .callout .lbl{ font-family: var(--mono-f); font-size: 11px; letter-spacing: 0.083em; text-transform: uppercase; color: var(--ink); display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+  .callout .lbl::before{ content:""; width:16px; height:1px; background: var(--accent); display:inline-block; }
+
+  /* ---------- Funnel ---------- */
+  .funnel{ display: flex; flex-wrap: wrap; gap: 0; margin: 26px 0; }
+  .funnel-step{ flex: 1 1 150px; background: var(--surface); border: 1px solid var(--line); padding: 14px 14px 16px; position: relative; }
+  .funnel-step + .funnel-step{ border-left: none; }
+  .funnel-step .n{ font-family: var(--mono-f); font-size: 11px; color: var(--ink-faint); }
+  .funnel-step .t{ font-weight: 500; text-transform: uppercase; margin-top: 4px; font-size: 13px; }
+  .funnel-step .d{ font-size: 12.5px; color: var(--ink-muted); margin-top: 4px; }
+  @media (min-width: 720px){
+    .funnel{ flex-wrap: nowrap; }
+    .funnel-step:not(:last-child):after{
+      content: ""; position: absolute; right: -9px; top: 50%; width: 16px; height: 16px;
+      transform: translateY(-50%) rotate(45deg); background: var(--surface);
+      border-top: 1px solid var(--line); border-right: 1px solid var(--line); z-index: 2;
+    }
+  }
+
+  /* ---------- Tables ---------- */
+  table{ width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 13px; }
+  .tbl-wrap{ overflow-x: auto; }
+  th, td{ text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th{ font-family: var(--mono-f); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); border-bottom: 1px solid var(--line); white-space: nowrap; }
+  td.num, th.num{ font-family: var(--mono-f); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tr:nth-child(even) td{ background: var(--surface-2); }
+
+  /* ---------- Compare cards ---------- */
+  .platform-grid{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 12px; margin: 20px 0; }
+  .platform-card{ background: var(--surface); border: 1px solid var(--line); padding: 18px; border-radius: 0; }
+  .platform-card h3{ font-size: 15px; display:flex; align-items:center; gap:8px; justify-content:space-between; }
+  .platform-card .tag{ font-family: var(--mono-f); font-size: 10px; padding: 4px 10px; border: 1px solid var(--ink); color: var(--ink); border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .platform-card ul{ margin: 12px 0 0; padding-left: 18px; }
+  .platform-card li{ font-size: 12.5px; color: var(--ink-muted); margin-bottom: 6px; }
+  .platform-card li.con{ color: var(--ink-faint); }
+  .platform-card li.con::marker{ content: "− "; }
+  .platform-card li.pro::marker{ content: "+ "; color: var(--ink); }
+
+  /* ---------- Week plan ---------- */
+  .roadmap{ margin: 22px 0; }
+  .phase{ display: grid; grid-template-columns: 120px 1fr; gap: 18px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .phase:last-child{ border-bottom: none; }
+  .phase .when{ font-family: var(--mono-f); font-size: 11px; color: var(--ink-faint); padding-top: 3px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .phase h3{ font-size: 14.5px; }
+  .phase p{ font-size: 13px; color: var(--ink-muted); margin-top: 5px; }
+  .phase ul{ margin: 10px 0 0; padding-left: 18px; }
+  .phase li{ font-size: 12.5px; color: var(--ink-muted); margin-bottom: 5px; }
+  .phase li b{ color: var(--ink); font-weight: 500; }
+
+  /* ---------- Simple list ---------- */
+  .excl-list{ display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 10px; margin: 18px 0; }
+  .excl-list div{ font-size: 12.5px; color: var(--ink-muted); border: 1px solid var(--line); border-radius: 0; padding: 10px 12px; }
+  .excl-list div b{ color: var(--ink); }
+
+  /* ---------- Stat tiles & chart ---------- */
+  .stat-tiles{ display:grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); margin:20px 0; }
+  .stat-tile{ background:var(--surface); padding:16px 18px; }
+  .stat-tile .k{ font-family: var(--mono-f); font-size:10px; letter-spacing:0.083em; text-transform:uppercase; color:var(--ink-faint); }
+  .stat-tile .v{ font-family: var(--display); font-weight: 500; font-size:26px; margin-top:6px; font-variant-numeric: tabular-nums; }
+  .stat-tile .v small{ font-family: var(--body-f); font-size:12px; color:var(--ink-muted); font-weight:400; letter-spacing:normal; text-transform:none; }
+  .stat-tile.paid .v{ color: var(--chart-paid); }
+  .stat-tile.organic .v{ color: var(--chart-organic); }
+
+  .chart-card{ background:var(--surface); border:1px solid var(--line); border-radius:0; padding:20px 20px 8px; margin:20px 0; }
+  .chart-legend{ display:flex; gap:18px; flex-wrap:wrap; margin-bottom:6px; font-size:12px; color:var(--ink-muted); }
+  .chart-legend .dot{ display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; }
+  .chart-svg text{ font-family: var(--mono-f); }
+  .chart-svg .grid{ stroke: var(--line); stroke-width:1; }
+  .chart-svg .axis-lbl{ fill: var(--ink-faint); font-size:11px; }
+  .chart-svg .end-lbl{ font-size:12px; font-weight:600; }
+  .chart-svg .line-paid{ fill:none; stroke:var(--chart-paid); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+  .chart-svg .line-organic{ fill:none; stroke:var(--chart-organic); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+  .chart-svg .dot-paid{ fill:var(--chart-paid); }
+  .chart-svg .dot-organic{ fill:var(--chart-organic); }
+  .chart-svg .end-lbl.paid{ fill:var(--chart-paid); }
+  .chart-svg .end-lbl.organic{ fill:var(--chart-organic); }
+
+  footer{ margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 11px; letter-spacing:0.05em; text-transform:uppercase; color: var(--ink-faint); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; max-width: 920px; margin-left:auto; margin-right:auto; font-family: var(--mono-f); }
+
+  @media (prefers-reduced-motion: no-preference){ .chapter{ animation: rise 0.4s ease both; } }
+  @keyframes rise{ from{ opacity: 0; transform: translateY(6px); } to{ opacity:1; transform:none; } }
+</style>
+
+<nav class="subnav">
+  <a href="https://autoemotion.stefanogranata.de/">&larr; Startseite</a>
+  <a href="https://autoemotion.stefanogranata.de/businessplan/" class="current">Businessplan</a>
+  <a href="https://autoemotion.stefanogranata.de/recruiting-handbuch/">Recruiting-Handbuch</a>
+  <a href="https://autoemotion.stefanogranata.de/cupra/">Cupra</a>
+  <a href="https://autoemotion.stefanogranata.de/website-relaunch/">Website &amp; KI</a>
+</nav>
+<div class="sheet">
+
+  <div class="cover">
+    <div class="cover-eyebrow">
+      <span>Dokument-Nr. AE-BP-2027-01 · Startdokument, Beginn 14.09.</span>
+      <span id="doc-date">Stand: —</span>
+    </div>
+    <h1>Businessplan<br>Auto Emotion 2.0</h1>
+    <p class="sub">Website-Neugestaltung, Video, Reels, Recruiting und SEO/KI-Sichtbarkeit als ein monatliches Paket &mdash; Start Montag, 14. September, mit festem Wochenrhythmus statt loser Einzelmaßnahmen.</p>
+    <div class="spec-row">
+      <div class="spec-cell"><span class="k">Start</span><span class="v">Mo., 14. September</span></div>
+      <div class="spec-cell"><span class="k">Ansprechpartner</span><span class="v">Stefano Granata</span></div>
+      <div class="spec-cell"><span class="k">Website-Gerüst</span><span class="v">2 Wochen (bis 28.09.)</span></div>
+      <div class="spec-cell"><span class="k">Website-Vollausbau</span><span class="v">Kompletter Oktober</span></div>
+      <div class="spec-cell"><span class="k">Recruiting</span><span class="v">Parallel ab Tag 1</span></div>
+      <div class="spec-cell"><span class="k">Laufzeit</span><span class="v">12 Monate ab 14.09.</span></div>
+    </div>
+    <a class="btn" href="#c5">Zum Fahrplan</a>
+    <div class="index" id="index"></div>
+  </div>
+
+  <!-- 01 -->
+  <section class="chapter" id="c1">
+    <div class="chapter-head"><span class="chapter-num">01</span><h2>Ausgangslage &amp; Ziel</h2></div>
+    <p class="lede">Website, Blog, Video und Instagram gibt es bei Auto Emotion bereits einzeln. Was fehlt, ist eine Struktur, die alles zusammenhält &mdash; und ein Rhythmus, der sich wiederholt, statt jeden Monat neu erfunden zu werden.</p>
+    <p>Dieser Plan bündelt die Baustellen in ein Paket: die Website bekommt eine überlegte Markenstruktur und Formulare für Anfragen und Bewerbungen; ein monatlicher Dreh beliefert Hauptvideo, Reels, Blog, Print und Recruiting-Content gleichzeitig; SEO und KI-Suche laufen kontinuierlich mit, statt als Einzelauftrag nachgereicht zu werden.</p>
+    <p>Der Wochenplan in Kapitel 05 ist das eigentliche Herzstück &mdash; er zeigt, wie aus einem einzigen Drehtag im Monat ein durchgehender Wochenrhythmus wird, ohne dass zusätzliche Drehtermine nötig sind.</p>
+  </section>
+
+  <!-- 02 -->
+  <section class="chapter" id="c2">
+    <div class="chapter-head"><span class="chapter-num">02</span><h2>Standortfrage: Gruppenseite oder Einzelmarken-Seiten</h2></div>
+    <p class="lede">Die zentrale Entscheidung vor dem Website-Relaunch: eine gemeinsame Seite mit Klick auf die Marken, oder jede Marke einzeln mit Weiterlinkung?</p>
+    <div class="platform-grid">
+      <div class="platform-card">
+        <h3>Gruppenseite <span class="tag">Teilweise</span></h3>
+        <ul>
+          <li class="pro">Ein einheitlicher Markenauftritt, ein Pflegeaufwand</li>
+          <li class="pro">Die gesamte Domain-Stärke (Backlinks, Blog, Reels) sammelt sich an einer Stelle</li>
+          <li class="con">Für Google unklarer: Cupra-, Seat- und Nissan-Suchen landen auf derselben, unspezifischen Seite</li>
+          <li class="con">Marken verwässern sich gegenseitig in der Darstellung</li>
+        </ul>
+      </div>
+      <div class="platform-card">
+        <h3>Einzelmarken-Seiten <span class="tag">Teilweise</span></h3>
+        <ul>
+          <li class="pro">Google erlaubt inzwischen ein eigenes Unternehmensprofil pro Marke, abgestimmt auf eine eigene Seite</li>
+          <li class="pro">Klare thematische Zuordnung: wer „Cupra Offenbach&rdquo; sucht, landet auch dort</li>
+          <li class="con">Mehr Pflegeaufwand pro Marke</li>
+          <li class="con">Als komplett getrennte Websites verlieren alle drei die gemeinsame Domain-Stärke</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="lbl">Empfehlung</span>
+      Eine Domain, aber keine Gruppenseite im engeren Sinn: eine gemeinsame Startseite als Hub, dahinter für Cupra, Seat und Nissan je ein eigener, klar abgegrenzter Markenbereich mit eigener URL &mdash; von der Startseite aus verlinkt, redaktionell unabhängig gepflegt. Das ist genau die Struktur, auf die Google seine markenspezifischen Unternehmensprofile mittlerweile ausrichtet, ohne die Domain-Stärke zu zersplittern, die Blog und Reels über die Zeit aufbauen.
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="chapter" id="c3">
+    <div class="chapter-head"><span class="chapter-num">03</span><h2>Leistungsumfang im Paket</h2></div>
+    <p class="lede">Neun Bausteine in einem Paket. Kapitel 06 zeigt, was bewusst nicht enthalten ist.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Baustein</th><th>Umfang</th></tr></thead>
+        <tbody>
+          <tr><td>Website-Neugestaltung</td><td>Struktur nach Kapitel 02, Design, Markenbereiche, Formulare für Anfragen &amp; Bewerbungen</td></tr>
+          <tr><td>Video</td><td>1 Vor-Ort-Dreh/Monat (bis zu 4 Std.), 1 Hauptvideo bis 10 Minuten, Videoschnitt inklusive</td></tr>
+          <tr><td>Reels</td><td>2/Woche, ca. 8&ndash;9/Monat, geschnitten aus demselben Dreh</td></tr>
+          <tr><td>Jingle &amp; Radio-Spot</td><td>Ein wiederkehrender Audio-Jingle, produzierte Spots für lokale Radiowerbung nach Bedarf</td></tr>
+          <tr><td>Recruiting</td><td>Social-Media-Posts + Bewerbungsformulare direkt auf der Website</td></tr>
+          <tr><td>SEO &amp; KI-Optimierung</td><td>Laufende On-Page-Pflege, Google-Unternehmensprofile, Inhalte für KI-Suche (ChatGPT, Perplexity &amp; Co.)</td></tr>
+          <tr><td>Plakate &amp; Flyer</td><td>Layout-Erstellung im Rahmen des vorhandenen Bild- &amp; Videomaterials</td></tr>
+          <tr><td>Fotoshooting</td><td>Im Rahmen des monatlichen Drehtags &mdash; kein separater Termin</td></tr>
+          <tr><td>Anzeigenbudget</td><td>Überschaubares, gemeinsam festgelegtes Testbudget für Google &amp; Instagram &mdash; siehe Kapitel 07a</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="chapter" id="c4">
+    <div class="chapter-head"><span class="chapter-num">04</span><h2>Produktionslogik: ein Dreh, ein Monat Content</h2></div>
+    <p class="lede">Alles im Paket hängt an einem einzigen Termin im Monat. Das ist kein Kompromiss, sondern die Grundlage, warum sich das Paket überhaupt trägt.</p>
+    <div class="funnel">
+      <div class="funnel-step"><span class="n">01</span><div class="t">Dreh-Tag</div><div class="d">Bis zu 4 Std. vor Ort, 1&times;/Monat: Interviews, Fahrzeuge, Werkstatt, Fotos, Audio für Jingle/Spot</div></div>
+      <div class="funnel-step"><span class="n">02</span><div class="t">Rohmaterial</div><div class="d">Ca. 60&ndash;90 Min. Footage plus Fotostrecke und O-Töne</div></div>
+      <div class="funnel-step"><span class="n">03</span><div class="t">Schnitt</div><div class="d">1 Hauptvideo, 8&ndash;9 Reels, Bildmaterial für Blog, Plakat &amp; Flyer, Radio-Spot</div></div>
+      <div class="funnel-step"><span class="n">04</span><div class="t">Redaktionsplan</div><div class="d">Verteilung über die vier Wochen nach Kapitel 05</div></div>
+    </div>
+    <p>Aus einem einzigen Drehtag lassen sich in der Praxis zehn bis zwanzig Kurzvideos schneiden &mdash; acht bis neun Reels sind damit komfortabel machbar, inklusive Puffer für Recruiting-Content, ohne einen zweiten Drehtermin zu benötigen.</p>
+  </section>
+
+  <!-- 05 -->
+  <section class="chapter" id="c5">
+    <div class="chapter-head"><span class="chapter-num">05</span><h2>Fahrplan: 14. September &ndash; 31. Oktober</h2></div>
+    <p class="lede">Sieben Wochen mit festen Terminen statt eines generischen Monatsschemas &mdash; danach geht der Betrieb in den Regelrhythmus über. Recruiting läuft ab Tag 1 mit, nicht erst nach dem Website-Gerüst.</p>
+    <div class="roadmap">
+      <div class="phase">
+        <div class="when">Mo. 14.09.</div>
+        <div><h3>Kickoff</h3><p>Vertragsstart, Zugänge zu Website, Google-Profilen und Social-Kanälen, Rollen &amp; Ansprechpartner klären.</p></div>
+      </div>
+      <div class="phase">
+        <div class="when">Wo. 1<br>15.&ndash;21.09.</div>
+        <div>
+          <h3>Website-Gerüst, Teil 1</h3>
+          <ul>
+            <li><b>Struktur nach Kapitel 02</b> &ndash; Hub-Seite + drei Markenbereiche technisch anlegen</li>
+            <li><b>Parallel: Recruiting-Kickoff Kfz-Mechatroniker E-Mobilität</b> &ndash; Rolle briefen, Ausbilder/Werkstattleiter fürs Video gewinnen, Story-Formate für Instagram &amp; TikTok planen (Details: Recruiting-Handbuch, Kapitel 13)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="when">Wo. 2<br>22.&ndash;28.09.</div>
+        <div>
+          <h3>Website-Gerüst, Teil 2</h3>
+          <ul>
+            <li>Navigation, Formulare für Anfragen &amp; Bewerbungen technisch startklar</li>
+            <li><b>Erster Dreh-Tag, Fokus Recruiting</b> &ndash; Werkstatt, E-Antriebe, Team; erste Reels &amp; Stories live auf Instagram und TikTok, gezielt auf Azubis <b>und</b> ihre Eltern</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="when">Wo. 3<br>29.09.&ndash;05.10.</div>
+        <div>
+          <h3>Website-Vollausbau beginnt</h3>
+          <ul>
+            <li>Design &amp; Markeninhalte Cupra, Seat, Nissan</li>
+            <li>SEO-Grundstruktur je Markenbereich</li>
+            <li>Recruiting im Wochentakt: 2 Reels, erste Rückmeldungen/Bewerbungen auswerten</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="when">Wo. 4<br>06.&ndash;12.10.</div>
+        <div>
+          <h3>Website-Vollausbau</h3>
+          <ul>
+            <li>Content einpflegen, Blog-/SEO-Texte</li>
+            <li>Google-Unternehmensprofile je Marke live</li>
+            <li>Recruiting nachjustieren nach den ersten Zahlen (Konstanz-Prinzip, Recruiting-Handbuch Kapitel 12)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="when">Wo. 5<br>13.&ndash;19.10.</div>
+        <div>
+          <h3>Website-Vollausbau</h3>
+          <ul>
+            <li>Formulare final: Anfrage &amp; Bewerbung, mit Weiterleitung an feste Ansprechpartner</li>
+            <li>KI-Suche-Inhalte (GEO) je Marke</li>
+            <li>Recruiting im Wochentakt weiter: 2 Reels</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="when">Wo. 6<br>20.&ndash;26.10.</div>
+        <div>
+          <h3>Test &amp; Freigabe</h3>
+          <ul>
+            <li>Mobile Optimierung, Ladezeiten, Formulartests</li>
+            <li>Feinschliff Markenbereiche vor Freigabe</li>
+            <li>Recruiting im Wochentakt weiter: 2 Reels</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="when">Wo. 7<br>27.&ndash;31.10.</div>
+        <div>
+          <h3>Website live</h3>
+          <ul>
+            <li><b>Umschaltung auf die neue Website</b> &ndash; siehe Callout unten</li>
+            <li><b>Launch-Event:</b> &bdquo;Tag der offenen Tür &ndash; Auto Emotion 2.0: Wir gehen digital&ldquo; &ndash; doppelt genutzt für Kundenkontakt und als Fotoshooting-Termin für November-Content</li>
+            <li>Monatsauswertung Oktober: Website-Fortschritt <b>und</b> Recruiting-Ergebnisse (Reichweite, Bewerbungen)</li>
+            <li>Übergang in den Regelbetrieb ab November</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="lbl">Erst lokal, dann Wechsel</span>
+      Die neue Website entsteht die ganzen sieben Wochen über lokal bzw. auf einer separaten Testumgebung. Die aktuelle Seite bleibt bis zum Launch unverändert online &mdash; kein Risiko für den laufenden Betrieb während des Aufbaus. Die Umschaltung passiert gebündelt in Woche 7, im besten Fall am Tag des Launch-Events.
+    </div>
+    <div class="callout">
+      <span class="lbl">Regelbetrieb ab November</span>
+      Sobald die Website steht, übernimmt der wiederkehrende Vier-Wochen-Rhythmus aus Kapitel 04: ein Dreh-Tag pro Monat beliefert Hauptvideo, Reels, Blog und Recruiting gleichzeitig. Die Mechatroniker-Kampagne läuft darin weiter, bis die Stelle besetzt ist &mdash; sie endet nicht mit dem Website-Launch.
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="chapter" id="c6">
+    <div class="chapter-head"><span class="chapter-num">06</span><h2>Was nicht enthalten ist</h2></div>
+    <p class="lede">Damit der Rahmen für beide Seiten klar bleibt.</p>
+    <div class="excl-list">
+      <div><b>Druckkosten</b> &ndash; Layout ist enthalten, Papier &amp; Auflage nicht</div>
+      <div><b>Kostenpflichtige Software/Lizenzen</b> Dritter</div>
+      <div><b>Zusätzliche Drehtage</b> außerhalb des monatlichen Termins</div>
+      <div><b>Models, externe Sprecher</b>, Musik- oder Bildlizenzen</div>
+      <div><b>Sendezeit fürs Radio</b> &ndash; der Spot ist enthalten, die Ausstrahlung wird direkt beim Sender gebucht</div>
+      <div><b>Programmierung</b> über die Website-Neugestaltung hinaus (z. B. eigene Tools, Schnittstellen)</div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="chapter" id="c7">
+    <div class="chapter-head"><span class="chapter-num">07</span><h2>Was es am Markt kostet</h2></div>
+    <p class="lede">Zur Einordnung: das sind Marktrichtwerte für die Leistungen aus Kapitel 03, einzeln bei anderen Anbietern gebucht.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Leistung, einzeln gebucht</th><th>Marktrichtwert</th></tr></thead>
+        <tbody>
+          <tr><td>Social-Media-Paket (1&ndash;2 Kanäle, Redaktionsplan)</td><td>800&ndash;2.000 &euro;/Monat</td></tr>
+          <tr><td>SEO-Betreuung</td><td>1.200&ndash;3.000 &euro;/Monat</td></tr>
+          <tr><td>Video-Content-Retainer bei Agenturen</td><td>häufig 4.000&ndash;15.000 &euro;/Monat</td></tr>
+          <tr><td>Radio-Jingle &amp; Spot-Produktion</td><td>oft 800&ndash;2.500 &euro; einmalig, separat kalkuliert</td></tr>
+          <tr><td>Website-Relaunch, einmalig</td><td>oft 5.000&ndash;15.000 &euro; separat</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <span class="lbl">Warum ein Anbieter statt fünf</span>
+      Weil ein Drehtag Hauptvideo, Reels, Blog-Bild, Radio-Audio und Recruiting-Content gleichzeitig bedient, statt jedes einzeln zu beauftragen. Das bündelt die sonst separat kalkulierten Posten aus der Tabelle oben in einen Produktionsablauf und einen Ansprechpartner.
+    </div>
+  </section>
+
+  <!-- 07a -->
+  <section class="chapter" id="c7a">
+    <div class="chapter-head"><span class="chapter-num">07a</span><h2>Anzeigenbudget: überschaubar halten</h2></div>
+    <p class="lede">Organischer Content trägt den Großteil &mdash; ein kleines, kontrolliertes Anzeigenbudget beschleunigt zusätzlich, wo es sich lohnt.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Kanal</th><th>Einstiegsbudget</th><th>Wofür</th></tr></thead>
+        <tbody>
+          <tr><td>Google Ads</td><td>80&ndash;150 &euro;/Monat</td><td>Lokale Suche, Service &amp; Terminanfragen</td></tr>
+          <tr><td>Instagram/Meta Ads</td><td>100&ndash;150 &euro;/Monat</td><td>Reichweite für die stärksten organischen Reels, Recruiting</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <span class="lbl">Wichtig</span>
+      Das Mediabudget fließt direkt an Google/Meta, nicht an uns &mdash; es kommt zusätzlich zum Paket aus Kapitel 03 und wird gemeinsam festgelegt, bevor etwas geschaltet wird. 180&ndash;300 &euro;/Monat kombiniert reicht als Einstieg, um die Wirkung zu testen, siehe Kapitel 08 im Recruiting-Handbuch für die Herleitung dieser Richtwerte.
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="chapter" id="c8">
+    <div class="chapter-head"><span class="chapter-num">08</span><h2>Ausblick: November und danach</h2></div>
+    <p class="lede">Der Fahrplan aus Kapitel 05 ist die Startphase, nicht die Dauerlösung. Ab November zählt der Regelbetrieb.</p>
+    <div class="roadmap">
+      <div class="phase">
+        <div class="when">Anfang Nov.</div>
+        <div><h3>Erste Monatsbilanz</h3><p>Website-Kennzahlen (Formular-Leads je Marke) und Recruiting-Stand Kfz-Mechatroniker gemeinsam auswerten &ndash; Basis für Budgetentscheidungen nach Kapitel 07a.</p></div>
+      </div>
+      <div class="phase">
+        <div class="when">Laufend</div>
+        <div><h3>Vier-Wochen-Rhythmus</h3><p>Ein Dreh-Tag pro Monat, 8&ndash;9 Reels, 1 Hauptvideo, Blog, SEO/GEO-Pflege &ndash; wiederholt sich, bis Umfang oder Marken sich ändern.</p></div>
+      </div>
+      <div class="phase">
+        <div class="when">Bei Bedarf</div>
+        <div><h3>Nachschärfen</h3><p>Zusätzliche Rollen, ein zweites Drehformat oder mehr Anzeigenbudget lassen sich als Erweiterung andocken, ohne den Grundrhythmus zu ändern.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section class="chapter" id="c9">
+    <div class="chapter-head"><span class="chapter-num">09</span><h2>Wachstumsverlauf: organisch vs. mit Budget</h2></div>
+    <p class="lede">Modellrechnung, keine Zusage &mdash; zeigt die Größenordnung, mit der Kapitel 07a kalkuliert.</p>
+    <div class="stat-tiles">
+      <div class="stat-tile organic"><div class="k">Rein organisch · Monat 6</div><div class="v">172 <small>Index (Start=100)</small></div></div>
+      <div class="stat-tile paid"><div class="k">Mit 180&ndash;300 &euro;/Monat · Monat 6</div><div class="v">248 <small>Index (Start=100)</small></div></div>
+      <div class="stat-tile"><div class="k">Media-Spend/Monat</div><div class="v">180&ndash;300 <small>&euro;, an Google/Meta</small></div></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-legend">
+        <span><span class="dot" style="background:var(--chart-organic)"></span>Rein organisch (Kapitel 04&ndash;05)</span>
+        <span><span class="dot" style="background:var(--chart-paid)"></span>Mit kleinem Anzeigenbudget (Kapitel 07a)</span>
+      </div>
+      <svg class="chart-svg" viewBox="0 0 620 260" role="img" aria-label="Sichtbarkeits-Index über sechs Monate: organisch steigt von 100 auf 172, mit Budget von 100 auf 248">
+        <line class="grid" x1="40" y1="20" x2="600" y2="20"></line>
+        <line class="grid" x1="40" y1="90" x2="600" y2="90"></line>
+        <line class="grid" x1="40" y1="160" x2="600" y2="160"></line>
+        <line class="grid" x1="40" y1="230" x2="600" y2="230"></line>
+        <text class="axis-lbl" x="32" y="24" text-anchor="end">250</text>
+        <text class="axis-lbl" x="32" y="94" text-anchor="end">190</text>
+        <text class="axis-lbl" x="32" y="164" text-anchor="end">130</text>
+        <text class="axis-lbl" x="32" y="234" text-anchor="end">100</text>
+
+        <text class="axis-lbl" x="40" y="250" text-anchor="middle">M1</text>
+        <text class="axis-lbl" x="152" y="250" text-anchor="middle">M2</text>
+        <text class="axis-lbl" x="264" y="250" text-anchor="middle">M3</text>
+        <text class="axis-lbl" x="376" y="250" text-anchor="middle">M4</text>
+        <text class="axis-lbl" x="488" y="250" text-anchor="middle">M5</text>
+        <text class="axis-lbl" x="600" y="250" text-anchor="middle">M6</text>
+
+        <polyline class="line-organic" points="40,230 152,201 264,177 376,155 488,140 600,127"></polyline>
+        <circle class="dot-organic" cx="40" cy="230" r="4"></circle>
+        <circle class="dot-organic" cx="152" cy="201" r="4"></circle>
+        <circle class="dot-organic" cx="264" cy="177" r="4"></circle>
+        <circle class="dot-organic" cx="376" cy="155" r="4"></circle>
+        <circle class="dot-organic" cx="488" cy="140" r="4"></circle>
+        <circle class="dot-organic" cx="600" cy="127" r="4"></circle>
+        <text class="end-lbl organic" x="565" y="115" text-anchor="end">172</text>
+
+        <polyline class="line-paid" points="40,230 152,166 264,116 376,80 488,58 600,47"></polyline>
+        <circle class="dot-paid" cx="40" cy="230" r="4"></circle>
+        <circle class="dot-paid" cx="152" cy="166" r="4"></circle>
+        <circle class="dot-paid" cx="264" cy="116" r="4"></circle>
+        <circle class="dot-paid" cx="376" cy="80" r="4"></circle>
+        <circle class="dot-paid" cx="488" cy="58" r="4"></circle>
+        <circle class="dot-paid" cx="600" cy="47" r="4"></circle>
+        <text class="end-lbl paid" x="565" y="35" text-anchor="end">248</text>
+      </svg>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Sichtbarkeits-Index</th><th class="num">M1</th><th class="num">M2</th><th class="num">M3</th><th class="num">M4</th><th class="num">M5</th><th class="num">M6</th></tr></thead>
+          <tbody>
+            <tr><td>Rein organisch</td><td class="num">100</td><td class="num">118</td><td class="num">135</td><td class="num">150</td><td class="num">162</td><td class="num">172</td></tr>
+            <tr><td>Mit Anzeigenbudget</td><td class="num">100</td><td class="num">145</td><td class="num">185</td><td class="num">215</td><td class="num">235</td><td class="num">248</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p>Beide Kurven starten bei Index 100 im ersten Monat des Regelbetriebs (November). Organisch trägt den Sockel &mdash; das Budget aus Kapitel 07a beschleunigt on top, ersetzt den organischen Aufbau aber nicht.</p>
+  </section>
+
+  <!-- 10 -->
+  <section class="chapter" id="c10">
+    <div class="chapter-head"><span class="chapter-num">10</span><h2>Ideen für später</h2></div>
+    <p class="lede">Außerhalb des Leistungsumfangs aus Kapitel 03, aber wert, nach dem Launch besprochen zu werden.</p>
+    <div class="excl-list">
+      <div><b>Termin-/Werkstatt-App</b> &ndash; eigenständiges Buchungstool mit festen Intervallen für Service &amp; Probefahrten, Kapazität blockt sich automatisch</div>
+      <div><b>QR auf Plakat &amp; Flyer</b> &ndash; Print aus Kapitel 03 direkt auf die passende Formular-Landingpage verlinkt, schließt den Kreis Offline/Online</div>
+      <div><b>Automatisierte Erinnerungen</b> &ndash; Service fällig, TÜV, Inspektion per WhatsApp/E-Mail</div>
+      <div><b>Digitaler Fahrzeug-Konfigurator</b> &ndash; eigenständiges Tool, kein Website-Unterpunkt</div>
+    </div>
+    <div class="callout">
+      <span class="lbl">Warum nicht jetzt schon</span>
+      Jede dieser Ideen ist ein eigenes Projekt mit eigenem Aufwand &mdash; im laufenden Paket würde sie den Fahrplan aus Kapitel 05 sprengen. Bestes Momentum dafür: nach dem Launch-Event, wenn die Website steht und der Wochenrhythmus läuft.
+    </div>
+  </section>
+
+  <footer>
+    <span>Businessplan Auto Emotion &middot; Start 14. September</span>
+    <span>12 Monate Laufzeit &middot; Angebot ohne Preisangabe</span>
+  </footer>
+</div>
+
+<script>
+  document.getElementById('doc-date').textContent = 'Stand: ' + new Date().toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'numeric'});
+  var chapters = [
+    ['01','Ausgangslage & Ziel','c1'], ['02','Markenstruktur','c2'], ['03','Leistungsumfang','c3'],
+    ['04','Produktionslogik','c4'], ['05','Fahrplan 14.09.–31.10.','c5'], ['06','Ausschlüsse','c6'],
+    ['07','Was es am Markt kostet','c7'], ['07a','Anzeigenbudget','c7a'], ['08','Ausblick November','c8'],
+    ['09','Wachstumsverlauf','c9'], ['10','Ideen für später','c10']
+  ];
+  var idx = document.getElementById('index');
+  chapters.forEach(function(c){
+    var a = document.createElement('a');
+    a.href = '#' + c[2];
+    a.innerHTML = '<span class="num">' + c[0] + '</span><span>' + c[1] + '</span>';
+    idx.appendChild(a);
+  });
+</script>

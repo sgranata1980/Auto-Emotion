@@ -1,0 +1,947 @@
+<meta charset="UTF-8">
+<title>Recruiting-Handbuch Autohaus</title>
+<style>
+header.wp-block-template-part{ display:none !important; }
+
+  :root{
+    --bg: #000000;
+    --surface: #181818;
+    --surface-2: #181818;
+    --ink: #ffffff;
+    --ink-muted: #8f8f8f;
+    --ink-faint: #666666;
+    --line: #303030;
+    --line-strong: #303030;
+    --accent: #da291c;
+    --accent-bright: #da291c;
+    --accent-dim: #9d2211;
+    --accent-ink: #da291c;
+    --accent-tint: rgba(218,41,28,0.08);
+    --good: #2f9e6f;
+    --good-tint: rgba(47,158,111,0.12);
+    --focus: #ffffff;
+    --chart-paid: #da291c;
+    --chart-organic: #b3b3b3;
+    --btn-ink: #ffffff;
+    --display: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --body-f: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono-f: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body-f);
+    font-size: 13px;
+    line-height: 1.78;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3{
+    font-family: var(--display);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    text-wrap: balance;
+    margin: 0;
+  }
+  .mono{ font-family: var(--mono-f), ui-monospace, monospace; }
+  a{ color: var(--ink); text-decoration: none; }
+  ::selection{ background: var(--accent); color: #fff; }
+
+  .sheet{ max-width: 920px; margin: 0 auto; padding: 0 24px 96px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    position: relative;
+    border-bottom: 1px solid var(--line-strong);
+    padding: 40px 0 28px;
+    margin-bottom: 8px;
+  }
+  .cover::after{
+    content: ""; position: absolute; left: 0; bottom: -1px; height: 2px; width: 140px;
+    background: var(--accent);
+  }
+  .cover-eyebrow{
+    font-family: var(--mono-f);
+    font-size: 11px;
+    letter-spacing: 0.091em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+  }
+  .cover-eyebrow span:first-child{ display:flex; align-items:center; gap:10px; }
+  .cover-eyebrow span:first-child::before{ content:""; width:22px; height:1px; background:var(--ink-faint); display:inline-block; }
+  .cover-eyebrow span:last-child{ color: var(--ink-faint); }
+  .btn{
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono-f); font-size: 12px; letter-spacing: 0.083em; text-transform: uppercase;
+    text-decoration: none; color: var(--ink);
+    background: transparent; border: 0;
+    padding: 5px 0; border-radius: 0; margin-top: 22px;
+    transition: color 0.2s ease;
+  }
+  .btn::after{ content:"→"; transition: transform 0.2s ease; }
+  .btn:hover{ color: var(--accent); }
+  .btn:hover::after{ transform: translateX(3px); }
+  .cover h1{
+    font-size: clamp(34px, 6vw, 52px);
+    line-height: 0.98;
+    color: var(--ink);
+  }
+  .cover .sub{
+    margin-top: 14px;
+    font-size: 18px;
+    color: var(--ink-muted);
+    max-width: 60ch;
+  }
+  .spec-row{
+    margin-top: 26px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .spec-cell{ background: var(--surface); padding: 12px 14px; }
+  .spec-cell .k{
+    font-family: var(--mono-f);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .spec-cell .v{ font-weight: 600; font-size: 14.5px; color: var(--ink); }
+
+  /* ---------- Index ---------- */
+  .index{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--line);
+    margin-top: 28px;
+  }
+  .index a{
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    padding: 11px 4px;
+    border-bottom: 1px solid var(--line);
+    font-size: 14.5px;
+  }
+  .index a:nth-child(odd){ border-right: 1px solid var(--line); padding-right: 16px; }
+  .index a:nth-child(even){ padding-left: 16px; }
+  .index .num{
+    font-family: var(--mono-f);
+    color: var(--ink-faint);
+    font-weight: 500;
+    font-size: 12px;
+  }
+  .index a:hover{ color: var(--accent); }
+  .index a:hover .num{ color: var(--accent); }
+
+  /* ---------- Chapters ---------- */
+  .chapter{ padding-top: 64px; scroll-margin-top: 20px; }
+  .chapter-head{
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 12px;
+    margin-bottom: 22px;
+  }
+  .chapter-num{
+    font-family: var(--mono-f);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--line);
+    padding: 3px 9px;
+    border-radius: 0;
+  }
+  .chapter-head h2{ font-size: clamp(18px, 2.6vw, 24px); }
+
+  .chapter p{ max-width: 68ch; }
+  .chapter p + p{ margin-top: 12px; }
+  .lede{ font-size: 14.5px; color: var(--ink-muted); max-width: 62ch; letter-spacing: 0.015em; }
+
+  .callout{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--accent);
+    padding: 16px 18px;
+    margin: 20px 0;
+    border-radius: 0;
+  }
+  .callout .lbl{
+    font-family: var(--mono-f);
+    font-size: 11px;
+    letter-spacing: 0.083em;
+    text-transform: uppercase;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 8px;
+  }
+  .callout .lbl::before{ content:""; width:16px; height:1px; background: var(--accent); display:inline-block; }
+
+  /* ---------- Funnel ---------- */
+  .funnel{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 26px 0;
+    counter-reset: step;
+  }
+  .funnel-step{
+    flex: 1 1 150px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 14px 14px 16px;
+    position: relative;
+  }
+  .funnel-step + .funnel-step{ border-left: none; }
+  .funnel-step .n{
+    font-family: var(--mono-f);
+    font-size: 11px;
+    color: var(--ink-faint);
+  }
+  .funnel-step .t{ font-weight: 500; text-transform: uppercase; margin-top: 4px; font-size: 13px; }
+  .funnel-step .d{ font-size: 12.5px; color: var(--ink-muted); margin-top: 4px; }
+  .funnel-arrow{
+    display: none;
+  }
+  @media (min-width: 720px){
+    .funnel{ flex-wrap: nowrap; }
+    .funnel-step:not(:last-child):after{
+      content: "";
+      position: absolute;
+      right: -9px; top: 50%;
+      width: 16px; height: 16px;
+      transform: translateY(-50%) rotate(45deg);
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      z-index: 2;
+    }
+  }
+
+  /* ---------- Tables ---------- */
+  table{ width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14px; }
+  .tbl-wrap{ overflow-x: auto; }
+  th, td{
+    text-align: left;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  th{
+    font-family: var(--mono-f);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  td.num, th.num{ font-family: var(--mono-f); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tr:nth-child(even) td{ background: var(--surface-2); }
+
+  /* ---------- Platform compare ---------- */
+  .platform-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .platform-card{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 16px;
+    border-radius: 0;
+  }
+  .platform-card h3{ font-size: 15px; display:flex; align-items:center; gap:8px; }
+  .platform-card .tag{
+    font-family: var(--mono-f);
+    font-size: 10px;
+    padding: 4px 10px;
+    border: 1px solid var(--ink);
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+  .tag.must{ border-color: var(--ink); color: var(--ink); }
+  .tag.opt{ border-color: var(--ink-faint); color: var(--ink-faint); }
+  .platform-card .bar-row{ display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 12px; }
+  .platform-card .bar-row .lbl{ width: 92px; flex-shrink: 0; color: var(--ink-muted); }
+  .platform-card .bar-track{ flex: 1; height: 6px; background: var(--surface-2); border-radius: 0; overflow: hidden; }
+  .platform-card .bar-fill{ height: 100%; background: var(--ink); border-radius: 0; }
+  .platform-card .bar-val{ font-family: var(--mono-f); width: 34px; text-align: right; font-size: 12px; color: var(--ink); }
+  .platform-card p{ font-size: 12.5px; color: var(--ink-muted); margin-top: 12px; }
+
+  /* ---------- Content matrix ---------- */
+  .ratio-bar{
+    display: flex; height: 34px; border-radius: 0; overflow: hidden; margin: 18px 0 8px; border: 1px solid var(--line);
+  }
+  .ratio-bar span{ display:flex; align-items:center; justify-content:center; font-family: var(--mono-f); font-size:12px; font-weight:500; text-transform: uppercase; letter-spacing: 0.04em; }
+  .ratio-bar .a{ width: 80%; background: var(--surface); color: var(--ink); }
+  .ratio-bar .b{ width: 20%; background: var(--surface-2); color: var(--ink-muted); }
+
+  /* ---------- Phone / prototype ---------- */
+  .proto-wrap{
+    display: grid;
+    grid-template-columns: minmax(0,1fr) minmax(280px, 340px);
+    gap: 28px;
+    align-items: start;
+    margin: 26px 0;
+  }
+  @media (max-width: 760px){ .proto-wrap{ grid-template-columns: 1fr; } }
+  .proto-note h3{ font-size: 16px; margin-bottom: 8px; }
+  .proto-note ul{ margin: 10px 0 0; padding-left: 18px; }
+  .proto-note li{ margin-bottom: 7px; font-size: 14.5px; color: var(--ink-muted); }
+
+  .phone{
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 26px;
+    padding: 10px;
+  }
+  .phone-screen{
+    background: var(--surface);
+    border-radius: 18px;
+    padding: 20px 18px 22px;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+  }
+  .phone-topbar{ text-align:center; margin-bottom:14px; }
+  .phone-topbar .dot{ width:50px; height:5px; border-radius:3px; background: var(--line); margin: 0 auto 14px; }
+  .phone-topbar .brand{ font-family: var(--mono-f); font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color: var(--ink-faint); }
+  .phone h4{ font-family: var(--display); font-weight: 500; text-transform: uppercase; font-size: 17px; margin-top: 6px; color: var(--ink); }
+  .phone .time-chip{
+    display:inline-flex; align-items:center; gap:5px;
+    background: var(--good-tint); color: var(--good);
+    font-family: var(--mono-f); font-size: 11px;
+    padding: 3px 8px; border-radius: 0; margin-top: 8px;
+  }
+  .field{ margin-top: 12px; }
+  .field label{ font-size: 12px; color: var(--ink-faint); display:block; margin-bottom:4px; }
+  .field select, .field input[type=text], .field input[type=tel], .field input[type=email], .field textarea{
+    width: 100%; padding: 9px 10px; border-radius: 0; border: 1px solid var(--line);
+    background: var(--bg); color: var(--ink); font: inherit; font-size: 14px;
+  }
+  .field select:focus, .field input:focus, .field textarea:focus{ outline: 2px solid var(--focus); outline-offset: 1px; }
+  .chip-row{ display:flex; gap:6px; margin-top:4px; flex-wrap: wrap; }
+  .chip-row label{
+    display:flex; align-items:center; gap:5px;
+    border:1px solid var(--line); border-radius:0; padding:5px 10px; font-size:12.5px; cursor:pointer;
+    color: var(--ink-muted);
+  }
+  .chip-row input{ accent-color: var(--accent); }
+  .consent{ display:flex; gap:8px; align-items:flex-start; margin-top:14px; font-size:11.5px; color: var(--ink-faint); }
+  .consent input{ margin-top:2px; accent-color: var(--accent); flex-shrink:0; }
+  .submit-btn{
+    margin-top: 14px;
+    background: transparent; color: var(--ink);
+    border: 1px solid var(--ink); border-radius: 0; padding: 13px; font-weight: 500; font-size: 12px;
+    letter-spacing: 0.083em; text-transform: uppercase;
+    cursor: pointer; font-family: var(--mono-f);
+  }
+  .submit-btn:hover{ background: var(--ink); color: var(--bg); }
+  .submit-btn:disabled{ opacity: 0.6; cursor: default; }
+  .phone-success{ text-align:center; margin: auto 0; }
+  .phone-success .check{
+    width:52px; height:52px; border-radius:50%; background: var(--good-tint); color: var(--good);
+    display:flex; align-items:center; justify-content:center; margin: 0 auto 14px; font-size: 26px;
+  }
+  .phone-success h4{ font-size: 16px; }
+  .phone-success p{ font-size: 13px; color: var(--ink-muted); max-width: 26ch; margin: 8px auto 0; }
+  .reset-link{ background:none; border:none; color: var(--ink-faint); font-size: 12.5px; margin-top:16px; cursor:pointer; font-family: inherit; text-decoration: underline; }
+  .reset-link:hover{ color: var(--accent); }
+
+  .demo-toggle{
+    margin-top: 22px; font-size: 12.5px; background: none; border: 1px dashed var(--line);
+    color: var(--ink-faint); padding: 8px 12px; border-radius: 0; cursor: pointer; font-family: var(--mono-f);
+    width: 100%;
+  }
+  .demo-list{ margin-top: 12px; border: 1px solid var(--line); border-radius: 0; overflow: hidden; }
+  .demo-list .row{ display:flex; justify-content:space-between; gap:8px; padding: 8px 10px; font-size:12px; border-bottom:1px solid var(--line); }
+  .demo-list .row:last-child{ border-bottom:none; }
+  .demo-list .row span:first-child{ font-weight:600; color: var(--ink); }
+  .demo-list .empty{ padding: 14px; font-size: 12.5px; color: var(--ink-faint); text-align:center; }
+  .demo-hint{ font-size: 11px; color: var(--ink-faint); margin-top: 6px; }
+
+  /* ---------- Stat chart ---------- */
+  .stat-tiles{ display:grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); margin:20px 0; }
+  .stat-tile{ background:var(--surface); border-radius:0; padding:14px 16px; }
+  .stat-tile .k{ font-family: var(--mono-f); font-size:10px; letter-spacing:0.083em; text-transform:uppercase; color:var(--ink-faint); }
+  .stat-tile .v{ font-family: var(--display); font-weight: 500; font-size:26px; margin-top:6px; font-variant-numeric: tabular-nums; }
+  .stat-tile .v small{ font-family: var(--body-f); font-size:12px; color:var(--ink-muted); font-weight:400; letter-spacing:normal; text-transform:none; }
+  .stat-tile.paid .v{ color: var(--chart-paid); }
+  .stat-tile.organic .v{ color: var(--chart-organic); }
+
+  .chart-card{ background:var(--surface); border:1px solid var(--line); border-radius:0; padding:20px 20px 8px; margin:20px 0; }
+  .chart-legend{ display:flex; gap:18px; flex-wrap:wrap; margin-bottom:6px; font-size:12.5px; color:var(--ink-muted); }
+  .chart-legend .dot{ display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; }
+  .chart-legend .dash{ display:inline-block; width:14px; height:0; border-top:2px dashed var(--chart-organic); opacity:0.55; margin-right:6px; vertical-align:middle; }
+  .chart-svg text{ font-family: var(--mono-f); }
+  .chart-svg .grid{ stroke: var(--line); stroke-width:1; }
+  .chart-svg .axis-lbl{ fill: var(--ink-faint); font-size:11px; }
+  .chart-svg .end-lbl{ font-size:12px; font-weight:600; }
+  .chart-svg .line-paid{ fill:none; stroke:var(--chart-paid); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+  .chart-svg .line-organic{ fill:none; stroke:var(--chart-organic); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+  .chart-svg .line-organic-off{ fill:none; stroke:var(--chart-organic); stroke-width:2; stroke-dasharray:5 4; opacity:0.55; stroke-linecap:round; }
+  .chart-svg .dot-paid{ fill:var(--chart-paid); }
+  .chart-svg .dot-organic{ fill:var(--chart-organic); }
+  .chart-svg .end-lbl.paid{ fill:var(--chart-paid); }
+  .chart-svg .end-lbl.organic{ fill:var(--chart-organic); }
+
+  .konstanz-row{ display:flex; gap:6px; margin: 14px 0 6px; flex-wrap:wrap; }
+  .konstanz-row .wk{
+    width: 30px; height: 30px; border-radius: 0; display:flex; align-items:center; justify-content:center;
+    font-family: var(--mono-f); font-size:10px; color: var(--ink-faint);
+  }
+  .konstanz-row .wk.on{ background: var(--good-tint); color: var(--good); font-weight:700; }
+  .konstanz-row .wk.off{ background: var(--surface-2); border: 1px dashed var(--line); }
+
+  /* ---------- Roadmap ---------- */
+  .roadmap{ margin: 22px 0; }
+  .phase{
+    display: grid; grid-template-columns: 90px 1fr; gap: 18px;
+    padding: 16px 0; border-bottom: 1px solid var(--line);
+  }
+  .phase:last-child{ border-bottom: none; }
+  .phase .when{ font-family: var(--mono-f); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-faint); padding-top: 3px; }
+  .phase h3{ font-size: 14.5px; }
+  .phase p{ font-size: 13px; color: var(--ink-muted); margin-top: 5px; }
+
+  /* ---------- Competitor list ---------- */
+  .comp-list{ display:flex; flex-wrap:wrap; gap: 8px; margin: 16px 0; }
+  .comp-list span{
+    font-family: var(--mono-f); font-size:12px; border:1px solid var(--line);
+    padding: 5px 10px; border-radius: 9999px; color: var(--ink-muted);
+  }
+
+  footer{
+    margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--line);
+    font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+    font-family: var(--mono-f);
+  }
+
+  @media (prefers-reduced-motion: no-preference){
+    .chapter{ animation: rise 0.4s ease both; }
+  }
+  @keyframes rise{ from{ opacity: 0; transform: translateY(6px); } to{ opacity:1; transform:none; } }
+
+  .subnav{ display:flex; flex-wrap:wrap; gap:18px; padding:16px 24px; max-width:920px; margin:0 auto; font-family: var(--mono-f); font-size:11px; letter-spacing:0.083em; text-transform:uppercase; }
+  .subnav a{ color:var(--ink-faint); text-decoration:none; }
+  .subnav a:hover{ color:var(--accent); }
+  .subnav a.current{ color:var(--ink); pointer-events:none; }
+</style>
+
+<nav class="subnav">
+  <a href="https://autoemotion.stefanogranata.de/">&larr; Startseite</a>
+  <a href="https://autoemotion.stefanogranata.de/businessplan/">Businessplan</a>
+  <a href="https://autoemotion.stefanogranata.de/recruiting-handbuch/" class="current">Recruiting-Handbuch</a>
+  <a href="https://autoemotion.stefanogranata.de/cupra/">Cupra</a>
+  <a href="https://autoemotion.stefanogranata.de/website-relaunch/">Website &amp; KI</a>
+</nav>
+<div class="sheet">
+
+  <div class="cover">
+    <div class="cover-eyebrow">
+      <span>Dokument-Nr. REC-2026-01 · Entwurf v1</span>
+      <span id="doc-date">Stand: —</span>
+    </div>
+    <h1>Recruiting-Handbuch<br>für dein Autohaus</h1>
+    <p class="sub">Wie Bewerber:innen über Social Media gefunden, angesprochen und in einer eigenen Bewerbungsstrecke aufgefangen werden — mit Kosten, Aufwand und einem klickbaren Prototyp.</p>
+    <div class="spec-row">
+      <div class="spec-cell"><span class="k">Zielgruppen</span><span class="v">Mechatroniker · Berater · Azubis</span></div>
+      <div class="spec-cell"><span class="k">Laufzeit Phase 1</span><span class="v">4–6 Wochen</span></div>
+      <div class="spec-cell"><span class="k">Ad-Budget/Monat</span><span class="v">800–2.000 €</span></div>
+      <div class="spec-cell"><span class="k">Betreuung/Monat</span><span class="v">≈ 10–15 Std.</span></div>
+    </div>
+    <a class="btn" href="#c5">Prototyp jetzt testen →</a>
+    <div class="index" id="index"></div>
+  </div>
+
+  <!-- 01 -->
+  <section class="chapter" id="c1">
+    <div class="chapter-head"><span class="chapter-num">01</span><h2>Ausgangslage</h2></div>
+    <p class="lede">Der Kfz-Arbeitsmarkt ist überfüllt mit Anzeigen und leer an Bewerbungen. Beides gleichzeitig — das ist die eigentliche Chance.</p>
+    <p>Allein für die Position „Kfz-Mechatroniker" liefen zuletzt über 50.000 Anzeigen auf Social Media parallel. Gleichzeitig ist die Zahl der Bewerbungen auf klassische Handwerks-Jobbörsen von durchschnittlich 8,7 pro Anzeige (2019) auf 2,3 (2024) eingebrochen. Klassische Stellenanzeigen erreichen die Zielgruppe schlicht nicht mehr dort, wo sie ihre Zeit verbringt.</p>
+    <p>Gleichzeitig zeigt sich eine Lücke: 30 % der Jugendlichen suchen aktiv auf TikTok nach einer Ausbildung — aber nur 4 % der Betriebe sind dort überhaupt sichtbar. Wer als Autohaus früh und richtig auftritt, konkurriert nicht mit 50.000 Anzeigen, sondern mit einer Handvoll.</p>
+    <div class="callout">
+      <span class="lbl">Kernaussage</span>
+      Es geht nicht darum, mehr Anzeigen zu schalten. Es geht darum, dort sichtbar zu sein, wo noch niemand ist, und den Weg von der Anzeige zur Bewerbung so kurz zu machen, dass er auch tatsächlich gegangen wird.
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="chapter" id="c2">
+    <div class="chapter-head"><span class="chapter-num">02</span><h2>Der Bewerbungs-Funnel</h2></div>
+    <p class="lede">Jeder Schritt zwischen Anzeige und Bewerbung kostet Kandidat:innen. Der Funnel ist deshalb bewusst kurz gehalten.</p>
+    <div class="funnel">
+      <div class="funnel-step"><span class="n">01</span><div class="t">Content / Ad</div><div class="d">Reel oder Anzeige auf Instagram, ggf. TikTok</div></div>
+      <div class="funnel-step"><span class="n">02</span><div class="t">Klick</div><div class="d">Direkt zur Job-Landingpage, nie zur Homepage</div></div>
+      <div class="funnel-step"><span class="n">03</span><div class="t">Landingpage</div><div class="d">Ein Job, ein Team-Foto, ein Formular</div></div>
+      <div class="funnel-step"><span class="n">04</span><div class="t">Formular</div><div class="d">≈ 45 Sekunden, WhatsApp-Option</div></div>
+      <div class="funnel-step"><span class="n">05</span><div class="t">Erstkontakt</div><div class="d">Rückmeldung innerhalb von 24 Std.</div></div>
+    </div>
+    <p>Der durchschnittliche Bewerbungsweg über eine klassische Karriereseite kommt auf eine Conversion von nur 1–3 %. Der Hebel liegt fast immer bei Schritt 03 und 04: eine Landingpage pro Stelle statt einer allgemeinen Karriereseite, ein Formular mit fünf statt zwanzig Feldern.</p>
+  </section>
+
+  <!-- 03 -->
+  <section class="chapter" id="c3">
+    <div class="chapter-head"><span class="chapter-num">03</span><h2>Plattformwahl: Instagram vs. TikTok</h2></div>
+    <p class="lede">Kurz beantwortet: Instagram ist die Pflichtplattform. TikTok ist der Hebel für die jüngste Zielgruppe — sinnvoll, aber kein Ersatz.</p>
+    <div class="platform-grid">
+      <div class="platform-card">
+        <h3>Instagram <span class="tag must">Pflicht</span></h3>
+        <div class="bar-row"><span class="lbl">Tägl. Nutzung*</span><div class="bar-track"><div class="bar-fill" style="width:78%"></div></div><span class="bar-val">78 %</span></div>
+        <div class="bar-row"><span class="lbl">Bei akt. Suche**</span><div class="bar-track"><div class="bar-fill" style="width:35%"></div></div><span class="bar-val">35 %</span></div>
+        <p>Erreicht Azubis <strong>und</strong> Eltern — die bei der Ausbildungswahl von Jugendlichen mitentscheiden, öfter als angenommen. Bester Einstiegspunkt für Fachkräfte 20–40 zusätzlich zu Azubis.</p>
+      </div>
+      <div class="platform-card">
+        <h3>TikTok <span class="tag opt">Verstärker</span></h3>
+        <div class="bar-row"><span class="lbl">Tägl. Nutzung*</span><div class="bar-track"><div class="bar-fill" style="width:52%"></div></div><span class="bar-val">52 %</span></div>
+        <div class="bar-row"><span class="lbl">Bei akt. Suche**</span><div class="bar-track"><div class="bar-fill" style="width:27%"></div></div><span class="bar-val">27 %</span></div>
+        <p>Schwächer in aktiver Suche, aber güstigster CPM (3–8 € ggü. 6–15 € bei Meta) bei einer Zielgruppe, die dort kaum ein Betrieb anspricht. Lohnt sich gezielt für Azubi-Kampagnen, nicht für Facharbeiter 30+.</p>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--ink-muted)">* Azubi-Recruiting-Trends 2024 (tägliche Nutzung unter Bewerber:innen) · ** Azubi-Recruiting-Trends 2025 (Kanal bei aktiver Ausbildungssuche; Rest verteilt sich u. a. auf Suchmaschinen mit 41 %)</p>
+    <div class="callout">
+      <span class="lbl">Empfehlung</span>
+      Start mit Instagram als Basiskanal für alle Zielrollen. TikTok gezielt zuschalten, sobald konkret Azubis für 2027 gesucht werden — dort ist die Marktlücke am größten. Facebook bleibt als dritter Kanal für Quereinsteiger 40+ regional relevant, LinkedIn nur für Serviceleitung.
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="chapter" id="c4">
+    <div class="chapter-head"><span class="chapter-num">04</span><h2>Content-Strategie</h2></div>
+    <p class="lede">Stellenanzeigen-Posts performen schwach. Was funktioniert, ist Einblick statt Werbung.</p>
+    <div class="ratio-bar"><span class="a">80 % Einblick &amp; Kultur</span><span class="b">20 % Stelle</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Format</th><th>Beispiel</th><th>Wirkt bei</th></tr></thead>
+        <tbody>
+          <tr><td>Mitarbeiter-Portrait</td><td>„Warum ich seit 8 Jahren hier bin"</td><td>Vertrauen, Identifikation</td></tr>
+          <tr><td>Werkstatt-Alltag</td><td>Zeitraffer eines Servicetages</td><td>Zeigt Ausstattung, Teamgeist</td></tr>
+          <tr><td>Azubi-Content</td><td>Azubi filmt selbst seinen Tag</td><td>Erreicht 16–19-Jährige direkt</td></tr>
+          <tr><td>Aufstiegsgeschichte</td><td>Vom Azubi zum Werkstattleiter</td><td>Zeigt Perspektive</td></tr>
+          <tr><td>Behind the Scenes</td><td>Neuwagen-Anlieferung, Teamevent</td><td>Menschlich, nahbar</td></tr>
+          <tr><td>Stellenpost</td><td>Klar, mit Teamfoto, direkter CTA</td><td>Nur als Ergänzung</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="chapter" id="c5">
+    <div class="chapter-head"><span class="chapter-num">05</span><h2>Landingpage &amp; Formular</h2></div>
+    <p class="lede">Das ist die Antwort auf „sollen wir dafür etwas programmieren": ja — und so könnte es sich anfühlen. Rechts ein Prototyp, der wirklich funktioniert.</p>
+    <div class="proto-wrap">
+      <div class="proto-note">
+        <h3>Warum eine eigene Seite pro Stelle</h3>
+        <ul>
+          <li>Ads verlinken nie auf die Homepage, immer direkt auf die passende Stelle — jeder Klick weniger kostet Bewerbungen.</li>
+          <li>Fünf Felder statt zwanzig. Lebenslauf ist optional, das Gespräch klärt den Rest.</li>
+          <li>Kontaktweg zur Wahl (Anruf, WhatsApp, E-Mail) statt Anschreiben-Pflicht.</li>
+          <li>Mobil zuerst gedacht — über 90 % der Klicks aus Social Ads kommen vom Smartphone.</li>
+          <li>DSGVO-Einwilligung als Pflichtfeld, Aufbewahrung standardmäßig 6 Monate nach Absage.</li>
+        </ul>
+      </div>
+      <div class="phone">
+        <div class="phone-screen" id="phone-screen">
+          <div class="phone-topbar">
+            <div class="dot"></div>
+            <div class="brand">Jetzt bewerben</div>
+          </div>
+          <div id="form-view">
+            <h4>Kfz-Mechatroniker (m/w/d)</h4>
+            <span class="time-chip">⏱ ≈ 45 Sekunden</span>
+            <form id="lead-form">
+              <div class="field">
+                <label for="f-name">Name</label>
+                <input type="text" id="f-name" required placeholder="Vor- und Nachname">
+              </div>
+              <div class="field">
+                <label for="f-phone">Telefon / WhatsApp</label>
+                <input type="tel" id="f-phone" required placeholder="0151 234 567 89">
+              </div>
+              <div class="field">
+                <label for="f-pos">Gewünschte Stelle</label>
+                <select id="f-pos">
+                  <option>Kfz-Mechatroniker (m/w/d)</option>
+                  <option>Serviceberater:in</option>
+                  <option>Verkaufsberater:in</option>
+                  <option>Ausbildung Kfz-Mechatronik</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Bevorzugter Kontakt</label>
+                <div class="chip-row">
+                  <label><input type="radio" name="contact" value="Anruf" checked> Anruf</label>
+                  <label><input type="radio" name="contact" value="WhatsApp"> WhatsApp</label>
+                  <label><input type="radio" name="contact" value="E-Mail"> E-Mail</label>
+                </div>
+              </div>
+              <label class="consent">
+                <input type="checkbox" id="f-consent" required>
+                Ich stimme zu, dass meine Angaben zur Bewerbung gespeichert werden. Löschung spätestens 6 Monate nach Absage, jederzeit widerrufbar.
+              </label>
+              <button type="submit" class="submit-btn" id="submit-btn">Bewerbung senden</button>
+            </form>
+          </div>
+          <div id="success-view" class="phone-success" hidden>
+            <div class="check">✓</div>
+            <h4>Danke!</h4>
+            <p>Wir melden uns innerhalb von 24 Stunden bei dir.</p>
+            <button class="reset-link" id="reset-btn">Neue Test-Bewerbung senden</button>
+          </div>
+          <button class="demo-toggle" id="demo-toggle">▸ Demo: eingegangene Testbewerbungen anzeigen</button>
+          <div class="demo-list" id="demo-list" hidden>
+            <div class="empty" id="demo-empty">Noch keine Testbewerbungen.</div>
+          </div>
+          <div class="demo-hint" id="demo-hint" hidden>Demo-Speicher dieses Dokuments. Im echten Projekt landen Bewerbungen in eurem CRM oder E-Mail-Postfach.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="chapter" id="c6">
+    <div class="chapter-head"><span class="chapter-num">06</span><h2>Technische Umsetzung &amp; Datenhaltung</h2></div>
+    <p class="lede">Drei Bausteine, die zusammenspielen müssen — keiner davon ist groß, aber sie müssen zusammenlaufen.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Baustein</th><th>Umsetzung</th><th>Wohin die Daten laufen</th></tr></thead>
+        <tbody>
+          <tr><td>Meta &amp; TikTok Lead-Ads</td><td>Formular bleibt in der App, geringste Abbruchrate</td><td>Automatischer Export in ein zentrales Tool statt manuellem CSV-Download</td></tr>
+          <tr><td>Eigene Landingpage</td><td>Unterseite je Stelle, verlinkt aus Bio &amp; organischen Posts</td><td>Formular sendet direkt in dasselbe zentrale Tool</td></tr>
+          <tr><td>Zentrales Bewerbermanagement</td><td>z. B. Personio Core (ab 2,88 €/Mitarbeiter/Monat) oder ein einfaches, DSGVO-konformes Sheet/Airtable bei kleinerem Budget</td><td>Ein Posteingang statt drei — niemand verliert eine Bewerbung im WhatsApp-Chat</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <span class="lbl">Datenschutz</span>
+      Bewerberdaten dürfen nach einer Absage höchstens 6 Monate aufbewahrt werden (AGG-Frist für Ansprüche). Für einen Talentpool darüber hinaus braucht es eine gesonderte, klar befristete Einwilligung. Zugriff nur für befugte Personen, Löschung vollständig — auch aus E-Mail-Postfächern.
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="chapter" id="c7">
+    <div class="chapter-head"><span class="chapter-num">07</span><h2>Budget: Was die Anzeigen kosten</h2></div>
+    <p class="lede">Realistische Spannen aus aktuellen Marktdaten, keine Wunschzahlen.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Kanal</th><th class="num">CPM</th><th class="num">CPC</th><th>Kosten/Bewerbung</th><th>Einstiegsbudget</th></tr></thead>
+        <tbody>
+          <tr><td>Meta (Facebook + Instagram)</td><td class="num">6–15 €</td><td class="num">–</td><td>Ø 104 € branchenübergreifend, Facebook allein ~65 €</td><td>300–800 €/Monat laufend</td></tr>
+          <tr><td>TikTok</td><td class="num">3–8 €</td><td class="num">0,30–1,50 €</td><td>ca. 5–25 € CPA — aber nach Bewerbung, nicht Klick tracken</td><td>ab 1.500 €/4 Wochen für belastbaren Test</td></tr>
+          <tr><td>Google Ads</td><td class="num">–</td><td class="num">0,80–8 €</td><td>eher Ergänzung, kein Hauptkanal fürs Fachkräfte-Recruiting</td><td>optional, z. B. Local Service Ads ab 15 €/Anruf</td></tr>
+          <tr><td>Multi-Channel (FB+IG+TikTok)</td><td class="num">–</td><td class="num">–</td><td>senkt Cost-per-Hire ggü. Einzelkanal um 40–60 %</td><td>800–2.000 €/Monat</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Für eine einzelne offene Stelle ist ein Einstieg mit 1.000–1.800 € Gesamtbudget über 4 Wochen ein realistischer Rahmen. Professionelle Creatives statt Stock-Material senken die Kosten pro Bewerbung im Schnitt um weitere 35 %.</p>
+  </section>
+
+  <!-- 08 -->
+  <section class="chapter" id="c8">
+    <div class="chapter-head"><span class="chapter-num">08</span><h2>Arbeitsaufwand</h2></div>
+    <p class="lede">Der größte Zeitfresser ist nicht die Technik — es ist der Drehtag vor Ort.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Phase</th><th class="num">Aufwand</th><th>Was passiert</th></tr></thead>
+        <tbody>
+          <tr><td>Setup (einmalig)</td><td class="num">15–25 Std.</td><td>Strategie, Landingpage-Aufbau, Ad-Konten, ein halber Drehtag im Autohaus mit 3–5 Mitarbeiter:innen</td></tr>
+          <tr><td>Content &amp; Posting</td><td class="num">6–8 Std./Monat</td><td>4–6 Reels/Posts planen, schneiden, veröffentlichen</td></tr>
+          <tr><td>Ads-Steuerung</td><td class="num">3–4 Std./Monat</td><td>Budget, Zielgruppen und Creatives laufend optimieren</td></tr>
+          <tr><td>Bewerber-Koordination</td><td class="num">2–3 Std./Monat</td><td>Eingänge sichten, an Ansprechpartner im Autohaus weiterleiten</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Summe laufend:</strong> ca. 10–15 Stunden pro Monat. Das eigentliche Gespräch mit Bewerber:innen bleibt beim Autohaus — Reichweite und Formular sind unsere Aufgabe, die Einstellungsentscheidung nicht.</p>
+  </section>
+
+  <!-- 09 -->
+  <section class="chapter" id="c9">
+    <div class="chapter-head"><span class="chapter-num">09</span><h2>Marktumfeld</h2></div>
+    <p class="lede">Das Modell ist kein Experiment — es gibt bereits ein halbes Dutzend spezialisierter Agenturen für genau dieses Segment.</p>
+    <div class="comp-list">
+      <span>autoquantum.de</span><span>kfz-initiative.de</span><span>jobtastic.io</span><span>smart11.de</span>
+      <span>recruit-now.de</span><span>klick-boost.com</span><span>adtomax.de</span><span>glow-careers.de</span>
+    </div>
+    <p>Gemeinsamer Nenner bei allen: lokale Kampagnen je Standort statt bundesweiter Streuung, Mitarbeiter-Testimonials statt Stockfotos, mobile Bewerbungsstrecke unter einer Minute. Genau das übernehmen wir als Grundgerüst — mit dem Unterschied, dass wir kleiner, persönlicher und direkt am Kunden arbeiten, statt ein Großkunden-Portfolio zu verwalten.</p>
+  </section>
+
+  <!-- 10 -->
+  <section class="chapter" id="c10">
+    <div class="chapter-head"><span class="chapter-num">10</span><h2>Phasenplan</h2></div>
+    <div class="roadmap">
+      <div class="phase">
+        <div class="when">Woche<br>1–2</div>
+        <div><h3>Kickoff &amp; Aufbau</h3><p>Zielrollen festlegen, Drehtag im Autohaus, Landingpage je Stelle aufsetzen, DSGVO-Text mit dem Kunden abstimmen.</p></div>
+      </div>
+      <div class="phase">
+        <div class="when">Woche<br>3–4</div>
+        <div><h3>Kampagnenstart</h3><p>Instagram als Basiskanal live, erste Ads geschaltet, Formular produktiv, TikTok optional als Test für Azubi-Zielgruppe.</p></div>
+      </div>
+      <div class="phase">
+        <div class="when">Ab<br>Woche 5</div>
+        <div><h3>Auswertung &amp; Nachjustierung</h3><p>Cost-per-Application prüfen, Creatives nachschärfen, Entscheidung: TikTok ausbauen oder auf Instagram + Facebook konzentrieren.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section class="chapter" id="c11">
+    <div class="chapter-head"><span class="chapter-num">11</span><h2>Auch ohne Ad-Budget</h2></div>
+    <p class="lede">Geht — kostet dann aber Zeit statt Geld, und ist langsamer. Wer beides knapp hat, kombiniert kleines Budget mit organischer Konstanz.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Hebel</th><th>Kostet</th><th>Wirkung</th></tr></thead>
+        <tbody>
+          <tr><td>Mitarbeiter teilen Content auf eigenem Profil</td><td>0 €, nur Bitte + gutes Material</td><td>Größte organische Reichweite überhaupt — echte Menschen im echten Netzwerk statt Anzeige</td></tr>
+          <tr><td>Mitarbeiter-werben-Mitarbeiter-Prämie</td><td>z. B. 500–1.000 € pro erfolgreicher Einstellung, nur bei Erfolg fällig</td><td>Oft günstiger als eine Ad-Kampagne, weil nur bezahlt wird, wenn es klappt</td></tr>
+          <tr><td>Lokale Facebook-/Insta-Gruppen ("Jobs in [Stadt]")</td><td>0 €</td><td>Regional stark, besonders bei 30+ und Quereinsteigern</td></tr>
+          <tr><td>Kooperation mit Berufsschule / Ausbildungsmesse</td><td>Zeit vor Ort, kein Media-Budget</td><td>Direkter Zugang zur Azubi-Zielgruppe, liefert nebenbei Content-Material</td></tr>
+          <tr><td>Google-Unternehmensprofil + Google for Jobs</td><td>0 €</td><td>Fängt Leute ab, die aktiv nach dem Autohaus oder dem Jobtitel suchen</td></tr>
+          <tr><td>Minimal-Boost bestperformender Posts</td><td>20–50 €/Post statt vollständiger Kampagne</td><td>Verlängert die Reichweite eines Posts, der organisch schon funktioniert hat</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <span class="lbl">Realistisch eingeordnet</span>
+      Ohne jedes Budget dauert der Aufbau sichtbarer Reichweite eher 2–3 Monate statt 2–3 Wochen, und er hängt stark daran, ob Mitarbeiter wirklich mitziehen. Mit einem kleinen Puffer von 100–150 € im Monat lässt sich das abfedern: kein Dauerbetrieb, aber genug, um die stärksten organischen Posts gezielt nachzuschieben, statt komplett auf Zufallsreichweite zu hoffen.
+    </div>
+    <p>Für den Einstieg beim Kunden heißt das: mit Kapitel 04 (Content-Strategie) und den Mitarbeiter-Portraits konsequent organisch starten, echtes Ad-Budget erst dazuschalten, sobald der erste Bewerbungs-Funnel (Kapitel 05) steht und man weiß, dass er konvertiert. Geld auf einen ungetesteten Trichter zu setzen, ist der teurere Fehler als spät zu starten.</p>
+  </section>
+
+  <!-- 12 -->
+  <section class="chapter" id="c12">
+    <div class="chapter-head"><span class="chapter-num">12</span><h2>Budget vs. Konstanz</h2></div>
+    <p class="lede">Modellrechnung auf Basis der Marktdaten aus Kapitel 07 und 11: wie sich Bewerbungseingänge über die ersten vier Monate entwickeln — mit Budget, ohne Budget, und was passiert, wenn die Konstanz aussetzt.</p>
+
+    <div class="stat-tiles">
+      <div class="stat-tile paid"><div class="k">Mit Budget · Monat 1</div><div class="v">≈ 6 <small>Bewerbungen</small></div></div>
+      <div class="stat-tile paid"><div class="k">Mit Budget · ab Monat 3</div><div class="v">≈ 13 <small>Bewerbungen/Monat</small></div></div>
+      <div class="stat-tile organic"><div class="k">Ohne Budget · Monat 1</div><div class="v">≈ 1 <small>Bewerbung</small></div></div>
+      <div class="stat-tile organic"><div class="k">Ohne Budget · Monat 4</div><div class="v">≈ 7 <small>Bewerbungen/Monat</small></div></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-legend">
+        <span><span class="dot" style="background:var(--chart-paid)"></span>Mit Budget (≈ 1.200 €/Monat)</span>
+        <span><span class="dot" style="background:var(--chart-organic)"></span>Ohne Budget, konstant gepostet</span>
+        <span><span class="dash"></span>Ohne Budget, unregelmäßig gepostet</span>
+      </div>
+      <svg class="chart-svg" viewBox="0 0 620 260" role="img" aria-label="Bewerbungen pro Monat: mit Budget steigt auf etwa 13, ohne Budget bei Konstanz auf etwa 7, ohne Konstanz bleibt es bei 1 bis 2">
+        <line class="grid" x1="40" y1="20" x2="600" y2="20"></line>
+        <line class="grid" x1="40" y1="90" x2="600" y2="90"></line>
+        <line class="grid" x1="40" y1="160" x2="600" y2="160"></line>
+        <line class="grid" x1="40" y1="230" x2="600" y2="230"></line>
+        <text class="axis-lbl" x="32" y="24" text-anchor="end">15</text>
+        <text class="axis-lbl" x="32" y="94" text-anchor="end">10</text>
+        <text class="axis-lbl" x="32" y="164" text-anchor="end">5</text>
+        <text class="axis-lbl" x="32" y="234" text-anchor="end">0</text>
+
+        <text class="axis-lbl" x="40" y="250" text-anchor="middle">Monat 1</text>
+        <text class="axis-lbl" x="227" y="250" text-anchor="middle">Monat 2</text>
+        <text class="axis-lbl" x="413" y="250" text-anchor="middle">Monat 3</text>
+        <text class="axis-lbl" x="600" y="250" text-anchor="middle">Monat 4</text>
+
+        <polyline class="line-organic-off" points="40,216 227,202 413,216 600,216"></polyline>
+
+        <polyline class="line-organic" points="40,216 227,188 413,160 600,132"></polyline>
+        <circle class="dot-organic" cx="40" cy="216" r="4"></circle>
+        <circle class="dot-organic" cx="227" cy="188" r="4"></circle>
+        <circle class="dot-organic" cx="413" cy="160" r="4"></circle>
+        <circle class="dot-organic" cx="600" cy="132" r="4"></circle>
+        <text class="end-lbl organic" x="565" y="120" text-anchor="end">7 /Monat</text>
+
+        <polyline class="line-paid" points="40,146 227,76 413,48 600,48"></polyline>
+        <circle class="dot-paid" cx="40" cy="146" r="4"></circle>
+        <circle class="dot-paid" cx="227" cy="76" r="4"></circle>
+        <circle class="dot-paid" cx="413" cy="48" r="4"></circle>
+        <circle class="dot-paid" cx="600" cy="48" r="4"></circle>
+        <text class="end-lbl paid" x="565" y="38" text-anchor="end">13 /Monat</text>
+      </svg>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Bewerbungen/Monat</th><th class="num">Monat 1</th><th class="num">Monat 2</th><th class="num">Monat 3</th><th class="num">Monat 4</th></tr></thead>
+          <tbody>
+            <tr><td>Mit Budget (≈1.200 €)</td><td class="num">6</td><td class="num">11</td><td class="num">13</td><td class="num">13</td></tr>
+            <tr><td>Ohne Budget, konstant</td><td class="num">1</td><td class="num">3</td><td class="num">5</td><td class="num">7</td></tr>
+            <tr><td>Ohne Budget, unregelmäßig</td><td class="num">1</td><td class="num">2</td><td class="num">1</td><td class="num">1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p><strong>Wie schnell:</strong> mit Budget liegen erste Bewerbungen nach 1–2 Wochen an, ein stabiler Fluss nach 4–6 Wochen (Kapitel 10). Ohne Budget dauert das 8–12 Wochen — vorausgesetzt, es wird durchgehend gepostet.</p>
+
+    <div class="callout">
+      <span class="lbl">Warum Konstanz die eigentliche Währung ist</span>
+      Organische Reichweite ist kein Konto, das sich einmal füllt — sie baut sich aus wiederholtem Kontakt auf und bricht ab, sobald das Posten aussetzt. Die dritte Linie oben zeigt genau das: zwei starke Wochen, dann drei Wochen Pause wegen Tagesgeschäft, und die Kurve fällt zurück auf den Ausgangspunkt statt weiterzuwachsen.
+    </div>
+    <p style="font-size:13.5px;color:var(--ink-muted)">Empfohlene Mindest-Taktung:</p>
+    <div class="konstanz-row" aria-hidden="true">
+      <div class="wk on">W1</div><div class="wk on">W2</div><div class="wk on">W3</div><div class="wk on">W4</div>
+      <div class="wk on">W5</div><div class="wk on">W6</div><div class="wk on">W7</div><div class="wk on">W8</div>
+      <div class="wk off">W9</div><div class="wk on">W10</div><div class="wk on">W11</div><div class="wk on">W12</div>
+    </div>
+    <p>Die ersten acht Wochen entscheiden, ob der Algorithmus und die Zielgruppe das Konto überhaupt als aktiv einstufen: mindestens 3 Reels/Posts pro Woche, ohne Lücke. Danach reichen 2 pro Woche, um die Kurve zu halten — eine ausgelassene Woche (W9 oben) verzögert, killt den Aufbau aber nicht, solange sie die Ausnahme bleibt.</p>
+  </section>
+
+  <!-- 13 -->
+  <section class="chapter" id="c13">
+    <div class="chapter-head"><span class="chapter-num">13</span><h2>Akut: Kfz-Mechatroniker E-Mobilität</h2></div>
+    <p class="lede">Die erste konkrete Stelle, an der dieser Plan sich beweisen muss &mdash; ab 14. September, parallel zum Website-Aufbau (Details: Businessplan, Kapitel 05).</p>
+    <p>Gesucht wird ein Kfz-Mechatroniker (m/w/d) mit Schwerpunkt E-Mobilität/Hochvolt-Technik. Die Zielgruppe ist doppelt: die Auszubildenden bzw. Fachkräfte selbst &mdash; und ihre Eltern, die bei der Berufswahl von Jugendlichen öfter mitentscheiden, als Betriebe meist einplanen.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Zielgruppe</th><th>Kanal</th><th>Format</th><th>Ton</th></tr></thead>
+        <tbody>
+          <tr><td>Auszubildende / junge Fachkräfte</td><td>TikTok + Instagram Reels</td><td>Werkstatt-Alltag, E-Antriebe, Team</td><td>Direkt, ungeschönt, kurz</td></tr>
+          <tr><td>Eltern</td><td>Instagram Stories</td><td>Sicherheit des Berufs, Zukunftsfähigkeit E-Mobilität, Übernahmechancen</td><td>Ruhiger, informativer</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Stories statt nur Reels ist hier bewusst gewählt: Reels holen die Aufmerksamkeit der Jugendlichen, Stories transportieren die ruhigeren, erklärenden Inhalte, die Eltern eher lesen als ein schnell geschnittenes Reel.</p>
+    <div class="roadmap">
+      <div class="phase">
+        <div class="when">Wo. 1<br>15.&ndash;21.09.</div>
+        <div><h3>Briefing &amp; Vorbereitung</h3><p>Rolle mit Ausbilder/Werkstattleiter schärfen, Story- und Reel-Formate für beide Zielgruppen planen.</p></div>
+      </div>
+      <div class="phase">
+        <div class="when">Wo. 2<br>22.&ndash;28.09.</div>
+        <div><h3>Dreh &amp; erste Inhalte live</h3><p>Werkstatt, E-Antriebe, Team im Bild &ndash; erste Reels auf TikTok/Instagram, erste Story-Serie für Eltern.</p></div>
+      </div>
+      <div class="phase">
+        <div class="when">Ab Wo. 3</div>
+        <div><h3>Wochentakt nach Kapitel 12</h3><p>2 Reels/Woche im Konstanz-Rhythmus, Bewerbungen über den Prototyp aus Kapitel 05 auffangen, bis die Stelle besetzt ist.</p></div>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="lbl">Warum Instagram + TikTok, nicht nur eins</span>
+      Genau die Kombination aus Kapitel 03: Instagram ist Pflicht, weil es auch die Eltern erreicht &mdash; TikTok ist hier besonders lohnend, weil 30 % der Jugendlichen dort nach einer Ausbildung suchen, aber nur 4 % der Betriebe sichtbar sind. Für eine so spezifische, dringende Stelle wird die Marktlücke direkt genutzt statt nur mitgedacht.
+    </div>
+  </section>
+
+  <footer>
+    <span>Recruiting-Handbuch · Entwurf zur Abstimmung mit dem Kunden</span>
+    <span>Quellen: Azubi-Recruiting-Trends 2024/2025, Bitkom-Studie 2025, aktuelle Markt- und Preisdaten Meta/TikTok/Google Ads</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  document.getElementById('doc-date').textContent = 'Stand: ' + new Date().toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'numeric'});
+
+  var chapters = [
+    ['01','Ausgangslage','c1'], ['02','Der Funnel','c2'], ['03','Instagram vs. TikTok','c3'],
+    ['04','Content-Strategie','c4'], ['05','Landingpage & Prototyp','c5'], ['06','Technik & Daten','c6'],
+    ['07','Budget','c7'], ['08','Arbeitsaufwand','c8'], ['09','Marktumfeld','c9'], ['10','Phasenplan','c10'],
+    ['11','Ohne Ad-Budget','c11'], ['12','Budget vs. Konstanz','c12'], ['13','Akut: E-Mobilität','c13']
+  ];
+  var idx = document.getElementById('index');
+  chapters.forEach(function(c){
+    var a = document.createElement('a');
+    a.href = '#' + c[2];
+    a.innerHTML = '<span class="num">' + c[0] + '</span><span>' + c[1] + '</span>';
+    idx.appendChild(a);
+  });
+
+  var db = null;
+  var demoDocs = [];
+  var unsub = null;
+
+  function renderDemoList(){
+    var wrap = document.getElementById('demo-list');
+    var empty = document.getElementById('demo-empty');
+    wrap.querySelectorAll('.row').forEach(function(r){ r.remove(); });
+    if(demoDocs.length === 0){
+      empty.hidden = false;
+      return;
+    }
+    empty.hidden = true;
+    demoDocs.forEach(function(d){
+      var row = document.createElement('div');
+      row.className = 'row';
+      var time = d.createdAt ? new Date(d.createdAt).toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'}) : '';
+      row.innerHTML = '<span>' + (d.name || '—') + '</span><span>' + (d.position || '') + ' · ' + (d.contact || '') + ' · ' + time + '</span>';
+      wrap.appendChild(row);
+    });
+  }
+
+  document.getElementById('demo-toggle').addEventListener('click', function(){
+    var list = document.getElementById('demo-list');
+    var hint = document.getElementById('demo-hint');
+    var btn = this;
+    var show = list.hidden;
+    list.hidden = !show;
+    hint.hidden = !show;
+    btn.textContent = (show ? '▾' : '▸') + ' Demo: eingegangene Testbewerbungen anzeigen';
+    if(show && db && !unsub){
+      unsub = db.collection('leads').orderBy('createdAt','desc').limit(20).onSnapshot(function(snap){
+        demoDocs = snap.docs.map(function(d){ return d.data(); });
+        renderDemoList();
+      }, function(){ /* ignore transient errors in this demo */ });
+    } else if(show){
+      renderDemoList();
+    }
+  });
+
+  document.getElementById('lead-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Wird gesendet …';
+
+    var entry = {
+      name: document.getElementById('f-name').value,
+      phone: document.getElementById('f-phone').value,
+      position: document.getElementById('f-pos').value,
+      contact: (document.querySelector('input[name=contact]:checked') || {}).value || '',
+      createdAt: new Date().toISOString()
+    };
+
+    function finish(){
+      document.getElementById('form-view').hidden = true;
+      document.getElementById('success-view').hidden = false;
+      btn.disabled = false;
+      btn.textContent = 'Bewerbung senden';
+    }
+
+    if(db){
+      db.collection('leads').add(entry).then(finish).catch(finish);
+    } else {
+      setTimeout(finish, 350);
+    }
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', function(){
+    document.getElementById('lead-form').reset();
+    document.getElementById('form-view').hidden = false;
+    document.getElementById('success-view').hidden = true;
+  });
+
+  if(window.claude && window.claude.use){
+    window.claude.use('db').then(function(ns){ db = ns; }).catch(function(){ db = null; });
+  }
+})();
+</script>

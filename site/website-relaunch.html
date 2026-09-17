@@ -1,0 +1,366 @@
+<meta charset="UTF-8">
+<title>Website &amp; KI-Sichtbarkeit — Auto Emotion</title>
+<style>
+header.wp-block-template-part{ display:none !important; }
+
+  :root{
+    --bg: #000000;
+    --surface: #181818;
+    --surface-2: #181818;
+    --ink: #ffffff;
+    --ink-muted: #8f8f8f;
+    --ink-faint: #666666;
+    --line: #303030;
+    --line-strong: #303030;
+    --accent: #da291c;
+    --accent-bright: #da291c;
+    --accent-dim: #9d2211;
+    --accent-tint: rgba(218,41,28,0.08);
+    --good: #2f9e6f;
+    --good-tint: rgba(47,158,111,0.12);
+    --focus: #ffffff;
+    --btn-ink: #ffffff;
+    --display: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --body-f: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono-f: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body-f);
+    font-size: 13px;
+    line-height: 1.78;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3{
+    font-family: var(--display);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    text-wrap: balance;
+    margin: 0;
+  }
+  .mono{ font-family: var(--mono-f), ui-monospace, monospace; }
+  a{ color: var(--ink); text-decoration: none; }
+  ::selection{ background: var(--accent); color: #fff; }
+
+  .sheet{ max-width: 920px; margin: 0 auto; padding: 0 24px 96px; }
+
+  /* ---------- Cover ---------- */
+  .cover{ position: relative; border-bottom: 1px solid var(--line-strong); padding: 40px 0 28px; margin-bottom: 8px; }
+  .cover::after{ content: ""; position: absolute; left: 0; bottom: -1px; height: 2px; width: 140px; background: var(--accent); }
+  .cover-eyebrow{
+    font-family: var(--mono-f); font-size: 11px; letter-spacing: 0.091em; text-transform: uppercase; color: var(--ink-faint);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 22px;
+  }
+  .cover-eyebrow span:first-child{ display:flex; align-items:center; gap:10px; }
+  .cover-eyebrow span:first-child::before{ content:""; width:22px; height:1px; background:var(--ink-faint); display:inline-block; }
+  .cover-eyebrow span:last-child{ color: var(--ink-faint); }
+  .btn{
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono-f); font-size: 12px; letter-spacing: 0.083em; text-transform: uppercase;
+    text-decoration: none; color: var(--ink); background: transparent; border: 0;
+    padding: 5px 0; border-radius: 0; margin-top: 22px; transition: color 0.2s ease;
+  }
+  .btn::after{ content:"→"; transition: transform 0.2s ease; }
+  .btn:hover{ color: var(--accent); }
+  .btn:hover::after{ transform: translateX(3px); }
+  .cover h1{ font-size: clamp(34px, 6vw, 52px); line-height: 0.98; color: var(--ink); }
+  .cover .sub{ margin-top: 14px; font-size: 18px; color: var(--ink-muted); max-width: 60ch; }
+  .spec-row{ margin-top: 26px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .spec-cell{ background: var(--surface); padding: 12px 14px; }
+  .spec-cell .k{ font-family: var(--mono-f); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); display: block; margin-bottom: 4px; }
+  .spec-cell .v{ font-weight: 600; font-size: 14.5px; color: var(--ink); }
+
+  /* ---------- Index ---------- */
+  .index{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; border-top: 1px solid var(--line); margin-top: 28px; }
+  .index a{ text-decoration: none; color: var(--ink); display: flex; gap: 12px; align-items: baseline; padding: 11px 4px; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+  .index a:nth-child(odd){ border-right: 1px solid var(--line); padding-right: 16px; }
+  .index a:nth-child(even){ padding-left: 16px; }
+  .index .num{ font-family: var(--mono-f); color: var(--ink-faint); font-weight: 500; font-size: 12px; }
+  .index a:hover{ color: var(--accent); }
+  .index a:hover .num{ color: var(--accent); }
+
+  /* ---------- Chapters ---------- */
+  .chapter{ padding-top: 64px; scroll-margin-top: 20px; }
+  .chapter-head{ display: flex; align-items: flex-end; gap: 16px; border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 22px; }
+  .chapter-num{ font-family: var(--mono-f); font-size: 13px; font-weight: 500; color: var(--ink); background: transparent; border: 1px solid var(--line); padding: 3px 9px; border-radius: 0; }
+  .chapter-head h2{ font-size: clamp(18px, 2.6vw, 24px); }
+  .chapter p{ max-width: 68ch; }
+  .chapter p + p{ margin-top: 12px; }
+  .lede{ font-size: 14.5px; color: var(--ink-muted); max-width: 62ch; letter-spacing: 0.015em; }
+
+  .callout{ background: var(--surface); border: 1px solid var(--line); border-left: 2px solid var(--accent); padding: 16px 18px; margin: 20px 0; border-radius: 0; }
+  .callout .lbl{ font-family: var(--mono-f); font-size: 11px; letter-spacing: 0.083em; text-transform: uppercase; color: var(--ink); display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+  .callout .lbl::before{ content:""; width:16px; height:1px; background: var(--accent); display:inline-block; }
+
+  /* ---------- Tables ---------- */
+  table{ width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 13.5px; }
+  .tbl-wrap{ overflow-x: auto; }
+  th, td{ text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th{ font-family: var(--mono-f); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); border-bottom: 1px solid var(--line); }
+  tr:nth-child(even) td{ background: var(--surface-2); }
+
+  /* ---------- Card grid ---------- */
+  .platform-grid{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 12px; margin: 20px 0; }
+  .platform-card{ background: var(--surface); border: 1px solid var(--line); padding: 18px; border-radius: 0; }
+  .platform-card h3{ font-size: 14.5px; display:flex; align-items:center; gap:8px; }
+  .platform-card .tag{ font-family: var(--mono-f); font-size: 10px; padding: 4px 10px; border: 1px solid var(--ink); border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink); }
+  .platform-card p{ font-size: 12.5px; color: var(--ink-muted); margin-top: 12px; }
+  .platform-card ul{ margin: 12px 0 0; padding-left: 16px; }
+  .platform-card li{ font-size: 12.5px; color: var(--ink-muted); margin-bottom: 6px; }
+
+  /* ---------- Pill list ---------- */
+  .comp-list{ display:flex; flex-wrap:wrap; gap: 8px; margin: 16px 0; }
+  .comp-list span{ font-family: var(--mono-f); font-size:12px; border:1px solid var(--line); padding: 5px 10px; border-radius: 9999px; color: var(--ink-muted); }
+
+  /* ---------- Roadmap ---------- */
+  .roadmap{ margin: 22px 0; }
+  .phase{ display: grid; grid-template-columns: 90px 1fr; gap: 18px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .phase:last-child{ border-bottom: none; }
+  .phase .when{ font-family: var(--mono-f); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-faint); padding-top: 3px; }
+  .phase h3{ font-size: 14.5px; }
+  .phase p{ font-size: 13px; color: var(--ink-muted); margin-top: 5px; }
+
+  @media (prefers-reduced-motion: no-preference){ .chapter{ animation: rise 0.4s ease both; } }
+  @keyframes rise{ from{ opacity: 0; transform: translateY(6px); } to{ opacity:1; transform:none; } }
+
+  .subnav{ display:flex; flex-wrap:wrap; gap:18px; padding:16px 24px; max-width:920px; margin:0 auto; font-family: var(--mono-f); font-size:11px; letter-spacing:0.083em; text-transform:uppercase; }
+  .subnav a{ color:var(--ink-faint); text-decoration:none; }
+  .subnav a:hover{ color:var(--accent); }
+  .subnav a.current{ color:var(--ink); pointer-events:none; }
+
+  footer{ margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+</style>
+
+<nav class="subnav">
+  <a href="https://autoemotion.stefanogranata.de/">&larr; Startseite</a>
+  <a href="https://autoemotion.stefanogranata.de/businessplan/">Businessplan</a>
+  <a href="https://autoemotion.stefanogranata.de/recruiting-handbuch/">Recruiting-Handbuch</a>
+  <a href="https://autoemotion.stefanogranata.de/cupra/">Cupra</a>
+  <a href="https://autoemotion.stefanogranata.de/website-relaunch/" class="current">Website &amp; KI</a>
+</nav>
+<div class="sheet">
+
+  <div class="cover">
+    <div class="cover-eyebrow">
+      <span>Dokument-Nr. WEB-2026-01 · Konzept</span>
+      <span id="doc-date">Stand: —</span>
+    </div>
+    <h1>Website &amp; KI-Sichtbarkeit<br>für Auto Emotion</h1>
+    <p class="sub">Wie die neue Seite bei Google gefunden und von ChatGPT, Perplexity &amp; Co. zitiert wird &mdash; und warum sie parallel zum Recruiting-Handbuch startet, nicht danach.</p>
+    <div class="spec-row">
+      <div class="spec-cell"><span class="k">Start</span><span class="v">Parallel zu Recruiting</span></div>
+      <div class="spec-cell"><span class="k">Kernthemen</span><span class="v">SEO · Local SEO · KI-Suche</span></div>
+      <div class="spec-cell"><span class="k">Technische Basis</span><span class="v">WordPress Block-Theme</span></div>
+      <div class="spec-cell"><span class="k">Sichtbar bei</span><span class="v">Google · Maps · KI-Assistenten</span></div>
+    </div>
+    <a class="btn" href="#c11">Zum Phasenplan</a>
+    <div class="index" id="index"></div>
+  </div>
+
+  <!-- 01 -->
+  <section class="chapter" id="c1">
+    <div class="chapter-head"><span class="chapter-num">01</span><h2>Ausgangslage</h2></div>
+    <p class="lede">Zwei Projekte, ein Ziel: Auto Emotion sichtbar machen &mdash; als Autohaus für Kunden und als Arbeitgeber für Bewerber:innen. Deshalb starten Website-Relaunch und Recruiting gemeinsam, nicht nacheinander.</p>
+    <p>Wer heute einen Cupra-Händler in Offenbach sucht, tut das nicht mehr nur über die klassische Google-Trefferliste. Immer öfter läuft die Suche über ein KI-System &mdash; Google AI Overview, ChatGPT, Perplexity &mdash;, das direkt eine Antwort gibt, statt zehn blaue Links. Eine Seite, die für diese Systeme nicht eindeutig lesbar ist, taucht in der Antwort schlicht nicht auf, selbst wenn sie bei Google noch passabel rankt.</p>
+    <p>Der erste konkrete Schritt ist deshalb kein Rundumschlag, sondern ein nüchterner Blick auf das, was tatsächlich da ist: eine technische und inhaltliche Bestandsaufnahme der aktuellen Seite, als fester Bestandteil von Phase 1 in Kapitel 11. Nichts davon wird hier vorweggenommen &mdash; die Bestandsaufnahme liefert die reale Ausgangslage, dieses Konzept liefert die Richtung.</p>
+    <div class="callout">
+      <span class="lbl">Warum jetzt, nicht später</span>
+      Die Recruiting-Kampagnen aus dem Handbuch schicken Bewerber:innen auf eine Landingpage &mdash; und potenzielle Kunden, die über Social Media auf Auto Emotion aufmerksam werden, landen am Ende auch auf der Website. Wenn die Seite dort langsam, generisch oder ohne glaubwürdigen Karriere-Bereich ist, verpufft ein Teil des Recruiting-Budgets. Umgekehrt liefert die Recruiting-Produktion &mdash; Drehtag, Team- und Werkstattfotos &mdash; genau den echten Content, den die Website für Google und für die KI-Suche braucht (mehr dazu in Kapitel 10).
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="chapter" id="c2">
+    <div class="chapter-head"><span class="chapter-num">02</span><h2>Die Doppelrolle der Seite</h2></div>
+    <p>Eine Autohaus-Website hat heute selten nur eine Aufgabe. Sie muss Fahrzeuge verkaufen &mdash; und gleichzeitig als Bühne für die Arbeitgebermarke funktionieren, weil genau dort die Bewerber-Kampagnen aus dem Recruiting-Handbuch ihre Landung finden.</p>
+    <div class="platform-grid">
+      <div class="platform-card">
+        <h3>Kundenauftritt <span class="tag">Verkauf</span></h3>
+        <ul>
+          <li>Marken-Hubs für Cupra, Seat, Nissan (Cupra-Prototyp existiert bereits)</li>
+          <li>Modellseiten mit klarer Suchintention pro Fahrzeug</li>
+          <li>Werkstatt, Ankauf, Finanzierung als eigene Leistungsseiten</li>
+          <li>Probefahrt-Anfrage als zentrale Handlung</li>
+        </ul>
+      </div>
+      <div class="platform-card">
+        <h3>Karriere-Auftritt <span class="tag">Recruiting</span></h3>
+        <ul>
+          <li>Team- und Werkstatt-Alltag mit echten Gesichtern</li>
+          <li>Direkter Anschluss an den Bewerbungs-Funnel aus dem Handbuch</li>
+          <li>Offene Rollen, ohne Floskeln beschrieben</li>
+          <li>Gleiche Bildsprache wie die Social-Kampagnen</li>
+        </ul>
+      </div>
+    </div>
+    <p>Beide Rollen teilen sich ein Design-System, eine technische Basis und einen Zeitplan. Das ist der eigentliche Grund für den parallelen Start.</p>
+  </section>
+
+  <!-- 03 -->
+  <section class="chapter" id="c3">
+    <div class="chapter-head"><span class="chapter-num">03</span><h2>Informationsarchitektur</h2></div>
+    <p>Jede Seite bekommt eine klare Aufgabe und eine klare Suchintention. Keine Seite existiert, ohne dass jemand aktiv danach sucht.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Seite</th><th>Aufgabe</th><th>Beantwortet</th></tr></thead>
+        <tbody>
+          <tr><td>Start</td><td>Überblick, Einstieg in Marken &amp; Karriere</td><td>Wer ist Auto Emotion, wo, für wen</td></tr>
+          <tr><td>Marken-Hubs</td><td>Cupra, Seat, Nissan als eigene Welten</td><td>Welche Marken, welche Modelle</td></tr>
+          <tr><td>Modellseiten</td><td>Ein Fahrzeug, ein Angebot</td><td>Reicht dieses Modell für mich</td></tr>
+          <tr><td>Werkstatt &amp; Service</td><td>Reale Leistungen vor Ort</td><td>Wer repariert/wartet mein Auto hier</td></tr>
+          <tr><td>Ankauf</td><td>Fahrzeug verkaufen</td><td>Was ist mein Auto wert</td></tr>
+          <tr><td>Karriere</td><td>Anschluss an den Recruiting-Funnel</td><td>Welche Stellen, wie bewerben</td></tr>
+          <tr><td>Über uns / Team</td><td>Reale Personen, reale Rollen</td><td>Wer arbeitet hier</td></tr>
+          <tr><td>Kontakt &amp; Anfahrt</td><td>Standort, Öffnungszeiten</td><td>Wo genau, wann geöffnet</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="chapter" id="c4">
+    <div class="chapter-head"><span class="chapter-num">04</span><h2>Design &amp; Markenerlebnis</h2></div>
+    <p>Der Cupra-Bereich, der bereits live ist, zeigt den Maßstab: reduziert, dunkel, präzise &mdash; kein austauschbares Händler-Template. Diese Haltung trägt die gesamte Seite: klare Typografie, viel Weißraum, echte Fotografie statt Stockbilder, keine Effekthascherei ohne Funktion.</p>
+    <p>Mobile wird eigenständig gestaltet, nicht als verkleinerte Desktop-Ansicht &mdash; die meisten Anfragen, ob Probefahrt oder Bewerbung, kommen vom Handy.</p>
+  </section>
+
+  <!-- 05 -->
+  <section class="chapter" id="c5">
+    <div class="chapter-head"><span class="chapter-num">05</span><h2>Google-SEO-Fundament</h2></div>
+    <p>Nichts Exotisches, dafür konsequent umgesetzt &mdash; auf jeder relevanten Seite:</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Bereich</th><th>Maßnahme</th></tr></thead>
+        <tbody>
+          <tr><td>Suchintention</td><td>Ein Hauptthema pro Seite, keine Vermischung von Modell- und Markeninhalten</td></tr>
+          <tr><td>Struktur</td><td>Eindeutige H1, logische H2/H3, kurze stabile URLs</td></tr>
+          <tr><td>Title &amp; Meta</td><td>Individuell je Marke, Modell und Leistung &mdash; kein generischer Textblock</td></tr>
+          <tr><td>Interne Verlinkung</td><td>Modellseiten ↔ Serviceseiten ↔ Karriere, statt Sackgassen</td></tr>
+          <tr><td>Technik</td><td>Sitemap, robots.txt, saubere Indexierung</td></tr>
+          <tr><td>Core Web Vitals</td><td>Schlankes Block-Theme ohne Page-Builder-Ballast &mdash; auf den drei bestehenden Seiten bereits umgesetzt</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="chapter" id="c6">
+    <div class="chapter-head"><span class="chapter-num">06</span><h2>Local SEO</h2></div>
+    <p>Auto Emotion ist ein Vertragspartner mit einem realen Standort in Offenbach &mdash; das muss auf jeder Ebene konsistent sein: gleicher Name, gleiche Adresse, gleiche Telefonnummer auf der Website, im Google Business Profile und in jedem Verzeichnis, in dem der Betrieb auftaucht.</p>
+    <p>Dazu reale, vor Ort erbrachte Leistungen klar benennen &mdash; Probefahrt, Werkstatttermin, Ankauf-Bewertung &mdash; und das Einzugsgebiet Rhein-Main sachlich beschreiben, statt mit unbelegten Reichweiten-Aussagen zu arbeiten.</p>
+  </section>
+
+  <!-- 07 -->
+  <section class="chapter" id="c7">
+    <div class="chapter-head"><span class="chapter-num">07</span><h2>KI-Suche: sichtbar werden, wo es keine Trefferliste mehr gibt</h2></div>
+    <p class="lede">Immer mehr Suchanfragen enden nicht mehr auf einer Ergebnisseite, sondern in einer direkten Antwort.</p>
+    <div class="comp-list">
+      <span>Google AI Overview</span><span>ChatGPT</span><span>Perplexity</span><span>Copilot</span>
+    </div>
+    <p>Damit Auto Emotion in solchen Antworten überhaupt vorkommen kann, müssen diese Systeme das Unternehmen eindeutig verstehen können &mdash; nicht überreden, sondern verstehen. Drei Ebenen sind dafür entscheidend:</p>
+    <div class="platform-grid">
+      <div class="platform-card">
+        <h3>Entitätsklarheit</h3>
+        <p>Wer ist Auto Emotion, welche Marken werden vertreten, wo genau ist der Standort, wer arbeitet dort &mdash; konsistent und eindeutig auf jeder Seite formuliert, nicht nur im Impressum.</p>
+      </div>
+      <div class="platform-card">
+        <h3>Antwortfähigkeit</h3>
+        <p>Echte Kundenfragen direkt beantworten &mdash; &bdquo;Was kostet ein Cupra Born VZ ungefähr&ldquo;, &bdquo;Nimmt Auto Emotion mein altes Auto in Zahlung&ldquo; &mdash; statt einer FAQ-Liste, die nur für Suchmaschinen existiert.</p>
+      </div>
+      <div class="platform-card">
+        <h3>Zitierfähigkeit</h3>
+        <p>Herstellerpartnerschaften korrekt benennen, keine erfundenen Bewertungen oder Auszeichnungen &mdash; nur was tatsächlich stimmt, dafür klar und auffindbar.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="chapter" id="c8">
+    <div class="chapter-head"><span class="chapter-num">08</span><h2>Strukturierte Daten &amp; technisches Fundament</h2></div>
+    <p>Schema.org-Daten dort, wo sie sichtbaren Inhalt korrekt beschreiben: AutomotiveDealer/LocalBusiness für den Betrieb, Organization für die Marke, BreadcrumbList für die Navigation. Keine Auszeichnung von Bewertungen, Preisen oder Eigenschaften, die es auf der Seite nicht tatsächlich gibt.</p>
+    <p>Technisch bleibt die Seite bei dem, was sich in den drei bestehenden Dokumenten bereits bewährt hat: semantisches HTML, ein schlankes Block-Theme, bewusster Umgang mit Bildern und Schriften, Fokuszustände und Kontraste, die auch mit Tastatur und auf kleinen Bildschirmen funktionieren.</p>
+  </section>
+
+  <!-- 09 -->
+  <section class="chapter" id="c9">
+    <div class="chapter-head"><span class="chapter-num">09</span><h2>Content, der beides bedient</h2></div>
+    <p>Modellseiten für Cupra, Seat und Nissan, Leistungsseiten für Werkstatt, Ankauf und Finanzierung &mdash; und ein Karriere-Bereich, der nicht als Pflichtseite wirkt, sondern als eigenständige, glaubwürdige Bühne für die Recruiting-Kampagnen.</p>
+    <p>Die Fotos und Videos aus der Recruiting-Produktion &mdash; Werkstatt-Alltag, Team bei der Arbeit &mdash; werden doppelt genutzt: als Recruiting-Content auf Social Media und als reale Bildsprache auf der Website. Das spart Produktion und macht die Seite gleichzeitig glaubwürdiger, weil echte Personen zu sehen sind statt Stockmaterial.</p>
+  </section>
+
+  <!-- 10 -->
+  <section class="chapter" id="c10">
+    <div class="chapter-head"><span class="chapter-num">10</span><h2>Zusammenspiel mit Recruiting</h2></div>
+    <p>Der parallele Start ist kein Zufall zweier gleichzeitiger Projekte, sondern die Grundlage dafür, dass beide funktionieren. Die Recruiting-Kampagnen aus dem Handbuch brauchen eine Landingpage, die hält, was die Instagram- oder TikTok-Anzeige verspricht &mdash; schnell, glaubwürdig, mit einem echten Karriere-Bereich statt einer Weiterleitung ins Leere.</p>
+    <p>Umgekehrt liefert die Recruiting-Produktion &mdash; der Drehtag im Autohaus, die Team- und Werkstattaufnahmen &mdash; genau die realen Fakten, die eine Website für Google und für die KI-Suche braucht: echte Namen, echte Rollen, echte Umgebung. Entitätsklarheit aus Kapitel 07 entsteht nicht am Schreibtisch, sondern vor Ort.</p>
+    <div class="callout">
+      <span class="lbl">Eine Produktion, zwei Ergebnisse</span>
+      Ein gemeinsamer Zeitplan bedeutet: ein Drehtag statt zwei, ein Design-System statt zwei, eine Abstimmung mit dem Kunden statt zwei getrennte Prozesse, die am Ende nicht zusammenpassen.
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section class="chapter" id="c11">
+    <div class="chapter-head"><span class="chapter-num">11</span><h2>Phasenplan</h2></div>
+    <div class="roadmap">
+      <div class="phase">
+        <div class="when">Phase 1</div>
+        <div><h3>Fundament</h3><p>Bestandsaufnahme der aktuellen Seite, Informationsarchitektur final abstimmen, Design-System auf Basis der bestehenden Seiten, technisches Setup.</p></div>
+      </div>
+      <div class="phase">
+        <div class="when">Phase 2</div>
+        <div><h3>Aufbau &amp; Launch</h3><p>Kernseiten und Marken-Hubs umsetzen, Local-SEO-Grundlage und strukturierte Daten einrichten, Karriere-Bereich an den Recruiting-Funnel anschließen, Launch.</p></div>
+      </div>
+      <div class="phase">
+        <div class="when">Phase 3</div>
+        <div><h3>Sichtbarkeit ausbauen</h3><p>Suchsichtbarkeit und Präsenz in KI-Antworten prüfen, Content erweitern, im gleichen Konstanz-Rhythmus wie das Recruiting aus Kapitel 12 des Handbuchs.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 -->
+  <section class="chapter" id="c12">
+    <div class="chapter-head"><span class="chapter-num">12</span><h2>Erfolg messen</h2></div>
+    <p>Ohne erfundene Zahlen vorab &mdash; die reale Ausgangslage liefert erst die Bestandsaufnahme aus Phase 1. Woran der Fortschritt danach erkennbar ist:</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Kategorie</th><th>Woran man es erkennt</th></tr></thead>
+        <tbody>
+          <tr><td>Sichtbarkeit bei Google</td><td>Rankings für Marken- und Local-Suchen wie &bdquo;Cupra Händler Offenbach&ldquo;</td></tr>
+          <tr><td>Präsenz in KI-Antworten</td><td>Auto Emotion wird bei relevanten Fragen genannt oder zitiert</td></tr>
+          <tr><td>Qualität der Anfragen</td><td>Echte Probefahrt- und Werkstatttermine über die Seite, nicht nur Klicks</td></tr>
+          <tr><td>Technische Gesundheit</td><td>Ladezeit und Bedienbarkeit auf dem Handy bleiben stabil</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <span>Website-Konzept · Entwurf zur Abstimmung mit dem Kunden</span>
+    <span>Läuft parallel zum Recruiting-Handbuch &mdash; gleiche Zeitschiene, gemeinsame Produktion</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  document.getElementById('doc-date').textContent = 'Stand: ' + new Date().toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'numeric'});
+
+  var chapters = [
+    ['01','Ausgangslage','c1'], ['02','Doppelrolle','c2'], ['03','Informationsarchitektur','c3'],
+    ['04','Design & Marke','c4'], ['05','Google-SEO','c5'], ['06','Local SEO','c6'],
+    ['07','KI-Suche (GEO)','c7'], ['08','Strukturierte Daten','c8'], ['09','Content','c9'],
+    ['10','Zusammenspiel mit Recruiting','c10'], ['11','Phasenplan','c11'], ['12','Erfolg messen','c12']
+  ];
+  var idx = document.getElementById('index');
+  chapters.forEach(function(c){
+    var a = document.createElement('a');
+    a.href = '#' + c[2];
+    a.innerHTML = '<span class="num">' + c[0] + '</span><span>' + c[1] + '</span>';
+    idx.appendChild(a);
+  });
+})();
+</script>
