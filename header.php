@@ -18,6 +18,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php wp_body_open(); ?>
 
 <header id="masthead" class="site-header">
+	<button type="button" class="nav-toggle" aria-controls="site-navigation" aria-expanded="false">
+		<span class="nav-toggle-icon"></span>
+		<?php esc_html_e( 'Menu', 'auto-emotion' ); ?>
+	</button>
+
 	<div class="site-branding">
 		<?php if ( is_front_page() && is_home() ) : ?>
 			<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
@@ -26,7 +31,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php endif; ?>
 	</div>
 
-	<nav id="site-navigation" class="main-navigation">
+	<div class="header-actions">
+		<button type="button" class="search-toggle" aria-controls="header-search" aria-expanded="false" aria-label="<?php esc_attr_e( 'Suche öffnen', 'auto-emotion' ); ?>">
+			<svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.25" stroke="currentColor" stroke-width="1.25"/><line x1="12.6" y1="12.6" x2="17" y2="17" stroke="currentColor" stroke-width="1.25"/></svg>
+		</button>
+	</div>
+
+	<nav id="site-navigation" class="main-navigation" data-state="closed">
 		<?php
 		wp_nav_menu(
 			array(
@@ -36,6 +47,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 		);
 		?>
 	</nav>
+
+	<form role="search" method="get" class="header-search" id="header-search" data-state="closed" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+		<label class="screen-reader-text" for="header-search-input"><?php esc_html_e( 'Suche nach:', 'auto-emotion' ); ?></label>
+		<input type="search" id="header-search-input" name="s" value="<?php echo esc_attr( get_search_query() ); ?>" placeholder="<?php esc_attr_e( 'Suchen…', 'auto-emotion' ); ?>">
+	</form>
 </header>
 
 <main id="primary" class="site-main">

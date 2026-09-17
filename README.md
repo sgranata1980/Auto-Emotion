@@ -11,16 +11,34 @@ Custom WordPress-Theme.
 ├── header.php / footer.php
 ├── index.php               # Fallback-Template
 ├── page.php / single.php / archive.php / search.php / 404.php
-├── template-parts/         # Wiederverwendbare Teil-Templates
+├── front-page.php          # Startseite: Hero + Section-Heading + Story-Grid
+├── template-parts/         # Wiederverwendbare Teil-Templates (content, hero)
 ├── inc/
 │   ├── theme-setup.php     # Theme-Support, Menüs, Sidebars
-│   ├── enqueue.php         # Styles & Scripts
+│   ├── enqueue.php         # Styles, Fonts & Scripts
 │   └── customizer.php      # Theme Customizer
 └── assets/
-    ├── css/main.css
+    ├── css/tokens.css      # Design-Tokens (Farben, Typografie, Spacing)
+    ├── css/main.css        # Basisstile & Komponenten
     ├── js/main.js
     └── images/             # Hero-Bilder etc.
 ```
+
+## Design-System
+
+Das visuelle System orientiert sich am Lamborghini.com-Style-Reference: dunkle,
+kinoreife Bühnen (`#202020`/`#000`) im Wechsel mit hellen Editorial-Flächen
+(`#fff`/`#f5f5f5`), UPPERCASE-Typografie mit einheitlichem Letter-Spacing
+(0.023em) und genau einem Farbakzent (`--color-giallo-vivo: #ffc000`) für die
+primäre Handlung pro Screen. Keine abgerundeten Ecken, keine Schatten –
+Trennung entsteht ausschließlich durch Flächenkontrast.
+
+- Tokens: `assets/css/tokens.css` (Farben, Typo-Skala, Spacing, Radii, Surfaces)
+- Komponenten in `assets/css/main.css`: `.hero-stage`, `.btn-giallo`,
+  `.btn-ghost`, `.btn-outline`, `.section-heading`, `.story-grid`, `.date-card`
+- Schriftart: LamboType ist proprietär und nicht verfügbar – als offener
+  Ersatz wird **Barlow Condensed** (Google Fonts) geladen, siehe
+  `inc/enqueue.php`.
 
 ## Lokale Entwicklung
 
