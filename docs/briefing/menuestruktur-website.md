@@ -50,9 +50,10 @@ Begründung: Offenbach liegt in Hessen, nicht in Süddeutschland. Für Google Lo
 ### 6. Ratgeber / Aktuelles
 Blog für SEO-relevante Themen (z. B. „Reifenwechsel wann", „E-Auto Förderung", saisonale Themen wie Reifeneinlagerung im Herbst).
 
-### 7. Kontakt
+### 7. FAQ
+
+### 8. Kontakt
 
 ## Quer über die Seite
 - Merkliste / Vergleichsliste bei Fahrzeugen
 - Kundenbewertungen sichtbar auf der Startseite (Local SEO)
-- FAQ
