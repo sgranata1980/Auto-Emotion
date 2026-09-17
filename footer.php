@@ -16,12 +16,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	<?php endif; ?>
 
+	<div class="footer-contact">
+		<p>
+			<?php echo esc_html( auto_emotion_contact( 'street' ) . ', ' . auto_emotion_contact( 'postal_code' ) . ' ' . auto_emotion_contact( 'city' ) ); ?><br>
+			<a href="tel:<?php echo esc_attr( auto_emotion_contact( 'phone_href' ) ); ?>"><?php echo esc_html( auto_emotion_contact( 'phone' ) ); ?></a>
+			·
+			<a href="mailto:<?php echo esc_attr( auto_emotion_contact( 'email' ) ); ?>"><?php echo esc_html( auto_emotion_contact( 'email' ) ); ?></a>
+		</p>
+	</div>
+
 	<nav id="footer-navigation" class="footer-navigation">
 		<?php
 		wp_nav_menu(
 			array(
 				'theme_location' => 'footer',
 				'menu_id'        => 'footer-menu',
+				'fallback_cb'    => false,
 			)
 		);
 		?>

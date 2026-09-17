@@ -18,10 +18,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 $auto_emotion_hero = wp_parse_args(
 	$args ?? array(),
 	array(
-		'eyebrow'  => __( 'Auto Emotion', 'auto-emotion' ),
-		'headline' => get_bloginfo( 'description' ) ? get_bloginfo( 'description' ) : __( 'Fahren ist Emotion', 'auto-emotion' ),
-		'cta_text' => __( 'Entdecken', 'auto-emotion' ),
-		'cta_url'  => home_url( '/' ),
+		'eyebrow'  => __( 'Cupra · Seat · Nissan – Offenbach', 'auto-emotion' ),
+		'headline' => __( 'Mehr als Autos.', 'auto-emotion' ),
+		'cta_text' => __( 'Marken entdecken', 'auto-emotion' ),
+		'cta_url'  => '#marken',
 		'image'    => AUTO_EMOTION_URI . '/assets/images/hero-cupra-01.png',
 	)
 );

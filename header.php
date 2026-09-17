@@ -17,6 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
+<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Zum Inhalt springen', 'auto-emotion' ); ?></a>
+
 <header id="masthead" class="site-header">
 	<button type="button" class="nav-toggle" aria-controls="site-navigation" aria-expanded="false">
 		<span class="nav-toggle-icon"></span>
