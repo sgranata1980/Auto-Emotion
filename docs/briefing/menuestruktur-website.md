@@ -1,6 +1,6 @@
 # Menüstruktur Website – Auto Emotion
 
-Stand: 2026-09-17. Basierend auf Wettbewerbsanalyse (u. a. Auto Thomsen – gleiche Marken Nissan/Seat/Cupra, Autohaus Farnbacher, Autohaus Stieber) und aktuellen SEO-Best-Practices für Autohaus-Websites.
+Stand: 2026-09-17. Basierend auf Wettbewerbsanalyse (u. a. Auto Thomsen – gleiche Marken Nissan/Seat/Cupra, Autohaus Farnbacher, Autohaus Stieber), dem Muster großer Marken- und Autohaus-Websites (Tesla, Emil Frey, AUTOHAUS-Gruppe mit Akademie/Events/Podcast) und aktuellen SEO-Best-Practices für Autohaus-Websites.
 
 ## Regionale Positionierung
 
@@ -34,25 +34,39 @@ Begründung: Offenbach liegt in Hessen, nicht in Süddeutschland. Für Google Lo
 - Fahrzeugaufbereitung
 - Servicetermin online buchen
 
-### 4. Über uns
+### 4. Online-Shop
+- Zubehör & Tuning
+- Ersatzteile
+- Reifen & Felgen
+- Merchandise (Fanartikel Auto Emotion / Marken)
+
+### 5. Magazin
+- Blog (SEO-relevante Ratgeberthemen, z. B. „Reifenwechsel wann", „E-Auto Förderung", saisonale Themen wie Reifeneinlagerung im Herbst)
+- Vlog (Video-Content, z. B. Fahrzeugvorstellungen, Werkstatt-Einblicke)
+- Podcast (Interviews mit Team, Marken- und Branchenthemen)
+
+### 6. Events & Schulungen
+- Markenevents & Probefahrt-Tage
+- Tag der offenen Tür
+- Werkstatt-Schulungen (Hochvolt, Diagnose – auch als Recruiting-Argument nutzbar)
+- Kundenveranstaltungen
+
+### 7. Über uns
 - Firmengeschichte
 - Team / Ansprechpartner
 - Unsere Kunden (Privat- & Gewerbekunden, Referenzen/Kundenstimmen)
 - Auszeichnungen (z. B. CUPRA Master)
 - Standorte
 
-### 5. Karriere
+### 8. Karriere
 - Offene Stellen
 - Initiativbewerbung
 - Ausbildung
 - Warum Auto Emotion? (Recruiting-Landingpage, siehe `fragenkatalog-kfz-mechatroniker.md`)
 
-### 6. Ratgeber / Aktuelles
-Blog für SEO-relevante Themen (z. B. „Reifenwechsel wann", „E-Auto Förderung", saisonale Themen wie Reifeneinlagerung im Herbst).
+### 9. FAQ
 
-### 7. FAQ
-
-### 8. Kontakt
+### 10. Kontakt
 
 ## Quer über die Seite
 - Merkliste / Vergleichsliste bei Fahrzeugen
