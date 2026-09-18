@@ -337,16 +337,13 @@ body.has-transparent-header .site-header.is-scrolled {
 }
 
 .btn-giallo {
-	background: var(--color-rame-vivo);
-	/* Schwarz statt Weiß auf Kupfer: Weiß läge bei ~3,9:1 Kontrast
-	   (WCAG AA verlangt 4,5:1 für Fließtextgröße) – Accessibility
-	   geht hier vor der wörtlichen Referenzfarbe. */
-	color: var(--color-pure-black);
+	background: var(--color-rosso-vivo);
+	color: var(--surface-canvas-white);
 	border: none;
 }
 
 .btn-giallo:hover {
-	background: var(--color-rame-ombra);
+	background: var(--color-rosso-ombra);
 	color: var(--surface-canvas-white);
 }
 
