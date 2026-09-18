@@ -25,7 +25,7 @@ $auto_emotion_hero = wp_parse_args(
 		'cta_text' => __( 'Marken entdecken', 'auto-emotion' ),
 		'cta_url'  => '#marken',
 		'image'    => AUTO_EMOTION_URI . '/assets/images/hero-glow-01.jpg',
-		'video'    => '',
+		'video'    => AUTO_EMOTION_URI . '/assets/videos/hero-glow.mp4',
 	)
 );
 ?>
