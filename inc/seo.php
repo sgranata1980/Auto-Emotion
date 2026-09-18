@@ -12,6 +12,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function auto_emotion_get_meta_description() {
+	// Zuerst prüfen: front-page.php rendert die Startseite unabhängig
+	// vom Inhalt der als "Startseite" hinterlegten WP-Seite – die
+	// Excerpt-Logik unten darf hier also nicht greifen, sonst können
+	// fremde (ggf. vertrauliche) Seiteninhalte in die Meta-Description
+	// der öffentlichen Startseite durchsickern.
+	if ( is_front_page() ) {
+		return __( 'Auto Emotion – Ihr Vertragshändler für Seat, Cupra und Nissan in Offenbach, für Frankfurt, Offenbach und Umgebung.', 'auto-emotion' );
+	}
+
 	if ( is_singular() ) {
 		$excerpt = get_the_excerpt();
 		if ( $excerpt ) {
@@ -24,10 +33,6 @@ function auto_emotion_get_meta_description() {
 		if ( $description ) {
 			return wp_strip_all_tags( $description );
 		}
-	}
-
-	if ( is_front_page() ) {
-		return __( 'Auto Emotion – Ihr Vertragshändler für Seat, Cupra und Nissan in Offenbach, für Frankfurt, Offenbach und Umgebung.', 'auto-emotion' );
 	}
 
 	$tagline = get_bloginfo( 'description' );
@@ -43,7 +48,7 @@ function auto_emotion_get_meta_description() {
 }
 
 function auto_emotion_get_og_image() {
-	if ( is_singular() && has_post_thumbnail() ) {
+	if ( ! is_front_page() && is_singular() && has_post_thumbnail() ) {
 		$image = wp_get_attachment_image_src( get_post_thumbnail_id(), 'large' );
 		if ( $image ) {
 			return $image[0];
