@@ -687,8 +687,12 @@ body.has-transparent-header .site-main {
 /* ---------------------------------------------------------------- */
 
 .career-banner {
-	background: var(--color-rame-vivo);
-	color: var(--color-pure-black);
+	/* Warmer Kupfer-Glow aus einer Ecke, der in Carbony-/Pure-Black
+	   ausläuft – Verlauf im Stil der Kundenreferenz, Farbstufen aus
+	   den etablierten --color-rame-*-Tokens statt 1:1 aus dem (stark
+	   JPEG-komprimierten, recht ausgewaschenen) Referenzbild gepixelt. */
+	background: radial-gradient(ellipse 1100px 760px at 100% 0%, var(--color-rame-vivo) 0%, var(--color-rame-ombra) 24%, var(--color-carbony-black) 58%, var(--color-pure-black) 100%);
+	color: var(--surface-canvas-white);
 }
 
 .career-banner__image {
@@ -719,7 +723,8 @@ body.has-transparent-header .site-main {
 }
 
 .career-banner .btn-outline {
-	border-color: var(--color-pure-black);
+	border-color: var(--surface-canvas-white);
+	color: var(--surface-canvas-white);
 }
 
 /* ---------------------------------------------------------------- */
