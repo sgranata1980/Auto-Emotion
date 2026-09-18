@@ -40,6 +40,18 @@ $auto_emotion_probefahrt_status = isset( $_GET['probefahrt'] ) ? sanitize_text_f
 				<p>
 					<?php esc_html_e( 'Fragen Sie uns außerdem nach Finanzierungs- und Leasingmöglichkeiten für dieses Fahrzeug.', 'auto-emotion' ); ?>
 				</p>
+				<p class="funding-notice__disclaimer">
+					<?php
+					printf(
+						wp_kses(
+							/* translators: %s: link to the official Förderzentrale Deutschland portal */
+							__( 'Die Förderung aus dem E-Auto-Förderprogramm der Bundesregierung unterliegt den Bedingungen des Bundesministeriums für Umwelt, Klimaschutz, Naturschutz und nukleare Sicherheit und steht unter dem Vorbehalt der staatlichen Genehmigung und Verfügbarkeit. Förderanträge können über das Antragsportal der %s eingereicht werden. Auto Emotion ist nicht für die Überprüfung der Teilnahmeberechtigung verantwortlich und übernimmt keine Haftung für die Durchführung des Programms.', 'auto-emotion' ),
+							array( 'a' => array( 'href' => array(), 'target' => array(), 'rel' => array() ) )
+						),
+						'<a href="https://foerderzentrale.gov.de/" target="_blank" rel="noopener">' . esc_html__( 'Förderzentrale Deutschland', 'auto-emotion' ) . '</a>'
+					);
+					?>
+				</p>
 			</div>
 		<?php endif; ?>
 
