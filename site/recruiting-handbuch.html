@@ -371,6 +371,16 @@ header.wp-block-template-part{ display:none !important; }
   .reset-link{ background:none; border:none; color: var(--ink-faint); font-size: 12.5px; margin-top:16px; cursor:pointer; font-family: inherit; text-decoration: underline; }
   .reset-link:hover{ color: var(--accent); }
 
+  /* ---------- Job-view (Stellenanzeige im Prototyp) ---------- */
+  .job-facts{ display:grid; grid-template-columns: 1fr 1fr; gap:1px; background: var(--line); border: 1px solid var(--line); margin-top:12px; }
+  .job-facts div{ background: var(--bg); padding:8px 10px; }
+  .job-facts .jf-k{ display:block; font-family: var(--mono-f); font-size:9.5px; letter-spacing:0.07em; text-transform:uppercase; color: var(--ink-faint); }
+  .job-facts .jf-v{ display:block; font-size:12.5px; font-weight:600; margin-top:2px; }
+  .job-bullets{ margin:14px 0 0; padding-left:16px; }
+  .job-bullets li{ font-size:12px; color: var(--ink-muted); margin-bottom:6px; line-height:1.5; }
+  .job-req{ font-size:11.5px; color: var(--ink-faint); margin-top:12px; line-height:1.6; }
+  #job-view .submit-btn{ margin-top:16px; }
+
   .demo-toggle{
     margin-top: 22px; font-size: 12.5px; background: none; border: 1px dashed var(--line);
     color: var(--ink-faint); padding: 8px 12px; border-radius: 0; cursor: pointer; font-family: var(--mono-f);
@@ -567,10 +577,28 @@ header.wp-block-template-part{ display:none !important; }
         <div class="phone-screen" id="phone-screen">
           <div class="phone-topbar">
             <div class="dot"></div>
-            <div class="brand">Jetzt bewerben</div>
+            <div class="brand">Karriere bei Auto Emotion</div>
           </div>
-          <div id="form-view">
+          <div id="job-view">
             <h4>Kfz-Mechatroniker (m/w/d)</h4>
+            <div class="job-facts">
+              <div><span class="jf-k">Gehalt</span><span class="jf-v">2.900&ndash;3.900 &euro; brutto</span></div>
+              <div><span class="jf-k">Urlaub</span><span class="jf-v">30 Tage</span></div>
+              <div><span class="jf-k">Arbeitszeit</span><span class="jf-v">Mo&ndash;Fr, 07:30&ndash;16:30</span></div>
+              <div><span class="jf-k">Start</span><span class="jf-v">Ab sofort</span></div>
+            </div>
+            <ul class="job-bullets">
+              <li>Leistungsprämien, Überstunden werden abgefeiert statt ausgezahlt</li>
+              <li>Nach der Probezeit: 50 &euro; Tankgutschein/Monat oder Kranken-Zusatzversicherung</li>
+              <li>Moderne Werkstatt, 12 Hebebühnen &mdash; Werkzeug wird gestellt</li>
+              <li>Serviceberater übernimmt den Kundenkontakt, du konzentrierst dich auf die Technik</li>
+              <li>Familiäres Team, viele Kollegen seit 8&ndash;14 Jahren im Betrieb</li>
+            </ul>
+            <p class="job-req"><strong>Gesucht:</strong> abgeschlossene Ausbildung, 1&ndash;3 Jahre Erfahrung ideal, Berufsanfänger willkommen, Führerschein Klasse B. Hochvolt-Zertifizierung ist ein Plus, keine Bedingung. Quereinsteiger passen für diese Stelle nicht.</p>
+            <button class="submit-btn" id="apply-btn">Jetzt bewerben</button>
+          </div>
+          <div id="form-view" hidden>
+            <h4>Bewerbung</h4>
             <span class="time-chip">⏱ ≈ 45 Sekunden</span>
             <form id="lead-form">
               <div class="field">
@@ -952,6 +980,11 @@ header.wp-block-template-part{ display:none !important; }
     }
   });
 
+  document.getElementById('apply-btn').addEventListener('click', function(){
+    document.getElementById('job-view').hidden = true;
+    document.getElementById('form-view').hidden = false;
+  });
+
   document.getElementById('lead-form').addEventListener('submit', function(e){
     e.preventDefault();
     var btn = document.getElementById('submit-btn');
@@ -982,7 +1015,8 @@ header.wp-block-template-part{ display:none !important; }
 
   document.getElementById('reset-btn').addEventListener('click', function(){
     document.getElementById('lead-form').reset();
-    document.getElementById('form-view').hidden = false;
+    document.getElementById('job-view').hidden = false;
+    document.getElementById('form-view').hidden = true;
     document.getElementById('success-view').hidden = true;
   });
 
