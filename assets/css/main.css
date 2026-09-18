@@ -687,13 +687,26 @@ body.has-transparent-header .site-main {
 /* ---------------------------------------------------------------- */
 
 .career-banner {
-	background: var(--color-giallo-vivo);
+	background: var(--color-rame-vivo);
 	color: var(--color-pure-black);
-	padding: var(--spacing-64) var(--spacing-24);
+}
+
+.career-banner__image {
+	display: block;
+	width: 100%;
+	height: 280px;
+	object-fit: cover;
+}
+
+@media (max-width: 700px) {
+	.career-banner__image {
+		height: 180px;
+	}
 }
 
 .career-banner__content {
 	max-width: 600px;
+	padding: var(--spacing-64) var(--spacing-24);
 }
 
 .career-banner__headline {
