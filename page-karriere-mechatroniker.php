@@ -33,7 +33,7 @@ $auto_emotion_status = isset( $_GET['bewerbung'] ) ? sanitize_text_field( wp_uns
 	</div>
 <?php endif; ?>
 
-<form class="application-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+<form class="application-form" method="post" enctype="multipart/form-data" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 	<input type="hidden" name="action" value="auto_emotion_bewerbung">
 	<input type="hidden" name="bewerbung_stelle" value="Kfz-Mechatroniker (m/w/d)">
 	<?php wp_nonce_field( 'auto_emotion_bewerbung', 'auto_emotion_bewerbung_nonce' ); ?>
@@ -59,6 +59,22 @@ $auto_emotion_status = isset( $_GET['bewerbung'] ) ? sanitize_text_field( wp_uns
 		<label class="application-form__radio"><input type="radio" name="bewerbung_kontakt" value="WhatsApp"> <?php esc_html_e( 'WhatsApp', 'auto-emotion' ); ?></label>
 		<label class="application-form__radio"><input type="radio" name="bewerbung_kontakt" value="E-Mail"> <?php esc_html_e( 'E-Mail', 'auto-emotion' ); ?></label>
 	</fieldset>
+
+	<div class="application-form__field">
+		<label for="bewerbung_nachricht"><?php esc_html_e( 'Nachricht (optional)', 'auto-emotion' ); ?></label>
+		<textarea id="bewerbung_nachricht" name="bewerbung_nachricht" rows="5"></textarea>
+	</div>
+
+	<div class="application-form__field">
+		<label for="bewerbung_lebenslauf"><?php esc_html_e( 'Lebenslauf (optional)', 'auto-emotion' ); ?></label>
+		<input type="file" id="bewerbung_lebenslauf" name="bewerbung_lebenslauf" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+	</div>
+
+	<div class="application-form__field">
+		<label for="bewerbung_zeugnisse"><?php esc_html_e( 'Zeugnisse / weitere Unterlagen (optional)', 'auto-emotion' ); ?></label>
+		<input type="file" id="bewerbung_zeugnisse" name="bewerbung_zeugnisse[]" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" multiple>
+		<span class="application-form__hint"><?php esc_html_e( 'PDF, Word oder Bild, je Datei max. 8 MB.', 'auto-emotion' ); ?></span>
+	</div>
 
 	<label class="application-form__consent">
 		<input type="checkbox" name="bewerbung_dsgvo" value="1" required>
