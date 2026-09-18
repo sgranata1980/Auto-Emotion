@@ -92,3 +92,59 @@ function auto_emotion_filter_angebote_by_marke( $query ) {
 	}
 }
 add_action( 'pre_get_posts', 'auto_emotion_filter_angebote_by_marke' );
+
+/**
+ * Meta-Feld "Elektrofahrzeug": steuert, ob der Förderhinweis
+ * (staatliche E-Auto-Förderung) auf der Angebots-Einzelseite
+ * erscheint – nur bei echten E-Fahrzeugen, nicht bei jedem Angebot.
+ */
+function auto_emotion_register_angebot_meta() {
+	register_post_meta(
+		'angebot',
+		'_auto_emotion_ist_elektro',
+		array(
+			'type'          => 'boolean',
+			'single'        => true,
+			'show_in_rest'  => true,
+			'auth_callback' => function () {
+				return current_user_can( 'edit_posts' );
+			},
+		)
+	);
+}
+add_action( 'init', 'auto_emotion_register_angebot_meta' );
+
+function auto_emotion_angebot_meta_box() {
+	add_meta_box(
+		'auto_emotion_angebot_elektro',
+		__( 'Antrieb', 'auto-emotion' ),
+		'auto_emotion_render_angebot_meta_box',
+		'angebot',
+		'side'
+	);
+}
+add_action( 'add_meta_boxes', 'auto_emotion_angebot_meta_box' );
+
+function auto_emotion_render_angebot_meta_box( $post ) {
+	wp_nonce_field( 'auto_emotion_angebot_meta', 'auto_emotion_angebot_meta_nonce' );
+	$ist_elektro = get_post_meta( $post->ID, '_auto_emotion_ist_elektro', true );
+	?>
+	<label>
+		<input type="checkbox" name="auto_emotion_ist_elektro" value="1" <?php checked( $ist_elektro, '1' ); ?>>
+		<?php esc_html_e( 'Elektrofahrzeug (zeigt Förderhinweis auf der Angebotsseite)', 'auto-emotion' ); ?>
+	</label>
+	<?php
+}
+
+function auto_emotion_save_angebot_meta( $post_id ) {
+	if ( ! isset( $_POST['auto_emotion_angebot_meta_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['auto_emotion_angebot_meta_nonce'] ) ), 'auto_emotion_angebot_meta' ) ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	update_post_meta( $post_id, '_auto_emotion_ist_elektro', ! empty( $_POST['auto_emotion_ist_elektro'] ) ? '1' : '' );
+}
+add_action( 'save_post_angebot', 'auto_emotion_save_angebot_meta' );

@@ -924,6 +924,33 @@ body.has-transparent-header .site-main {
 }
 
 /* ---------------------------------------------------------------- */
+/* Angebot – Förderhinweis & Aktionen                                 */
+/* ---------------------------------------------------------------- */
+
+.funding-notice {
+	background: var(--surface-marble);
+	padding: var(--spacing-24);
+	margin: 0 0 var(--spacing-32);
+}
+
+.funding-notice p {
+	margin: 0 0 var(--spacing-8);
+}
+
+.funding-notice p:last-child {
+	margin-bottom: 0;
+	color: var(--color-steel-mid);
+	font-size: var(--text-caption);
+}
+
+.entry-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-16);
+	margin-bottom: var(--spacing-64);
+}
+
+/* ---------------------------------------------------------------- */
 /* Fahrzeugsuche (Startseite)                                         */
 /* ---------------------------------------------------------------- */
 
