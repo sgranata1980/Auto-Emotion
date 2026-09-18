@@ -61,6 +61,7 @@
 
 	/* Typography — Weights (angelehnt an die reale Interstate-Nutzung:
 	   Black für Headlines, Bold für Nav/Buttons, Regular für Fließtext) */
+	--font-weight-light: 300;
 	--font-weight-regular: 400;
 	--font-weight-bold: 700;
 	--font-weight-black: 900;
