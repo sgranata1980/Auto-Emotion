@@ -526,11 +526,11 @@ body.has-transparent-header .site-header.is-scrolled {
 
 @media (max-width: 700px) {
 	.hero-stage {
-		background-position: right center;
+		background-position: 88% center;
 	}
 
 	.hero-stage__video {
-		object-position: right center;
+		object-position: 88% center;
 	}
 }
 
