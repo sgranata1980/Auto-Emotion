@@ -283,16 +283,13 @@ body.has-transparent-header .site-header.is-scrolled {
 }
 
 .btn-giallo {
-	background: var(--color-giallo-vivo);
-	/* Schwarz statt Weiß auf Giallo: Weiß läge bei ~1.6:1 Kontrast
-	   (WCAG AA verlangt 4.5:1 für Fließtextgröße) – Accessibility
-	   geht hier vor der wörtlichen Referenzfarbe. */
-	color: var(--color-pure-black);
+	background: var(--color-rosso-vivo);
+	color: var(--surface-canvas-white);
 	border: none;
 }
 
 .btn-giallo:hover {
-	background: var(--color-giallo-ombra);
+	background: var(--color-rosso-ombra);
 	color: var(--surface-canvas-white);
 }
 
@@ -626,6 +623,123 @@ body.has-transparent-header .site-main {
 
 .event-banner__content p {
 	margin: 0 0 var(--spacing-32);
+}
+
+/* ---------------------------------------------------------------- */
+/* Karriere-Banner (Startseite)                                       */
+/* ---------------------------------------------------------------- */
+
+.career-banner {
+	background: var(--color-giallo-vivo);
+	color: var(--color-pure-black);
+	padding: var(--spacing-64) var(--spacing-24);
+}
+
+.career-banner__content {
+	max-width: 600px;
+}
+
+.career-banner__headline {
+	font-size: clamp(28px, 5vw, var(--text-display));
+	margin-bottom: var(--spacing-24);
+}
+
+.career-banner__content p {
+	margin: 0 0 var(--spacing-32);
+}
+
+.career-banner .btn-outline {
+	border-color: var(--color-pure-black);
+}
+
+/* ---------------------------------------------------------------- */
+/* Bewerbungsformular                                                  */
+/* ---------------------------------------------------------------- */
+
+.application-form {
+	max-width: 480px;
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-24);
+}
+
+.application-form__honeypot {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(1px, 1px, 1px, 1px);
+}
+
+.application-form__field {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-8);
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+
+.application-form__field label,
+.application-form__field legend {
+	font-size: var(--text-caption);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	color: var(--color-steel-mid);
+	padding: 0;
+}
+
+.application-form__field input[type="text"],
+.application-form__field input[type="tel"] {
+	font-family: var(--font-lambotype);
+	font-size: var(--text-body);
+	padding: var(--spacing-16);
+	border: 1px solid var(--color-ash-border);
+	border-radius: 0;
+	background: var(--surface-canvas-white);
+}
+
+.application-form__radio {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-8);
+	margin-right: var(--spacing-24);
+	text-transform: none;
+	letter-spacing: normal;
+	color: var(--color-carbony-black);
+	font-size: var(--text-body);
+}
+
+.application-form__consent {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--spacing-16);
+	font-size: var(--text-caption);
+	color: var(--color-steel-mid);
+}
+
+.application-form__consent input {
+	margin-top: 4px;
+	flex-shrink: 0;
+}
+
+.application-form__submit {
+	align-self: flex-start;
+}
+
+.application-notice {
+	padding: var(--spacing-16) var(--spacing-24);
+	font-size: var(--text-body);
+}
+
+.application-notice--success {
+	background: var(--surface-marble);
+	color: var(--color-carbony-black);
+}
+
+.application-notice--error {
+	background: var(--color-pure-black);
+	color: var(--surface-canvas-white);
 }
 
 /* ---------------------------------------------------------------- */

@@ -4,6 +4,10 @@
 	/* Colors */
 	--color-giallo-vivo: #ffc000;
 	--color-giallo-ombra: #917300;
+	/* Aus dem echten Auto-Emotion-Logo gesampelt (assets/images/logo-full.png),
+	   nicht aus der Lambo-Referenz. */
+	--color-rosso-vivo: #d8000d;
+	--color-rosso-ombra: #9c000a;
 	--color-carbony-black: #202020;
 	--color-pure-black: #000000;
 	--color-carbon-deep: #181818;

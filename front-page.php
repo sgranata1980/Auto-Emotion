@@ -105,6 +105,18 @@ $auto_emotion_news = new WP_Query(
 	<?php wp_reset_postdata(); ?>
 <?php endif; ?>
 
+<section class="career-banner" aria-labelledby="career-heading">
+	<div class="career-banner__content">
+		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Wir stellen ein', 'auto-emotion' ); ?></p>
+		<h2 id="career-heading" class="career-banner__headline"><?php esc_html_e( 'Kfz-Mechatroniker (m/w/d) gesucht', 'auto-emotion' ); ?></h2>
+		<p><?php esc_html_e( 'Moderne Werkstatt mit 12 Hebebühnen, Marken Seat, Cupra und Nissan. Ein Team, das bleibt – viele Kollegen seit 8 bis 14 Jahren im Betrieb. 2.900–3.900 € brutto, 30 Tage Urlaub, Start ab sofort.', 'auto-emotion' ); ?></p>
+		<a class="btn btn-outline" href="<?php echo esc_url( home_url( '/karriere-mechatroniker/' ) ); ?>">
+			<?php esc_html_e( 'Jetzt bewerben', 'auto-emotion' ); ?>
+			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
+		</a>
+	</div>
+</section>
+
 <section class="event-banner" aria-labelledby="service-heading">
 	<div class="event-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Service', 'auto-emotion' ); ?></p>
