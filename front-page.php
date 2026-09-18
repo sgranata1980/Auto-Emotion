@@ -124,6 +124,18 @@ $auto_emotion_news = new WP_Query(
 	</div>
 </section>
 
+<section class="career-banner" aria-labelledby="b2b-heading">
+	<div class="career-banner__content">
+		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Für Gewerbekunden', 'auto-emotion' ); ?></p>
+		<h2 id="b2b-heading" class="career-banner__headline"><?php esc_html_e( 'Nissan Nutzfahrzeuge für Ihren Fuhrpark', 'auto-emotion' ); ?></h2>
+		<p><?php esc_html_e( 'Townstar, Primastar, Interstar – vom kompakten City-Transporter bis zum großen Servicefahrzeug, auch vollelektrisch. Für einzelne Fahrzeuge oder den ganzen Fuhrpark.', 'auto-emotion' ); ?></p>
+		<a class="btn btn-outline" href="<?php echo esc_url( home_url( '/b2b-nutzfahrzeuge/' ) ); ?>">
+			<?php esc_html_e( 'Anfrage für Gewerbekunden', 'auto-emotion' ); ?>
+			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
+		</a>
+	</div>
+</section>
+
 <section class="event-banner" aria-labelledby="service-heading">
 	<div class="event-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Service', 'auto-emotion' ); ?></p>
