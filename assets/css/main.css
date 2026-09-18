@@ -337,13 +337,23 @@ body.has-transparent-header .site-header.is-scrolled {
 }
 
 .btn-giallo {
-	background: var(--color-rosso-vivo);
+	/* Bremslicht-Optik statt Flat-Fill: heller Lichtschein oben links
+	   (Glas-Reflex), Verlauf ins satte Rot, dazu ein weicher roter
+	   Glow als Schatten – wie ein leuchtendes Rücklicht. */
+	background:
+		radial-gradient(120% 150% at 28% -10%, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 42%),
+		linear-gradient(180deg, #ff3b2c 0%, var(--color-rosso-vivo) 48%, var(--color-rosso-ombra) 100%);
+	box-shadow: 0 6px 24px rgba(216, 0, 13, 0.45);
 	color: var(--surface-canvas-white);
 	border: none;
+	transition: box-shadow 0.2s ease;
 }
 
 .btn-giallo:hover {
-	background: var(--color-rosso-ombra);
+	background:
+		radial-gradient(120% 150% at 28% -10%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 42%),
+		linear-gradient(180deg, #ff3b2c 0%, var(--color-rosso-ombra) 55%, var(--color-rosso-ombra) 100%);
+	box-shadow: 0 6px 32px rgba(216, 0, 13, 0.65);
 	color: var(--surface-canvas-white);
 }
 
