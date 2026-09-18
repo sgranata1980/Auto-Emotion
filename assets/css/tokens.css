@@ -8,6 +8,11 @@
 	   nicht aus der Lambo-Referenz. */
 	--color-rosso-vivo: #d8000d;
 	--color-rosso-ombra: #9c000a;
+	/* Kupfer/Bronze, aus dem Cupra-Born-Referenzbild des Kunden gesampelt
+	   (Fahrzeug-Trim, nicht der Neon-Schriftzug) – löst --color-rosso-vivo
+	   als Marken-/Button-Akzentfarbe ab. */
+	--color-rame-vivo: #a67561;
+	--color-rame-ombra: #7a5646;
 	--color-carbony-black: #202020;
 	--color-pure-black: #000000;
 	--color-carbon-deep: #181818;
