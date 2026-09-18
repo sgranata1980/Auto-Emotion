@@ -701,11 +701,13 @@ body.has-transparent-header .site-main {
 /* ---------------------------------------------------------------- */
 
 .career-banner {
-	/* Warmer Kupfer-Glow aus einer Ecke, der in Carbony-/Pure-Black
-	   ausläuft – Verlauf im Stil der Kundenreferenz, Farbstufen aus
-	   den etablierten --color-rame-*-Tokens statt 1:1 aus dem (stark
-	   JPEG-komprimierten, recht ausgewaschenen) Referenzbild gepixelt. */
-	background: radial-gradient(ellipse 1100px 760px at 100% 0%, var(--color-rame-vivo) 0%, var(--color-rame-ombra) 24%, var(--color-carbony-black) 58%, var(--color-pure-black) 100%);
+	/* Roter Licht-Glow aus einer Ecke, der in Carbony-/Pure-Black
+	   ausläuft – passend zum roten Cupra-Glow im Hero-Video statt
+	   des zuvor genutzten Kupfer-Tons. */
+	/* Ellipse deutlich höher als die Bild-Ecke darüber (420px Desktop /
+	   220px Mobile), sonst frisst das Bild den sichtbaren Teil des
+	   Glows fast komplett auf, bevor der Textbereich überhaupt beginnt. */
+	background: radial-gradient(ellipse 1100px 1400px at 100% 0%, var(--color-rosso-vivo) 0%, var(--color-rosso-vivo) 18%, var(--color-carbony-black) 55%, var(--color-pure-black) 100%);
 	color: var(--surface-canvas-white);
 }
 
