@@ -919,6 +919,86 @@ body.has-transparent-header .site-main {
 }
 
 /* ---------------------------------------------------------------- */
+/* Fahrzeugsuche (Startseite)                                         */
+/* ---------------------------------------------------------------- */
+
+.vehicle-search {
+	background: var(--color-pure-black);
+	color: var(--surface-canvas-white);
+	padding: var(--spacing-80) var(--spacing-24);
+}
+
+.vehicle-search__inner {
+	max-width: 560px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.vehicle-search__headline {
+	font-size: clamp(28px, 5vw, var(--text-display));
+	margin-bottom: var(--spacing-16);
+}
+
+.vehicle-search__inner > p {
+	margin: 0 0 var(--spacing-40);
+	color: var(--color-ash-border);
+}
+
+.vehicle-search__form {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-24);
+	align-items: center;
+}
+
+.vehicle-search__field {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-8);
+	text-align: left;
+}
+
+.vehicle-search__field label {
+	font-size: var(--text-caption);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	color: var(--color-ash-border);
+}
+
+.vehicle-search__field select {
+	font-family: var(--font-lambotype);
+	font-size: var(--text-body);
+	padding: var(--spacing-16);
+	border: 1px solid var(--color-graphite-border);
+	border-radius: 0;
+	background: var(--surface-carbony);
+	color: var(--surface-canvas-white);
+	appearance: none;
+}
+
+.vehicle-search__count {
+	margin: 0;
+	font-size: var(--text-caption);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	color: var(--color-ash-border);
+}
+
+.vehicle-search__submit {
+	align-self: stretch;
+	justify-content: center;
+}
+
+.archive-filter-notice {
+	font-size: var(--text-caption);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	color: var(--color-steel-mid);
+	margin: 0 0 var(--spacing-32);
+}
+
+/* ---------------------------------------------------------------- */
 /* Footer                                                             */
 /* ---------------------------------------------------------------- */
 

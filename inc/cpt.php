@@ -62,3 +62,33 @@ function auto_emotion_seed_marke_terms() {
 	flush_rewrite_rules();
 }
 add_action( 'after_switch_theme', 'auto_emotion_seed_marke_terms' );
+
+/**
+ * Fahrzeugsuche auf der Startseite: filtert das Angebot-Archiv nach
+ * Marke, wenn ?marke=<slug> an /angebote/ übergeben wird.
+ */
+function auto_emotion_filter_angebote_by_marke( $query ) {
+	if ( is_admin() || ! $query->is_main_query() ) {
+		return;
+	}
+
+	if ( ! $query->is_post_type_archive( 'angebot' ) ) {
+		return;
+	}
+
+	$marke = isset( $_GET['marke'] ) ? sanitize_title( wp_unslash( $_GET['marke'] ) ) : '';
+
+	if ( $marke && term_exists( $marke, 'marke' ) ) {
+		$query->set(
+			'tax_query',
+			array(
+				array(
+					'taxonomy' => 'marke',
+					'field'    => 'slug',
+					'terms'    => $marke,
+				),
+			)
+		);
+	}
+}
+add_action( 'pre_get_posts', 'auto_emotion_filter_angebote_by_marke' );
