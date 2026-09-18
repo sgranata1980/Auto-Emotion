@@ -500,7 +500,10 @@ body.has-transparent-header .site-header.is-scrolled {
 	padding: var(--spacing-80) var(--spacing-24);
 	background-color: var(--surface-carbony);
 	background-size: cover;
-	background-position: center;
+	/* 63% statt 50%: das aktuelle Hero-Bild (Logo-Emblem im rechten
+	   Bilddrittel) würde bei zentrierter Position auf schmalen,
+	   hohen Viewports weggecroppt. */
+	background-position: 63% center;
 	color: var(--surface-canvas-white);
 }
 

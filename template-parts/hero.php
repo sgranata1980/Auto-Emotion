@@ -24,7 +24,7 @@ $auto_emotion_hero = wp_parse_args(
 		'headline' => __( 'Mehr als Autos.', 'auto-emotion' ),
 		'cta_text' => __( 'Marken entdecken', 'auto-emotion' ),
 		'cta_url'  => '#marken',
-		'image'    => AUTO_EMOTION_URI . '/assets/images/hero-cupra-01.jpg',
+		'image'    => AUTO_EMOTION_URI . '/assets/images/hero-glow-01.jpg',
 		'video'    => '',
 	)
 );
