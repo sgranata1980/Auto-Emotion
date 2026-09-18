@@ -54,6 +54,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			array(
 				'theme_location' => 'primary',
 				'menu_id'        => 'primary-menu',
+				'walker'         => new Auto_Emotion_Nav_Walker(),
 			)
 		);
 		?>
