@@ -108,7 +108,7 @@ $auto_emotion_news = new WP_Query(
 <section class="career-banner" aria-labelledby="career-heading">
 	<img
 		class="career-banner__image"
-		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/hero-cupra-01.jpg' ); ?>"
+		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/career-mechatroniker.jpg' ); ?>"
 		alt=""
 		loading="lazy"
 	>
