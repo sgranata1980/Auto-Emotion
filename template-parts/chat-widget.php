@@ -1,15 +1,13 @@
 <?php
 /**
- * Chat-Widget (Auto Emotion Assistent). Rendert nichts, solange kein
- * Claude API-Key im Customizer hinterlegt ist.
+ * Chat-Widget (Auto Emotion Assistent). Icon, Video-Avatar und
+ * Chat-Oberfläche sind immer sichtbar; nur das tatsächliche Senden
+ * einer Nachricht schlägt fehl, solange kein Claude API-Key im
+ * Customizer hinterlegt ist (siehe inc/chatbot.php).
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-}
-
-if ( ! auto_emotion_chat_is_configured() ) {
-	return;
 }
 ?>
 <div class="chat-widget" data-state="closed">

@@ -23,15 +23,13 @@ function auto_emotion_assets() {
 		wp_enqueue_script( 'comment-reply' );
 	}
 
-	if ( function_exists( 'auto_emotion_chat_is_configured' ) && auto_emotion_chat_is_configured() ) {
-		wp_enqueue_script( 'auto-emotion-chat', AUTO_EMOTION_URI . '/assets/js/chat-widget.js', array(), AUTO_EMOTION_VERSION, true );
-		wp_localize_script(
-			'auto-emotion-chat',
-			'autoEmotionChat',
-			array(
-				'endpoint' => esc_url_raw( rest_url( 'auto-emotion/v1/chat' ) ),
-			)
-		);
-	}
+	wp_enqueue_script( 'auto-emotion-chat', AUTO_EMOTION_URI . '/assets/js/chat-widget.js', array(), AUTO_EMOTION_VERSION, true );
+	wp_localize_script(
+		'auto-emotion-chat',
+		'autoEmotionChat',
+		array(
+			'endpoint' => esc_url_raw( rest_url( 'auto-emotion/v1/chat' ) ),
+		)
+	);
 }
 add_action( 'wp_enqueue_scripts', 'auto_emotion_assets' );
