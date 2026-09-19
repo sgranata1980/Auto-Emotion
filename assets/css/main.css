@@ -955,15 +955,32 @@ body.has-transparent-header .site-main {
 /* ---------------------------------------------------------------- */
 
 .vehicle-search {
-	background: var(--color-pure-black);
-	color: var(--surface-canvas-white);
+	background: var(--surface-canvas-white);
+	color: var(--color-carbony-black);
 	padding: var(--spacing-80) var(--spacing-24);
 }
 
-.vehicle-search__inner {
-	max-width: 560px;
+.vehicle-search__grid {
+	max-width: var(--page-max-width);
 	margin: 0 auto;
-	text-align: center;
+	display: grid;
+	grid-template-columns: 1.1fr 1fr;
+	gap: var(--spacing-64);
+	align-items: center;
+}
+
+.vehicle-search__visual {
+	overflow: hidden;
+}
+
+.vehicle-search__video {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.vehicle-search__inner {
+	max-width: 480px;
 }
 
 .vehicle-search__headline {
@@ -973,14 +990,14 @@ body.has-transparent-header .site-main {
 
 .vehicle-search__inner > p {
 	margin: 0 0 var(--spacing-40);
-	color: var(--color-ash-border);
+	color: var(--color-steel-mid);
 }
 
 .vehicle-search__form {
 	display: flex;
 	flex-direction: column;
 	gap: var(--spacing-24);
-	align-items: center;
+	align-items: flex-start;
 }
 
 .vehicle-search__field {
@@ -995,7 +1012,7 @@ body.has-transparent-header .site-main {
 	font-size: var(--text-caption);
 	text-transform: uppercase;
 	letter-spacing: 0.0230em;
-	color: var(--color-ash-border);
+	color: var(--color-steel-mid);
 }
 
 .vehicle-search__field select {
@@ -1004,8 +1021,8 @@ body.has-transparent-header .site-main {
 	padding: var(--spacing-16);
 	border: 1px solid var(--color-graphite-border);
 	border-radius: 0;
-	background: var(--surface-carbony);
-	color: var(--surface-canvas-white);
+	background: var(--surface-canvas-white);
+	color: var(--color-carbony-black);
 	appearance: none;
 }
 
@@ -1014,7 +1031,18 @@ body.has-transparent-header .site-main {
 	font-size: var(--text-caption);
 	text-transform: uppercase;
 	letter-spacing: 0.0230em;
-	color: var(--color-ash-border);
+	color: var(--color-steel-mid);
+}
+
+@media (max-width: 900px) {
+	.vehicle-search__grid {
+		grid-template-columns: 1fr;
+		gap: var(--spacing-40);
+	}
+
+	.vehicle-search__inner {
+		max-width: 100%;
+	}
 }
 
 .vehicle-search__submit {
