@@ -125,6 +125,12 @@ $auto_emotion_news = new WP_Query(
 </section>
 
 <section class="career-banner" aria-labelledby="b2b-heading">
+	<img
+		class="career-banner__image career-banner__image--fleet"
+		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-nutzfahrzeuge.jpg' ); ?>"
+		alt=""
+		loading="lazy"
+	>
 	<div class="career-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Für Gewerbekunden', 'auto-emotion' ); ?></p>
 		<h2 id="b2b-heading" class="career-banner__headline"><?php esc_html_e( 'Nissan Nutzfahrzeuge für Ihren Fuhrpark', 'auto-emotion' ); ?></h2>

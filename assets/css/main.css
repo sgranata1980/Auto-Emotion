@@ -755,6 +755,12 @@ body.has-transparent-header .site-main {
 	object-position: center 55%;
 }
 
+.career-banner__image--fleet {
+	/* Fahrzeuge sitzen im unteren Bilddrittel, oben viel Himmel –
+	   Crop etwas tiefer ansetzen, damit die Fahrzeuge nicht wegfallen. */
+	object-position: center 65%;
+}
+
 .career-banner__content {
 	max-width: 600px;
 	padding: var(--spacing-64) var(--spacing-24);
