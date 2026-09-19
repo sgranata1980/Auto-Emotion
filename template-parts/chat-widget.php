@@ -19,8 +19,17 @@ if ( ! auto_emotion_chat_is_configured() ) {
 	</button>
 
 	<div id="chat-widget-panel" class="chat-widget__panel" data-state="closed">
+		<div class="chat-widget__avatar">
+			<video
+				id="chat-widget-avatar-video"
+				class="chat-widget__avatar-video"
+				playsinline
+				data-greeting-src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/videos/emo-greeting.mp4' ); ?>"
+				data-idle-src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/videos/emo-idle.mp4' ); ?>"
+			></video>
+		</div>
 		<div class="chat-widget__header">
-			<span><?php esc_html_e( 'Auto Emotion Assistent', 'auto-emotion' ); ?></span>
+			<span><?php esc_html_e( 'Emo – Auto Emotion Assistent', 'auto-emotion' ); ?></span>
 			<button type="button" class="chat-widget__close" aria-label="<?php esc_attr_e( 'Chat schließen', 'auto-emotion' ); ?>">&times;</button>
 		</div>
 		<div class="chat-widget__messages" id="chat-widget-messages">

@@ -10,8 +10,43 @@ document.addEventListener('DOMContentLoaded', function () {
 	var form = widget.querySelector('#chat-widget-form');
 	var input = widget.querySelector('#chat-widget-input');
 	var messages = widget.querySelector('#chat-widget-messages');
+	var avatarVideo = widget.querySelector('#chat-widget-avatar-video');
 	var history = [];
 	var isSending = false;
+	var hasGreeted = false;
+
+	function playIdleLoop() {
+		if (!avatarVideo) {
+			return;
+		}
+		avatarVideo.muted = true;
+		avatarVideo.loop = true;
+		if (avatarVideo.getAttribute('src') !== avatarVideo.dataset.idleSrc) {
+			avatarVideo.setAttribute('src', avatarVideo.dataset.idleSrc);
+		}
+		avatarVideo.play().catch(function () {});
+	}
+
+	function playGreeting() {
+		if (!avatarVideo) {
+			return;
+		}
+		avatarVideo.muted = false;
+		avatarVideo.loop = false;
+		avatarVideo.setAttribute('src', avatarVideo.dataset.greetingSrc);
+		avatarVideo.play().catch(function () {
+			// Autoplay mit Ton blockiert – direkt in die stumme Idle-Schleife wechseln.
+			playIdleLoop();
+		});
+	}
+
+	if (avatarVideo) {
+		avatarVideo.addEventListener('ended', function () {
+			if (!avatarVideo.loop) {
+				playIdleLoop();
+			}
+		});
+	}
 
 	function setOpen(isOpen) {
 		widget.setAttribute('data-state', isOpen ? 'open' : 'closed');
@@ -19,6 +54,12 @@ document.addEventListener('DOMContentLoaded', function () {
 		toggle.setAttribute('aria-expanded', String(isOpen));
 		if (isOpen) {
 			input.focus();
+			if (!hasGreeted) {
+				hasGreeted = true;
+				playGreeting();
+			} else if (avatarVideo && avatarVideo.paused) {
+				playIdleLoop();
+			}
 		}
 	}
 
