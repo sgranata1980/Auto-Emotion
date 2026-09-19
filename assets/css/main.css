@@ -510,40 +510,20 @@ body.has-transparent-header .site-header.is-scrolled {
 
 .hero-stage {
 	position: relative;
-	min-height: 100vh;
-	background-color: var(--surface-carbony);
-	color: var(--surface-canvas-white);
-}
-
-.hero-stage__track {
-	display: flex;
-	min-height: 100vh;
-	overflow-x: auto;
-	scroll-snap-type: x mandatory;
-	-webkit-overflow-scrolling: touch;
-	scrollbar-width: none;
-}
-
-.hero-stage__track::-webkit-scrollbar {
-	display: none;
-}
-
-.hero-stage__slide {
-	position: relative;
-	flex: 0 0 100%;
-	scroll-snap-align: start;
 	display: flex;
 	align-items: flex-end;
 	min-height: 100vh;
 	padding: var(--spacing-80) var(--spacing-24);
+	background-color: var(--surface-carbony);
 	background-size: cover;
 	/* 63% statt 50%: das aktuelle Hero-Bild (Logo-Emblem im rechten
 	   Bilddrittel) würde bei zentrierter Position auf schmalen,
 	   hohen Viewports weggecroppt. */
 	background-position: 63% center;
+	color: var(--surface-canvas-white);
 }
 
-.hero-stage__slide::before {
+.hero-stage::before {
 	content: "";
 	position: absolute;
 	inset: 0;
@@ -561,7 +541,7 @@ body.has-transparent-header .site-header.is-scrolled {
 }
 
 @media (max-width: 700px) {
-	.hero-stage__slide {
+	.hero-stage {
 		background-position: 88% center;
 	}
 
@@ -574,30 +554,6 @@ body.has-transparent-header .site-header.is-scrolled {
 	position: relative;
 	z-index: 2;
 	max-width: 50%;
-}
-
-.hero-stage__dots {
-	position: absolute;
-	z-index: 3;
-	left: 50%;
-	bottom: var(--spacing-24);
-	transform: translateX(-50%);
-	display: flex;
-	gap: var(--spacing-8);
-}
-
-.hero-stage__dot {
-	width: 8px;
-	height: 8px;
-	border-radius: 50%;
-	border: none;
-	padding: 0;
-	background: rgba(255, 255, 255, 0.4);
-	cursor: pointer;
-}
-
-.hero-stage__dot.is-active {
-	background: var(--color-rosso-vivo);
 }
 
 .hero-stage__eyebrow {
