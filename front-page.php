@@ -161,6 +161,12 @@ $auto_emotion_news = new WP_Query(
 </section>
 
 <section class="event-banner" aria-labelledby="service-heading">
+	<img
+		class="event-banner__image"
+		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/notdienst-abschleppen.jpg' ); ?>"
+		alt=""
+		loading="lazy"
+	>
 	<div class="event-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Service', 'auto-emotion' ); ?></p>
 		<h2 id="service-heading" class="event-banner__headline"><?php esc_html_e( 'Werkstatt, Mietwagen, Notdienst.', 'auto-emotion' ); ?></h2>
