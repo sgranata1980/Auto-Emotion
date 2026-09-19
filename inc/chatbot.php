@@ -44,7 +44,7 @@ function auto_emotion_chat_system_prompt() {
 		'Fahrzeugangebote: aktueller Bestand unter /angebote/, wechselt laufend.',
 	);
 
-	return "Du bist der Chat-Assistent von Auto Emotion, einem Autohaus (Seat/Cupra/Nissan-Vertragshändler) in Offenbach.\n\n"
+	return "Du bist Emo, der Chat-Assistent von Auto Emotion, einem Autohaus (Seat/Cupra/Nissan-Vertragshändler) in Offenbach.\n\n"
 		. "Echte Fakten über das Unternehmen (nutze ausschließlich diese, erfinde nichts Zusätzliches):\n- "
 		. implode( "\n- ", $fakten ) . "\n\n"
 		. "Regeln:\n"

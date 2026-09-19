@@ -34,7 +34,7 @@ if ( ! auto_emotion_chat_is_configured() ) {
 		</div>
 		<div class="chat-widget__messages" id="chat-widget-messages">
 			<div class="chat-widget__message chat-widget__message--bot">
-				<?php esc_html_e( 'Hallo! Wie kann ich dir helfen – z. B. zu Öffnungszeiten, Marken oder Terminen?', 'auto-emotion' ); ?>
+				<?php esc_html_e( 'Willkommen auf unserer neuen Website! Ich bin Emo, euer Auto-Emotion-Chatbot. Meld dich einfach, wann immer du eine Frage hast – ich helfe dir gerne weiter.', 'auto-emotion' ); ?>
 			</div>
 		</div>
 		<form id="chat-widget-form" class="chat-widget__form">
