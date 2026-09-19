@@ -16,6 +16,13 @@ get_header();
 $auto_emotion_status = isset( $_GET['anfrage'] ) ? sanitize_text_field( wp_unslash( $_GET['anfrage'] ) ) : '';
 ?>
 
+<img
+	class="career-banner__image career-banner__image--fleet"
+	src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-nutzfahrzeuge.jpg' ); ?>"
+	alt=""
+	loading="lazy"
+>
+
 <div class="section-heading">
 	<h1 class="section-heading__title"><?php esc_html_e( 'Nissan Nutzfahrzeuge für Ihren Fuhrpark', 'auto-emotion' ); ?></h1>
 </div>
