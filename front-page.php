@@ -145,7 +145,7 @@ $auto_emotion_news = new WP_Query(
 	>
 	<div class="career-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Für Geschäftskunden', 'auto-emotion' ); ?></p>
-		<h2 id="beklebung-heading" class="career-banner__headline"><?php esc_html_e( 'Firmenbeklebung aus eigener Grafikabteilung', 'auto-emotion' ); ?></h2>
+		<h2 id="beklebung-heading" class="career-banner__headline"><?php esc_html_e( 'Beklebung für Ihre Flotte', 'auto-emotion' ); ?></h2>
 		<p><?php esc_html_e( 'Unsere hauseigene Grafikabteilung entwirft und produziert Fahrzeugbeklebungen individuell nach Wunsch – von der einzelnen Werbebeschriftung bis zur vollflächigen Fahrzeugfolierung. Design und Anbringung aus einer Hand.', 'auto-emotion' ); ?></p>
 		<a class="btn btn-outline" href="<?php echo esc_url( home_url( '/beklebungsservice/' ) ); ?>">
 			<?php esc_html_e( 'Zum Beklebungsservice', 'auto-emotion' ); ?>
