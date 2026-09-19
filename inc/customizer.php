@@ -64,5 +64,22 @@ function auto_emotion_customize_register( $wp_customize ) {
 			)
 		);
 	}
+	$wp_customize->add_setting(
+		'ae_claude_api_key',
+		array(
+			'default'           => '',
+			'sanitize_callback' => 'sanitize_text_field',
+		)
+	);
+
+	$wp_customize->add_control(
+		'ae_claude_api_key',
+		array(
+			'label'       => __( 'Claude API-Key (für den Chat-Assistenten)', 'auto-emotion' ),
+			'description' => __( 'Von console.anthropic.com. Solange dieses Feld leer ist, wird der Chat-Assistent auf der Website nicht angezeigt.', 'auto-emotion' ),
+			'section'     => 'auto_emotion_general',
+			'type'        => 'password',
+		)
+	);
 }
 add_action( 'customize_register', 'auto_emotion_customize_register' );

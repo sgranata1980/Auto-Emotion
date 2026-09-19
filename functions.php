@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'AUTO_EMOTION_VERSION', '0.7.2' );
+define( 'AUTO_EMOTION_VERSION', '0.7.3' );
 define( 'AUTO_EMOTION_DIR', get_template_directory() );
 define( 'AUTO_EMOTION_URI', get_template_directory_uri() );
 
@@ -22,3 +22,4 @@ require AUTO_EMOTION_DIR . '/inc/schema.php';
 require AUTO_EMOTION_DIR . '/inc/recruiting.php';
 require AUTO_EMOTION_DIR . '/inc/b2b.php';
 require AUTO_EMOTION_DIR . '/inc/testdrive.php';
+require AUTO_EMOTION_DIR . '/inc/chatbot.php';

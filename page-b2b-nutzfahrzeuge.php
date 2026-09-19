@@ -27,7 +27,16 @@ $auto_emotion_status = isset( $_GET['anfrage'] ) ? sanitize_text_field( wp_unsla
 		<li><strong>Nissan Primastar</strong> &ndash; <?php esc_html_e( 'flexibler Van im mittleren Segment, konfigurierbar je nach Einsatzbereich.', 'auto-emotion' ); ?></li>
 		<li><strong>Nissan Interstar</strong> &ndash; <?php esc_html_e( 'der große Transporter, als Diesel oder vollelektrisch (Interstar-e).', 'auto-emotion' ); ?></li>
 	</ul>
-	<p><?php esc_html_e( 'Ob einzelnes Fahrzeug oder ganzer Fuhrpark: Sprechen Sie uns an, wir erarbeiten ein Angebot für Ihren Betrieb.', 'auto-emotion' ); ?></p>
+	<p><?php esc_html_e( 'Ob einzelnes Fahrzeug oder ganzer Fuhrpark: Sprechen Sie uns an, wir erarbeiten ein Angebot für Ihren Betrieb – individuell auf Ihren Bedarf zugeschnitten.', 'auto-emotion' ); ?></p>
+	<p>
+		<?php
+		printf(
+			/* translators: %s: link to the Beklebungsservice page */
+			esc_html__( 'Für Ihren Fuhrpark übernimmt unsere eigene Grafikabteilung auch die Beschriftung und Beklebung der Fahrzeuge – vom Logo bis zur vollflächigen Fahrzeugfolierung, individuell nach Ihren Vorgaben. Mehr dazu auf unserer %s.', 'auto-emotion' ),
+			'<a href="' . esc_url( home_url( '/beklebungsservice/' ) ) . '">' . esc_html__( 'Seite zum Beklebungsservice', 'auto-emotion' ) . '</a>'
+		);
+		?>
+	</p>
 </div>
 
 <?php if ( 'ok' === $auto_emotion_status ) : ?>
