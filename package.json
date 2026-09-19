@@ -1,0 +1,21 @@
+{
+  "name": "auto-emotion",
+  "version": "0.1.0",
+  "description": "KI-Pipeline zur Generierung emotionaler Auto-Bilder (Gemini Image Generation)",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "generate": "node src/generate.js",
+    "manifest": "node scripts/generate-manifest.js",
+    "dev": "npm run manifest && vite",
+    "build": "npm run manifest && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@google/genai": "^1.9.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "vite": "^8.2.2"
+  }
+}
