@@ -749,6 +749,12 @@ body.has-transparent-header .site-main {
 	}
 }
 
+.career-banner__image--wrap {
+	/* Van sitzt mittig im Quellbild (kein Kopf-/Tablet-Motiv wie beim
+	   Mechatroniker-Foto), daher zentrierter statt oben ausgerichteter Crop. */
+	object-position: center 55%;
+}
+
 .career-banner__content {
 	max-width: 600px;
 	padding: var(--spacing-64) var(--spacing-24);

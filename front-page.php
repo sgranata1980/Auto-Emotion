@@ -136,6 +136,24 @@ $auto_emotion_news = new WP_Query(
 	</div>
 </section>
 
+<section class="career-banner" aria-labelledby="beklebung-heading">
+	<img
+		class="career-banner__image career-banner__image--wrap"
+		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/wrap-nissan.jpg' ); ?>"
+		alt=""
+		loading="lazy"
+	>
+	<div class="career-banner__content">
+		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Für Geschäftskunden', 'auto-emotion' ); ?></p>
+		<h2 id="beklebung-heading" class="career-banner__headline"><?php esc_html_e( 'Firmenbeklebung aus eigener Grafikabteilung', 'auto-emotion' ); ?></h2>
+		<p><?php esc_html_e( 'Unsere hauseigene Grafikabteilung entwirft und produziert Fahrzeugbeklebungen individuell nach Wunsch – von der einzelnen Werbebeschriftung bis zur vollflächigen Fahrzeugfolierung. Design und Anbringung aus einer Hand.', 'auto-emotion' ); ?></p>
+		<a class="btn btn-outline" href="<?php echo esc_url( home_url( '/beklebungsservice/' ) ); ?>">
+			<?php esc_html_e( 'Zum Beklebungsservice', 'auto-emotion' ); ?>
+			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
+		</a>
+	</div>
+</section>
+
 <section class="event-banner" aria-labelledby="service-heading">
 	<div class="event-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Service', 'auto-emotion' ); ?></p>
