@@ -1204,10 +1204,10 @@ body.has-transparent-header .site-main {
 	display: block;
 	width: 100%;
 	height: 100%;
-	object-fit: cover;
-	/* Zeigt Gesicht/Brille statt nur den Scheitel – 35% funktioniert
-	   für Begrüßungs- und Idle-Video trotz unterschiedlicher Höhe. */
-	object-position: center 35%;
+	/* "contain" statt "cover": zeigt das komplette Video (Gesicht +
+	   Hals) ohne Beschnitt. Der Letterbox-Rand verschwimmt unsichtbar,
+	   weil Video- und Kasten-Hintergrund beide Weiß sind. */
+	object-fit: contain;
 }
 
 .chat-widget__header {
