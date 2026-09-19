@@ -1265,7 +1265,9 @@ body.has-transparent-header .site-main {
 	padding: var(--spacing-16);
 	color: var(--surface-canvas-white);
 	font-family: var(--font-lambotype);
-	font-size: var(--text-caption);
+	/* Mind. 16px, sonst zoomt iOS Safari beim Fokussieren automatisch
+	   in die Seite hinein. */
+	font-size: var(--text-body);
 }
 
 .chat-widget__form button {
