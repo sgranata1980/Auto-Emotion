@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $auto_emotion_hero = wp_parse_args(
 	$args ?? array(),
 	array(
-		'eyebrow'  => __( 'Cupra · Seat · Nissan – Offenbach', 'auto-emotion' ),
+		'eyebrow'  => __( 'Cupra · Seat · Nissan – Frankfurt Rhein-Main', 'auto-emotion' ),
 		'headline' => __( 'Mehr als Autos.', 'auto-emotion' ),
 		'cta_text' => __( 'Marken entdecken', 'auto-emotion' ),
 		'cta_url'  => '#marken',
