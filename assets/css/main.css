@@ -1248,10 +1248,8 @@ body.has-transparent-header .site-main {
 	display: block;
 	width: 100%;
 	height: 100%;
-	/* "contain" statt "cover": zeigt das komplette Video (Gesicht +
-	   Hals) ohne Beschnitt. Der Letterbox-Rand verschwimmt unsichtbar,
-	   weil Video- und Kasten-Hintergrund beide Weiß sind. */
-	object-fit: contain;
+	object-fit: cover;
+	object-position: center center;
 }
 
 .chat-widget__header {

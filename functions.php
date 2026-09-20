@@ -24,7 +24,7 @@ if ( ! isset( $_SERVER['PHP_AUTH_USER'] ) && isset( $_SERVER['HTTP_AUTHORIZATION
 	}
 }
 
-define( 'AUTO_EMOTION_VERSION', '0.9.7' );
+define( 'AUTO_EMOTION_VERSION', '0.9.8' );
 define( 'AUTO_EMOTION_DIR', get_template_directory() );
 define( 'AUTO_EMOTION_URI', get_template_directory_uri() );
 
@@ -49,9 +49,19 @@ require AUTO_EMOTION_DIR . '/inc/chatbot.php';
  * ganz ohne Theme-Update.
  */
 function auto_emotion_emo_video_url( $slug ) {
-	$attachment = get_page_by_path( 'emo-' . $slug, OBJECT, 'attachment' );
-	if ( $attachment ) {
-		$url = wp_get_attachment_url( $attachment->ID );
+	$query = new WP_Query(
+		array(
+			'post_type'      => 'attachment',
+			'post_status'    => 'inherit',
+			'title'          => 'emo-' . $slug . '.mp4',
+			'posts_per_page' => 1,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+			'no_found_rows'  => true,
+		)
+	);
+	if ( $query->have_posts() ) {
+		$url = wp_get_attachment_url( $query->posts[0]->ID );
 		if ( $url ) {
 			return $url;
 		}
