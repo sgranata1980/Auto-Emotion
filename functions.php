@@ -7,7 +7,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'AUTO_EMOTION_VERSION', '0.9.2' );
+/**
+ * Manche Nginx/PHP-FPM-Hosting-Setups reichen den Authorization-Header
+ * nicht automatisch an PHP durch. Ohne diesen Fallback kommen
+ * REST-API-Anmeldungen per Anwendungspasswort nie an (401
+ * rest_not_logged_in), obwohl das Feature aktiv ist.
+ */
+if ( ! isset( $_SERVER['HTTP_AUTHORIZATION'] ) && isset( $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ) ) {
+	$_SERVER['HTTP_AUTHORIZATION'] = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+}
+
+if ( ! isset( $_SERVER['PHP_AUTH_USER'] ) && isset( $_SERVER['HTTP_AUTHORIZATION'] ) && 0 === stripos( $_SERVER['HTTP_AUTHORIZATION'], 'basic ' ) ) {
+	$auto_emotion_basic_auth = base64_decode( substr( $_SERVER['HTTP_AUTHORIZATION'], 6 ) );
+	if ( false !== $auto_emotion_basic_auth && false !== strpos( $auto_emotion_basic_auth, ':' ) ) {
+		list( $_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'] ) = explode( ':', $auto_emotion_basic_auth, 2 );
+	}
+}
+
+define( 'AUTO_EMOTION_VERSION', '0.9.3' );
 define( 'AUTO_EMOTION_DIR', get_template_directory() );
 define( 'AUTO_EMOTION_URI', get_template_directory_uri() );
 
