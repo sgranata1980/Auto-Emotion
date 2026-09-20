@@ -22,8 +22,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 				id="chat-widget-avatar-video"
 				class="chat-widget__avatar-video"
 				playsinline
-				data-greeting-src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/videos/emo-greeting.mp4' ); ?>"
-				data-idle-src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/videos/emo-idle.mp4' ); ?>"
+				data-greeting-src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/videos/emo-greeting.mp4?ver=' . AUTO_EMOTION_VERSION ); ?>"
+				data-idle-src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/videos/emo-idle.mp4?ver=' . AUTO_EMOTION_VERSION ); ?>"
 			></video>
 		</div>
 		<div class="chat-widget__header">
