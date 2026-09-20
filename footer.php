@@ -40,6 +40,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 		?>
 	</nav>
 
+	<p class="footer-legal-note">
+		<?php esc_html_e( 'Finanzierung & Leasing: Wir arbeiten mit unabhängigen Finanzierungspartnern statt einer festen Hausbank – Sie haben die freie Bankwahl, keine Bindung an einen bestimmten Anbieter. Ihr individuelles Angebot erstellen wir persönlich.', 'auto-emotion' ); ?>
+	</p>
+
 	<div class="site-info">
 		&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?>
 	</div>

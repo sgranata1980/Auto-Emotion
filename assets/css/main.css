@@ -1166,6 +1166,14 @@ body.has-transparent-header .site-main {
 	letter-spacing: 0.0230em;
 }
 
+.footer-legal-note {
+	font-size: var(--text-caption);
+	line-height: 1.6;
+	color: var(--color-ash-border);
+	max-width: 640px;
+	margin: 0 0 var(--spacing-24);
+}
+
 .site-info {
 	font-size: var(--text-caption);
 	text-transform: uppercase;
