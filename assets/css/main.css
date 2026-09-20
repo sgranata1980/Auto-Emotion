@@ -1382,3 +1382,23 @@ body.has-transparent-header .site-main {
 	background: var(--color-rosso-vivo);
 	border-color: var(--color-rosso-vivo);
 }
+
+.service-teaser-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	gap: var(--spacing-24);
+}
+
+.service-teaser {
+	border: 1px solid var(--color-graphite-border);
+	padding: var(--spacing-24);
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-16);
+}
+
+.service-teaser__title {
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	margin: 0;
+}

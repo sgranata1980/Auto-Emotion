@@ -160,6 +160,30 @@ $auto_emotion_news = new WP_Query(
 	</div>
 </section>
 
+<section class="container" aria-labelledby="finanzierung-heading">
+	<div class="section-heading">
+		<h2 id="finanzierung-heading" class="section-heading__title"><?php esc_html_e( 'Finanzierung, Leasing & Ankauf', 'auto-emotion' ); ?></h2>
+	</div>
+	<div class="service-teaser-grid">
+		<div class="service-teaser">
+			<h3 class="service-teaser__title"><?php esc_html_e( 'Finanzierung & Leasing', 'auto-emotion' ); ?></h3>
+			<p><?php esc_html_e( 'Freie Bankwahl statt einer festen Hausbank: Wir vergleichen die Konditionen unabhängiger Finanzierungspartner für Sie.', 'auto-emotion' ); ?></p>
+			<a class="btn btn-outline" href="<?php echo esc_url( home_url( '/finanzierung-leasing/' ) ); ?>">
+				<?php esc_html_e( 'Jetzt anfragen', 'auto-emotion' ); ?>
+				<span class="btn-arrow" aria-hidden="true">&rarr;</span>
+			</a>
+		</div>
+		<div class="service-teaser">
+			<h3 class="service-teaser__title"><?php esc_html_e( 'Fahrzeugankauf & Inzahlungnahme', 'auto-emotion' ); ?></h3>
+			<p><?php esc_html_e( 'Wir nehmen Ihr aktuelles Fahrzeug in Zahlung – unabhängig von der Marke.', 'auto-emotion' ); ?></p>
+			<a class="btn btn-outline" href="<?php echo esc_url( home_url( '/fahrzeugankauf/' ) ); ?>">
+				<?php esc_html_e( 'Fahrzeug angeben', 'auto-emotion' ); ?>
+				<span class="btn-arrow" aria-hidden="true">&rarr;</span>
+			</a>
+		</div>
+	</div>
+</section>
+
 <section class="event-banner" aria-labelledby="service-heading">
 	<img
 		class="event-banner__image"
