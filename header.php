@@ -31,6 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		?>
 		<<?php echo $auto_emotion_logo_tag; ?> class="site-title">
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
+				<span class="site-logo-wrap">
 				<img
 					class="site-logo"
 					src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/logo-icon-white.png' ); ?>"
@@ -38,6 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					width="35"
 					height="37"
 				>
+				</span>
 			</a>
 		</<?php echo $auto_emotion_logo_tag; ?>>
 	</div>

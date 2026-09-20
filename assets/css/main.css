@@ -161,10 +161,54 @@ body.has-transparent-header .site-header.is-scrolled {
 	line-height: 0;
 }
 
+.site-logo-wrap {
+	position: relative;
+	display: inline-flex;
+}
+
 .site-logo {
 	display: block;
 	width: 28px;
 	height: auto;
+	clip-path: inset(0 100% 0 0);
+	animation: ae-logo-reveal 1.1s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards;
+}
+
+.site-logo-wrap::after {
+	content: "";
+	position: absolute;
+	top: -3px;
+	bottom: -3px;
+	left: 0;
+	width: 2px;
+	background: var(--color-rosso-vivo);
+	box-shadow: 0 0 6px 1px var(--color-rosso-vivo), 0 0 14px 3px rgba(216, 0, 13, 0.55);
+	opacity: 0;
+	animation: ae-logo-laser 1.1s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards;
+	pointer-events: none;
+}
+
+@keyframes ae-logo-reveal {
+	from {
+		clip-path: inset(0 100% 0 0);
+	}
+	to {
+		clip-path: inset(0 0 0 0);
+	}
+}
+
+@keyframes ae-logo-laser {
+	0% {
+		left: 0;
+		opacity: 1;
+	}
+	90% {
+		opacity: 1;
+	}
+	100% {
+		left: 100%;
+		opacity: 0;
+	}
 }
 
 .header-actions {
