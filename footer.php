@@ -46,6 +46,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 </footer>
 
 <?php get_template_part( 'template-parts/chat-widget' ); ?>
+<?php get_template_part( 'template-parts/cookie-banner' ); ?>
 
 <?php wp_footer(); ?>
 </body>
