@@ -81,5 +81,47 @@ function auto_emotion_customize_register( $wp_customize ) {
 			'type'        => 'password',
 		)
 	);
+
+	$wp_customize->add_setting(
+		'ae_emo_greeting_video',
+		array(
+			'default'           => '',
+			'sanitize_callback' => 'esc_url_raw',
+		)
+	);
+
+	$wp_customize->add_control(
+		new WP_Customize_Media_Control(
+			$wp_customize,
+			'ae_emo_greeting_video',
+			array(
+				'label'       => __( 'Emo – Begrüßungsvideo', 'auto-emotion' ),
+				'description' => __( 'Läuft einmal mit Ton beim ersten Öffnen des Chats. Leer lassen für das Standard-Video im Theme.', 'auto-emotion' ),
+				'section'     => 'auto_emotion_general',
+				'mime_type'   => 'video',
+			)
+		)
+	);
+
+	$wp_customize->add_setting(
+		'ae_emo_idle_video',
+		array(
+			'default'           => '',
+			'sanitize_callback' => 'esc_url_raw',
+		)
+	);
+
+	$wp_customize->add_control(
+		new WP_Customize_Media_Control(
+			$wp_customize,
+			'ae_emo_idle_video',
+			array(
+				'label'       => __( 'Emo – Idle-Video (Dauerschleife danach)', 'auto-emotion' ),
+				'description' => __( 'Läuft stumm in Dauerschleife nach der Begrüßung. Leer lassen für das Standard-Video im Theme.', 'auto-emotion' ),
+				'section'     => 'auto_emotion_general',
+				'mime_type'   => 'video',
+			)
+		)
+	);
 }
 add_action( 'customize_register', 'auto_emotion_customize_register' );
