@@ -24,7 +24,7 @@ if ( ! isset( $_SERVER['PHP_AUTH_USER'] ) && isset( $_SERVER['HTTP_AUTHORIZATION
 	}
 }
 
-define( 'AUTO_EMOTION_VERSION', '0.9.6' );
+define( 'AUTO_EMOTION_VERSION', '0.9.7' );
 define( 'AUTO_EMOTION_DIR', get_template_directory() );
 define( 'AUTO_EMOTION_URI', get_template_directory_uri() );
 
@@ -40,3 +40,27 @@ require AUTO_EMOTION_DIR . '/inc/recruiting.php';
 require AUTO_EMOTION_DIR . '/inc/b2b.php';
 require AUTO_EMOTION_DIR . '/inc/testdrive.php';
 require AUTO_EMOTION_DIR . '/inc/chatbot.php';
+
+/**
+ * Emo-Avatar-Video ermitteln: Mediathek-Datei mit passendem Namen
+ * (z.B. "emo-greeting.mp4" hochladen) schlägt den Customizer-Wert,
+ * der wiederum das im Theme gebündelte Standardvideo schlägt. So
+ * lässt sich das Video jederzeit per Mediathek-Upload austauschen,
+ * ganz ohne Theme-Update.
+ */
+function auto_emotion_emo_video_url( $slug ) {
+	$attachment = get_page_by_path( 'emo-' . $slug, OBJECT, 'attachment' );
+	if ( $attachment ) {
+		$url = wp_get_attachment_url( $attachment->ID );
+		if ( $url ) {
+			return $url;
+		}
+	}
+
+	$mod = get_theme_mod( 'ae_emo_' . $slug . '_video' );
+	if ( $mod ) {
+		return $mod;
+	}
+
+	return AUTO_EMOTION_URI . '/assets/videos/emo-' . $slug . '.mp4?ver=' . AUTO_EMOTION_VERSION;
+}

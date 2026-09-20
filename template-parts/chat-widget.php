@@ -10,16 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$auto_emotion_greeting_video = get_theme_mod( 'ae_emo_greeting_video' );
-$auto_emotion_idle_video     = get_theme_mod( 'ae_emo_idle_video' );
-
-$auto_emotion_greeting_src = $auto_emotion_greeting_video
-	? $auto_emotion_greeting_video
-	: AUTO_EMOTION_URI . '/assets/videos/emo-greeting.mp4?ver=' . AUTO_EMOTION_VERSION;
-
-$auto_emotion_idle_src = $auto_emotion_idle_video
-	? $auto_emotion_idle_video
-	: AUTO_EMOTION_URI . '/assets/videos/emo-idle.mp4?ver=' . AUTO_EMOTION_VERSION;
+$auto_emotion_greeting_src = auto_emotion_emo_video_url( 'greeting' );
+$auto_emotion_idle_src     = auto_emotion_emo_video_url( 'idle' );
 ?>
 <div class="chat-widget" data-state="closed">
 	<button type="button" class="chat-widget__toggle" aria-expanded="false" aria-controls="chat-widget-panel">
