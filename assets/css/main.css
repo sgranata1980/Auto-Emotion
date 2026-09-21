@@ -1475,6 +1475,37 @@ body.has-transparent-header .site-main {
 	transform: scale(1.02);
 }
 
+/* ---------------------------------------------------------------- */
+/* Foto-Galerie (echte Standort-/Showroom-Fotos in Seiteninhalten)   */
+/* ---------------------------------------------------------------- */
+
+.photo-gallery {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: var(--spacing-24);
+}
+
+.photo-gallery > * {
+	min-width: 0;
+}
+
+.photo-gallery img {
+	width: 100%;
+	height: 280px;
+	object-fit: cover;
+	transition: transform 0.4s ease;
+}
+
+.photo-gallery img:hover {
+	transform: scale(1.02);
+}
+
+.photo-gallery figcaption {
+	margin-top: var(--spacing-8);
+	font-size: var(--text-caption);
+	color: var(--color-steel-mid);
+}
+
 @media (max-width: 700px) {
 	.content-header-image {
 		height: 220px;
