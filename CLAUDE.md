@@ -25,11 +25,19 @@ nachbearbeiten – Ziel ist ein heller, cleaner „Apple-Campus"-Look:
 - **Geometrie korrigieren**: Horizontlinien/Dachkanten exakt horizontal,
   senkrechte Elemente (Säulen, Hebebühnen, Türrahmen) exakt vertikal
   ausrichten – Weitwinkel-Verzerrung rausrechnen.
-- **Belichtung**: insgesamt heller, gleichmäßig ausgeleuchtet, keine harten
+- **Belichtung – immer viel Tageslicht-Helligkeit reinbringen**: deutlich
+  heller als das Originalfoto, so als stünden alle Türen/Tore offen und
+  die Sonne würde reinscheinen. Gleichmäßig ausgeleuchtet, keine harten
   Schatten oder dunklen Ecken, neutral-helle Farbgebung statt warmstichig.
-- Dabei **niemals reale Objekte, Personen, Fahrzeuge oder das Layout des
-  Raums verändern** – nur Geometrie, Bodenreinigung und Belichtung, das
-  Foto muss ein echtes, unverfälschtes Abbild des Orts bleiben.
+  Das Bild muss auf den ersten Blick ganz klar und licht wirken, nicht nur
+  leicht aufgehellt.
+- **Mülleimer/Papierkörbe entfernen**: sichtbare Mülleimer, Papierkörbe
+  und ähnlicher Wegwerf-Krimskrams gehören nicht ins Bild und werden
+  wegretuschiert.
+- Ansonsten **niemals reale Objekte, Personen, Fahrzeuge, Beschriftungen/
+  Texte oder das Layout des Raums verändern** – nur Geometrie,
+  Bodenreinigung, Mülleimer-Entfernung und Belichtung, das Foto muss
+  ein echtes, unverfälschtes Abbild des Orts bleiben.
 
 Bei Bedarf mehrere Korrektur-Durchgänge (z. B. erst Geometrie/Belichtung,
 dann gezielt nur noch den Boden nachschärfen), bis das Ergebnis diesem
