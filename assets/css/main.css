@@ -316,6 +316,22 @@ body.has-transparent-header .site-header.is-scrolled {
 	color: var(--color-ash-border);
 }
 
+/* Desktop/Maus: Untermenü beim Hovern über den Menüpunkt automatisch
+   zeigen, statt den kleinen Pfeil exakt treffen zu müssen. Auf
+   Touch-Geräten (Handy) gibt es kein Hover, dort bleibt das bewährte
+   Antippen des Pfeils die einzige Interaktion – unverändert. */
+@media (hover: hover) and (pointer: fine) {
+	.main-navigation .menu-item-has-children:hover > .sub-menu,
+	.main-navigation .menu-item-has-children:focus-within > .sub-menu {
+		display: flex;
+	}
+
+	.main-navigation .menu-item-has-children:hover > .submenu-toggle .submenu-toggle-icon,
+	.main-navigation .menu-item-has-children:focus-within > .submenu-toggle .submenu-toggle-icon {
+		transform: rotate(-135deg);
+	}
+}
+
 .header-search {
 	position: absolute;
 	top: 64px;
@@ -1202,7 +1218,7 @@ body.has-transparent-header .site-main {
 	font-size: var(--text-caption);
 	line-height: 1.6;
 	color: var(--color-ash-border);
-	max-width: 640px;
+	max-width: var(--page-max-width);
 	margin: 0 0 var(--spacing-16);
 }
 
