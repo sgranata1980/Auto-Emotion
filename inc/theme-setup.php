@@ -26,6 +26,15 @@ function auto_emotion_setup() {
 }
 add_action( 'after_setup_theme', 'auto_emotion_setup' );
 
+/**
+ * Seiteninhalte werden ausschließlich als fertiges HTML gepflegt (nie über
+ * den klassischen Editor), Absätze stehen also immer schon explizit in
+ * eigenen <p>-Tags. wpautop zerschießt dabei verschachteltes Markup wie
+ * <div>-Karten mit <img> (fügt </p> ohne öffnendes <p> ein), sobald
+ * Block-Elemente ohne Leerzeilen aufeinanderfolgen.
+ */
+remove_filter( 'the_content', 'wpautop' );
+
 function auto_emotion_widgets_init() {
 	register_sidebar(
 		array(
