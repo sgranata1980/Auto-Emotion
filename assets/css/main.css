@@ -10,6 +10,17 @@ html {
 	scroll-behavior: smooth;
 }
 
+/* Feste Regel gegen seitliches Verrutschen/Anstoßen an den Rand: die
+   Seite darf nie horizontal scrollbar werden. Die eigentliche Ursache
+   (Grid-Items ohne min-width: 0, siehe .story-grid/.job-card-grid/
+   .service-teaser-grid) wird gezielt behoben, das hier ist zusätzlich
+   ein Sicherheitsnetz gegen jede künftige Regression. */
+html,
+body {
+	overflow-x: hidden;
+	max-width: 100%;
+}
+
 body {
 	margin: 0;
 	background: var(--surface-canvas-white);
@@ -652,6 +663,16 @@ body.has-transparent-header .site-header.is-scrolled {
 	gap: var(--element-gap);
 }
 
+/* Grid-Items schrumpfen sonst nicht unter ihre intrinsische Breite
+   (min-width:auto-Default) – ein großes Bild in einer Karte hat sonst
+   horizontalen Overflow der ganzen Seite zur Folge, obwohl die Spalte
+   selbst 1fr/100% breit ist. Gleiche Ursache wie bei
+   .section-heading__title oben, hier zusätzlich für alle
+   Story-Grid-Kinder (Marken-Kacheln, Angebots- und News-Karten). */
+.story-grid > * {
+	min-width: 0;
+}
+
 @media (max-width: 900px) {
 	.story-grid {
 		grid-template-columns: 1fr;
@@ -706,6 +727,17 @@ body.has-transparent-header .site-main {
 
 .container > * + * {
 	margin-top: var(--section-gap);
+}
+
+/* Fester Mindestabstand zwischen allen Blöcken innerhalb von
+   Seiteninhalten (the_content-Ausgabe): dort landen Absätze, Boxen/
+   Grids, Bilder und Überschriften als flaches HTML direkt in
+   .entry-content, ohne dass die .container > * + *-Regel oben greift
+   (entry-content ist selbst nur EIN Kind von .container). Ohne diese
+   Regel klebt z.B. eine Karten-Box direkt an der folgenden Überschrift.
+   Gilt einheitlich für jede Seite – kein Einzelfall-Fix pro Komponente. */
+.entry-content > * + * {
+	margin-top: var(--spacing-40);
 }
 
 /* ---------------------------------------------------------------- */
@@ -1402,6 +1434,10 @@ body.has-transparent-header .site-main {
 	gap: var(--spacing-24);
 }
 
+.service-teaser-grid > * {
+	min-width: 0;
+}
+
 .service-teaser {
 	border: 1px solid var(--color-graphite-border);
 	padding: var(--spacing-24);
@@ -1449,6 +1485,10 @@ body.has-transparent-header .site-main {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 	gap: var(--spacing-24);
+}
+
+.job-card-grid > * {
+	min-width: 0;
 }
 
 .job-card {
