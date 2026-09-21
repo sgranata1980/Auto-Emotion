@@ -20,6 +20,14 @@ $auto_emotion_marke_headers = array(
 		'image' => 'nissan-showroom-juke.jpg',
 		'alt'   => 'Nissan-Bereich im Auto Emotion Showroom mit Nissan Juke und Design Lab',
 	),
+	'seat'   => array(
+		'image' => 'marke-seat-header.jpg',
+		'alt'   => 'Seat-Bereich im Auto Emotion Showroom mit Seat Arona und Leon',
+	),
+	'cupra'  => array(
+		'image' => 'marke-cupra-header.jpg',
+		'alt'   => 'Cupra-Bereich im Auto Emotion Showroom mit Cupra Formentor und Arona zum 25-jährigen Jubiläum',
+	),
 );
 $auto_emotion_marke_header  = $auto_emotion_marke_headers[ $auto_emotion_term->slug ] ?? null;
 ?>
