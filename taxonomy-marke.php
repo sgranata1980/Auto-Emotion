@@ -10,7 +10,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 
 $auto_emotion_term = get_queried_object();
+
+/**
+ * Echte Fotos aus dem Showroom statt generischer KI-Bilder, wo
+ * bereits welche vorliegen – pro Marke einzeln gepflegt.
+ */
+$auto_emotion_marke_headers = array(
+	'nissan' => array(
+		'image' => 'nissan-showroom-juke.jpg',
+		'alt'   => 'Nissan-Bereich im Auto Emotion Showroom mit Nissan Juke und Design Lab',
+	),
+);
+$auto_emotion_marke_header  = $auto_emotion_marke_headers[ $auto_emotion_term->slug ] ?? null;
 ?>
+
+<?php if ( $auto_emotion_marke_header ) : ?>
+	<img class="content-header-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/' . $auto_emotion_marke_header['image'] ); ?>" alt="<?php echo esc_attr( $auto_emotion_marke_header['alt'] ); ?>" loading="lazy">
+<?php endif; ?>
 
 <div class="section-heading">
 	<h1 class="section-heading__title"><?php echo esc_html( $auto_emotion_term->name ); ?></h1>
