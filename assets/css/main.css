@@ -1171,7 +1171,12 @@ body.has-transparent-header .site-main {
 	line-height: 1.6;
 	color: var(--color-ash-border);
 	max-width: 640px;
-	margin: 0 0 var(--spacing-24);
+	margin: 0 0 var(--spacing-16);
+}
+
+.footer-legal-note--mini {
+	opacity: 0.6;
+	margin-bottom: var(--spacing-24);
 }
 
 .site-info {
