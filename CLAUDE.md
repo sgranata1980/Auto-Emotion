@@ -34,6 +34,23 @@ nachbearbeiten – Ziel ist ein heller, cleaner „Apple-Campus"-Look:
 - **Mülleimer/Papierkörbe entfernen**: sichtbare Mülleimer, Papierkörbe
   und ähnlicher Wegwerf-Krimskrams gehören nicht ins Bild und werden
   wegretuschiert.
+- **Fahrzeuge dürfen nicht zu dunkel wirken**: besonders schwarze/dunkle
+  Autos schlucken Licht und sehen dann trotz insgesamt hellem Bild
+  unterbelichtet aus. Gezielt aufhellen (Schatten/Tiefen anheben), bis
+  Lack, Konturen und Details der Fahrzeuge klar erkennbar sind – nicht
+  nur Boden und Wände hell, auch die Autos selbst.
+- **Texte/Beschriftungen im Hintergrund (auch durch Fenster/Scheiben
+  sichtbar) niemals verändern**: KI-Bildkorrektur neigt dazu, kleine
+  Schilder, Fensterbeschriftungen oder Werbeaufsteller im Hintergrund in
+  bedeutungslosen Buchstabensalat zu verwandeln. Das zählt als
+  Regelverstoß, auch wenn der Text im Original schon unscharf/klein war.
+  Vor jeder Freigabe gezielt auf Hintergrundtext prüfen (nicht nur auf
+  den offensichtlichen Haupttext im Bildzentrum). Bei Bildern mit viel
+  Text im Hintergrund (Wandbeschriftungen, Bildschirme, Poster,
+  Schaufenster-Aufkleber) lieber die nicht-generative Korrektur
+  (Geometrie/Belichtung ohne Neuzeichnen) verwenden statt der
+  KI-Bild-zu-Bild-Korrektur, da diese Text zuverlässiger unangetastet
+  lässt.
 - Ansonsten **niemals reale Objekte, Personen, Fahrzeuge, Beschriftungen/
   Texte oder das Layout des Raums verändern** – nur Geometrie,
   Bodenreinigung, Mülleimer-Entfernung und Belichtung, das Foto muss
@@ -41,4 +58,7 @@ nachbearbeiten – Ziel ist ein heller, cleaner „Apple-Campus"-Look:
 
 Bei Bedarf mehrere Korrektur-Durchgänge (z. B. erst Geometrie/Belichtung,
 dann gezielt nur noch den Boden nachschärfen), bis das Ergebnis diesem
-Standard entspricht, bevor es auf der Seite verwendet wird.
+Standard entspricht, bevor es auf der Seite verwendet wird. Nach jedem
+Durchgang das Ergebnis in voller Auflösung prüfen – speziell Fahrzeuglack
+auf Dunkelheit und jeden sichtbaren Hintergrundtext auf Lesbarkeit/
+Unverändertheit.
