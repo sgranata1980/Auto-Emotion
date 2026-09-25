@@ -1522,6 +1522,17 @@ body.has-transparent-header .site-main {
 	color: var(--color-steel-mid);
 }
 
+/* Variante für Hersteller-Produktfotos (Studioaufnahme, weißer
+   Hintergrund): Fahrzeug muss immer vollständig sichtbar bleiben,
+   statt wie bei Standort-Fotos beschnitten zu werden. */
+.photo-gallery--products img {
+	height: 220px;
+	object-fit: contain;
+	background: var(--surface-canvas-white);
+	padding: var(--spacing-16);
+	border: 1px solid var(--color-graphite-border);
+}
+
 @media (max-width: 700px) {
 	.content-header-image {
 		height: 220px;

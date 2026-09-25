@@ -44,6 +44,30 @@ $auto_emotion_marke_header  = $auto_emotion_marke_headers[ $auto_emotion_term->s
 	<div class="archive-description"><?php echo wp_kses_post( wpautop( $auto_emotion_term->description ) ); ?></div>
 <?php endif; ?>
 
+<?php if ( 'nissan' === $auto_emotion_term->slug ) : ?>
+	<div class="section-heading">
+		<h2 class="section-heading__title"><?php esc_html_e( 'Unsere Nissan-Modelle', 'auto-emotion' ); ?></h2>
+	</div>
+	<div class="photo-gallery photo-gallery--products">
+		<figure>
+			<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-modell-juke.jpg' ); ?>" alt="Nissan Juke, offizielles Herstellerfoto" loading="lazy">
+			<figcaption>Nissan Juke</figcaption>
+		</figure>
+		<figure>
+			<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-modell-qashqai.jpg' ); ?>" alt="Nissan Qashqai, offizielles Herstellerfoto" loading="lazy">
+			<figcaption>Nissan Qashqai</figcaption>
+		</figure>
+		<figure>
+			<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-modell-xtrail.jpg' ); ?>" alt="Nissan X-Trail, offizielles Herstellerfoto" loading="lazy">
+			<figcaption>Nissan X-Trail</figcaption>
+		</figure>
+		<figure>
+			<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-modell-ariya.jpg' ); ?>" alt="Nissan Ariya, offizielles Herstellerfoto" loading="lazy">
+			<figcaption>Nissan Ariya</figcaption>
+		</figure>
+	</div>
+<?php endif; ?>
+
 <?php
 $auto_emotion_angebote = new WP_Query(
 	array(
