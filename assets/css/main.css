@@ -39,6 +39,14 @@ img {
 	border-radius: var(--radius-images);
 }
 
+.post-thumbnail--video {
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	display: block;
+	border-radius: var(--radius-images);
+}
+
 h1,
 h2,
 h3,

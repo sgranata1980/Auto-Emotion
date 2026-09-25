@@ -22,7 +22,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 		?>
 	</header>
 
-	<?php if ( has_post_thumbnail() ) : ?>
+	<?php
+	// Einzelne Beiträge können ein Video (z.B. offizielles Hersteller-
+	// Pressematerial) statt des Beitragsbilds zeigen – über das Custom
+	// Field "auto_emotion_video" gepflegt. In Archiv-/Listenansichten
+	// bleibt es beim Standbild, damit Teaser-Kacheln konsistent bleiben.
+	$auto_emotion_post_video = is_singular() ? get_post_meta( get_the_ID(), 'auto_emotion_video', true ) : '';
+	?>
+	<?php if ( $auto_emotion_post_video ) : ?>
+		<video
+			class="post-thumbnail post-thumbnail--video"
+			src="<?php echo esc_url( $auto_emotion_post_video ); ?>"
+			<?php if ( has_post_thumbnail() ) : ?>poster="<?php echo esc_url( get_the_post_thumbnail_url( null, 'large' ) ); ?>"<?php endif; ?>
+			autoplay muted loop playsinline
+		></video>
+	<?php elseif ( has_post_thumbnail() ) : ?>
 		<div class="post-thumbnail"><?php the_post_thumbnail( 'large' ); ?></div>
 	<?php endif; ?>
 
