@@ -86,6 +86,32 @@ $auto_emotion_marke_modelle = array(
 			'name'  => 'Seat Leon Sportstourer',
 		),
 	),
+	'cupra'  => array(
+		array(
+			'image' => 'cupra-modell-born.jpg',
+			'name'  => 'Cupra Born',
+		),
+		array(
+			'image' => 'cupra-modell-tavascan.jpg',
+			'name'  => 'Cupra Tavascan',
+		),
+		array(
+			'image' => 'cupra-modell-terramar.jpg',
+			'name'  => 'Cupra Terramar',
+		),
+		array(
+			'image' => 'cupra-modell-formentor.jpg',
+			'name'  => 'Cupra Formentor',
+		),
+		array(
+			'image' => 'cupra-modell-leon.jpg',
+			'name'  => 'Cupra Leon',
+		),
+		array(
+			'image' => 'cupra-modell-leon-sportstourer.jpg',
+			'name'  => 'Cupra Leon Sportstourer',
+		),
+	),
 );
 $auto_emotion_modelle       = $auto_emotion_marke_modelle[ $auto_emotion_term->slug ] ?? array();
 ?>
