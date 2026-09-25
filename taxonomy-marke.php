@@ -44,27 +44,68 @@ $auto_emotion_marke_header  = $auto_emotion_marke_headers[ $auto_emotion_term->s
 	<div class="archive-description"><?php echo wp_kses_post( wpautop( $auto_emotion_term->description ) ); ?></div>
 <?php endif; ?>
 
-<?php if ( 'nissan' === $auto_emotion_term->slug ) : ?>
+<?php
+$auto_emotion_marke_modelle = array(
+	'nissan' => array(
+		array(
+			'image' => 'nissan-modell-juke.jpg',
+			'name'  => 'Nissan Juke',
+		),
+		array(
+			'image' => 'nissan-modell-qashqai.jpg',
+			'name'  => 'Nissan Qashqai',
+		),
+		array(
+			'image' => 'nissan-modell-xtrail.jpg',
+			'name'  => 'Nissan X-Trail',
+		),
+		array(
+			'image' => 'nissan-modell-ariya.jpg',
+			'name'  => 'Nissan Ariya',
+		),
+	),
+	'seat'   => array(
+		array(
+			'image' => 'seat-modell-arona.jpg',
+			'name'  => 'Seat Arona',
+		),
+		array(
+			'image' => 'seat-modell-ateca.jpg',
+			'name'  => 'Seat Ateca',
+		),
+		array(
+			'image' => 'seat-modell-ibiza.jpg',
+			'name'  => 'Seat Ibiza',
+		),
+		array(
+			'image' => 'seat-modell-leon.jpg',
+			'name'  => 'Seat Leon',
+		),
+		array(
+			'image' => 'seat-modell-leon-sportstourer.jpg',
+			'name'  => 'Seat Leon Sportstourer',
+		),
+	),
+);
+$auto_emotion_modelle       = $auto_emotion_marke_modelle[ $auto_emotion_term->slug ] ?? array();
+?>
+
+<?php if ( $auto_emotion_modelle ) : ?>
 	<div class="section-heading">
-		<h2 class="section-heading__title"><?php esc_html_e( 'Unsere Nissan-Modelle', 'auto-emotion' ); ?></h2>
+		<h2 class="section-heading__title">
+			<?php
+			/* translators: %s: brand name, e.g. "Seat" */
+			printf( esc_html__( 'Unsere %s-Modelle', 'auto-emotion' ), esc_html( $auto_emotion_term->name ) );
+			?>
+		</h2>
 	</div>
 	<div class="photo-gallery photo-gallery--products">
-		<figure>
-			<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-modell-juke.jpg' ); ?>" alt="Nissan Juke, offizielles Herstellerfoto" loading="lazy">
-			<figcaption>Nissan Juke</figcaption>
-		</figure>
-		<figure>
-			<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-modell-qashqai.jpg' ); ?>" alt="Nissan Qashqai, offizielles Herstellerfoto" loading="lazy">
-			<figcaption>Nissan Qashqai</figcaption>
-		</figure>
-		<figure>
-			<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-modell-xtrail.jpg' ); ?>" alt="Nissan X-Trail, offizielles Herstellerfoto" loading="lazy">
-			<figcaption>Nissan X-Trail</figcaption>
-		</figure>
-		<figure>
-			<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-modell-ariya.jpg' ); ?>" alt="Nissan Ariya, offizielles Herstellerfoto" loading="lazy">
-			<figcaption>Nissan Ariya</figcaption>
-		</figure>
+		<?php foreach ( $auto_emotion_modelle as $auto_emotion_modell ) : ?>
+			<figure>
+				<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/' . $auto_emotion_modell['image'] ); ?>" alt="<?php echo esc_attr( $auto_emotion_modell['name'] . ', offizielles Herstellerfoto' ); ?>" loading="lazy">
+				<figcaption><?php echo esc_html( $auto_emotion_modell['name'] ); ?></figcaption>
+			</figure>
+		<?php endforeach; ?>
 	</div>
 <?php endif; ?>
 
