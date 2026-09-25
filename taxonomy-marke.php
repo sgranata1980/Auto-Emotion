@@ -136,6 +136,45 @@ $auto_emotion_modelle       = $auto_emotion_marke_modelle[ $auto_emotion_term->s
 <?php endif; ?>
 
 <?php
+$auto_emotion_marke_showroom_fotos = array(
+	'nissan' => array(
+		array(
+			'image' => 'showroom-nissan-designlab.jpg',
+			'name'  => 'Nissan Design Lab im Showroom',
+		),
+		array(
+			'image' => 'showroom-nissan-evs.jpg',
+			'name'  => 'Nissan Elektrofahrzeuge im Showroom',
+		),
+		array(
+			'image' => 'showroom-nissan-logo.jpg',
+			'name'  => 'Nissan Markenzeichen im Showroom',
+		),
+	),
+	'cupra'  => array(
+		array(
+			'image' => 'showroom-cupra-detail.jpg',
+			'name'  => 'Cupra Corner im Showroom',
+		),
+	),
+);
+$auto_emotion_showroom_fotos       = $auto_emotion_marke_showroom_fotos[ $auto_emotion_term->slug ] ?? array();
+?>
+
+<?php if ( $auto_emotion_showroom_fotos ) : ?>
+	<div class="section-heading">
+		<h2 class="section-heading__title"><?php esc_html_e( 'Bei uns vor Ort', 'auto-emotion' ); ?></h2>
+	</div>
+	<div class="photo-gallery">
+		<?php foreach ( $auto_emotion_showroom_fotos as $auto_emotion_showroom_foto ) : ?>
+			<figure>
+				<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/' . $auto_emotion_showroom_foto['image'] ); ?>" alt="<?php echo esc_attr( $auto_emotion_showroom_foto['name'] ); ?>" loading="lazy">
+			</figure>
+		<?php endforeach; ?>
+	</div>
+<?php endif; ?>
+
+<?php
 $auto_emotion_angebote = new WP_Query(
 	array(
 		'post_type'      => 'angebot',

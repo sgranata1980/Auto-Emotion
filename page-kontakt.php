@@ -17,6 +17,8 @@ $auto_emotion_address = sprintf(
 );
 ?>
 
+<img class="content-header-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/standort-fassade.jpg' ); ?>" alt="Auto Emotion Standort in Offenbach, Außenansicht" loading="lazy">
+
 <div class="section-heading">
 	<h1 class="section-heading__title"><?php esc_html_e( 'Kontakt', 'auto-emotion' ); ?></h1>
 </div>
@@ -58,6 +60,24 @@ $auto_emotion_address = sprintf(
 		<h2><?php esc_html_e( 'Öffnungszeiten Werkstatt', 'auto-emotion' ); ?></h2>
 		<p><?php echo esc_html( auto_emotion_contact( 'hours_service' ) ); ?></p>
 	</div>
+</div>
+
+<div class="section-heading">
+	<h2 class="section-heading__title"><?php esc_html_e( 'Bei uns vor Ort', 'auto-emotion' ); ?></h2>
+</div>
+<div class="photo-gallery">
+	<figure>
+		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-lounge-auftanken.jpg' ); ?>" alt="Kundenlounge im Auto Emotion Showroom" loading="lazy">
+		<figcaption><?php esc_html_e( 'Kundenlounge', 'auto-emotion' ); ?></figcaption>
+	</figure>
+	<figure>
+		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-tiefgarage.jpg' ); ?>" alt="Fahrzeugausstellung im Untergeschoss bei Auto Emotion" loading="lazy">
+		<figcaption><?php esc_html_e( 'Fahrzeugausstellung', 'auto-emotion' ); ?></figcaption>
+	</figure>
+	<figure>
+		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/service-eingang.jpg' ); ?>" alt="Serviceannahme bei Auto Emotion" loading="lazy">
+		<figcaption><?php esc_html_e( 'Serviceannahme', 'auto-emotion' ); ?></figcaption>
+	</figure>
 </div>
 
 <?php
