@@ -24,7 +24,7 @@ if ( ! isset( $_SERVER['PHP_AUTH_USER'] ) && isset( $_SERVER['HTTP_AUTHORIZATION
 	}
 }
 
-define( 'AUTO_EMOTION_VERSION', '1.2.2' );
+define( 'AUTO_EMOTION_VERSION', '1.2.3' );
 define( 'AUTO_EMOTION_DIR', get_template_directory() );
 define( 'AUTO_EMOTION_URI', get_template_directory_uri() );
 
