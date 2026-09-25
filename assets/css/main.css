@@ -838,6 +838,10 @@ body.has-transparent-header .site-main {
 	color: var(--surface-canvas-white);
 }
 
+.career-banner__media {
+	position: relative;
+}
+
 .career-banner__image {
 	display: block;
 	width: 100%;
@@ -853,6 +857,27 @@ body.has-transparent-header .site-main {
 	.career-banner__image {
 		height: 220px;
 	}
+}
+
+.career-banner__play {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: rgba(0, 0, 0, 0.35);
+}
+
+.career-banner__video-hint {
+	position: absolute;
+	bottom: var(--spacing-16);
+	left: 50%;
+	transform: translateX(-50%);
+	color: var(--surface-canvas-white);
+	font-size: var(--text-caption);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	background: rgba(0, 0, 0, 0.55);
+	padding: 4px 10px;
 }
 
 .career-banner__image--wrap {

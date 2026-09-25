@@ -39,12 +39,18 @@ $auto_emotion_marken = get_terms(
 <?php endif; ?>
 
 <section class="career-banner" aria-labelledby="career-heading">
-	<img
-		class="career-banner__image"
-		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/career-mechatroniker.jpg' ); ?>"
-		alt=""
-		loading="lazy"
-	>
+	<div class="career-banner__media">
+		<img
+			class="career-banner__image"
+			src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/career-mechatroniker.jpg' ); ?>"
+			alt=""
+			loading="lazy"
+		>
+		<span class="video-placeholder__play career-banner__play" aria-hidden="true">
+			<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+		</span>
+		<span class="career-banner__video-hint"><?php esc_html_e( 'Video folgt in Kürze', 'auto-emotion' ); ?></span>
+	</div>
 	<div class="career-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Wir stellen ein', 'auto-emotion' ); ?></p>
 		<h2 id="career-heading" class="career-banner__headline"><?php esc_html_e( '5 offene Stellen in Werkstatt und Service', 'auto-emotion' ); ?></h2>
