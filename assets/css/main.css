@@ -1590,3 +1590,67 @@ body.has-transparent-header .site-main {
 	color: var(--color-steel-mid);
 	margin: 0;
 }
+
+/* ---------------------------------------------------------------- */
+/* Fact-Strip (konkrete Arbeitgeber-Zahlen, z.B. auf der Karriere-   */
+/* Übersicht, direkt unter dem Intro-Text)                          */
+/* ---------------------------------------------------------------- */
+
+.fact-strip {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+	gap: var(--spacing-24);
+	border-top: 1px solid var(--color-graphite-border);
+	border-bottom: 1px solid var(--color-graphite-border);
+	padding: var(--spacing-24) 0;
+}
+
+.fact-strip__item {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-8);
+}
+
+.fact-strip__value {
+	font-size: var(--text-heading-sm);
+	font-weight: 700;
+	color: var(--color-giallo-vivo);
+}
+
+.fact-strip__label {
+	font-size: var(--text-caption);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	color: var(--color-steel-mid);
+}
+
+/* ---------------------------------------------------------------- */
+/* Bewerbungsprozess als nummerierte Schritte                       */
+/* ---------------------------------------------------------------- */
+
+.process-steps {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: var(--spacing-24);
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.process-steps__item {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-8);
+}
+
+.process-steps__number {
+	font-size: var(--text-heading-sm);
+	font-weight: 700;
+	color: var(--color-rosso-vivo);
+}
+
+.process-steps__title {
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	margin: 0;
+}
