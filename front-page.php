@@ -38,6 +38,24 @@ $auto_emotion_marken = get_terms(
 	</section>
 <?php endif; ?>
 
+<section class="career-banner" aria-labelledby="career-heading">
+	<img
+		class="career-banner__image"
+		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/career-mechatroniker.jpg' ); ?>"
+		alt=""
+		loading="lazy"
+	>
+	<div class="career-banner__content">
+		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Wir stellen ein', 'auto-emotion' ); ?></p>
+		<h2 id="career-heading" class="career-banner__headline"><?php esc_html_e( '5 offene Stellen in Werkstatt und Service', 'auto-emotion' ); ?></h2>
+		<p><?php esc_html_e( 'Vom Kfz-Mechatroniker bis zur Werkstattleitung: moderne Werkstatt mit 12 Hebebühnen, Marken Seat, Cupra und Nissan. Ein Team, das bleibt – viele Kollegen seit 8 bis 14 Jahren im Betrieb. 30 Tage Urlaub, Start ab sofort.', 'auto-emotion' ); ?></p>
+		<a class="btn btn-outline" href="<?php echo esc_url( home_url( '/karriere/' ) ); ?>">
+			<?php esc_html_e( 'Alle Stellen ansehen', 'auto-emotion' ); ?>
+			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
+		</a>
+	</div>
+</section>
+
 <?php
 $auto_emotion_angebote = new WP_Query(
 	array(
@@ -105,24 +123,6 @@ $auto_emotion_news = new WP_Query(
 	</section>
 	<?php wp_reset_postdata(); ?>
 <?php endif; ?>
-
-<section class="career-banner" aria-labelledby="career-heading">
-	<img
-		class="career-banner__image"
-		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/career-mechatroniker.jpg' ); ?>"
-		alt=""
-		loading="lazy"
-	>
-	<div class="career-banner__content">
-		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Wir stellen ein', 'auto-emotion' ); ?></p>
-		<h2 id="career-heading" class="career-banner__headline"><?php esc_html_e( '5 offene Stellen in Werkstatt und Service', 'auto-emotion' ); ?></h2>
-		<p><?php esc_html_e( 'Vom Kfz-Mechatroniker bis zur Werkstattleitung: moderne Werkstatt mit 12 Hebebühnen, Marken Seat, Cupra und Nissan. Ein Team, das bleibt – viele Kollegen seit 8 bis 14 Jahren im Betrieb. 30 Tage Urlaub, Start ab sofort.', 'auto-emotion' ); ?></p>
-		<a class="btn btn-outline" href="<?php echo esc_url( home_url( '/karriere/' ) ); ?>">
-			<?php esc_html_e( 'Alle Stellen ansehen', 'auto-emotion' ); ?>
-			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
-		</a>
-	</div>
-</section>
 
 <section class="career-banner" aria-labelledby="b2b-heading">
 	<img
