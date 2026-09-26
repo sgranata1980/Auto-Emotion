@@ -33,8 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<video
 			class="post-thumbnail post-thumbnail--video"
 			src="<?php echo esc_url( $auto_emotion_post_video ); ?>"
-			<?php if ( has_post_thumbnail() ) : ?>poster="<?php echo esc_url( get_the_post_thumbnail_url( null, 'large' ) ); ?>"<?php endif; ?>
-			autoplay muted loop playsinline webkit-playsinline preload="auto" controls
+			autoplay muted loop playsinline webkit-playsinline preload="auto"
 		></video>
 	<?php elseif ( has_post_thumbnail() ) : ?>
 		<div class="post-thumbnail"><?php the_post_thumbnail( 'large' ); ?></div>
