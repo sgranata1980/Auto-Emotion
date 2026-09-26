@@ -33,6 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<video
 			class="post-thumbnail post-thumbnail--video"
 			src="<?php echo esc_url( $auto_emotion_post_video ); ?>"
+			width="1280" height="720"
 			autoplay muted loop playsinline webkit-playsinline preload="auto"
 		></video>
 	<?php elseif ( has_post_thumbnail() ) : ?>
