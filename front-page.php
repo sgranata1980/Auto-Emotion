@@ -40,12 +40,12 @@ $auto_emotion_marken = get_terms(
 
 <section class="career-banner" aria-labelledby="career-heading">
 	<div class="career-banner__media">
-		<video
+		<img
 			class="career-banner__image"
-			src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/videos/cupra-leon-b-roll.mp4' ); ?>"
-			width="1280" height="720"
-			autoplay muted loop playsinline webkit-playsinline preload="auto"
-		></video>
+			src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/career-mechatroniker.jpg' ); ?>"
+			alt=""
+			loading="lazy"
+		>
 	</div>
 	<div class="career-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Wir stellen ein', 'auto-emotion' ); ?></p>
