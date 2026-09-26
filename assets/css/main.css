@@ -1645,6 +1645,109 @@ body.has-transparent-header .site-main {
 	justify-content: center;
 }
 
+.section-heading__hint {
+	font-size: var(--text-caption);
+	color: var(--color-steel-mid);
+	margin: 0;
+}
+
+/* Konfigurator innerhalb der aufgeklappten Modellkachel. */
+.configurator {
+	margin-top: var(--spacing-16);
+	padding-top: var(--spacing-16);
+	border-top: 1px solid var(--color-graphite-border);
+}
+
+.configurator__group {
+	margin: 0 0 var(--spacing-16);
+	border: none;
+	padding: 0;
+}
+
+.configurator__group legend,
+.configurator__group > label {
+	display: block;
+	font-size: var(--text-caption);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	color: var(--color-steel-mid);
+	margin-bottom: var(--spacing-8);
+	padding: 0;
+}
+
+.configurator__colors {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-8);
+}
+
+.color-chip {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-8);
+	cursor: pointer;
+	padding: var(--spacing-8);
+	border: 1px solid var(--color-graphite-border);
+	border-radius: var(--radius-buttons);
+	font-size: var(--text-caption);
+}
+
+.color-chip input {
+	position: absolute;
+	opacity: 0;
+	width: 1px;
+	height: 1px;
+}
+
+.color-chip:has(input:checked) {
+	border-color: currentColor;
+	font-weight: 600;
+}
+
+.color-chip:has(input:focus-visible) {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
+}
+
+.color-chip__swatch {
+	display: block;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	border: 1px solid var(--color-graphite-border);
+	flex-shrink: 0;
+}
+
+.configurator__select {
+	width: 100%;
+	font-size: var(--text-body);
+	padding: var(--spacing-8);
+	border: 1px solid var(--color-graphite-border);
+	border-radius: var(--radius-buttons);
+	background: var(--surface-canvas-white);
+}
+
+.configurator__summary {
+	font-size: var(--text-caption);
+	margin: 0 0 var(--spacing-16);
+}
+
+.configurator__summary-text {
+	font-weight: 600;
+}
+
+.configurator__cta {
+	width: 100%;
+	justify-content: center;
+}
+
+.model-card__disclaimer {
+	font-size: var(--text-caption);
+	color: var(--color-steel-mid);
+	max-width: var(--page-max-width);
+	margin: var(--spacing-16) 0 0;
+}
+
 .job-card-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));

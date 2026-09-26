@@ -46,10 +46,80 @@ $auto_emotion_marke_header  = $auto_emotion_marke_headers[ $auto_emotion_term->s
 
 <?php
 /**
+ * Markentypische Lackfarben – echte, für die Marke bekannte
+ * Farbnamen (u. a. erhältlich, nicht als exakte Verfügbarkeit für
+ * jede einzelne Ausstattungslinie zu verstehen). Ein Fotowechsel je
+ * Farbe findet bewusst nicht statt, um keine zusätzlichen Bilder
+ * erzeugen zu müssen.
+ */
+$auto_emotion_marke_farben = array(
+	'nissan' => array(
+		array(
+			'name' => __( 'Pearl White', 'auto-emotion' ),
+			'hex'  => '#f1f1f0',
+		),
+		array(
+			'name' => __( 'Gun Metallic', 'auto-emotion' ),
+			'hex'  => '#55575a',
+		),
+		array(
+			'name' => __( 'Vivid Blue', 'auto-emotion' ),
+			'hex'  => '#1e5fa8',
+		),
+	),
+	'seat'   => array(
+		array(
+			'name' => __( 'Desire Red', 'auto-emotion' ),
+			'hex'  => '#c8102e',
+		),
+		array(
+			'name' => __( 'Nevada White', 'auto-emotion' ),
+			'hex'  => '#f2f1ec',
+		),
+		array(
+			'name' => __( 'Graphene Grey', 'auto-emotion' ),
+			'hex'  => '#4a4c4e',
+		),
+	),
+	'cupra'  => array(
+		array(
+			'name' => __( 'Century Bronze', 'auto-emotion' ),
+			'hex'  => '#7a6a55',
+		),
+		array(
+			'name' => __( 'Enceladus Grey', 'auto-emotion' ),
+			'hex'  => '#6e7276',
+		),
+		array(
+			'name' => __( 'Petrol Blue', 'auto-emotion' ),
+			'hex'  => '#1f3b45',
+		),
+	),
+);
+$auto_emotion_farben       = $auto_emotion_marke_farben[ $auto_emotion_term->slug ] ?? array();
+
+/**
+ * Felgen- und Interieur-Stufen: bewusst allgemein gehalten (keine
+ * erfundenen Modellbezeichnungen), da echte, modellspezifische
+ * Felgen-/Polsternamen nicht für jedes Modell zuverlässig vorliegen.
+ */
+$auto_emotion_felgen_optionen    = array(
+	__( '16–17" Serienfelgen', 'auto-emotion' ),
+	__( '18–19" Leichtmetallfelgen (optional)', 'auto-emotion' ),
+);
+$auto_emotion_interieur_optionen = array(
+	__( 'Stoffausstattung (Serie)', 'auto-emotion' ),
+	__( 'Teilleder/Leder (ausstattungsabhängig optional)', 'auto-emotion' ),
+);
+
+/**
  * Modellübersicht je Marke. "specs" sind kurze, allgemein bekannte
- * Herstellerangaben (Motorisierung, Verbrauch/Reichweite) ohne
- * Preise – Details klappen pro Kachel per <details> auf, ganz ohne
- * eigenes JavaScript.
+ * Herstellerangaben ohne Preise; "engines" sind dieselben Angaben
+ * als einzelne, im Konfigurator wählbare Motorisierungen. Details
+ * klappen pro Kachel per <details> auf, der Konfigurator selbst
+ * braucht nur eine kleine, unaufdringliche JS-Datei zur Anzeige der
+ * Auswahl (keine Preisberechnung, keine Datenübertragung ohne Klick
+ * auf den Anfrage-Button).
  */
 $auto_emotion_marke_modelle = array(
 	'nissan' => array(
@@ -61,6 +131,7 @@ $auto_emotion_marke_modelle = array(
 				__( '1.0 DIG-T (114 PS) oder Vollhybrid e-Power (143 PS)', 'auto-emotion' ),
 				__( 'Verbrauch ab ca. 5,0 l/100 km', 'auto-emotion' ),
 			),
+			'engines'     => array( '1.0 DIG-T 114 PS', 'e-Power Vollhybrid 143 PS' ),
 		),
 		array(
 			'image'       => 'nissan-modell-qashqai.jpg',
@@ -70,6 +141,7 @@ $auto_emotion_marke_modelle = array(
 				__( '1.3 DIG-T Mild-Hybrid (140–158 PS) oder Vollhybrid e-Power (190 PS)', 'auto-emotion' ),
 				__( 'Verbrauch ab ca. 5,3 l/100 km', 'auto-emotion' ),
 			),
+			'engines'     => array( '1.3 DIG-T Mild-Hybrid 140 PS', '1.3 DIG-T Mild-Hybrid 158 PS', 'e-Power Vollhybrid 190 PS' ),
 		),
 		array(
 			'image'       => 'nissan-modell-xtrail.jpg',
@@ -79,6 +151,7 @@ $auto_emotion_marke_modelle = array(
 				__( 'Vollhybrid e-Power (204 PS) oder e-4ORCE Allrad-Hybrid (213 PS)', 'auto-emotion' ),
 				__( 'Wahlweise mit 5 oder 7 Sitzen', 'auto-emotion' ),
 			),
+			'engines'     => array( 'e-Power Vollhybrid 204 PS', 'e-4ORCE Allrad-Hybrid 213 PS' ),
 		),
 		array(
 			'image'       => 'nissan-modell-ariya.jpg',
@@ -88,6 +161,7 @@ $auto_emotion_marke_modelle = array(
 				__( 'Vollelektrisch, 63- oder 87-kWh-Batterie', 'auto-emotion' ),
 				__( 'WLTP-Reichweite ca. 400–530 km, e-4ORCE Allrad optional', 'auto-emotion' ),
 			),
+			'engines'     => array( '63 kWh, 218 PS', '87 kWh, 242 PS', 'e-4ORCE Allrad bis 306 PS' ),
 		),
 	),
 	'seat'   => array(
@@ -99,6 +173,7 @@ $auto_emotion_marke_modelle = array(
 				__( '1.0 TSI (81–110 PS)', 'auto-emotion' ),
 				__( 'Verbrauch ab ca. 5,3 l/100 km', 'auto-emotion' ),
 			),
+			'engines'     => array( '1.0 TSI 81 PS', '1.0 TSI 95 PS', '1.0 TSI 110 PS' ),
 		),
 		array(
 			'image'       => 'seat-modell-ateca.jpg',
@@ -108,6 +183,7 @@ $auto_emotion_marke_modelle = array(
 				__( '1.0–1.5 TSI (110–150 PS), auch mit Allrad', 'auto-emotion' ),
 				__( 'Verbrauch ab ca. 6,0 l/100 km', 'auto-emotion' ),
 			),
+			'engines'     => array( '1.0 TSI 110 PS', '1.5 TSI 150 PS', '1.5 TSI 150 PS mit Allrad' ),
 		),
 		array(
 			'image'       => 'seat-modell-ibiza.jpg',
@@ -117,6 +193,7 @@ $auto_emotion_marke_modelle = array(
 				__( '1.0 MPI/TSI (80–115 PS)', 'auto-emotion' ),
 				__( 'Verbrauch ab ca. 5,0 l/100 km', 'auto-emotion' ),
 			),
+			'engines'     => array( '1.0 MPI 80 PS', '1.0 TSI 95 PS', '1.0 TSI 115 PS' ),
 		),
 		array(
 			'image'       => 'seat-modell-leon.jpg',
@@ -126,6 +203,7 @@ $auto_emotion_marke_modelle = array(
 				__( '1.0–2.0 TSI (110–190 PS), auch als e-HYBRID Plug-in', 'auto-emotion' ),
 				__( 'e-HYBRID mit zusätzlicher elektrischer Reichweite', 'auto-emotion' ),
 			),
+			'engines'     => array( '1.0 TSI 110 PS', '1.5 TSI 150 PS', 'e-HYBRID 204 PS (Plug-in)' ),
 		),
 		array(
 			'image'       => 'seat-modell-leon-sportstourer.jpg',
@@ -135,6 +213,7 @@ $auto_emotion_marke_modelle = array(
 				__( 'Gleiche Motoren wie der Seat Leon', 'auto-emotion' ),
 				__( 'Deutlich mehr Kofferraumvolumen als die Fließheck-Variante', 'auto-emotion' ),
 			),
+			'engines'     => array( '1.0 TSI 110 PS', '1.5 TSI 150 PS', 'e-HYBRID 204 PS (Plug-in)' ),
 		),
 	),
 	'cupra'  => array(
@@ -146,6 +225,7 @@ $auto_emotion_marke_modelle = array(
 				__( 'Vollelektrisch, 59- oder 77-kWh-Batterie (204–231 PS)', 'auto-emotion' ),
 				__( 'WLTP-Reichweite ca. 420–560 km', 'auto-emotion' ),
 			),
+			'engines'     => array( '59 kWh, 204 PS', '77 kWh, 231 PS' ),
 		),
 		array(
 			'image'       => 'cupra-modell-tavascan.jpg',
@@ -155,6 +235,7 @@ $auto_emotion_marke_modelle = array(
 				__( 'Vollelektrisch, 77-kWh-Batterie (210–250 PS, VZ mit Allrad)', 'auto-emotion' ),
 				__( 'WLTP-Reichweite ca. 500–560 km', 'auto-emotion' ),
 			),
+			'engines'     => array( '77 kWh, 210 PS', 'VZ 77 kWh, 250 PS Allrad' ),
 		),
 		array(
 			'image'       => 'cupra-modell-terramar.jpg',
@@ -164,6 +245,7 @@ $auto_emotion_marke_modelle = array(
 				__( '1.5 TSI (150 PS) oder e-HYBRID Plug-in (204–272 PS)', 'auto-emotion' ),
 				__( 'e-HYBRID mit elektrischer Reichweite über 100 km', 'auto-emotion' ),
 			),
+			'engines'     => array( '1.5 TSI 150 PS', 'e-HYBRID 204 PS (Plug-in)', 'e-HYBRID 272 PS (Plug-in)' ),
 		),
 		array(
 			'image'       => 'cupra-modell-formentor.jpg',
@@ -173,6 +255,7 @@ $auto_emotion_marke_modelle = array(
 				__( '1.5–2.0 TSI (150–190 PS), VZ bis über 300 PS, auch e-HYBRID', 'auto-emotion' ),
 				__( 'Erstes Cupra-Modell ohne direktes Seat-Pendant', 'auto-emotion' ),
 			),
+			'engines'     => array( '1.5 TSI 150 PS', '2.0 TSI 190 PS', 'e-HYBRID 204/272 PS', 'VZ über 300 PS' ),
 		),
 		array(
 			'image'       => 'cupra-modell-leon.jpg',
@@ -182,6 +265,7 @@ $auto_emotion_marke_modelle = array(
 				__( 'TSI und e-HYBRID Plug-in bis 245 PS', 'auto-emotion' ),
 				__( 'Cupra-spezifisches Fahrwerk- und Bremsen-Setup', 'auto-emotion' ),
 			),
+			'engines'     => array( '1.5 TSI 150 PS', 'e-HYBRID 204 PS (Plug-in)', 'e-HYBRID 245 PS (Plug-in)' ),
 		),
 		array(
 			'image'       => 'cupra-modell-leon-sportstourer.jpg',
@@ -191,6 +275,7 @@ $auto_emotion_marke_modelle = array(
 				__( 'Gleiche Motoren wie der Cupra Leon', 'auto-emotion' ),
 				__( 'Kombivariante mit mehr Laderaum', 'auto-emotion' ),
 			),
+			'engines'     => array( '1.5 TSI 150 PS', 'e-HYBRID 204 PS (Plug-in)', 'e-HYBRID 245 PS (Plug-in)' ),
 		),
 	),
 );
@@ -205,9 +290,11 @@ $auto_emotion_modelle       = $auto_emotion_marke_modelle[ $auto_emotion_term->s
 			printf( esc_html__( 'Unsere %s-Modelle', 'auto-emotion' ), esc_html( $auto_emotion_term->name ) );
 			?>
 		</h2>
+		<p class="section-heading__hint"><?php esc_html_e( 'Kachel anklicken und Fahrzeug konfigurieren.', 'auto-emotion' ); ?></p>
 	</div>
 	<div class="photo-gallery photo-gallery--products">
-		<?php foreach ( $auto_emotion_modelle as $auto_emotion_modell ) : ?>
+		<?php foreach ( $auto_emotion_modelle as $auto_emotion_index => $auto_emotion_modell ) : ?>
+			<?php $auto_emotion_field_id = $auto_emotion_term->slug . '-' . $auto_emotion_index; ?>
 			<details class="model-card">
 				<summary class="model-card__summary">
 					<figure>
@@ -229,14 +316,78 @@ $auto_emotion_modelle       = $auto_emotion_marke_modelle[ $auto_emotion_term->s
 							<?php endforeach; ?>
 						</ul>
 					<?php endif; ?>
-					<a class="btn btn-outline model-card__cta" href="tel:<?php echo esc_attr( auto_emotion_contact( 'phone_href' ) ); ?>">
-						<?php esc_html_e( 'Beratung anfragen', 'auto-emotion' ); ?>
-						<span class="btn-arrow" aria-hidden="true">&rarr;</span>
-					</a>
+
+					<div class="configurator" data-model="<?php echo esc_attr( $auto_emotion_modell['name'] ); ?>">
+						<?php if ( ! empty( $auto_emotion_farben ) ) : ?>
+							<fieldset class="configurator__group">
+								<legend><?php esc_html_e( 'Lackfarbe', 'auto-emotion' ); ?></legend>
+								<div class="configurator__colors">
+									<?php foreach ( $auto_emotion_farben as $auto_emotion_farbe_index => $auto_emotion_farbe ) : ?>
+										<label class="color-chip">
+											<input
+												type="radio"
+												name="farbe-<?php echo esc_attr( $auto_emotion_field_id ); ?>"
+												value="<?php echo esc_attr( $auto_emotion_farbe['name'] ); ?>"
+												<?php checked( 0 === $auto_emotion_farbe_index ); ?>
+											>
+											<span class="color-chip__swatch" style="background-color:<?php echo esc_attr( $auto_emotion_farbe['hex'] ); ?>"></span>
+											<span class="color-chip__label"><?php echo esc_html( $auto_emotion_farbe['name'] ); ?></span>
+										</label>
+									<?php endforeach; ?>
+								</div>
+							</fieldset>
+						<?php endif; ?>
+
+						<?php if ( ! empty( $auto_emotion_modell['engines'] ) ) : ?>
+							<div class="configurator__group">
+								<label for="motor-<?php echo esc_attr( $auto_emotion_field_id ); ?>"><?php esc_html_e( 'Motorisierung', 'auto-emotion' ); ?></label>
+								<select id="motor-<?php echo esc_attr( $auto_emotion_field_id ); ?>" class="configurator__select">
+									<?php foreach ( $auto_emotion_modell['engines'] as $auto_emotion_engine ) : ?>
+										<option value="<?php echo esc_attr( $auto_emotion_engine ); ?>"><?php echo esc_html( $auto_emotion_engine ); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</div>
+						<?php endif; ?>
+
+						<div class="configurator__group">
+							<label for="felgen-<?php echo esc_attr( $auto_emotion_field_id ); ?>"><?php esc_html_e( 'Felgen', 'auto-emotion' ); ?></label>
+							<select id="felgen-<?php echo esc_attr( $auto_emotion_field_id ); ?>" class="configurator__select">
+								<?php foreach ( $auto_emotion_felgen_optionen as $auto_emotion_felge ) : ?>
+									<option value="<?php echo esc_attr( $auto_emotion_felge ); ?>"><?php echo esc_html( $auto_emotion_felge ); ?></option>
+								<?php endforeach; ?>
+							</select>
+						</div>
+
+						<div class="configurator__group">
+							<label for="interieur-<?php echo esc_attr( $auto_emotion_field_id ); ?>"><?php esc_html_e( 'Interieur', 'auto-emotion' ); ?></label>
+							<select id="interieur-<?php echo esc_attr( $auto_emotion_field_id ); ?>" class="configurator__select">
+								<?php foreach ( $auto_emotion_interieur_optionen as $auto_emotion_interieur ) : ?>
+									<option value="<?php echo esc_attr( $auto_emotion_interieur ); ?>"><?php echo esc_html( $auto_emotion_interieur ); ?></option>
+								<?php endforeach; ?>
+							</select>
+						</div>
+
+						<p class="configurator__summary">
+							<?php esc_html_e( 'Ihre Konfiguration:', 'auto-emotion' ); ?>
+							<span class="configurator__summary-text" aria-live="polite"></span>
+						</p>
+
+						<a
+							class="btn btn-giallo configurator__cta"
+							href="mailto:<?php echo esc_attr( auto_emotion_contact( 'email' ) ); ?>?subject=<?php echo rawurlencode( 'Konfiguration Anfrage: ' . $auto_emotion_modell['name'] ); ?>"
+							data-href-base="mailto:<?php echo esc_attr( auto_emotion_contact( 'email' ) ); ?>?subject=<?php echo rawurlencode( 'Konfiguration Anfrage: ' . $auto_emotion_modell['name'] ); ?>"
+						>
+							<?php esc_html_e( 'Konfiguration anfragen', 'auto-emotion' ); ?>
+							<span class="btn-arrow" aria-hidden="true">&rarr;</span>
+						</a>
+					</div>
 				</div>
 			</details>
 		<?php endforeach; ?>
 	</div>
+	<p class="model-card__disclaimer">
+		<?php esc_html_e( 'Motorisierungen, Verbrauchs-/Reichweitenangaben und Farben sind allgemeine Herstellerangaben ohne Anspruch auf aktuelle Verfügbarkeit für jede Ausstattungslinie. Verbindliche Auskunft und Preise erhalten Sie auf Anfrage.', 'auto-emotion' ); ?>
+	</p>
 <?php endif; ?>
 
 <?php
