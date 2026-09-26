@@ -298,7 +298,7 @@ $auto_emotion_modelle       = $auto_emotion_marke_modelle[ $auto_emotion_term->s
 			<details class="model-card">
 				<summary class="model-card__summary">
 					<figure>
-						<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/' . $auto_emotion_modell['image'] ); ?>" alt="<?php echo esc_attr( $auto_emotion_modell['name'] . ', offizielles Herstellerfoto' ); ?>" loading="lazy">
+						<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/' . $auto_emotion_modell['image'] . '?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="<?php echo esc_attr( $auto_emotion_modell['name'] . ', offizielles Herstellerfoto' ); ?>" loading="lazy">
 						<figcaption>
 							<?php echo esc_html( $auto_emotion_modell['name'] ); ?>
 							<span class="model-card__toggle" aria-hidden="true"></span>

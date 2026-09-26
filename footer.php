@@ -63,6 +63,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<div class="site-info">
 		&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?>
+		· <?php esc_html_e( 'Powered by Momenti Studio', 'auto-emotion' ); ?>
 	</div>
 </footer>
 
