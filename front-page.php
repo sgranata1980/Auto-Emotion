@@ -113,10 +113,18 @@ $auto_emotion_news = new WP_Query(
 
 		<div class="story-grid">
 			<?php while ( $auto_emotion_news->have_posts() ) : $auto_emotion_news->the_post(); ?>
+				<?php $auto_emotion_news_video = get_post_meta( get_the_ID(), 'auto_emotion_video', true ); ?>
 				<article class="story-grid__item">
 					<span class="story-grid__date"><?php echo esc_html( get_the_date() ); ?></span>
 					<h3 class="story-grid__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-					<?php if ( has_post_thumbnail() ) : ?>
+					<?php if ( $auto_emotion_news_video ) : ?>
+						<video
+							class="post-thumbnail--video"
+							src="<?php echo esc_url( $auto_emotion_news_video ); ?>"
+							width="1280" height="720"
+							autoplay muted loop playsinline webkit-playsinline preload="auto"
+						></video>
+					<?php elseif ( has_post_thumbnail() ) : ?>
 						<?php the_post_thumbnail( 'large' ); ?>
 					<?php endif; ?>
 				</article>
