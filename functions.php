@@ -24,9 +24,25 @@ if ( ! isset( $_SERVER['PHP_AUTH_USER'] ) && isset( $_SERVER['HTTP_AUTHORIZATION
 	}
 }
 
-define( 'AUTO_EMOTION_VERSION', '1.2.8' );
+define( 'AUTO_EMOTION_VERSION', '1.2.9' );
 define( 'AUTO_EMOTION_DIR', get_template_directory() );
 define( 'AUTO_EMOTION_URI', get_template_directory_uri() );
+
+/**
+ * Verhindert, dass ein Cache zwischen Server und Besucher (Hosting-
+ * Reverse-Proxy, Mobilfunk-/ISP-Proxy, o.ä.) eine alte Version einer
+ * Seite hartnäckig hält, nachdem Inhalte über WP Pusher aktualisiert
+ * wurden – WordPress selbst setzt für normale Frontend-Aufrufe sonst
+ * keinerlei Cache-Header, sodass jede dazwischenliegende Instanz nach
+ * eigenem Ermessen zwischenspeichern darf.
+ */
+function auto_emotion_no_cache_headers() {
+	if ( is_admin() ) {
+		return;
+	}
+	nocache_headers();
+}
+add_action( 'send_headers', 'auto_emotion_no_cache_headers' );
 
 require AUTO_EMOTION_DIR . '/inc/contact-info.php';
 require AUTO_EMOTION_DIR . '/inc/theme-setup.php';
