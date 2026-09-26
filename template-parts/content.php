@@ -36,7 +36,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			width="1280" height="720"
 			autoplay muted loop playsinline webkit-playsinline preload="auto"
 		></video>
-	<?php elseif ( has_post_thumbnail() ) : ?>
+	<?php endif; ?>
+	<?php if ( has_post_thumbnail() ) : ?>
 		<div class="post-thumbnail"><?php the_post_thumbnail( 'large' ); ?></div>
 	<?php endif; ?>
 
