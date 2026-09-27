@@ -648,6 +648,7 @@ body.has-transparent-header .site-header.is-scrolled {
 	font-size: clamp(40px, 8vw, var(--text-hero));
 	line-height: var(--leading-hero);
 	margin-bottom: var(--spacing-32);
+	text-wrap: balance;
 }
 
 @media (max-width: 768px) {
@@ -670,8 +671,14 @@ body.has-transparent-header .site-header.is-scrolled {
 }
 
 .section-heading__title {
-	font-size: var(--text-display);
+	font-size: clamp(28px, 5vw, var(--text-display));
+	line-height: 1.15;
 	margin: 0;
+	/* Verhindert unschöne Umbrüche mitten in kurzen Wörtern/Resten
+	   – gleicht die Zeilen einer mehrzeiligen Headline stattdessen
+	   aus. Browser ohne Unterstützung ignorieren die Eigenschaft
+	   und brechen normal um, ganz ohne Fallback nötig. */
+	text-wrap: balance;
 	/* Flex-Items schrumpfen sonst nicht unter ihre intrinsische
 	   Breite (min-width:auto-Default) – bei langen Headlines auf
 	   schmalen Screens sonst horizontaler Overflow trotz
@@ -706,7 +713,9 @@ body.has-transparent-header .site-header.is-scrolled {
 }
 
 .entry-title {
-	font-size: var(--text-display-lg);
+	font-size: clamp(32px, 7vw, var(--text-display-lg));
+	line-height: 1.15;
+	text-wrap: balance;
 }
 
 .story-grid__date,
@@ -780,9 +789,10 @@ body.has-transparent-header .site-main {
 }
 
 .brand-tile__name {
-	font-size: var(--text-heading-lg);
+	font-size: clamp(24px, 5vw, var(--text-heading-lg));
 	text-transform: uppercase;
 	letter-spacing: 0.0230em;
+	text-wrap: balance;
 }
 
 /* ---------------------------------------------------------------- */
