@@ -163,6 +163,16 @@ $auto_emotion_marke_modelle = array(
 			),
 			'engines'     => array( '63 kWh, 218 PS', '87 kWh, 242 PS', 'e-4ORCE Allrad bis 306 PS' ),
 		),
+		array(
+			'image'       => 'nissan-modell-micra.jpg',
+			'name'        => 'Nissan Micra',
+			'description' => __( 'Kompakter Stadtwagen, jetzt vollelektrisch – wendig und alltagstauglich für die Stadt.', 'auto-emotion' ),
+			'specs'       => array(
+				__( 'Vollelektrisch, 40-kWh-Batterie (122 PS)', 'auto-emotion' ),
+				__( 'Energieverbrauch kombiniert: 14,2 kWh/100 km, CO2-Klasse A', 'auto-emotion' ),
+			),
+			'engines'     => array( '40 kWh, 122 PS' ),
+		),
 	),
 	'seat'   => array(
 		array(
