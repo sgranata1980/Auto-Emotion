@@ -46,6 +46,35 @@ $auto_emotion_status = isset( $_GET['anfrage'] ) ? sanitize_text_field( wp_unsla
 	</p>
 </div>
 
+<?php
+$auto_emotion_nutzfahrzeuge_angebote = new WP_Query(
+	array(
+		'post_type'      => 'angebot',
+		'posts_per_page' => -1,
+		'no_found_rows'  => true,
+		'post__in'       => array( 328, 329, 330 ),
+		'orderby'        => 'post__in',
+	)
+);
+?>
+
+<?php if ( $auto_emotion_nutzfahrzeuge_angebote->have_posts() ) : ?>
+	<div class="section-heading">
+		<h2 class="section-heading__title"><?php esc_html_e( 'Aktuelle Geschäftskundenangebote', 'auto-emotion' ); ?></h2>
+	</div>
+	<div class="story-grid">
+		<?php while ( $auto_emotion_nutzfahrzeuge_angebote->have_posts() ) : $auto_emotion_nutzfahrzeuge_angebote->the_post(); ?>
+			<article class="product-tile">
+				<?php if ( has_post_thumbnail() ) : ?>
+					<a href="<?php the_permalink(); ?>"><?php the_post_thumbnail( 'large' ); ?></a>
+				<?php endif; ?>
+				<h2 class="product-tile__caption"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+			</article>
+		<?php endwhile; ?>
+	</div>
+	<?php wp_reset_postdata(); ?>
+<?php endif; ?>
+
 <?php if ( 'ok' === $auto_emotion_status ) : ?>
 	<div class="application-notice application-notice--success">
 		<?php esc_html_e( 'Danke für Ihre Anfrage! Wir melden uns innerhalb von 24 Stunden bei Ihnen.', 'auto-emotion' ); ?>
