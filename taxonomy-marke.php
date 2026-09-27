@@ -173,6 +173,16 @@ $auto_emotion_marke_modelle = array(
 			),
 			'engines'     => array( '40 kWh, 122 PS' ),
 		),
+		array(
+			'image'       => 'nissan-modell-leaf.jpg',
+			'name'        => 'Nissan Leaf',
+			'description' => __( 'Der Elektro-Pionier von Nissan, komplett neu aufgelegt – geräumiger Kompaktwagen mit langer Serientradition.', 'auto-emotion' ),
+			'specs'       => array(
+				__( 'Vollelektrisch, 52-kWh-Batterie (176 PS)', 'auto-emotion' ),
+				__( 'Energieverbrauch kombiniert: 13,5 kWh/100 km, CO2-Klasse A', 'auto-emotion' ),
+			),
+			'engines'     => array( '52 kWh, 176 PS' ),
+		),
 	),
 	'seat'   => array(
 		array(
