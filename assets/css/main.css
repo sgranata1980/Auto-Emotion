@@ -1965,7 +1965,13 @@ body.has-transparent-header .site-main {
 
 .woocommerce ul.products li.product .price {
 	font-weight: 700;
-	color: var(--color-giallo-vivo);
+	color: var(--color-rosso-vivo);
+}
+
+.woocommerce div.product p.price,
+.woocommerce div.product span.price {
+	font-weight: 700;
+	color: var(--color-rosso-vivo);
 }
 
 .woocommerce span.onsale,
