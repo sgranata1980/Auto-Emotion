@@ -24,7 +24,20 @@ $auto_emotion_probefahrt_status = isset( $_GET['probefahrt'] ) ? sanitize_text_f
 			<h1 class="entry-title"><?php the_title(); ?></h1>
 		</header>
 
-		<?php if ( has_post_thumbnail() ) : ?>
+		<?php
+		// Manche Angebote zeigen offizielles Hersteller-Pressematerial
+		// (B-Roll-Video) statt des Beitragsbilds – über das Custom Field
+		// "auto_emotion_video" gepflegt, gleiches Muster wie bei News-Beiträgen.
+		$auto_emotion_angebot_video = get_post_meta( get_the_ID(), 'auto_emotion_video', true );
+		?>
+		<?php if ( $auto_emotion_angebot_video ) : ?>
+			<video
+				class="post-thumbnail post-thumbnail--video"
+				src="<?php echo esc_url( $auto_emotion_angebot_video ); ?>"
+				width="1280" height="720"
+				autoplay muted loop playsinline webkit-playsinline preload="auto"
+			></video>
+		<?php elseif ( has_post_thumbnail() ) : ?>
 			<div class="post-thumbnail"><?php the_post_thumbnail( 'large' ); ?></div>
 		<?php endif; ?>
 
