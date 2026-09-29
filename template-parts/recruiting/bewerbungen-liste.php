@@ -38,6 +38,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<?php if ( empty( $auto_emotion_bewerbungen ) ) : ?>
 			<p class="ae-empty"><?php esc_html_e( 'Noch keine Bewerbungen eingegangen.', 'auto-emotion' ); ?></p>
+			<?php if ( empty( $auto_emotion_filter_status ) ) : ?>
+				<p class="ae-empty"><a class="ae-btn ae-btn--ghost" style="width:auto;" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=auto_emotion_recruiting_seed_demo' ), 'auto_emotion_recruiting_seed_demo' ) ); ?>"><?php esc_html_e( 'Testdaten laden (temporär)', 'auto-emotion' ); ?></a></p>
+			<?php endif; ?>
 		<?php else : ?>
 			<ul class="ae-profile-list">
 				<?php foreach ( $auto_emotion_bewerbungen as $auto_emotion_bewerbung ) : ?>
