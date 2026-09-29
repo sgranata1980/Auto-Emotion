@@ -20,6 +20,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Eigene, klar benannte Berechtigung statt der generischen "kann
+ * Inhalte bearbeiten"-Fähigkeit – Zugriff auf den Recruiting-Bereich
+ * ist dadurch unabhängig von sonstigen Redaktionsrechten auf der
+ * Website steuerbar. Wird automatisch an Administrator und Redakteur
+ * vergeben; weitere Nutzer erhalten sie, indem man ihnen die Rolle
+ * "Redakteur" gibt, oder gezielt einzeln über die Nutzerverwaltung.
+ */
+function auto_emotion_grant_recruiting_capability() {
+	$needed_version = '1';
+	if ( get_option( 'auto_emotion_recruiting_cap_version' ) === $needed_version ) {
+		return;
+	}
+
+	foreach ( array( 'administrator', 'editor' ) as $role_name ) {
+		$role = get_role( $role_name );
+		if ( $role ) {
+			$role->add_cap( 'ae_recruiting_zugriff' );
+		}
+	}
+
+	update_option( 'auto_emotion_recruiting_cap_version', $needed_version );
+}
+add_action( 'init', 'auto_emotion_grant_recruiting_capability' );
+
+/**
  * Custom Post Type als reiner Datenspeicher für Suchprofile – kein
  * wp-admin-UI, keine öffentliche URL, kein Archiv.
  */
@@ -133,7 +158,7 @@ add_action( 'init', 'auto_emotion_maybe_flush_recruiting_rewrite_rules', 20 );
  * dürfen Dashboard/Formulare sehen, alle anderen landen beim Login.
  */
 function auto_emotion_staff_require_login() {
-	if ( ! is_user_logged_in() || ! current_user_can( 'edit_posts' ) ) {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
 		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
 		exit;
 	}
@@ -158,7 +183,7 @@ function auto_emotion_recruiting_template_redirect() {
 	switch ( $route ) {
 
 		case 'login':
-			if ( is_user_logged_in() && current_user_can( 'edit_posts' ) ) {
+			if ( is_user_logged_in() && current_user_can( 'ae_recruiting_zugriff' ) ) {
 				wp_safe_redirect( home_url( '/mitarbeiter/recruiting/' ) );
 				exit;
 			}
@@ -217,7 +242,7 @@ function auto_emotion_handle_recruiting_login() {
 
 	$user = wp_signon( $creds, is_ssl() );
 
-	if ( is_wp_error( $user ) || ! user_can( $user, 'edit_posts' ) ) {
+	if ( is_wp_error( $user ) || ! user_can( $user, 'ae_recruiting_zugriff' ) ) {
 		wp_safe_redirect( home_url( '/mitarbeiter/?login_failed=1' ) );
 		exit;
 	}
@@ -244,7 +269,7 @@ add_action( 'admin_post_auto_emotion_recruiting_logout', 'auto_emotion_handle_re
  * Speichert ein Suchprofil (neu oder bestehend).
  */
 function auto_emotion_handle_recruiting_save() {
-	if ( ! is_user_logged_in() || ! current_user_can( 'edit_posts' ) ) {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
 		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
 		exit;
 	}
@@ -303,7 +328,7 @@ add_action( 'admin_post_auto_emotion_recruiting_save', 'auto_emotion_handle_recr
  * endgültiges Löschen).
  */
 function auto_emotion_handle_recruiting_delete() {
-	if ( ! is_user_logged_in() || ! current_user_can( 'edit_posts' ) ) {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
 		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
 		exit;
 	}
