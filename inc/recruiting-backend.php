@@ -260,7 +260,7 @@ function auto_emotion_handle_recruiting_logout() {
 	}
 
 	wp_logout();
-	wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+	wp_safe_redirect( home_url( '/' ) );
 	exit;
 }
 add_action( 'admin_post_auto_emotion_recruiting_logout', 'auto_emotion_handle_recruiting_logout' );
