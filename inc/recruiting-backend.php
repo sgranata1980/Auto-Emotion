@@ -363,9 +363,10 @@ function auto_emotion_stellenanzeige_texte( $post ) {
 	$anzeige .= "Interesse? Jetzt bewerben: " . $bewerbungslink . "\n";
 	$anzeige .= "Oder direkt anrufen: " . auto_emotion_contact( 'phone' ) . "\n";
 
-	$caption  = '🔧 Wir suchen: ' . $post->post_title . " (m/w/d)\n📍 " . $standort . "\n\n";
+	$caption  = '🔧 Wir suchen: ' . $post->post_title . "\n📍 " . $standort . "\n\n";
 	$caption .= "Lust auf einen Job bei SEAT, CUPRA & NISSAN in Offenbach? Jetzt bewerben – Link in der Bio / " . $bewerbungslink . "\n\n";
-	$caption .= '#AutoEmotion #Jobs' . str_replace( ' ', '', ucwords( str_replace( array( '(m/w/d)', '/' ), ' ', $post->post_title ) ) ) . ' #Offenbach #Seat #Cupra #Nissan #Autohaus #Stellenangebot';
+	$stellen_hashtag = str_replace( array( ' ', '-' ), '', ucwords( str_replace( array( '(m/w/d)', '/', '-' ), ' ', $post->post_title ) ) );
+	$caption        .= '#AutoEmotion #Jobs' . $stellen_hashtag . ' #Offenbach #Seat #Cupra #Nissan #Autohaus #Stellenangebot';
 
 	return array(
 		'anzeige' => $anzeige,
