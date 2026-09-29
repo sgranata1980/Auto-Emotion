@@ -81,6 +81,10 @@ $auto_emotion_status = isset( $_GET['bewerbung'] ) ? sanitize_text_field( wp_uns
 		<?php esc_html_e( 'Ich stimme zu, dass meine Angaben zur Bewerbung gespeichert werden. Löschung spätestens 6 Monate nach Absage, jederzeit widerrufbar.', 'auto-emotion' ); ?>
 	</label>
 
+	<p class="application-form__hint">
+		<?php esc_html_e( 'Aus datenschutzrechtlichen Gründen bearbeiten wir Bewerbungen ausschließlich über dieses Formular. Wir halten uns dabei an die gesetzlichen Vorgaben der DSGVO und des § 26 BDSG.', 'auto-emotion' ); ?>
+	</p>
+
 	<button type="submit" class="btn btn-giallo application-form__submit">
 		<?php esc_html_e( 'Bewerbung senden', 'auto-emotion' ); ?>
 		<span class="btn-arrow" aria-hidden="true">&rarr;</span>
