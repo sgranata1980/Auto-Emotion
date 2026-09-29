@@ -2,13 +2,19 @@
 /**
  * Bewerbungsformular-Handler für die Karriere-Landingpage(s).
  *
- * Bewusst ohne Datenbank-Speicherung: Bewerbungen werden per E-Mail an
- * die reale Kontaktadresse (inc/contact-info.php) weitergeleitet, es
- * wird nichts zusätzlich in der WP-Datenbank abgelegt. Hochgeladene
- * Dateien (Lebenslauf/Zeugnisse) werden nur für die Dauer des Mail-
- * Versands temporär abgelegt und danach sofort wieder gelöscht – passt
- * zur Datenschutz-Linie aus dem Recruiting-Handbuch (Aufbewahrung
- * minimal halten).
+ * Bewerbungen werden per E-Mail an die reale Kontaktadresse
+ * (inc/contact-info.php) weitergeleitet UND – seit der Einführung des
+ * Mitarbeiterbereichs (inc/recruiting-bewerbungen.php) – zusätzlich in
+ * einem eigenen, nicht öffentlich erreichbaren Bereich gespeichert, damit
+ * Kollegen sie dort einsehen und intern weiterleiten können. Hochgeladene
+ * Dateien (Lebenslauf/Zeugnisse) landen dafür in einem eigenen, per
+ * .htaccess/Zugriffsschutz abgeschotteten Upload-Ordner statt im normal
+ * öffentlich erreichbaren Medien-Verzeichnis (siehe
+ * auto_emotion_bewerbung_private_upload_dir()) und werden zusätzlich mit
+ * einem zufälligen Dateinamen abgelegt. Automatische Löschung nach
+ * spätestens 6 Monaten über einen täglichen Cron-Job, siehe
+ * inc/recruiting-bewerbungen.php – passt zur im Formular zugesagten
+ * Aufbewahrungsfrist (DSGVO/§ 26 BDSG).
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -27,11 +33,44 @@ function auto_emotion_bewerbung_allowed_mimes() {
 }
 
 /**
+ * Leitet Uploads in einen eigenen, nicht öffentlich verlinkten
+ * Ordner um (statt in den normalen, per URL erreichbaren
+ * wp-content/uploads-Bereich) – Zugriff auf Bewerbungsunterlagen soll
+ * ausschließlich über den authentifizierten Mitarbeiterbereich möglich
+ * sein.
+ */
+function auto_emotion_bewerbung_private_upload_dir( $dirs ) {
+	$dirs['subdir'] = '/bewerbungen-privat' . $dirs['subdir'];
+	$dirs['path']   = $dirs['basedir'] . $dirs['subdir'];
+	$dirs['url']    = $dirs['baseurl'] . $dirs['subdir'];
+	return $dirs;
+}
+
+/**
+ * Ersetzt den (aus dem Originaldateinamen abgeleiteten und damit
+ * erratbaren) Dateinamen durch einen zufälligen Token. Der echte
+ * Originalname wird separat in der Bewerbungs-Metadaten gespeichert und
+ * nur innerhalb des authentifizierten Bereichs wieder angezeigt.
+ */
+function auto_emotion_bewerbung_randomize_filename( $filepath ) {
+	$ext    = pathinfo( $filepath, PATHINFO_EXTENSION );
+	$dir    = dirname( $filepath );
+	$random = bin2hex( random_bytes( 20 ) );
+	$neuer_pfad = trailingslashit( $dir ) . $random . ( $ext ? '.' . $ext : '' );
+
+	if ( rename( $filepath, $neuer_pfad ) ) {
+		return $neuer_pfad;
+	}
+
+	return $filepath;
+}
+
+/**
  * Verarbeitet ein einzelnes hochgeladenes Anhang-Feld (kann bei
- * Mehrfach-Uploads mehrere Dateien enthalten) und gibt eine Liste von
- * wp_mail-Attachment-Pfaden zurück. Ungültige oder zu große Dateien
- * werden stillschweigend übersprungen, damit der Rest der Bewerbung
- * trotzdem ankommt.
+ * Mehrfach-Uploads mehrere Dateien enthalten) und gibt eine Liste mit
+ * Original-Dateiname, gespeichertem (privatem) Pfad und MIME-Typ
+ * zurück. Ungültige oder zu große Dateien werden stillschweigend
+ * übersprungen, damit der Rest der Bewerbung trotzdem ankommt.
  */
 function auto_emotion_bewerbung_handle_uploads( $field_name ) {
 	if ( empty( $_FILES[ $field_name ] ) ) {
@@ -43,7 +82,10 @@ function auto_emotion_bewerbung_handle_uploads( $field_name ) {
 	$max_bytes = 8 * MB_IN_BYTES;
 	$files     = $_FILES[ $field_name ];
 	$count     = is_array( $files['name'] ) ? count( $files['name'] ) : 1;
-	$paths     = array();
+	$ergebnis  = array();
+
+	add_filter( 'upload_dir', 'auto_emotion_bewerbung_private_upload_dir' );
+	auto_emotion_bewerbung_sichere_upload_ordner();
 
 	for ( $i = 0; $i < $count; $i++ ) {
 		$file = is_array( $files['name'] )
@@ -72,11 +114,46 @@ function auto_emotion_bewerbung_handle_uploads( $field_name ) {
 		$moved = wp_handle_upload( $file, $overrides );
 
 		if ( ! empty( $moved['file'] ) ) {
-			$paths[] = $moved['file'];
+			$pfad = auto_emotion_bewerbung_randomize_filename( $moved['file'] );
+
+			$ergebnis[] = array(
+				'original' => sanitize_file_name( $file['name'] ),
+				'pfad'     => $pfad,
+				'mime'     => isset( $moved['type'] ) ? $moved['type'] : 'application/octet-stream',
+			);
 		}
 	}
 
-	return $paths;
+	remove_filter( 'upload_dir', 'auto_emotion_bewerbung_private_upload_dir' );
+
+	return $ergebnis;
+}
+
+/**
+ * Legt einmalig Zugriffsschutz im privaten Upload-Ordner an: .htaccess
+ * (greift bei Apache-Hosting) + leere index.php (verhindert
+ * Verzeichnis-Listing bei Servern, die .htaccess ignorieren, z. B.
+ * Nginx). Die eigentliche Sicherheit kommt aus dem zufälligen
+ * Dateinamen plus dem authentifizierten Zugriff über den
+ * Mitarbeiterbereich, nicht aus diesen Dateien allein.
+ */
+function auto_emotion_bewerbung_sichere_upload_ordner() {
+	$upload_dir = wp_upload_dir();
+	$ordner     = $upload_dir['path'];
+
+	if ( ! file_exists( $ordner ) ) {
+		wp_mkdir_p( $ordner );
+	}
+
+	$htaccess = trailingslashit( $ordner ) . '.htaccess';
+	if ( ! file_exists( $htaccess ) ) {
+		file_put_contents( $htaccess, "Require all denied\nDeny from all\n" ); // phpcs:ignore -- gezielt außerhalb der Medienbibliothek, kein WP_Filesystem nötig.
+	}
+
+	$index = trailingslashit( $ordner ) . 'index.php';
+	if ( ! file_exists( $index ) ) {
+		file_put_contents( $index, "<?php\n// Silence is golden.\n" ); // phpcs:ignore
+	}
 }
 
 function auto_emotion_handle_bewerbung() {
@@ -104,10 +181,12 @@ function auto_emotion_handle_bewerbung() {
 		exit;
 	}
 
-	$attachments   = array_merge(
+	$dateien = array_merge(
 		auto_emotion_bewerbung_handle_uploads( 'bewerbung_lebenslauf' ),
 		auto_emotion_bewerbung_handle_uploads( 'bewerbung_zeugnisse' )
 	);
+
+	$mail_attachments = wp_list_pluck( $dateien, 'pfad' );
 
 	$to      = auto_emotion_contact( 'email' );
 	$subject = sprintf( '[Bewerbung] %s – %s', $position ? $position : 'Karriere', $name );
@@ -122,18 +201,27 @@ function auto_emotion_handle_bewerbung() {
 		$body .= "\nNachricht:\n" . $message . "\n";
 	}
 
-	if ( $attachments ) {
-		$body .= "\nAnhänge: " . count( $attachments ) . " Datei(en), siehe Anhang dieser Mail.\n";
+	if ( $dateien ) {
+		$body .= "\nAnhänge: " . count( $dateien ) . " Datei(en), siehe Anhang dieser Mail.\n";
 	}
+
+	$body .= "\nDiese Bewerbung ist zusätzlich im Mitarbeiterbereich einsehbar: " . home_url( '/mitarbeiter/bewerbungen/' ) . "\n";
 
 	$headers = array( 'Reply-To: ' . $name . ' <' . $to . '>' );
 
-	wp_mail( $to, $subject, $body, $headers, $attachments );
+	wp_mail( $to, $subject, $body, $headers, $mail_attachments );
 
-	foreach ( $attachments as $path ) {
-		if ( file_exists( $path ) ) {
-			wp_delete_file( $path );
-		}
+	if ( function_exists( 'auto_emotion_speichere_bewerbung' ) ) {
+		auto_emotion_speichere_bewerbung(
+			array(
+				'name'         => $name,
+				'telefon'      => $phone,
+				'kontakt_pref' => $contact_pref,
+				'position'     => $position,
+				'nachricht'    => $message,
+				'dateien'      => $dateien,
+			)
+		);
 	}
 
 	wp_safe_redirect( add_query_arg( 'bewerbung', 'ok', $redirect_base ) );

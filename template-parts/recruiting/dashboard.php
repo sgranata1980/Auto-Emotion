@@ -27,10 +27,7 @@ $auto_emotion_status_labels = array(
 	<link rel="stylesheet" href="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/css/recruiting-backend.css?ver=' . AUTO_EMOTION_VERSION ); ?>">
 </head>
 <body class="ae-staff">
-	<div class="ae-staff__bar">
-		<a class="ae-staff__brand" href="<?php echo esc_url( home_url( '/mitarbeiter/recruiting/' ) ); ?>"><?php bloginfo( 'name' ); ?> · <?php esc_html_e( 'Recruiting', 'auto-emotion' ); ?></a>
-		<a class="ae-staff__logout" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=auto_emotion_recruiting_logout' ), 'auto_emotion_recruiting_logout' ) ); ?>"><?php esc_html_e( 'Abmelden', 'auto-emotion' ); ?></a>
-	</div>
+	<?php get_template_part( 'template-parts/recruiting/staff-nav' ); ?>
 
 	<main class="ae-staff-main">
 		<h1><?php esc_html_e( 'Suchprofile', 'auto-emotion' ); ?></h1>
@@ -74,6 +71,7 @@ $auto_emotion_status_labels = array(
 							<?php endforeach; ?>
 						</div>
 						<div class="ae-profile-list__actions">
+							<a class="ae-btn ae-btn--ghost" href="<?php echo esc_url( home_url( '/mitarbeiter/recruiting/' . $auto_emotion_profile->ID . '/kandidaten/' ) ); ?>"><?php esc_html_e( 'Kandidaten', 'auto-emotion' ); ?></a>
 							<a class="ae-btn ae-btn--ghost" href="<?php echo esc_url( $auto_emotion_edit_url ); ?>"><?php esc_html_e( 'Bearbeiten', 'auto-emotion' ); ?></a>
 						</div>
 					</li>

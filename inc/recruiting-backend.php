@@ -128,6 +128,8 @@ function auto_emotion_recruiting_rewrite_rules() {
 	add_rewrite_rule( '^mitarbeiter/recruiting/?$', 'index.php?ae_staff_route=dashboard', 'top' );
 	add_rewrite_rule( '^mitarbeiter/recruiting/neu/?$', 'index.php?ae_staff_route=neu', 'top' );
 	add_rewrite_rule( '^mitarbeiter/recruiting/([0-9]+)/?$', 'index.php?ae_staff_route=bearbeiten&ae_staff_id=$matches[1]', 'top' );
+	add_rewrite_rule( '^mitarbeiter/recruiting/([0-9]+)/kandidaten/export/?$', 'index.php?ae_staff_route=kandidaten_export&ae_staff_id=$matches[1]', 'top' );
+	add_rewrite_rule( '^mitarbeiter/recruiting/([0-9]+)/kandidaten/?$', 'index.php?ae_staff_route=kandidaten&ae_staff_id=$matches[1]', 'top' );
 }
 add_action( 'init', 'auto_emotion_recruiting_rewrite_rules' );
 
@@ -145,7 +147,7 @@ add_filter( 'query_vars', 'auto_emotion_recruiting_query_vars' );
  * Versionswechsel.
  */
 function auto_emotion_maybe_flush_recruiting_rewrite_rules() {
-	$needed_version = '1';
+	$needed_version = '2';
 	if ( get_option( 'auto_emotion_staff_rewrite_version' ) !== $needed_version ) {
 		flush_rewrite_rules();
 		update_option( 'auto_emotion_staff_rewrite_version', $needed_version );
@@ -220,9 +222,125 @@ function auto_emotion_recruiting_template_redirect() {
 			}
 			auto_emotion_render_template_part( 'form.php', array( 'auto_emotion_form_post' => $auto_emotion_post ) );
 			exit;
+
+		case 'kandidaten':
+		case 'kandidaten_export':
+			auto_emotion_staff_require_login();
+			$auto_emotion_id   = absint( get_query_var( 'ae_staff_id' ) );
+			$auto_emotion_post = get_post( $auto_emotion_id );
+			if ( ! $auto_emotion_post || 'suchprofil' !== $auto_emotion_post->post_type ) {
+				wp_safe_redirect( home_url( '/mitarbeiter/recruiting/' ) );
+				exit;
+			}
+
+			if ( 'kandidaten_export' === $route ) {
+				auto_emotion_export_kandidaten_csv( $auto_emotion_post );
+				exit;
+			}
+
+			auto_emotion_render_template_part( 'kandidaten.php', array( 'auto_emotion_form_post' => $auto_emotion_post ) );
+			exit;
 	}
 }
 add_action( 'template_redirect', 'auto_emotion_recruiting_template_redirect' );
+
+/**
+ * Manuelle Kandidatenliste pro Suchprofil: die Mitarbeiter klicken sich
+ * selbst über die generierten Such-Links durch LinkedIn/Xing und tragen
+ * vielversprechende Kandidaten hier von Hand ein – bewusst KEIN
+ * automatisches Sammeln/Scrapen von Profildaten (verstieße gegen die
+ * Nutzungsbedingungen der Plattformen).
+ */
+function auto_emotion_get_kandidaten( $post_id ) {
+	$kandidaten = get_post_meta( $post_id, '_suchprofil_kandidaten', true );
+	return is_array( $kandidaten ) ? $kandidaten : array();
+}
+
+function auto_emotion_handle_kandidat_save() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	$post_id = isset( $_POST['ae_suchprofil_id'] ) ? absint( $_POST['ae_suchprofil_id'] ) : 0;
+
+	if ( ! isset( $_POST['auto_emotion_kandidat_save_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['auto_emotion_kandidat_save_nonce'] ) ), 'auto_emotion_kandidat_save_' . $post_id ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$post = get_post( $post_id );
+	if ( ! $post || 'suchprofil' !== $post->post_type ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/recruiting/' ) );
+		exit;
+	}
+
+	$name       = isset( $_POST['ae_kandidat_name'] ) ? sanitize_text_field( wp_unslash( $_POST['ae_kandidat_name'] ) ) : '';
+	$profil_url = isset( $_POST['ae_kandidat_profil'] ) ? esc_url_raw( wp_unslash( $_POST['ae_kandidat_profil'] ) ) : '';
+	$notiz      = isset( $_POST['ae_kandidat_notiz'] ) ? sanitize_text_field( wp_unslash( $_POST['ae_kandidat_notiz'] ) ) : '';
+
+	if ( $name ) {
+		$kandidaten   = auto_emotion_get_kandidaten( $post_id );
+		$kandidaten[] = array(
+			'id'         => wp_generate_password( 12, false ),
+			'name'       => $name,
+			'profil_url' => $profil_url,
+			'notiz'      => $notiz,
+			'hinzugefuegt_am' => current_time( 'd.m.Y' ),
+		);
+		update_post_meta( $post_id, '_suchprofil_kandidaten', $kandidaten );
+	}
+
+	wp_safe_redirect( home_url( '/mitarbeiter/recruiting/' . $post_id . '/kandidaten/' ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_kandidat_save', 'auto_emotion_handle_kandidat_save' );
+
+function auto_emotion_handle_kandidat_delete() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	$post_id     = isset( $_GET['ae_suchprofil_id'] ) ? absint( $_GET['ae_suchprofil_id'] ) : 0;
+	$kandidat_id = isset( $_GET['ae_kandidat_id'] ) ? sanitize_text_field( wp_unslash( $_GET['ae_kandidat_id'] ) ) : '';
+
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'auto_emotion_kandidat_delete_' . $post_id . '_' . $kandidat_id ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$kandidaten = auto_emotion_get_kandidaten( $post_id );
+	$kandidaten = array_values(
+		array_filter(
+			$kandidaten,
+			function ( $kandidat ) use ( $kandidat_id ) {
+				return $kandidat['id'] !== $kandidat_id;
+			}
+		)
+	);
+	update_post_meta( $post_id, '_suchprofil_kandidaten', $kandidaten );
+
+	wp_safe_redirect( home_url( '/mitarbeiter/recruiting/' . $post_id . '/kandidaten/' ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_kandidat_delete', 'auto_emotion_handle_kandidat_delete' );
+
+/**
+ * Streamt die Kandidatenliste eines Suchprofils als CSV-Download.
+ */
+function auto_emotion_export_kandidaten_csv( $post ) {
+	$kandidaten = auto_emotion_get_kandidaten( $post->ID );
+
+	nocache_headers();
+	header( 'Content-Type: text/csv; charset=utf-8' );
+	header( 'Content-Disposition: attachment; filename="kandidaten-' . sanitize_title( $post->post_title ) . '.csv"' );
+
+	$out = fopen( 'php://output', 'w' ); // phpcs:ignore -- gezielter CSV-Stream, kein WP_Filesystem nötig.
+	fputcsv( $out, array( 'Name', 'Profil-Link', 'Notiz', 'Hinzugefügt am' ) );
+	foreach ( $kandidaten as $kandidat ) {
+		fputcsv( $out, array( $kandidat['name'], $kandidat['profil_url'], $kandidat['notiz'], $kandidat['hinzugefuegt_am'] ) );
+	}
+	fclose( $out ); // phpcs:ignore
+}
 
 /**
  * Login-Handler: authentifiziert gegen die bestehenden WordPress-
