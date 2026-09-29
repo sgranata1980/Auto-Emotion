@@ -1,156 +1,56 @@
 <?php
 /**
- * Recruiting-Backend: interner Bereich für "Suchprofile" – Positionen,
- * die Auto Emotion aktiv besetzen möchte, mit fertigen Such-Links für
- * LinkedIn, Xing & Co.
+ * Recruiting-Backend: eigenständiger Mitarbeiterbereich unter /mitarbeiter/
+ * für "Suchprofile" – Positionen, die Auto Emotion aktiv besetzen möchte,
+ * mit fertigen Such-Links für LinkedIn, Xing & Co.
+ *
+ * Bewusst KEIN wp-admin-Bereich: eigene Login-Seite, eigenes Dashboard,
+ * eigenes Design – nicht die WordPress-Optik. Technisch läuft es über
+ * dieses Theme (eigene Rewrite-Routen + eigene Templates), aber ohne
+ * jede sichtbare WordPress-Oberfläche.
  *
  * Bewusst ohne Speicherung von Bewerber-Daten: hier werden nur die
  * eigenen Such-Kriterien des Unternehmens gepflegt, nie Kandidaten-
  * Datensätze. Die bestehende E-Mail-only-Bewerbungsstrecke
- * (inc/recruiting.php) bleibt davon komplett unberührt. Der Bereich ist
- * nicht öffentlich erreichbar (kein Archiv, keine Einzelseiten-URL) und
- * nur im wp-admin für eingeloggte Mitarbeiter sichtbar.
+ * (inc/recruiting.php) bleibt davon komplett unberührt.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Custom Post Type als reiner Datenspeicher für Suchprofile – kein
+ * wp-admin-UI, keine öffentliche URL, kein Archiv.
+ */
 function auto_emotion_register_suchprofil_cpt() {
 	register_post_type(
 		'suchprofil',
 		array(
-			'labels'                => array(
+			'labels'             => array(
 				'name'          => __( 'Suchprofile', 'auto-emotion' ),
 				'singular_name' => __( 'Suchprofil', 'auto-emotion' ),
-				'add_new_item'  => __( 'Neues Suchprofil', 'auto-emotion' ),
-				'edit_item'     => __( 'Suchprofil bearbeiten', 'auto-emotion' ),
-				'all_items'     => __( 'Suchprofile', 'auto-emotion' ),
-				'menu_name'     => __( 'Recruiting', 'auto-emotion' ),
 			),
-			'public'                => false,
-			'publicly_queryable'    => false,
-			'exclude_from_search'   => true,
-			'show_in_nav_menus'     => false,
-			'show_in_admin_bar'     => false,
-			'show_in_rest'          => false,
-			'show_ui'               => true,
-			'capability_type'       => 'post',
-			'menu_icon'             => 'dashicons-groups',
-			'menu_position'         => 26,
-			'has_archive'           => false,
-			'rewrite'               => false,
-			'supports'              => array( 'title' ),
+			'public'             => false,
+			'publicly_queryable' => false,
+			'exclude_from_search' => true,
+			'show_in_nav_menus'  => false,
+			'show_in_admin_bar'  => false,
+			'show_in_rest'       => false,
+			'show_ui'            => false,
+			'capability_type'    => 'post',
+			'has_archive'        => false,
+			'rewrite'            => false,
+			'supports'           => array( 'title' ),
 		)
 	);
 }
 add_action( 'init', 'auto_emotion_register_suchprofil_cpt' );
 
 /**
- * Meta-Felder eines Suchprofils: Standort, Anstellungsart, Status und
- * die Stichworte/Skills, aus denen die Such-Links gebaut werden.
- */
-function auto_emotion_suchprofil_meta_fields() {
-	return array(
-		'_suchprofil_standort'       => __( 'Standort', 'auto-emotion' ),
-		'_suchprofil_anstellungsart' => __( 'Anstellungsart', 'auto-emotion' ),
-		'_suchprofil_status'         => __( 'Status', 'auto-emotion' ),
-		'_suchprofil_stichworte'     => __( 'Gesuchte Skills / Stichworte', 'auto-emotion' ),
-	);
-}
-
-function auto_emotion_suchprofil_meta_box() {
-	add_meta_box(
-		'auto_emotion_suchprofil_details',
-		__( 'Such-Kriterien', 'auto-emotion' ),
-		'auto_emotion_render_suchprofil_meta_box',
-		'suchprofil',
-		'normal',
-		'high'
-	);
-
-	add_meta_box(
-		'auto_emotion_suchprofil_links',
-		__( 'Such-Links', 'auto-emotion' ),
-		'auto_emotion_render_suchprofil_links_box',
-		'suchprofil',
-		'side',
-		'default'
-	);
-}
-add_action( 'add_meta_boxes', 'auto_emotion_suchprofil_meta_box' );
-
-function auto_emotion_render_suchprofil_meta_box( $post ) {
-	wp_nonce_field( 'auto_emotion_suchprofil_meta', 'auto_emotion_suchprofil_meta_nonce' );
-
-	$standort       = get_post_meta( $post->ID, '_suchprofil_standort', true );
-	$anstellungsart = get_post_meta( $post->ID, '_suchprofil_anstellungsart', true );
-	$status         = get_post_meta( $post->ID, '_suchprofil_status', true );
-	$stichworte     = get_post_meta( $post->ID, '_suchprofil_stichworte', true );
-
-	if ( ! $status ) {
-		$status = 'aktiv';
-	}
-	?>
-	<p>
-		<label for="auto_emotion_suchprofil_standort"><strong><?php esc_html_e( 'Standort', 'auto-emotion' ); ?></strong></label><br>
-		<input type="text" id="auto_emotion_suchprofil_standort" name="auto_emotion_suchprofil_standort" class="widefat" value="<?php echo esc_attr( $standort ); ?>" placeholder="z. B. Offenbach am Main">
-	</p>
-	<p>
-		<label for="auto_emotion_suchprofil_anstellungsart"><strong><?php esc_html_e( 'Anstellungsart', 'auto-emotion' ); ?></strong></label><br>
-		<select id="auto_emotion_suchprofil_anstellungsart" name="auto_emotion_suchprofil_anstellungsart" class="widefat">
-			<?php
-			$optionen = array(
-				''            => __( '– bitte wählen –', 'auto-emotion' ),
-				'vollzeit'    => __( 'Vollzeit', 'auto-emotion' ),
-				'teilzeit'    => __( 'Teilzeit', 'auto-emotion' ),
-				'ausbildung'  => __( 'Ausbildung', 'auto-emotion' ),
-				'werkstudent' => __( 'Werkstudent/in', 'auto-emotion' ),
-				'praktikum'   => __( 'Praktikum', 'auto-emotion' ),
-			);
-			foreach ( $optionen as $wert => $label ) {
-				printf(
-					'<option value="%1$s" %2$s>%3$s</option>',
-					esc_attr( $wert ),
-					selected( $anstellungsart, $wert, false ),
-					esc_html( $label )
-				);
-			}
-			?>
-		</select>
-	</p>
-	<p>
-		<label for="auto_emotion_suchprofil_status"><strong><?php esc_html_e( 'Status', 'auto-emotion' ); ?></strong></label><br>
-		<select id="auto_emotion_suchprofil_status" name="auto_emotion_suchprofil_status" class="widefat">
-			<?php
-			$status_optionen = array(
-				'aktiv'    => __( 'Aktiv', 'auto-emotion' ),
-				'pausiert' => __( 'Pausiert', 'auto-emotion' ),
-				'besetzt'  => __( 'Besetzt', 'auto-emotion' ),
-			);
-			foreach ( $status_optionen as $wert => $label ) {
-				printf(
-					'<option value="%1$s" %2$s>%3$s</option>',
-					esc_attr( $wert ),
-					selected( $status, $wert, false ),
-					esc_html( $label )
-				);
-			}
-			?>
-		</select>
-	</p>
-	<p>
-		<label for="auto_emotion_suchprofil_stichworte"><strong><?php esc_html_e( 'Gesuchte Skills / Stichworte', 'auto-emotion' ); ?></strong></label><br>
-		<input type="text" id="auto_emotion_suchprofil_stichworte" name="auto_emotion_suchprofil_stichworte" class="widefat" value="<?php echo esc_attr( $stichworte ); ?>" placeholder="z. B. Kfz-Mechatroniker, Diagnose, Service Berater">
-		<span class="description"><?php esc_html_e( 'Kommagetrennt. Fließt zusammen mit Titel und Standort in die Such-Links ein.', 'auto-emotion' ); ?></span>
-	</p>
-	<?php
-}
-
-/**
- * Baut reine Such-Links (keine Datenabfrage, keine Kandidaten-Daten) für
+ * Reine Such-Links (keine Datenabfrage, keine Kandidaten-Daten) für
  * LinkedIn, Xing und eine Google-X-Ray-Suche aus Titel, Stichworten und
- * Standort des Suchprofils.
+ * Standort eines Suchprofils.
  */
 function auto_emotion_suchprofil_links( $post_id ) {
 	$post = get_post( $post_id );
@@ -160,22 +60,18 @@ function auto_emotion_suchprofil_links( $post_id ) {
 
 	$standort   = get_post_meta( $post_id, '_suchprofil_standort', true );
 	$stichworte = get_post_meta( $post_id, '_suchprofil_stichworte', true );
-
 	$suchbegriffe = trim( $post->post_title . ' ' . $stichworte );
 
 	if ( ! $suchbegriffe ) {
 		return array();
 	}
 
-	$linkedin_keywords = trim( $suchbegriffe );
-	$xing_keywords      = trim( $suchbegriffe );
-
-	$links = array(
+	return array(
 		'linkedin' => array(
 			'label' => __( 'LinkedIn – Personensuche', 'auto-emotion' ),
 			'url'   => add_query_arg(
 				array(
-					'keywords' => rawurlencode( $linkedin_keywords ),
+					'keywords' => rawurlencode( $suchbegriffe ),
 					'location' => $standort ? rawurlencode( $standort ) : false,
 				),
 				'https://www.linkedin.com/search/results/people/'
@@ -184,7 +80,7 @@ function auto_emotion_suchprofil_links( $post_id ) {
 		'xing'     => array(
 			'label' => __( 'Xing – Mitgliedersuche', 'auto-emotion' ),
 			'url'   => add_query_arg(
-				array( 'keywords' => rawurlencode( $xing_keywords ) ),
+				array( 'keywords' => rawurlencode( $suchbegriffe ) ),
 				'https://www.xing.com/search/members'
 			),
 		),
@@ -195,98 +91,243 @@ function auto_emotion_suchprofil_links( $post_id ) {
 			),
 		),
 	);
-
-	return $links;
 }
 
-function auto_emotion_render_suchprofil_links_box( $post ) {
-	if ( 'auto-draft' === $post->post_status ) {
-		echo '<p>' . esc_html__( 'Erst speichern, dann erscheinen hier die passenden Such-Links.', 'auto-emotion' ) . '</p>';
-		return;
-	}
+/**
+ * Eigene Rewrite-Routen unter /mitarbeiter/ – bewusst ohne
+ * WordPress-Seiten/Templates im üblichen Sinn, damit der Bereich sich
+ * wie eine eigenständige Anwendung anfühlt, nicht wie eine WP-Seite.
+ */
+function auto_emotion_recruiting_rewrite_rules() {
+	add_rewrite_rule( '^mitarbeiter/?$', 'index.php?ae_staff_route=login', 'top' );
+	add_rewrite_rule( '^mitarbeiter/recruiting/?$', 'index.php?ae_staff_route=dashboard', 'top' );
+	add_rewrite_rule( '^mitarbeiter/recruiting/neu/?$', 'index.php?ae_staff_route=neu', 'top' );
+	add_rewrite_rule( '^mitarbeiter/recruiting/([0-9]+)/?$', 'index.php?ae_staff_route=bearbeiten&ae_staff_id=$matches[1]', 'top' );
+}
+add_action( 'init', 'auto_emotion_recruiting_rewrite_rules' );
 
-	$links = auto_emotion_suchprofil_links( $post->ID );
+function auto_emotion_recruiting_query_vars( $vars ) {
+	$vars[] = 'ae_staff_route';
+	$vars[] = 'ae_staff_id';
+	return $vars;
+}
+add_filter( 'query_vars', 'auto_emotion_recruiting_query_vars' );
 
-	if ( empty( $links ) ) {
-		echo '<p>' . esc_html__( 'Titel oder Stichworte eintragen, um Such-Links zu erzeugen.', 'auto-emotion' ) . '</p>';
-		return;
+/**
+ * Rewrite-Regeln ändern sich nur mit Theme-Updates, nicht bei jedem
+ * Request – ohne wp-admin-Zugriff kann hier niemand manuell auf
+ * "Permalinks speichern" klicken, daher automatischer Flush bei
+ * Versionswechsel.
+ */
+function auto_emotion_maybe_flush_recruiting_rewrite_rules() {
+	$needed_version = '1';
+	if ( get_option( 'auto_emotion_staff_rewrite_version' ) !== $needed_version ) {
+		flush_rewrite_rules();
+		update_option( 'auto_emotion_staff_rewrite_version', $needed_version );
 	}
+}
+add_action( 'init', 'auto_emotion_maybe_flush_recruiting_rewrite_rules', 20 );
 
-	echo '<ul style="margin:0;">';
-	foreach ( $links as $link ) {
-		printf(
-			'<li style="margin-bottom:8px;"><a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s ↗</a></li>',
-			esc_url( $link['url'] ),
-			esc_html( $link['label'] )
-		);
+/**
+ * Zugriffsschutz: nur eingeloggte Mitarbeiter mit Bearbeitungsrecht
+ * dürfen Dashboard/Formulare sehen, alle anderen landen beim Login.
+ */
+function auto_emotion_staff_require_login() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'edit_posts' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
 	}
-	echo '</ul>';
-	echo '<p class="description">' . esc_html__( 'Reine Such-Links – es werden keine Kandidaten-Daten abgerufen oder gespeichert.', 'auto-emotion' ) . '</p>';
 }
 
-function auto_emotion_save_suchprofil_meta( $post_id ) {
-	if ( ! isset( $_POST['auto_emotion_suchprofil_meta_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['auto_emotion_suchprofil_meta_nonce'] ) ), 'auto_emotion_suchprofil_meta' ) ) {
+function auto_emotion_render_template_part( $relative_path, $vars = array() ) {
+	extract( $vars ); // phpcs:ignore -- gezielt für die drei bekannten Template-Variablen dieser Datei.
+	include AUTO_EMOTION_DIR . '/template-parts/recruiting/' . $relative_path;
+}
+
+/**
+ * Router für die /mitarbeiter/-Routen. Gibt komplett eigenständiges
+ * HTML aus (kein get_header()/get_footer(), keine WP-Theme-Chrome).
+ */
+function auto_emotion_recruiting_template_redirect() {
+	$route = get_query_var( 'ae_staff_route' );
+
+	if ( ! $route ) {
 		return;
 	}
 
-	if ( ! current_user_can( 'edit_post', $post_id ) ) {
-		return;
+	switch ( $route ) {
+
+		case 'login':
+			if ( is_user_logged_in() && current_user_can( 'edit_posts' ) ) {
+				wp_safe_redirect( home_url( '/mitarbeiter/recruiting/' ) );
+				exit;
+			}
+			$auto_emotion_login_error = isset( $_GET['login_failed'] );
+			auto_emotion_render_template_part( 'login.php', array( 'auto_emotion_login_error' => $auto_emotion_login_error ) );
+			exit;
+
+		case 'dashboard':
+			auto_emotion_staff_require_login();
+			$auto_emotion_profiles = get_posts(
+				array(
+					'post_type'      => 'suchprofil',
+					'post_status'    => 'publish',
+					'posts_per_page' => -1,
+					'orderby'        => 'title',
+					'order'          => 'ASC',
+				)
+			);
+			auto_emotion_render_template_part( 'dashboard.php', array( 'auto_emotion_profiles' => $auto_emotion_profiles ) );
+			exit;
+
+		case 'neu':
+			auto_emotion_staff_require_login();
+			auto_emotion_render_template_part( 'form.php', array( 'auto_emotion_form_post' => null ) );
+			exit;
+
+		case 'bearbeiten':
+			auto_emotion_staff_require_login();
+			$auto_emotion_id   = absint( get_query_var( 'ae_staff_id' ) );
+			$auto_emotion_post = get_post( $auto_emotion_id );
+			if ( ! $auto_emotion_post || 'suchprofil' !== $auto_emotion_post->post_type ) {
+				wp_safe_redirect( home_url( '/mitarbeiter/recruiting/' ) );
+				exit;
+			}
+			auto_emotion_render_template_part( 'form.php', array( 'auto_emotion_form_post' => $auto_emotion_post ) );
+			exit;
+	}
+}
+add_action( 'template_redirect', 'auto_emotion_recruiting_template_redirect' );
+
+/**
+ * Login-Handler: authentifiziert gegen die bestehenden WordPress-
+ * Benutzerkonten (wp_signon) – kein separates Zugangssystem nötig.
+ */
+function auto_emotion_handle_recruiting_login() {
+	if ( ! isset( $_POST['auto_emotion_recruiting_login_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['auto_emotion_recruiting_login_nonce'] ) ), 'auto_emotion_recruiting_login' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/?login_failed=1' ) );
+		exit;
 	}
 
-	$felder = array(
-		'auto_emotion_suchprofil_standort'       => '_suchprofil_standort',
-		'auto_emotion_suchprofil_anstellungsart' => '_suchprofil_anstellungsart',
-		'auto_emotion_suchprofil_status'         => '_suchprofil_status',
-		'auto_emotion_suchprofil_stichworte'     => '_suchprofil_stichworte',
+	$creds = array(
+		'user_login'    => isset( $_POST['ae_login_user'] ) ? sanitize_user( wp_unslash( $_POST['ae_login_user'] ) ) : '',
+		'user_password' => isset( $_POST['ae_login_pass'] ) ? (string) wp_unslash( $_POST['ae_login_pass'] ) : '',
+		'remember'      => true,
 	);
 
-	foreach ( $felder as $feld_name => $meta_key ) {
-		if ( isset( $_POST[ $feld_name ] ) ) {
-			update_post_meta( $post_id, $meta_key, sanitize_text_field( wp_unslash( $_POST[ $feld_name ] ) ) );
-		}
+	$user = wp_signon( $creds, is_ssl() );
+
+	if ( is_wp_error( $user ) || ! user_can( $user, 'edit_posts' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/?login_failed=1' ) );
+		exit;
 	}
+
+	wp_safe_redirect( home_url( '/mitarbeiter/recruiting/' ) );
+	exit;
 }
-add_action( 'save_post_suchprofil', 'auto_emotion_save_suchprofil_meta' );
+add_action( 'admin_post_nopriv_auto_emotion_recruiting_login', 'auto_emotion_handle_recruiting_login' );
+add_action( 'admin_post_auto_emotion_recruiting_login', 'auto_emotion_handle_recruiting_login' );
+
+function auto_emotion_handle_recruiting_logout() {
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'auto_emotion_recruiting_logout' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	wp_logout();
+	wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_recruiting_logout', 'auto_emotion_handle_recruiting_logout' );
 
 /**
- * Admin-Liste: Status und Standort direkt in der Übersicht anzeigen,
- * damit man nicht jedes Suchprofil einzeln öffnen muss.
+ * Speichert ein Suchprofil (neu oder bestehend).
  */
-function auto_emotion_suchprofil_columns( $columns ) {
-	$neue_spalten = array();
-	foreach ( $columns as $key => $label ) {
-		$neue_spalten[ $key ] = $label;
-		if ( 'title' === $key ) {
-			$neue_spalten['suchprofil_status']   = __( 'Status', 'auto-emotion' );
-			$neue_spalten['suchprofil_standort'] = __( 'Standort', 'auto-emotion' );
+function auto_emotion_handle_recruiting_save() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'edit_posts' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	if ( ! isset( $_POST['auto_emotion_recruiting_save_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['auto_emotion_recruiting_save_nonce'] ) ), 'auto_emotion_recruiting_save' ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen. Bitte zurückgehen und erneut versuchen.', 'auto-emotion' ) );
+	}
+
+	$post_id = isset( $_POST['ae_profile_id'] ) ? absint( $_POST['ae_profile_id'] ) : 0;
+	$titel   = isset( $_POST['ae_titel'] ) ? sanitize_text_field( wp_unslash( $_POST['ae_titel'] ) ) : '';
+
+	if ( ! $titel ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/recruiting/' ) );
+		exit;
+	}
+
+	$post_data = array(
+		'post_title'  => $titel,
+		'post_type'   => 'suchprofil',
+		'post_status' => 'publish',
+	);
+
+	if ( $post_id ) {
+		$existing = get_post( $post_id );
+		if ( ! $existing || 'suchprofil' !== $existing->post_type || ! current_user_can( 'edit_post', $post_id ) ) {
+			wp_safe_redirect( home_url( '/mitarbeiter/recruiting/' ) );
+			exit;
+		}
+		$post_data['ID'] = $post_id;
+		wp_update_post( $post_data );
+	} else {
+		$post_id = wp_insert_post( $post_data );
+	}
+
+	if ( $post_id && ! is_wp_error( $post_id ) ) {
+		$felder = array(
+			'ae_standort'       => '_suchprofil_standort',
+			'ae_anstellungsart' => '_suchprofil_anstellungsart',
+			'ae_status'         => '_suchprofil_status',
+			'ae_stichworte'     => '_suchprofil_stichworte',
+		);
+		foreach ( $felder as $feld_name => $meta_key ) {
+			if ( isset( $_POST[ $feld_name ] ) ) {
+				update_post_meta( $post_id, $meta_key, sanitize_text_field( wp_unslash( $_POST[ $feld_name ] ) ) );
+			}
 		}
 	}
-	return $neue_spalten;
-}
-add_filter( 'manage_suchprofil_posts_columns', 'auto_emotion_suchprofil_columns' );
 
-function auto_emotion_suchprofil_column_content( $column, $post_id ) {
-	if ( 'suchprofil_status' === $column ) {
-		$status_labels = array(
-			'aktiv'    => __( 'Aktiv', 'auto-emotion' ),
-			'pausiert' => __( 'Pausiert', 'auto-emotion' ),
-			'besetzt'  => __( 'Besetzt', 'auto-emotion' ),
-		);
-		$status = get_post_meta( $post_id, '_suchprofil_status', true );
-		echo esc_html( isset( $status_labels[ $status ] ) ? $status_labels[ $status ] : $status_labels['aktiv'] );
-	}
-
-	if ( 'suchprofil_standort' === $column ) {
-		echo esc_html( get_post_meta( $post_id, '_suchprofil_standort', true ) );
-	}
+	wp_safe_redirect( home_url( '/mitarbeiter/recruiting/' ) );
+	exit;
 }
-add_action( 'manage_suchprofil_posts_custom_column', 'auto_emotion_suchprofil_column_content', 10, 2 );
+add_action( 'admin_post_auto_emotion_recruiting_save', 'auto_emotion_handle_recruiting_save' );
 
 /**
- * Login-Link im Footer: einfach auffindbar statt versteckt – führt
- * eingeloggte Mitarbeiter direkt in die Suchprofil-Übersicht, meldet
- * alle anderen zunächst regulär über wp-login.php an.
+ * Verschiebt ein Suchprofil in den Papierkorb (reversibel, kein
+ * endgültiges Löschen).
+ */
+function auto_emotion_handle_recruiting_delete() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'edit_posts' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	$post_id = isset( $_GET['ae_profile_id'] ) ? absint( $_GET['ae_profile_id'] ) : 0;
+
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'auto_emotion_recruiting_delete_' . $post_id ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$post = get_post( $post_id );
+	if ( $post && 'suchprofil' === $post->post_type && current_user_can( 'edit_post', $post_id ) ) {
+		wp_trash_post( $post_id );
+	}
+
+	wp_safe_redirect( home_url( '/mitarbeiter/recruiting/' ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_recruiting_delete', 'auto_emotion_handle_recruiting_delete' );
+
+/**
+ * Sichtbarer, aber schlichter Einstiegspunkt im Footer – führt zur
+ * eigenen Login-Seite des Mitarbeiterbereichs (nicht wp-login.php).
  */
 function auto_emotion_staff_login_url() {
-	return wp_login_url( admin_url( 'edit.php?post_type=suchprofil' ) );
+	return home_url( '/mitarbeiter/' );
 }
