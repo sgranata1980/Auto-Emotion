@@ -172,6 +172,76 @@ function auto_emotion_render_template_part( $relative_path, $vars = array() ) {
 }
 
 /**
+ * App-Shell (Sidebar + Content-Rahmen) für alle eingeloggten
+ * /mitarbeiter/-Seiten – bewusst wie eine native Desktop-Anwendung
+ * gestaltet (Sidebar-Navigation, Karten, System-Schriftart), nicht wie
+ * eine Website mit Formularen. auto_emotion_staff_shell_start() öffnet
+ * <html>/<body> und die Sidebar, auto_emotion_staff_shell_end()
+ * schließt alles wieder – der Seiteninhalt dazwischen bleibt Sache des
+ * jeweiligen Templates.
+ */
+function auto_emotion_staff_shell_start( $title, $active = '' ) {
+	$neue_bewerbungen = get_posts(
+		array(
+			'post_type'      => 'bewerbung',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'meta_query'     => array(
+				array(
+					'key'   => '_bewerbung_status',
+					'value' => 'neu',
+				),
+			),
+		)
+	);
+	$neue_anzahl = count( $neue_bewerbungen );
+	?>
+<!doctype html>
+<html <?php language_attributes(); ?>>
+<head>
+	<meta charset="<?php bloginfo( 'charset' ); ?>">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="robots" content="noindex, nofollow">
+	<title><?php echo esc_html( $title ); ?> – <?php bloginfo( 'name' ); ?></title>
+	<link rel="stylesheet" href="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/css/recruiting-backend.css?ver=' . AUTO_EMOTION_VERSION ); ?>">
+</head>
+<body class="ae-app">
+	<div class="ae-shell">
+		<aside class="ae-sidebar">
+			<a class="ae-sidebar__brand" href="<?php echo esc_url( home_url( '/mitarbeiter/recruiting/' ) ); ?>"><?php bloginfo( 'name' ); ?></a>
+			<nav class="ae-sidebar__nav">
+				<a href="<?php echo esc_url( home_url( '/mitarbeiter/recruiting/' ) ); ?>" class="<?php echo 'dashboard' === $active ? 'is-active' : ''; ?>">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 13h6V4H4v9Zm0 7h6v-5H4v5Zm10 0h6v-9h-6v9Zm0-16v5h6V4h-6Z" fill="currentColor"/></svg>
+					<?php esc_html_e( 'Suchprofile', 'auto-emotion' ); ?>
+				</a>
+				<a href="<?php echo esc_url( home_url( '/mitarbeiter/bewerbungen/' ) ); ?>" class="<?php echo in_array( $active, array( 'bewerbungen', 'bewerbung' ), true ) ? 'is-active' : ''; ?>">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 2h9l5 5v15H6V2Z" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M9 12h8M9 16h8M9 8h4" stroke="currentColor" stroke-width="1.6"/></svg>
+					<?php esc_html_e( 'Bewerbungen', 'auto-emotion' ); ?>
+					<?php if ( $neue_anzahl > 0 ) : ?>
+						<span class="ae-sidebar__badge"><?php echo esc_html( $neue_anzahl ); ?></span>
+					<?php endif; ?>
+				</a>
+			</nav>
+			<div class="ae-sidebar__footer">
+				<span><?php echo esc_html( wp_get_current_user()->display_name ); ?></span>
+				<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=auto_emotion_recruiting_logout' ), 'auto_emotion_recruiting_logout' ) ); ?>"><?php esc_html_e( 'Abmelden', 'auto-emotion' ); ?></a>
+			</div>
+		</aside>
+		<main class="ae-content">
+	<?php
+}
+
+function auto_emotion_staff_shell_end() {
+	?>
+		</main>
+	</div>
+</body>
+</html>
+	<?php
+}
+
+/**
  * Router für die /mitarbeiter/-Routen. Gibt komplett eigenständiges
  * HTML aus (kein get_header()/get_footer(), keine WP-Theme-Chrome).
  */

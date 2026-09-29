@@ -53,6 +53,11 @@ $auto_emotion_status = isset( $_GET['bewerbung'] ) ? sanitize_text_field( wp_uns
 		<input type="tel" id="bewerbung_telefon" name="bewerbung_telefon" required>
 	</div>
 
+	<div class="application-form__field">
+		<label for="bewerbung_email"><?php esc_html_e( 'E-Mail (optional, für Rückmeldungen per Mail)', 'auto-emotion' ); ?></label>
+		<input type="email" id="bewerbung_email" name="bewerbung_email">
+	</div>
+
 	<fieldset class="application-form__field">
 		<legend><?php esc_html_e( 'Bevorzugter Kontakt', 'auto-emotion' ); ?></legend>
 		<label class="application-form__radio"><input type="radio" name="bewerbung_kontakt" value="Anruf" required> <?php esc_html_e( 'Anruf', 'auto-emotion' ); ?></label>

@@ -17,10 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="robots" content="noindex, nofollow">
 	<title><?php esc_html_e( 'Mitarbeiter-Login – Auto Emotion', 'auto-emotion' ); ?></title>
-	<link rel="stylesheet" href="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/css/tokens.css?ver=' . AUTO_EMOTION_VERSION ); ?>">
 	<link rel="stylesheet" href="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/css/recruiting-backend.css?ver=' . AUTO_EMOTION_VERSION ); ?>">
 </head>
-<body class="ae-staff">
+<body class="ae-app">
 	<div class="ae-staff-login">
 		<div class="ae-staff-login__card">
 			<span class="ae-staff-login__brand"><?php bloginfo( 'name' ); ?></span>

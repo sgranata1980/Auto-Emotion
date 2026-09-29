@@ -65,6 +65,7 @@ function auto_emotion_speichere_bewerbung( $daten ) {
 
 	update_post_meta( $post_id, '_bewerbung_name', $daten['name'] );
 	update_post_meta( $post_id, '_bewerbung_telefon', $daten['telefon'] );
+	update_post_meta( $post_id, '_bewerbung_email', isset( $daten['email'] ) ? $daten['email'] : '' );
 	update_post_meta( $post_id, '_bewerbung_kontakt_pref', $daten['kontakt_pref'] );
 	update_post_meta( $post_id, '_bewerbung_position', $daten['position'] );
 	update_post_meta( $post_id, '_bewerbung_nachricht', $daten['nachricht'] );
@@ -184,11 +185,27 @@ function auto_emotion_bewerbungen_template_redirect() {
 		}
 
 		$auto_emotion_bewerbungen = get_posts( $auto_emotion_query_args );
+		$auto_emotion_view        = isset( $_GET['view'] ) && 'board' === $_GET['view'] ? 'board' : 'liste';
+
+		$auto_emotion_alle_bewerbungen = 'board' === $auto_emotion_view
+			? get_posts(
+				array(
+					'post_type'      => 'bewerbung',
+					'post_status'    => 'publish',
+					'posts_per_page' => -1,
+					'orderby'        => 'date',
+					'order'          => 'DESC',
+				)
+			)
+			: array();
+
 		auto_emotion_render_template_part(
 			'bewerbungen-liste.php',
 			array(
-				'auto_emotion_bewerbungen'    => $auto_emotion_bewerbungen,
-				'auto_emotion_filter_status'  => $auto_emotion_filter_status,
+				'auto_emotion_bewerbungen'      => $auto_emotion_bewerbungen,
+				'auto_emotion_filter_status'    => $auto_emotion_filter_status,
+				'auto_emotion_view'             => $auto_emotion_view,
+				'auto_emotion_alle_bewerbungen' => $auto_emotion_alle_bewerbungen,
 			)
 		);
 		exit;
@@ -278,6 +295,75 @@ function auto_emotion_handle_bewerbung_weiterleiten() {
 	exit;
 }
 add_action( 'admin_post_auto_emotion_bewerbung_weiterleiten', 'auto_emotion_handle_bewerbung_weiterleiten' );
+
+/**
+ * Vorgefertigte, editierbare E-Mail-Vorlagen an Bewerber – Einladung
+ * zum Interview oder Absage. Wird nur angeboten, wenn im Formular eine
+ * E-Mail-Adresse angegeben wurde (das Formular fragt sie optional ab).
+ */
+function auto_emotion_bewerbung_email_vorlagen( $name, $position ) {
+	$anschrift = trim( 'Liebe/r ' . $name . ',' );
+
+	return array(
+		'einladung' => array(
+			'label'   => __( 'Einladung zum Interview', 'auto-emotion' ),
+			'betreff' => sprintf( __( 'Einladung zum Vorstellungsgespräch – %s', 'auto-emotion' ), $position ),
+			'text'    => $anschrift . "\n\n" . sprintf(
+				__( 'vielen Dank für Ihre Bewerbung als %s bei Auto Emotion. Wir würden Sie gerne persönlich kennenlernen und laden Sie herzlich zu einem Vorstellungsgespräch ein.', 'auto-emotion' ),
+				$position
+			) . "\n\n" . __( 'Bitte teilen Sie uns mit, welcher Termin Ihnen passt, oder schlagen Sie gerne einen Alternativtermin vor:', 'auto-emotion' ) . "\n– [Terminvorschlag 1]\n– [Terminvorschlag 2]\n\n"
+			. __( 'Das Gespräch findet statt bei:', 'auto-emotion' ) . "\nAuto Emotion GmbH & Co. KG\nSprendlinger Landstraße 166, 63069 Offenbach am Main\n\n"
+			. __( 'Wir freuen uns auf das Gespräch mit Ihnen!', 'auto-emotion' ) . "\n\n" . __( 'Mit freundlichen Grüßen', 'auto-emotion' ) . "\nIhr Auto Emotion Team",
+		),
+		'absage'    => array(
+			'label'   => __( 'Absage', 'auto-emotion' ),
+			'betreff' => sprintf( __( 'Ihre Bewerbung als %s bei Auto Emotion', 'auto-emotion' ), $position ),
+			'text'    => $anschrift . "\n\n" . sprintf(
+				__( 'vielen Dank für Ihr Interesse an einer Tätigkeit als %s bei Auto Emotion und die Zeit, die Sie in Ihre Bewerbung investiert haben.', 'auto-emotion' ),
+				$position
+			) . "\n\n" . __( 'Nach sorgfältiger Prüfung müssen wir Ihnen leider mitteilen, dass wir uns in diesem Auswahlprozess für eine andere Kandidatin bzw. einen anderen Kandidaten entschieden haben.', 'auto-emotion' ) . "\n\n"
+			. __( 'Wir bedanken uns herzlich für Ihr Interesse an Auto Emotion und wünschen Ihnen für Ihren weiteren beruflichen Weg alles Gute.', 'auto-emotion' ) . "\n\n" . __( 'Mit freundlichen Grüßen', 'auto-emotion' ) . "\nIhr Auto Emotion Team",
+		),
+	);
+}
+
+function auto_emotion_handle_bewerbung_email_senden() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	$post_id = isset( $_POST['ae_bewerbung_id'] ) ? absint( $_POST['ae_bewerbung_id'] ) : 0;
+
+	if ( ! isset( $_POST['auto_emotion_bewerbung_email_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['auto_emotion_bewerbung_email_nonce'] ) ), 'auto_emotion_bewerbung_email_' . $post_id ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$post           = get_post( $post_id );
+	$bewerber_email = $post ? get_post_meta( $post_id, '_bewerbung_email', true ) : '';
+
+	if ( ! $post || 'bewerbung' !== $post->post_type || ! is_email( $bewerber_email ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/bewerbungen/' . $post_id . '/' ) );
+		exit;
+	}
+
+	$betreff = isset( $_POST['ae_email_betreff'] ) ? sanitize_text_field( wp_unslash( $_POST['ae_email_betreff'] ) ) : '';
+	$text    = isset( $_POST['ae_email_text'] ) ? sanitize_textarea_field( wp_unslash( $_POST['ae_email_text'] ) ) : '';
+
+	if ( $betreff && $text ) {
+		$eigener_absender = auto_emotion_contact( 'email' );
+		$headers          = array( 'Reply-To: ' . $eigener_absender );
+		wp_mail( $bewerber_email, $betreff, $text, $headers );
+
+		$bisherige_notiz = get_post_meta( $post_id, '_bewerbung_notiz', true );
+		$protokoll_zeile = sprintf( '[%s] %s: "%s" an %s gesendet.', current_time( 'd.m.Y H:i' ), wp_get_current_user()->display_name, $betreff, $bewerber_email );
+		update_post_meta( $post_id, '_bewerbung_notiz', trim( $bisherige_notiz . "\n" . $protokoll_zeile ) );
+	}
+
+	wp_safe_redirect( add_query_arg( 'email_gesendet', '1', home_url( '/mitarbeiter/bewerbungen/' . $post_id . '/' ) ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_bewerbung_email_senden', 'auto_emotion_handle_bewerbung_email_senden' );
 
 /**
  * Status-Pipeline wie bei gängigen Bewerbermanagement-Systemen

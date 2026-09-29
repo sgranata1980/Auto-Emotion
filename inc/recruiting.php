@@ -170,6 +170,7 @@ function auto_emotion_handle_bewerbung() {
 	$name         = isset( $_POST['bewerbung_name'] ) ? sanitize_text_field( wp_unslash( $_POST['bewerbung_name'] ) ) : '';
 	$phone        = isset( $_POST['bewerbung_telefon'] ) ? sanitize_text_field( wp_unslash( $_POST['bewerbung_telefon'] ) ) : '';
 	$contact_pref = isset( $_POST['bewerbung_kontakt'] ) ? sanitize_text_field( wp_unslash( $_POST['bewerbung_kontakt'] ) ) : '';
+	$email        = isset( $_POST['bewerbung_email'] ) ? sanitize_email( wp_unslash( $_POST['bewerbung_email'] ) ) : '';
 	$position     = isset( $_POST['bewerbung_stelle'] ) ? sanitize_text_field( wp_unslash( $_POST['bewerbung_stelle'] ) ) : '';
 	$message      = isset( $_POST['bewerbung_nachricht'] ) ? sanitize_textarea_field( wp_unslash( $_POST['bewerbung_nachricht'] ) ) : '';
 	$consent      = ! empty( $_POST['bewerbung_dsgvo'] );
@@ -195,6 +196,7 @@ function auto_emotion_handle_bewerbung() {
 		. 'Name: ' . $name . "\n"
 		. 'Telefon/WhatsApp: ' . $phone . "\n"
 		. 'Bevorzugter Kontakt: ' . $contact_pref . "\n"
+		. ( $email ? 'E-Mail: ' . $email . "\n" : '' )
 		. 'DSGVO-Einwilligung: erteilt' . "\n";
 
 	if ( $message ) {
@@ -216,6 +218,7 @@ function auto_emotion_handle_bewerbung() {
 			array(
 				'name'         => $name,
 				'telefon'      => $phone,
+				'email'        => $email,
 				'kontakt_pref' => $contact_pref,
 				'position'     => $position,
 				'nachricht'    => $message,

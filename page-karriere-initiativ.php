@@ -56,6 +56,11 @@ $auto_emotion_prefill  = isset( $_GET['stelle'] ) ? sanitize_text_field( wp_unsl
 	</div>
 
 	<div class="application-form__field">
+		<label for="bewerbung_email"><?php esc_html_e( 'E-Mail (optional, für Rückmeldungen per Mail)', 'auto-emotion' ); ?></label>
+		<input type="email" id="bewerbung_email" name="bewerbung_email">
+	</div>
+
+	<div class="application-form__field">
 		<label for="bewerbung_stelle"><?php esc_html_e( 'Wunschposition', 'auto-emotion' ); ?></label>
 		<input type="text" id="bewerbung_stelle" name="bewerbung_stelle" value="<?php echo esc_attr( $auto_emotion_prefill ); ?>" placeholder="<?php esc_attr_e( 'z. B. Kfz-Mechatroniker, Serviceberatung, Verkauf …', 'auto-emotion' ); ?>" required>
 	</div>
