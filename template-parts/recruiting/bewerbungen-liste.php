@@ -29,6 +29,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php esc_html_e( 'Eingehende Bewerbungen aus den Karriere-Formularen. Unterlagen sind nur hier, geschützt, einsehbar und lassen sich an Kollegen weiterleiten – nie über eine öffentliche URL.', 'auto-emotion' ); ?>
 		</p>
 
+		<div class="ae-status-tabs">
+			<a href="<?php echo esc_url( home_url( '/mitarbeiter/bewerbungen/' ) ); ?>" class="<?php echo empty( $auto_emotion_filter_status ) ? 'is-active' : ''; ?>"><?php esc_html_e( 'Alle', 'auto-emotion' ); ?></a>
+			<?php foreach ( auto_emotion_bewerbung_status_labels() as $auto_emotion_status_key => $auto_emotion_status_label ) : ?>
+				<a href="<?php echo esc_url( add_query_arg( 'status', $auto_emotion_status_key, home_url( '/mitarbeiter/bewerbungen/' ) ) ); ?>" class="<?php echo $auto_emotion_filter_status === $auto_emotion_status_key ? 'is-active' : ''; ?>"><?php echo esc_html( $auto_emotion_status_label ); ?></a>
+			<?php endforeach; ?>
+		</div>
+
 		<?php if ( empty( $auto_emotion_bewerbungen ) ) : ?>
 			<p class="ae-empty"><?php esc_html_e( 'Noch keine Bewerbungen eingegangen.', 'auto-emotion' ); ?></p>
 		<?php else : ?>
@@ -41,9 +48,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 					$auto_emotion_detail_url = home_url( '/mitarbeiter/bewerbungen/' . $auto_emotion_bewerbung->ID . '/' );
 					?>
 					<li>
+						<?php
+						$auto_emotion_status_val    = get_post_meta( $auto_emotion_bewerbung->ID, '_bewerbung_status', true );
+						$auto_emotion_status_val    = $auto_emotion_status_val ? $auto_emotion_status_val : 'neu';
+						$auto_emotion_status_labels = auto_emotion_bewerbung_status_labels();
+						$auto_emotion_bewertung_val = (int) get_post_meta( $auto_emotion_bewerbung->ID, '_bewerbung_bewertung', true );
+						?>
 						<div class="ae-profile-list__main">
 							<p class="ae-profile-list__title">
 								<a href="<?php echo esc_url( $auto_emotion_detail_url ); ?>"><?php echo esc_html( get_post_meta( $auto_emotion_bewerbung->ID, '_bewerbung_name', true ) ); ?></a>
+								<span class="ae-status ae-status--<?php echo esc_attr( $auto_emotion_status_val ); ?>"><?php echo esc_html( isset( $auto_emotion_status_labels[ $auto_emotion_status_val ] ) ? $auto_emotion_status_labels[ $auto_emotion_status_val ] : $auto_emotion_status_val ); ?></span>
+								<?php if ( $auto_emotion_bewertung_val > 0 ) : ?>
+									<span class="ae-sterne" aria-label="<?php echo esc_attr( $auto_emotion_bewertung_val . ' von 5 Sternen' ); ?>"><?php echo esc_html( str_repeat( '★', $auto_emotion_bewertung_val ) . str_repeat( '☆', 5 - $auto_emotion_bewertung_val ) ); ?></span>
+								<?php endif; ?>
 							</p>
 							<p class="ae-profile-list__meta">
 								<?php echo esc_html( trim( implode( ' · ', array_filter( array( $auto_emotion_position, $auto_emotion_telefon, get_the_date( 'd.m.Y', $auto_emotion_bewerbung ) ) ) ) ) ); ?>

@@ -165,16 +165,32 @@ function auto_emotion_bewerbungen_template_redirect() {
 	auto_emotion_staff_require_login();
 
 	if ( 'bewerbungen' === $route ) {
-		$auto_emotion_bewerbungen = get_posts(
+		$auto_emotion_filter_status = isset( $_GET['status'] ) ? sanitize_key( wp_unslash( $_GET['status'] ) ) : '';
+		$auto_emotion_query_args    = array(
+			'post_type'      => 'bewerbung',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+		);
+
+		if ( $auto_emotion_filter_status && array_key_exists( $auto_emotion_filter_status, auto_emotion_bewerbung_status_labels() ) ) {
+			$auto_emotion_query_args['meta_query'] = array(
+				array(
+					'key'   => '_bewerbung_status',
+					'value' => $auto_emotion_filter_status,
+				),
+			);
+		}
+
+		$auto_emotion_bewerbungen = get_posts( $auto_emotion_query_args );
+		auto_emotion_render_template_part(
+			'bewerbungen-liste.php',
 			array(
-				'post_type'      => 'bewerbung',
-				'post_status'    => 'publish',
-				'posts_per_page' => -1,
-				'orderby'        => 'date',
-				'order'          => 'DESC',
+				'auto_emotion_bewerbungen'    => $auto_emotion_bewerbungen,
+				'auto_emotion_filter_status'  => $auto_emotion_filter_status,
 			)
 		);
-		auto_emotion_render_template_part( 'bewerbungen-liste.php', array( 'auto_emotion_bewerbungen' => $auto_emotion_bewerbungen ) );
 		exit;
 	}
 
@@ -264,6 +280,62 @@ function auto_emotion_handle_bewerbung_weiterleiten() {
 add_action( 'admin_post_auto_emotion_bewerbung_weiterleiten', 'auto_emotion_handle_bewerbung_weiterleiten' );
 
 /**
+ * Status-Pipeline wie bei gängigen Bewerbermanagement-Systemen
+ * (Personio, Indeed & Co.): von "Neu" bis "Eingestellt"/"Abgesagt".
+ */
+function auto_emotion_bewerbung_status_labels() {
+	return array(
+		'neu'         => __( 'Neu', 'auto-emotion' ),
+		'pruefung'    => __( 'In Prüfung', 'auto-emotion' ),
+		'interview'   => __( 'Interview', 'auto-emotion' ),
+		'angebot'     => __( 'Angebot', 'auto-emotion' ),
+		'eingestellt' => __( 'Eingestellt', 'auto-emotion' ),
+		'abgesagt'    => __( 'Abgesagt', 'auto-emotion' ),
+	);
+}
+
+/**
+ * Speichert Status, Sterne-Bewertung (0–5) und interne Notiz zu einer
+ * Bewerbung – die eigentliche "Bewertung" der Bewerber, wie man sie von
+ * Recruiting-Tools kennt. Bleibt intern, geht nie an den Bewerber raus.
+ */
+function auto_emotion_handle_bewerbung_bewerten() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	$post_id = isset( $_POST['ae_bewerbung_id'] ) ? absint( $_POST['ae_bewerbung_id'] ) : 0;
+
+	if ( ! isset( $_POST['auto_emotion_bewerbung_bewerten_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['auto_emotion_bewerbung_bewerten_nonce'] ) ), 'auto_emotion_bewerbung_bewerten_' . $post_id ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$post = get_post( $post_id );
+	if ( ! $post || 'bewerbung' !== $post->post_type ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/bewerbungen/' ) );
+		exit;
+	}
+
+	$status     = isset( $_POST['ae_bewerbung_status'] ) ? sanitize_key( wp_unslash( $_POST['ae_bewerbung_status'] ) ) : 'neu';
+	$bewertung  = isset( $_POST['ae_bewerbung_bewertung'] ) ? absint( $_POST['ae_bewerbung_bewertung'] ) : 0;
+	$notiz      = isset( $_POST['ae_bewerbung_notiz'] ) ? sanitize_textarea_field( wp_unslash( $_POST['ae_bewerbung_notiz'] ) ) : '';
+
+	if ( ! array_key_exists( $status, auto_emotion_bewerbung_status_labels() ) ) {
+		$status = 'neu';
+	}
+	$bewertung = min( 5, max( 0, $bewertung ) );
+
+	update_post_meta( $post_id, '_bewerbung_status', $status );
+	update_post_meta( $post_id, '_bewerbung_bewertung', $bewertung );
+	update_post_meta( $post_id, '_bewerbung_notiz', $notiz );
+
+	wp_safe_redirect( add_query_arg( 'gespeichert', '1', home_url( '/mitarbeiter/bewerbungen/' . $post_id . '/' ) ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_bewerbung_bewerten', 'auto_emotion_handle_bewerbung_bewerten' );
+
+/**
  * Verschiebt eine Bewerbung in den Papierkorb (reversibel).
  */
 function auto_emotion_handle_bewerbung_delete() {
@@ -287,3 +359,97 @@ function auto_emotion_handle_bewerbung_delete() {
 	exit;
 }
 add_action( 'admin_post_auto_emotion_bewerbung_delete', 'auto_emotion_handle_bewerbung_delete' );
+
+/**
+ * TEMPORÄR: Legt einmalig klar als Testdaten markierte Demo-Bewerbungen
+ * an, damit das Team das Recruiting-Tool mit Inhalt begutachten kann,
+ * ohne echte Bewerber-E-Mails an info@auto-emotion.de auszulösen. Wird
+ * nach der Demo wieder aus dem Code entfernt.
+ */
+function auto_emotion_handle_recruiting_seed_demo() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'auto_emotion_recruiting_seed_demo' ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$demo = array(
+		array(
+			'name'      => 'Max Mustermann (Testdaten)',
+			'position'  => 'Kfz-Mechatroniker (m/w/d)',
+			'status'    => 'neu',
+			'bewertung' => 0,
+		),
+		array(
+			'name'      => 'Erika Musterfrau (Testdaten)',
+			'position'  => 'Serviceassistent/in / Automobilkauffrau/-mann (m/w/d)',
+			'status'    => 'pruefung',
+			'bewertung' => 3,
+		),
+		array(
+			'name'      => 'Thomas Beispiel (Testdaten)',
+			'position'  => 'Kfz-Serviceberater (m/w/d)',
+			'status'    => 'interview',
+			'bewertung' => 4,
+		),
+		array(
+			'name'      => 'Julia Testfall (Testdaten)',
+			'position'  => 'Werkstattleiter (m/w/d)',
+			'status'    => 'angebot',
+			'bewertung' => 5,
+		),
+		array(
+			'name'      => 'Stefan Platzhalter (Testdaten)',
+			'position'  => 'Hochvolttechniker / Hochvoltexperte (m/w/d)',
+			'status'    => 'eingestellt',
+			'bewertung' => 5,
+		),
+		array(
+			'name'      => 'Sandra Demofrau (Testdaten)',
+			'position'  => 'Kfz-Mechatroniker (m/w/d)',
+			'status'    => 'abgesagt',
+			'bewertung' => 1,
+		),
+		array(
+			'name'      => 'Michael Mustermann (Testdaten)',
+			'position'  => 'Serviceassistent/in / Automobilkauffrau/-mann (m/w/d)',
+			'status'    => 'neu',
+			'bewertung' => 2,
+		),
+	);
+
+	foreach ( $demo as $eintrag ) {
+		auto_emotion_speichere_bewerbung(
+			array(
+				'name'         => $eintrag['name'],
+				'telefon'      => '0170 0000000',
+				'kontakt_pref' => 'Anruf',
+				'position'     => $eintrag['position'],
+				'nachricht'    => 'Testdatensatz zur Ansicht des Recruiting-Tools – kann gelöscht werden.',
+				'dateien'      => array(),
+			)
+		);
+
+		$neuester = get_posts(
+			array(
+				'post_type'      => 'bewerbung',
+				'posts_per_page' => 1,
+				'orderby'        => 'ID',
+				'order'          => 'DESC',
+				'fields'         => 'ids',
+			)
+		);
+
+		if ( ! empty( $neuester[0] ) ) {
+			update_post_meta( $neuester[0], '_bewerbung_status', $eintrag['status'] );
+			update_post_meta( $neuester[0], '_bewerbung_bewertung', $eintrag['bewertung'] );
+		}
+	}
+
+	wp_safe_redirect( home_url( '/mitarbeiter/bewerbungen/' ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_recruiting_seed_demo', 'auto_emotion_handle_recruiting_seed_demo' );

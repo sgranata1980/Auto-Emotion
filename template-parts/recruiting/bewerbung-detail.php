@@ -20,6 +20,10 @@ $auto_emotion_dateien      = get_post_meta( $auto_emotion_id, '_bewerbung_dateie
 if ( ! is_array( $auto_emotion_dateien ) ) {
 	$auto_emotion_dateien = array();
 }
+$auto_emotion_status    = get_post_meta( $auto_emotion_id, '_bewerbung_status', true );
+$auto_emotion_status    = $auto_emotion_status ? $auto_emotion_status : 'neu';
+$auto_emotion_bewertung = (int) get_post_meta( $auto_emotion_id, '_bewerbung_bewertung', true );
+$auto_emotion_notiz     = get_post_meta( $auto_emotion_id, '_bewerbung_notiz', true );
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
@@ -42,6 +46,41 @@ if ( ! is_array( $auto_emotion_dateien ) ) {
 		<?php if ( isset( $_GET['weitergeleitet'] ) ) : ?>
 			<p class="ae-notice"><?php esc_html_e( 'Bewerbung wurde weitergeleitet.', 'auto-emotion' ); ?></p>
 		<?php endif; ?>
+		<?php if ( isset( $_GET['gespeichert'] ) ) : ?>
+			<p class="ae-notice"><?php esc_html_e( 'Bewertung gespeichert.', 'auto-emotion' ); ?></p>
+		<?php endif; ?>
+
+		<h2 style="margin-top: 0; font-family: var(--font-lambotype); text-transform: uppercase; font-size: var(--text-subheading);"><?php esc_html_e( 'Bewertung', 'auto-emotion' ); ?></h2>
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="ae-form-grid">
+			<input type="hidden" name="action" value="auto_emotion_bewerbung_bewerten">
+			<input type="hidden" name="ae_bewerbung_id" value="<?php echo esc_attr( $auto_emotion_id ); ?>">
+			<?php wp_nonce_field( 'auto_emotion_bewerbung_bewerten_' . $auto_emotion_id, 'auto_emotion_bewerbung_bewerten_nonce' ); ?>
+
+			<div class="ae-field">
+				<label for="ae_bewerbung_status"><?php esc_html_e( 'Status', 'auto-emotion' ); ?></label>
+				<select id="ae_bewerbung_status" name="ae_bewerbung_status">
+					<?php foreach ( auto_emotion_bewerbung_status_labels() as $auto_emotion_status_key => $auto_emotion_status_label ) : ?>
+						<option value="<?php echo esc_attr( $auto_emotion_status_key ); ?>" <?php selected( $auto_emotion_status, $auto_emotion_status_key ); ?>><?php echo esc_html( $auto_emotion_status_label ); ?></option>
+					<?php endforeach; ?>
+				</select>
+			</div>
+			<div class="ae-field">
+				<label for="ae_bewerbung_bewertung"><?php esc_html_e( 'Bewertung', 'auto-emotion' ); ?></label>
+				<select id="ae_bewerbung_bewertung" name="ae_bewerbung_bewertung">
+					<option value="0" <?php selected( $auto_emotion_bewertung, 0 ); ?>><?php esc_html_e( 'Keine Bewertung', 'auto-emotion' ); ?></option>
+					<?php for ( $auto_emotion_stern = 1; $auto_emotion_stern <= 5; $auto_emotion_stern++ ) : ?>
+						<option value="<?php echo esc_attr( $auto_emotion_stern ); ?>" <?php selected( $auto_emotion_bewertung, $auto_emotion_stern ); ?>><?php echo esc_html( str_repeat( '★', $auto_emotion_stern ) . str_repeat( '☆', 5 - $auto_emotion_stern ) ); ?></option>
+					<?php endfor; ?>
+				</select>
+			</div>
+			<div class="ae-field ae-field--full">
+				<label for="ae_bewerbung_notiz"><?php esc_html_e( 'Interne Notiz (nur für Kollegen sichtbar)', 'auto-emotion' ); ?></label>
+				<textarea id="ae_bewerbung_notiz" name="ae_bewerbung_notiz" rows="4"><?php echo esc_textarea( $auto_emotion_notiz ); ?></textarea>
+			</div>
+			<div class="ae-field ae-field--full">
+				<button type="submit" class="ae-btn" style="width:auto;"><?php esc_html_e( 'Bewertung speichern', 'auto-emotion' ); ?></button>
+			</div>
+		</form>
 
 		<dl class="ae-detail-block">
 			<dt><?php esc_html_e( 'Stelle', 'auto-emotion' ); ?></dt>

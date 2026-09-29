@@ -281,6 +281,55 @@ body.ae-staff {
 	color: var(--color-steel-mid);
 }
 
+.ae-status--pruefung {
+	color: var(--color-ash-border);
+}
+
+.ae-status--interview {
+	color: var(--color-giallo-vivo);
+}
+
+.ae-status--angebot {
+	color: var(--color-rosso-vivo);
+}
+
+.ae-status--eingestellt {
+	color: var(--color-steel-mid);
+}
+
+.ae-status--abgesagt {
+	color: var(--color-graphite-border);
+}
+
+.ae-sterne {
+	color: var(--color-giallo-vivo);
+	letter-spacing: 2px;
+	font-size: var(--text-caption);
+}
+
+.ae-status-tabs {
+	display: flex;
+	gap: var(--spacing-16);
+	flex-wrap: wrap;
+	margin-bottom: var(--spacing-24);
+	border-bottom: 1px solid var(--color-graphite-border);
+	padding-bottom: var(--spacing-16);
+}
+
+.ae-status-tabs a {
+	text-decoration: none;
+	color: var(--color-ash-border);
+	text-transform: uppercase;
+	font-size: var(--text-caption);
+	letter-spacing: var(--tracking-caption);
+	padding-bottom: 4px;
+}
+
+.ae-status-tabs a.is-active {
+	color: var(--color-pearl-white);
+	border-bottom: 2px solid var(--color-rosso-vivo);
+}
+
 .ae-profile-list__links {
 	display: flex;
 	flex-direction: column;
