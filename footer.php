@@ -64,6 +64,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="site-info">
 		&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?>
 		· <?php esc_html_e( 'Powered by Momenti Studio', 'auto-emotion' ); ?>
+		· <a href="<?php echo esc_url( auto_emotion_staff_login_url() ); ?>"><?php esc_html_e( 'Login', 'auto-emotion' ); ?></a>
 	</div>
 </footer>
 

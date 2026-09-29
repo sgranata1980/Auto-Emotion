@@ -283,30 +283,10 @@ function auto_emotion_suchprofil_column_content( $column, $post_id ) {
 add_action( 'manage_suchprofil_posts_custom_column', 'auto_emotion_suchprofil_column_content', 10, 2 );
 
 /**
- * Menü-Link "Für Mitarbeiter" im Hauptmenü – ausschließlich für
- * eingeloggte Nutzer sichtbar, führt direkt in die Suchprofil-Übersicht.
+ * Login-Link im Footer: einfach auffindbar statt versteckt – führt
+ * eingeloggte Mitarbeiter direkt in die Suchprofil-Übersicht, meldet
+ * alle anderen zunächst regulär über wp-login.php an.
  */
-function auto_emotion_add_recruiting_menu_link( $items, $args ) {
-	if ( is_admin() ) {
-		return $items;
-	}
-
-	if ( ! isset( $args->theme_location ) || 'primary' !== $args->theme_location ) {
-		return $items;
-	}
-
-	if ( ! is_user_logged_in() || ! current_user_can( 'edit_posts' ) ) {
-		return $items;
-	}
-
-	$url = admin_url( 'edit.php?post_type=suchprofil' );
-
-	$items .= sprintf(
-		'<li class="menu-item auto-emotion-staff-link"><a href="%1$s">%2$s</a></li>',
-		esc_url( $url ),
-		esc_html__( 'Für Mitarbeiter', 'auto-emotion' )
-	);
-
-	return $items;
+function auto_emotion_staff_login_url() {
+	return wp_login_url( admin_url( 'edit.php?post_type=suchprofil' ) );
 }
-add_filter( 'wp_nav_menu_items', 'auto_emotion_add_recruiting_menu_link', 10, 2 );
