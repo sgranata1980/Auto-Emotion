@@ -79,6 +79,7 @@ auto_emotion_staff_shell_start( __( 'Suchprofile', 'auto-emotion' ), 'dashboard'
 					<?php endforeach; ?>
 				</div>
 				<div class="ae-list__actions">
+					<a class="ae-btn ae-btn--ghost" href="<?php echo esc_url( home_url( '/mitarbeiter/recruiting/' . $auto_emotion_profile->ID . '/anzeige/' ) ); ?>"><?php esc_html_e( 'Anzeige', 'auto-emotion' ); ?></a>
 					<a class="ae-btn ae-btn--ghost" href="<?php echo esc_url( home_url( '/mitarbeiter/recruiting/' . $auto_emotion_profile->ID . '/kandidaten/' ) ); ?>"><?php esc_html_e( 'Kandidaten', 'auto-emotion' ); ?></a>
 					<a class="ae-btn ae-btn--ghost" href="<?php echo esc_url( $auto_emotion_edit_url ); ?>"><?php esc_html_e( 'Bearbeiten', 'auto-emotion' ); ?></a>
 				</div>

@@ -130,6 +130,7 @@ function auto_emotion_recruiting_rewrite_rules() {
 	add_rewrite_rule( '^mitarbeiter/recruiting/([0-9]+)/?$', 'index.php?ae_staff_route=bearbeiten&ae_staff_id=$matches[1]', 'top' );
 	add_rewrite_rule( '^mitarbeiter/recruiting/([0-9]+)/kandidaten/export/?$', 'index.php?ae_staff_route=kandidaten_export&ae_staff_id=$matches[1]', 'top' );
 	add_rewrite_rule( '^mitarbeiter/recruiting/([0-9]+)/kandidaten/?$', 'index.php?ae_staff_route=kandidaten&ae_staff_id=$matches[1]', 'top' );
+	add_rewrite_rule( '^mitarbeiter/recruiting/([0-9]+)/anzeige/?$', 'index.php?ae_staff_route=anzeige&ae_staff_id=$matches[1]', 'top' );
 }
 add_action( 'init', 'auto_emotion_recruiting_rewrite_rules' );
 
@@ -147,7 +148,7 @@ add_filter( 'query_vars', 'auto_emotion_recruiting_query_vars' );
  * Versionswechsel.
  */
 function auto_emotion_maybe_flush_recruiting_rewrite_rules() {
-	$needed_version = '2';
+	$needed_version = '3';
 	if ( get_option( 'auto_emotion_staff_rewrite_version' ) !== $needed_version ) {
 		flush_rewrite_rules();
 		update_option( 'auto_emotion_staff_rewrite_version', $needed_version );
@@ -310,9 +311,67 @@ function auto_emotion_recruiting_template_redirect() {
 
 			auto_emotion_render_template_part( 'kandidaten.php', array( 'auto_emotion_form_post' => $auto_emotion_post ) );
 			exit;
+
+		case 'anzeige':
+			auto_emotion_staff_require_login();
+			$auto_emotion_id   = absint( get_query_var( 'ae_staff_id' ) );
+			$auto_emotion_post = get_post( $auto_emotion_id );
+			if ( ! $auto_emotion_post || 'suchprofil' !== $auto_emotion_post->post_type ) {
+				wp_safe_redirect( home_url( '/mitarbeiter/recruiting/' ) );
+				exit;
+			}
+			auto_emotion_render_template_part( 'anzeige.php', array( 'auto_emotion_form_post' => $auto_emotion_post ) );
+			exit;
 	}
 }
 add_action( 'template_redirect', 'auto_emotion_recruiting_template_redirect' );
+
+/**
+ * Generiert fertigen, kopierbaren Text für die manuelle Veröffentlichung
+ * einer Stelle auf externen Portalen (Bundesagentur für Arbeit/
+ * JOBBÖRSE, Indeed, StepStone) sowie eine kürzere Caption für Social
+ * Media (Instagram/TikTok/LinkedIn). Bewusst nur Text-Generierung, kein
+ * automatisches Posten – dafür gibt es keine öffentliche Schreib-API
+ * der Bundesagentur, und ein automatisiertes Posten auf Social Media
+ * bräuchte eigene, von Auto Emotion selbst zu beantragende
+ * Business-API-Zugänge je Plattform.
+ */
+function auto_emotion_stellenanzeige_texte( $post ) {
+	$standort      = get_post_meta( $post->ID, '_suchprofil_standort', true );
+	$standort      = $standort ? $standort : 'Offenbach am Main';
+	$anstellungsart_labels = array(
+		'vollzeit'    => 'Vollzeit',
+		'teilzeit'    => 'Teilzeit',
+		'ausbildung'  => 'Ausbildung',
+		'werkstudent' => 'Werkstudent/in',
+		'praktikum'   => 'Praktikum',
+	);
+	$art_key       = get_post_meta( $post->ID, '_suchprofil_anstellungsart', true );
+	$art           = isset( $anstellungsart_labels[ $art_key ] ) ? $anstellungsart_labels[ $art_key ] : '';
+	$stichworte    = get_post_meta( $post->ID, '_suchprofil_stichworte', true );
+	$bewerbungslink = get_post_meta( $post->ID, '_suchprofil_bewerbungslink', true );
+	$bewerbungslink = $bewerbungslink ? $bewerbungslink : home_url( '/' );
+
+	$anzeige  = $post->post_title . "\n";
+	$anzeige .= $standort . ( $art ? ' · ' . $art : '' ) . "\n\n";
+	$anzeige .= "Auto Emotion GmbH & Co. KG ist seit 2001 SEAT-, CUPRA- und NISSAN-Partner in Offenbach am Main. Für unser Team suchen wir Verstärkung als " . $post->post_title . ".\n\n";
+
+	if ( $stichworte ) {
+		$anzeige .= "Was du mitbringst: " . $stichworte . "\n\n";
+	}
+
+	$anzeige .= "Interesse? Jetzt bewerben: " . $bewerbungslink . "\n";
+	$anzeige .= "Oder direkt anrufen: " . auto_emotion_contact( 'phone' ) . "\n";
+
+	$caption  = '🔧 Wir suchen: ' . $post->post_title . " (m/w/d)\n📍 " . $standort . "\n\n";
+	$caption .= "Lust auf einen Job bei SEAT, CUPRA & NISSAN in Offenbach? Jetzt bewerben – Link in der Bio / " . $bewerbungslink . "\n\n";
+	$caption .= '#AutoEmotion #Jobs' . str_replace( ' ', '', ucwords( str_replace( array( '(m/w/d)', '/' ), ' ', $post->post_title ) ) ) . ' #Offenbach #Seat #Cupra #Nissan #Autohaus #Stellenangebot';
+
+	return array(
+		'anzeige' => $anzeige,
+		'caption' => $caption,
+	);
+}
 
 /**
  * Manuelle Kandidatenliste pro Suchprofil: die Mitarbeiter klicken sich
@@ -494,14 +553,16 @@ function auto_emotion_handle_recruiting_save() {
 
 	if ( $post_id && ! is_wp_error( $post_id ) ) {
 		$felder = array(
-			'ae_standort'       => '_suchprofil_standort',
-			'ae_anstellungsart' => '_suchprofil_anstellungsart',
-			'ae_status'         => '_suchprofil_status',
-			'ae_stichworte'     => '_suchprofil_stichworte',
+			'ae_standort'         => '_suchprofil_standort',
+			'ae_anstellungsart'   => '_suchprofil_anstellungsart',
+			'ae_status'           => '_suchprofil_status',
+			'ae_stichworte'       => '_suchprofil_stichworte',
+			'ae_bewerbungslink'   => '_suchprofil_bewerbungslink',
 		);
 		foreach ( $felder as $feld_name => $meta_key ) {
 			if ( isset( $_POST[ $feld_name ] ) ) {
-				update_post_meta( $post_id, $meta_key, sanitize_text_field( wp_unslash( $_POST[ $feld_name ] ) ) );
+				$wert = '_suchprofil_bewerbungslink' === $meta_key ? esc_url_raw( wp_unslash( $_POST[ $feld_name ] ) ) : sanitize_text_field( wp_unslash( $_POST[ $feld_name ] ) );
+				update_post_meta( $post_id, $meta_key, $wert );
 			}
 		}
 	}

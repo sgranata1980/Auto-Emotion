@@ -18,6 +18,7 @@ $auto_emotion_standort    = $auto_emotion_is_edit ? get_post_meta( $auto_emotion
 $auto_emotion_art         = $auto_emotion_is_edit ? get_post_meta( $auto_emotion_post_id, '_suchprofil_anstellungsart', true ) : '';
 $auto_emotion_status      = $auto_emotion_is_edit ? get_post_meta( $auto_emotion_post_id, '_suchprofil_status', true ) : 'aktiv';
 $auto_emotion_stichworte  = $auto_emotion_is_edit ? get_post_meta( $auto_emotion_post_id, '_suchprofil_stichworte', true ) : '';
+$auto_emotion_bewerbungslink = $auto_emotion_is_edit ? get_post_meta( $auto_emotion_post_id, '_suchprofil_bewerbungslink', true ) : '';
 
 if ( ! $auto_emotion_status ) {
 	$auto_emotion_status = 'aktiv';
@@ -80,6 +81,10 @@ auto_emotion_staff_shell_start( $auto_emotion_seite_titel, 'dashboard' );
 			<div class="ae-field ae-field--full">
 				<label for="ae_stichworte"><?php esc_html_e( 'Gesuchte Skills / Stichworte', 'auto-emotion' ); ?></label>
 				<input type="text" id="ae_stichworte" name="ae_stichworte" value="<?php echo esc_attr( $auto_emotion_stichworte ); ?>" placeholder="Kfz-Mechatroniker, Diagnose, Service Berater">
+			</div>
+			<div class="ae-field ae-field--full">
+				<label for="ae_bewerbungslink"><?php esc_html_e( 'Bewerbungslink (echte Karriere-Seite für diese Position)', 'auto-emotion' ); ?></label>
+				<input type="url" id="ae_bewerbungslink" name="ae_bewerbungslink" value="<?php echo esc_attr( $auto_emotion_bewerbungslink ); ?>" placeholder="https://autoemotion.stefanogranata.de/karriere-mechatroniker/">
 			</div>
 		</div>
 
