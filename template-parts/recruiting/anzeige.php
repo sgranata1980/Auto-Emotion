@@ -42,6 +42,8 @@ auto_emotion_staff_shell_start( __( 'Stellenanzeige', 'auto-emotion' ) . ' – '
 			<a class="ae-btn ae-btn--ghost" href="https://www.arbeitsagentur.de/unternehmen/arbeitskraefte/stellenangebot-melden" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Arbeitsagentur öffnen ↗', 'auto-emotion' ); ?></a>
 			<a class="ae-btn ae-btn--ghost" href="https://de.indeed.com/hire" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Indeed öffnen ↗', 'auto-emotion' ); ?></a>
 			<a class="ae-btn ae-btn--ghost" href="https://www.stepstone.de/e/jobanzeige-schalten.html" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'StepStone öffnen ↗', 'auto-emotion' ); ?></a>
+			<a class="ae-btn ae-btn--ghost" href="https://job-shop.meinestadt.de/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'meinestadt.de öffnen ↗', 'auto-emotion' ); ?></a>
+			<a class="ae-btn ae-btn--ghost" href="https://www.jobware.de/fuer-arbeitgeber/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Jobware öffnen ↗', 'auto-emotion' ); ?></a>
 		</div>
 	</div>
 </div>
