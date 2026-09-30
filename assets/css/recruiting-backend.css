@@ -329,6 +329,11 @@ body.ae-app {
 	padding: 36px 32px;
 }
 
+.ae-staff-login__logo {
+	display: block;
+	margin: 0 auto 12px;
+}
+
 .ae-staff-login__brand {
 	display: block;
 	text-align: center;

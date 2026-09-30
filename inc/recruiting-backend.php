@@ -131,6 +131,7 @@ function auto_emotion_recruiting_rewrite_rules() {
 	add_rewrite_rule( '^mitarbeiter/recruiting/([0-9]+)/kandidaten/export/?$', 'index.php?ae_staff_route=kandidaten_export&ae_staff_id=$matches[1]', 'top' );
 	add_rewrite_rule( '^mitarbeiter/recruiting/([0-9]+)/kandidaten/?$', 'index.php?ae_staff_route=kandidaten&ae_staff_id=$matches[1]', 'top' );
 	add_rewrite_rule( '^mitarbeiter/recruiting/([0-9]+)/anzeige/?$', 'index.php?ae_staff_route=anzeige&ae_staff_id=$matches[1]', 'top' );
+	add_rewrite_rule( '^mitarbeiter/papierkorb/?$', 'index.php?ae_staff_route=papierkorb', 'top' );
 }
 add_action( 'init', 'auto_emotion_recruiting_rewrite_rules' );
 
@@ -148,7 +149,7 @@ add_filter( 'query_vars', 'auto_emotion_recruiting_query_vars' );
  * Versionswechsel.
  */
 function auto_emotion_maybe_flush_recruiting_rewrite_rules() {
-	$needed_version = '3';
+	$needed_version = '4';
 	if ( get_option( 'auto_emotion_staff_rewrite_version' ) !== $needed_version ) {
 		flush_rewrite_rules();
 		update_option( 'auto_emotion_staff_rewrite_version', $needed_version );
@@ -228,6 +229,10 @@ function auto_emotion_staff_shell_start( $title, $active = '' ) {
 					<?php if ( $neue_anzahl > 0 ) : ?>
 						<span class="ae-sidebar__badge"><?php echo esc_html( $neue_anzahl ); ?></span>
 					<?php endif; ?>
+				</a>
+				<a href="<?php echo esc_url( home_url( '/mitarbeiter/papierkorb/' ) ); ?>" class="<?php echo 'papierkorb' === $active ? 'is-active' : ''; ?>" style="margin-top:auto;">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+					<?php esc_html_e( 'Papierkorb', 'auto-emotion' ); ?>
 				</a>
 			</nav>
 			<div class="ae-sidebar__footer">
@@ -327,6 +332,20 @@ function auto_emotion_recruiting_template_redirect() {
 				exit;
 			}
 			auto_emotion_render_template_part( 'anzeige.php', array( 'auto_emotion_form_post' => $auto_emotion_post ) );
+			exit;
+
+		case 'papierkorb':
+			auto_emotion_staff_require_login();
+			$auto_emotion_papierkorb_items = get_posts(
+				array(
+					'post_type'      => array( 'suchprofil', 'bewerbung' ),
+					'post_status'    => 'trash',
+					'posts_per_page' => -1,
+					'orderby'        => 'modified',
+					'order'          => 'DESC',
+				)
+			);
+			auto_emotion_render_template_part( 'papierkorb.php', array( 'auto_emotion_papierkorb_items' => $auto_emotion_papierkorb_items ) );
 			exit;
 	}
 }
@@ -612,3 +631,54 @@ add_action( 'admin_post_auto_emotion_recruiting_delete', 'auto_emotion_handle_re
 function auto_emotion_staff_login_url() {
 	return home_url( '/mitarbeiter/' );
 }
+
+/**
+ * Papierkorb: Suchprofile und Bewerbungen landen beim Löschen zunächst
+ * hier (reversibel), statt endgültig zu verschwinden. WordPress räumt
+ * den Papierkorb ohnehin nach 30 Tagen automatisch ab (inkl. der
+ * zugehörigen Bewerbungs-Dateien, siehe before_delete_post-Hook in
+ * inc/recruiting-bewerbungen.php).
+ */
+function auto_emotion_handle_papierkorb_wiederherstellen() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	$post_id = isset( $_GET['ae_post_id'] ) ? absint( $_GET['ae_post_id'] ) : 0;
+
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'auto_emotion_papierkorb_wiederherstellen_' . $post_id ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$post = get_post( $post_id );
+	if ( $post && in_array( $post->post_type, array( 'suchprofil', 'bewerbung' ), true ) ) {
+		wp_untrash_post( $post_id );
+	}
+
+	wp_safe_redirect( home_url( '/mitarbeiter/papierkorb/' ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_papierkorb_wiederherstellen', 'auto_emotion_handle_papierkorb_wiederherstellen' );
+
+function auto_emotion_handle_papierkorb_endgueltig_loeschen() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	$post_id = isset( $_GET['ae_post_id'] ) ? absint( $_GET['ae_post_id'] ) : 0;
+
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'auto_emotion_papierkorb_loeschen_' . $post_id ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$post = get_post( $post_id );
+	if ( $post && in_array( $post->post_type, array( 'suchprofil', 'bewerbung' ), true ) ) {
+		wp_delete_post( $post_id, true );
+	}
+
+	wp_safe_redirect( home_url( '/mitarbeiter/papierkorb/' ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_papierkorb_endgueltig_loeschen', 'auto_emotion_handle_papierkorb_endgueltig_loeschen' );

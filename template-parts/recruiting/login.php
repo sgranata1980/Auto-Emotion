@@ -22,6 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <body class="ae-app">
 	<div class="ae-staff-login">
 		<div class="ae-staff-login__card">
+			<img class="ae-staff-login__logo" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/logo-icon-hires.png' ); ?>" alt="" width="36" height="36">
 			<span class="ae-staff-login__brand"><?php bloginfo( 'name' ); ?></span>
 			<p class="ae-staff-login__hint"><?php esc_html_e( 'Mitarbeiterbereich · Recruiting', 'auto-emotion' ); ?></p>
 
