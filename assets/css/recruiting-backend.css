@@ -761,6 +761,48 @@ body.ae-app {
 	color: var(--ae-danger);
 }
 
+/* Pipeline-Trichter (Übersicht) */
+
+.ae-funnel {
+	display: flex;
+	align-items: flex-end;
+	gap: 12px;
+	padding-top: 16px;
+}
+
+.ae-funnel__step {
+	flex: 1;
+	text-align: center;
+	text-decoration: none;
+	color: var(--ae-text);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+}
+
+.ae-funnel__bar {
+	width: 100%;
+	max-width: 56px;
+	background: var(--ae-accent);
+	border-radius: 6px 6px 0 0;
+	align-self: flex-end;
+}
+
+.ae-funnel__value {
+	font-size: 18px;
+	font-weight: 700;
+}
+
+.ae-funnel__label {
+	font-size: 11.5px;
+	color: var(--ae-text-secondary);
+}
+
+.ae-funnel__step:hover .ae-funnel__bar {
+	background: var(--ae-accent-hover);
+}
+
 /* Kanban-Board */
 
 .ae-board {

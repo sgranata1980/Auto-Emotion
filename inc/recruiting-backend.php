@@ -155,6 +155,7 @@ function auto_emotion_recruiting_rewrite_rules() {
 	add_rewrite_rule( '^mitarbeiter/recruiting/([0-9]+)/kandidaten/?$', 'index.php?ae_staff_route=kandidaten&ae_staff_id=$matches[1]', 'top' );
 	add_rewrite_rule( '^mitarbeiter/recruiting/([0-9]+)/anzeige/?$', 'index.php?ae_staff_route=anzeige&ae_staff_id=$matches[1]', 'top' );
 	add_rewrite_rule( '^mitarbeiter/papierkorb/?$', 'index.php?ae_staff_route=papierkorb', 'top' );
+	add_rewrite_rule( '^mitarbeiter/uebersicht/?$', 'index.php?ae_staff_route=uebersicht', 'top' );
 }
 add_action( 'init', 'auto_emotion_recruiting_rewrite_rules' );
 
@@ -172,7 +173,7 @@ add_filter( 'query_vars', 'auto_emotion_recruiting_query_vars' );
  * Versionswechsel.
  */
 function auto_emotion_maybe_flush_recruiting_rewrite_rules() {
-	$needed_version = '4';
+	$needed_version = '5';
 	if ( get_option( 'auto_emotion_staff_rewrite_version' ) !== $needed_version ) {
 		flush_rewrite_rules();
 		update_option( 'auto_emotion_staff_rewrite_version', $needed_version );
@@ -234,14 +235,18 @@ function auto_emotion_staff_shell_start( $title, $active = '' ) {
 <body class="ae-app">
 	<div class="ae-shell">
 		<aside class="ae-sidebar">
-			<a class="ae-sidebar__brand" href="<?php echo esc_url( home_url( '/mitarbeiter/recruiting/' ) ); ?>">
-				<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/logo-icon-hires.png' ); ?>" alt="" width="22" height="22">
+			<a class="ae-sidebar__brand" href="<?php echo esc_url( home_url( '/mitarbeiter/uebersicht/' ) ); ?>">
+				<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/logo-icon-red.png' ); ?>" alt="" width="22" height="22">
 				<span>
 					<?php bloginfo( 'name' ); ?>
 					<small><?php esc_html_e( 'Recruiting', 'auto-emotion' ); ?></small>
 				</span>
 			</a>
 			<nav class="ae-sidebar__nav">
+				<a href="<?php echo esc_url( home_url( '/mitarbeiter/uebersicht/' ) ); ?>" class="<?php echo 'uebersicht' === $active ? 'is-active' : ''; ?>">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 11L12 3l9 8M5 10v10h14V10" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+					<?php esc_html_e( 'Übersicht', 'auto-emotion' ); ?>
+				</a>
 				<a href="<?php echo esc_url( home_url( '/mitarbeiter/recruiting/' ) ); ?>" class="<?php echo 'dashboard' === $active ? 'is-active' : ''; ?>">
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 13h6V4H4v9Zm0 7h6v-5H4v5Zm10 0h6v-9h-6v9Zm0-16v5h6V4h-6Z" fill="currentColor"/></svg>
 					<?php esc_html_e( 'Suchprofile', 'auto-emotion' ); ?>
@@ -277,6 +282,68 @@ function auto_emotion_staff_shell_end() {
 }
 
 /**
+ * Sammelt die echten Kennzahlen für die Übersichts-/Dashboard-Startseite:
+ * Suchprofile, Bewerbungen, Status-Verteilung, neueste Bewerbungen.
+ * Bewusst ausschließlich eigene, real vorhandene Daten – keine
+ * erfundenen Kennzahlen wie Antwortquote/Conversion, die wir mangels
+ * eigener Kampagnen-/Tracking-Daten gar nicht ehrlich berechnen können.
+ */
+function auto_emotion_uebersicht_daten() {
+	$suchprofile = get_posts(
+		array(
+			'post_type'      => 'suchprofil',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+		)
+	);
+
+	$aktive_suchprofile = 0;
+	foreach ( $suchprofile as $profil ) {
+		$status = get_post_meta( $profil->ID, '_suchprofil_status', true );
+		if ( ! $status || 'aktiv' === $status ) {
+			++$aktive_suchprofile;
+		}
+	}
+
+	$alle_bewerbungen = get_posts(
+		array(
+			'post_type'      => 'bewerbung',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+		)
+	);
+
+	$status_labels     = function_exists( 'auto_emotion_bewerbung_status_labels' ) ? auto_emotion_bewerbung_status_labels() : array();
+	$status_verteilung = array_fill_keys( array_keys( $status_labels ), 0 );
+
+	$diese_woche_start = strtotime( 'monday this week', current_time( 'timestamp' ) ); // phpcs:ignore -- lokale Wochenauswertung, keine Zeitzonen-Sonderfälle relevant.
+	$bewerbungen_diese_woche = 0;
+
+	foreach ( $alle_bewerbungen as $bewerbung ) {
+		$status = get_post_meta( $bewerbung->ID, '_bewerbung_status', true );
+		$status = $status ? $status : 'neu';
+		if ( isset( $status_verteilung[ $status ] ) ) {
+			++$status_verteilung[ $status ];
+		}
+		if ( get_the_date( 'U', $bewerbung ) >= $diese_woche_start ) {
+			++$bewerbungen_diese_woche;
+		}
+	}
+
+	return array(
+		'auto_emotion_suchprofile_gesamt'    => count( $suchprofile ),
+		'auto_emotion_suchprofile_aktiv'     => $aktive_suchprofile,
+		'auto_emotion_bewerbungen_gesamt'    => count( $alle_bewerbungen ),
+		'auto_emotion_bewerbungen_woche'     => $bewerbungen_diese_woche,
+		'auto_emotion_status_verteilung'     => $status_verteilung,
+		'auto_emotion_status_labels'         => $status_labels,
+		'auto_emotion_neueste_bewerbungen'   => array_slice( $alle_bewerbungen, 0, 6 ),
+	);
+}
+
+/**
  * Router für die /mitarbeiter/-Routen. Gibt komplett eigenständiges
  * HTML aus (kein get_header()/get_footer(), keine WP-Theme-Chrome).
  */
@@ -291,7 +358,7 @@ function auto_emotion_recruiting_template_redirect() {
 
 		case 'login':
 			if ( is_user_logged_in() && current_user_can( 'ae_recruiting_zugriff' ) ) {
-				wp_safe_redirect( home_url( '/mitarbeiter/recruiting/' ) );
+				wp_safe_redirect( home_url( '/mitarbeiter/uebersicht/' ) );
 				exit;
 			}
 			$auto_emotion_login_error = isset( $_GET['login_failed'] );
@@ -310,6 +377,11 @@ function auto_emotion_recruiting_template_redirect() {
 				)
 			);
 			auto_emotion_render_template_part( 'dashboard.php', array( 'auto_emotion_profiles' => $auto_emotion_profiles ) );
+			exit;
+
+		case 'uebersicht':
+			auto_emotion_staff_require_login();
+			auto_emotion_render_template_part( 'uebersicht.php', auto_emotion_uebersicht_daten() );
 			exit;
 
 		case 'neu':
