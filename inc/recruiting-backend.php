@@ -115,6 +115,26 @@ function auto_emotion_suchprofil_links( $post_id ) {
 				'site:linkedin.com/in ' . $suchbegriffe . ( $standort ? ' ' . $standort : '' )
 			),
 		),
+		'indeed'   => array(
+			'label' => __( 'Indeed Smart Sourcing – Lebenslauf-Datenbank (Login erforderlich)', 'auto-emotion' ),
+			'url'   => add_query_arg(
+				array(
+					'co' => 'DE',
+					'hl' => 'de',
+					'q'  => rawurlencode( $suchbegriffe ),
+					'l'  => $standort ? rawurlencode( $standort ) : false,
+				),
+				'https://resumes.indeed.com/'
+			),
+		),
+		'arbeitsagentur' => array(
+			'label' => __( 'Bundesagentur für Arbeit – Bewerberbörse (Login erforderlich)', 'auto-emotion' ),
+			'url'   => 'https://www.arbeitsagentur.de/bewerberboerse/',
+		),
+		'stepstone' => array(
+			'label' => __( 'StepStone – CV-Center (Login erforderlich)', 'auto-emotion' ),
+			'url'   => 'https://www.stepstone.de/e-recruiting/',
+		),
 	);
 }
 
