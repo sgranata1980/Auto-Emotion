@@ -654,6 +654,20 @@ function auto_emotion_handle_papierkorb_wiederherstellen() {
 	$post = get_post( $post_id );
 	if ( $post && in_array( $post->post_type, array( 'suchprofil', 'bewerbung' ), true ) ) {
 		wp_untrash_post( $post_id );
+		/**
+		 * wp_untrash_post() verlässt sich auf den vor dem Löschen
+		 * gespeicherten Status (_wp_trash_meta_status) – bei diesen
+		 * beiden Custom Post Types kam das unzuverlässig leer zurück,
+		 * sodass der Eintrag zwar nicht mehr im Papierkorb war, aber
+		 * auch nirgends sonst auftauchte. Status hier explizit
+		 * erzwingen, damit er garantiert wieder sichtbar ist.
+		 */
+		wp_update_post(
+			array(
+				'ID'          => $post_id,
+				'post_status' => 'publish',
+			)
+		);
 	}
 
 	wp_safe_redirect( home_url( '/mitarbeiter/papierkorb/' ) );
