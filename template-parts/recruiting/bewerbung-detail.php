@@ -31,6 +31,8 @@ $auto_emotion_feedback_angefragt_am  = get_post_meta( $auto_emotion_id, '_bewerb
 $auto_emotion_feedback_beantwortet   = get_post_meta( $auto_emotion_id, '_bewerbung_feedback_beantwortet', true );
 $auto_emotion_feedback_score         = get_post_meta( $auto_emotion_id, '_bewerbung_feedback_score', true );
 $auto_emotion_feedback_kommentar     = get_post_meta( $auto_emotion_id, '_bewerbung_feedback_kommentar', true );
+$auto_emotion_feedback_token         = get_post_meta( $auto_emotion_id, '_bewerbung_feedback_token', true );
+$auto_emotion_feedback_link          = $auto_emotion_feedback_token ? home_url( '/bewerbung-feedback/' . $auto_emotion_feedback_token . '/' ) : '';
 
 auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 ?>
@@ -195,11 +197,17 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 			);
 			?>
 		</p>
+		<?php if ( $auto_emotion_feedback_link ) : ?>
+			<div class="ae-field ae-field--full" style="margin-bottom:12px;">
+				<label for="ae_feedback_link"><?php esc_html_e( 'Link (z. B. manuell per WhatsApp teilen)', 'auto-emotion' ); ?></label>
+				<input type="text" id="ae_feedback_link" readonly onclick="this.select();" value="<?php echo esc_attr( $auto_emotion_feedback_link ); ?>">
+			</div>
+		<?php endif; ?>
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 			<input type="hidden" name="action" value="auto_emotion_feedback_anfragen">
 			<input type="hidden" name="ae_bewerbung_id" value="<?php echo esc_attr( $auto_emotion_id ); ?>">
 			<?php wp_nonce_field( 'auto_emotion_feedback_anfragen_' . $auto_emotion_id, 'auto_emotion_feedback_anfragen_nonce' ); ?>
-			<button type="submit" class="ae-btn ae-btn--ghost" style="width:auto;"><?php esc_html_e( 'Erneut anfragen', 'auto-emotion' ); ?></button>
+			<button type="submit" class="ae-btn ae-btn--ghost" style="width:auto;"><?php esc_html_e( 'Erneut per E-Mail anfragen', 'auto-emotion' ); ?></button>
 		</form>
 	<?php else : ?>
 		<p class="ae-intro" style="margin:0 0 12px;"><?php esc_html_e( 'Frage eine kurze, freiwillige Rückmeldung zur Bewerbungserfahrung an.', 'auto-emotion' ); ?></p>
