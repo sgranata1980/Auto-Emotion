@@ -29,6 +29,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php if ( ! empty( $auto_emotion_login_error ) ) : ?>
 				<p class="ae-staff-login__error"><?php esc_html_e( 'Login fehlgeschlagen. Bitte Benutzername und Passwort prüfen.', 'auto-emotion' ); ?></p>
 			<?php endif; ?>
+			<?php if ( ! empty( $auto_emotion_passwort_geaendert ) ) : ?>
+				<p class="ae-notice"><?php esc_html_e( 'Passwort geändert. Bitte mit dem neuen Passwort anmelden.', 'auto-emotion' ); ?></p>
+			<?php endif; ?>
 
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<input type="hidden" name="action" value="auto_emotion_recruiting_login">

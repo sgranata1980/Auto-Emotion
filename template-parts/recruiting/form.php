@@ -58,11 +58,13 @@ auto_emotion_staff_shell_start( $auto_emotion_seite_titel, 'dashboard' );
 			<div class="ae-kpi__label"><?php esc_html_e( 'Kandidaten auf der Liste', 'auto-emotion' ); ?></div>
 		</div>
 	</div>
-	<?php if ( $auto_emotion_bewerbungen_anzahl > 0 ) : ?>
-		<p class="ae-list__meta" style="margin:-16px 0 20px;">
+	<p class="ae-list__meta" style="margin:-16px 0 20px;">
+		<?php if ( $auto_emotion_bewerbungen_anzahl > 0 ) : ?>
 			<a href="<?php echo esc_url( add_query_arg( 'position', rawurlencode( $auto_emotion_title ), home_url( '/mitarbeiter/bewerbungen/' ) ) ); ?>"><?php esc_html_e( 'Bewerbungen zu dieser Stelle ansehen →', 'auto-emotion' ); ?></a>
-		</p>
-	<?php endif; ?>
+			·
+		<?php endif; ?>
+		<a href="<?php echo esc_url( add_query_arg( 'suchprofil_id', $auto_emotion_post_id, home_url( '/mitarbeiter/nachrichten/' ) ) ); ?>"><?php esc_html_e( 'Im Team teilen →', 'auto-emotion' ); ?></a>
+	</p>
 <?php endif; ?>
 
 <div class="ae-card">

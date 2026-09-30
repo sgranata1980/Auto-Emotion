@@ -169,6 +169,9 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 		</div>
 		<button type="submit" class="ae-btn"><?php esc_html_e( 'Weiterleiten', 'auto-emotion' ); ?></button>
 	</form>
+	<p class="ae-list__meta" style="margin-top:12px;">
+		<a href="<?php echo esc_url( add_query_arg( 'bewerbung_id', $auto_emotion_id, home_url( '/mitarbeiter/nachrichten/' ) ) ); ?>"><?php esc_html_e( 'Oder im Team teilen (interne Nachricht) →', 'auto-emotion' ); ?></a>
+	</p>
 </div>
 
 <div class="ae-form-actions">

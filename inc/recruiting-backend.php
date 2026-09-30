@@ -258,27 +258,91 @@ function auto_emotion_staff_shell_start( $title, $active = '' ) {
 						<span class="ae-sidebar__badge"><?php echo esc_html( $neue_anzahl ); ?></span>
 					<?php endif; ?>
 				</a>
+				<div class="ae-sidebar__section"><?php esc_html_e( 'Team', 'auto-emotion' ); ?></div>
+				<a href="<?php echo esc_url( home_url( '/mitarbeiter/nachrichten/' ) ); ?>" class="<?php echo 'nachrichten' === $active ? 'is-active' : ''; ?>">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h16v12H8l-4 4V4Z" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+					<?php esc_html_e( 'Nachrichten', 'auto-emotion' ); ?>
+				</a>
+				<a href="<?php echo esc_url( home_url( '/mitarbeiter/kontakte/' ) ); ?>" class="<?php echo in_array( $active, array( 'kontakte', 'kontakt' ), true ) ? 'is-active' : ''; ?>">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M5 20c1.2-4 4.2-6 7-6s5.8 2 7 6" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+					<?php esc_html_e( 'Adressbuch', 'auto-emotion' ); ?>
+				</a>
 				<a href="<?php echo esc_url( home_url( '/mitarbeiter/papierkorb/' ) ); ?>" class="<?php echo 'papierkorb' === $active ? 'is-active' : ''; ?>" style="margin-top:auto;">
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
 					<?php esc_html_e( 'Papierkorb', 'auto-emotion' ); ?>
 				</a>
 			</nav>
 			<div class="ae-sidebar__footer">
-				<span><?php echo esc_html( wp_get_current_user()->display_name ); ?></span>
+				<a href="<?php echo esc_url( home_url( '/mitarbeiter/profil/' ) ); ?>" style="color:<?php echo 'profil' === $active ? 'var(--ae-accent)' : 'var(--ae-text-secondary)'; ?>;"><?php echo esc_html( wp_get_current_user()->display_name ); ?></a>
 				<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=auto_emotion_recruiting_logout' ), 'auto_emotion_recruiting_logout' ) ); ?>"><?php esc_html_e( 'Abmelden', 'auto-emotion' ); ?></a>
 			</div>
 		</aside>
 		<main class="ae-content">
+			<div class="ae-topbar">
+				<a class="ae-topbar__user" href="<?php echo esc_url( home_url( '/mitarbeiter/profil/' ) ); ?>">
+					<?php echo get_avatar( get_current_user_id(), 32 ); ?>
+					<span class="ae-topbar__userinfo">
+						<strong><?php echo esc_html( wp_get_current_user()->display_name ); ?></strong>
+						<small><?php echo esc_html( wp_get_current_user()->user_email ); ?></small>
+					</span>
+				</a>
+			</div>
 	<?php
 }
 
 function auto_emotion_staff_shell_end() {
 	?>
+			<footer class="ae-footer">
+				<span><?php echo esc_html( auto_emotion_contact( 'company' ) ); ?> · <?php echo esc_html( auto_emotion_contact( 'street' ) ); ?>, <?php echo esc_html( auto_emotion_contact( 'postal_code' ) . ' ' . auto_emotion_contact( 'city' ) ); ?></span>
+				<nav class="ae-footer__links">
+					<span>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?></span>
+					<?php $auto_emotion_impressum_url = auto_emotion_page_template_url( 'page-impressum.php' ); ?>
+					<?php if ( $auto_emotion_impressum_url ) : ?>
+						<a href="<?php echo esc_url( $auto_emotion_impressum_url ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Impressum', 'auto-emotion' ); ?></a>
+					<?php endif; ?>
+					<?php $auto_emotion_datenschutz_url = auto_emotion_page_template_url( 'page-datenschutz.php' ); ?>
+					<?php if ( $auto_emotion_datenschutz_url ) : ?>
+						<a href="<?php echo esc_url( $auto_emotion_datenschutz_url ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Datenschutz', 'auto-emotion' ); ?></a>
+					<?php endif; ?>
+				</nav>
+			</footer>
 		</main>
 	</div>
 </body>
 </html>
 	<?php
+}
+
+/**
+ * Ermittelt die echte, tatsächlich veröffentlichte URL einer Seite anhand
+ * ihres zugewiesenen Seitenvorlagen-Dateinamens (z. B. "page-impressum.php").
+ * Bewusst dynamisch statt eines hartcodierten Pfads wie "/impressum/" –
+ * verhindert einen toten oder falschen Link im Recruiting-Footer, falls
+ * sich der Permalink der echten Seite im WP-Admin je ändert. Liefert
+ * false, wenn keine Seite mit dieser Vorlage existiert (Link wird dann
+ * im Footer schlicht ausgeblendet statt eine erfundene URL zu zeigen).
+ */
+function auto_emotion_page_template_url( $template_file ) {
+	static $cache = array();
+	if ( isset( $cache[ $template_file ] ) ) {
+		return $cache[ $template_file ];
+	}
+
+	$pages = get_posts(
+		array(
+			'post_type'      => 'page',
+			'post_status'    => 'publish',
+			'posts_per_page' => 1,
+			'meta_key'       => '_wp_page_template',
+			'meta_value'     => $template_file,
+			'fields'         => 'ids',
+		)
+	);
+
+	$url                     = ! empty( $pages ) ? get_permalink( $pages[0] ) : false;
+	$cache[ $template_file ] = $url;
+
+	return $url;
 }
 
 /**
@@ -361,8 +425,15 @@ function auto_emotion_recruiting_template_redirect() {
 				wp_safe_redirect( home_url( '/mitarbeiter/uebersicht/' ) );
 				exit;
 			}
-			$auto_emotion_login_error = isset( $_GET['login_failed'] );
-			auto_emotion_render_template_part( 'login.php', array( 'auto_emotion_login_error' => $auto_emotion_login_error ) );
+			$auto_emotion_login_error      = isset( $_GET['login_failed'] );
+			$auto_emotion_passwort_geaendert = isset( $_GET['passwort_geaendert'] );
+			auto_emotion_render_template_part(
+				'login.php',
+				array(
+					'auto_emotion_login_error'        => $auto_emotion_login_error,
+					'auto_emotion_passwort_geaendert' => $auto_emotion_passwort_geaendert,
+				)
+			);
 			exit;
 
 		case 'dashboard':
@@ -433,7 +504,7 @@ function auto_emotion_recruiting_template_redirect() {
 			auto_emotion_staff_require_login();
 			$auto_emotion_papierkorb_items = get_posts(
 				array(
-					'post_type'      => array( 'suchprofil', 'bewerbung' ),
+					'post_type'      => array( 'suchprofil', 'bewerbung', 'kontakt', 'nachricht' ),
 					'post_status'    => 'trash',
 					'posts_per_page' => -1,
 					'orderby'        => 'modified',
@@ -747,7 +818,7 @@ function auto_emotion_handle_papierkorb_wiederherstellen() {
 	}
 
 	$post = get_post( $post_id );
-	if ( $post && in_array( $post->post_type, array( 'suchprofil', 'bewerbung' ), true ) ) {
+	if ( $post && in_array( $post->post_type, array( 'suchprofil', 'bewerbung', 'kontakt', 'nachricht' ), true ) ) {
 		wp_untrash_post( $post_id );
 		/**
 		 * wp_untrash_post() verlässt sich auf den vor dem Löschen
@@ -783,7 +854,7 @@ function auto_emotion_handle_papierkorb_endgueltig_loeschen() {
 	}
 
 	$post = get_post( $post_id );
-	if ( $post && in_array( $post->post_type, array( 'suchprofil', 'bewerbung' ), true ) ) {
+	if ( $post && in_array( $post->post_type, array( 'suchprofil', 'bewerbung', 'kontakt', 'nachricht' ), true ) ) {
 		wp_delete_post( $post_id, true );
 	}
 
