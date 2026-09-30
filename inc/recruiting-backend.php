@@ -615,7 +615,7 @@ function auto_emotion_handle_recruiting_login() {
 		exit;
 	}
 
-	wp_safe_redirect( home_url( '/mitarbeiter/recruiting/' ) );
+	wp_safe_redirect( home_url( '/mitarbeiter/uebersicht/' ) );
 	exit;
 }
 add_action( 'admin_post_nopriv_auto_emotion_recruiting_login', 'auto_emotion_handle_recruiting_login' );
