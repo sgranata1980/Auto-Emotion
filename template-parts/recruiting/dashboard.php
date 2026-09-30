@@ -76,6 +76,9 @@ auto_emotion_staff_shell_start( __( 'Suchprofile', 'auto-emotion' ), 'dashboard'
 				<div class="ae-list__links">
 					<?php foreach ( $auto_emotion_links as $auto_emotion_link ) : ?>
 						<a href="<?php echo esc_url( $auto_emotion_link['url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $auto_emotion_link['label'] ); ?> ↗</a>
+						<?php if ( ! empty( $auto_emotion_link['hinweis'] ) ) : ?>
+							<span class="ae-list__hinweis"><?php echo esc_html( $auto_emotion_link['hinweis'] ); ?></span>
+						<?php endif; ?>
 					<?php endforeach; ?>
 				</div>
 				<div class="ae-list__actions">

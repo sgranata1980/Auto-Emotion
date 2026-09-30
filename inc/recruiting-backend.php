@@ -116,8 +116,8 @@ function auto_emotion_suchprofil_links( $post_id ) {
 			),
 		),
 		'indeed'   => array(
-			'label' => __( 'Indeed Smart Sourcing – Lebenslauf-Datenbank (Login erforderlich)', 'auto-emotion' ),
-			'url'   => add_query_arg(
+			'label'   => __( 'Indeed Smart Sourcing – Lebenslauf-Datenbank (Login erforderlich)', 'auto-emotion' ),
+			'url'     => add_query_arg(
 				array(
 					'co' => 'DE',
 					'hl' => 'de',
@@ -126,14 +126,17 @@ function auto_emotion_suchprofil_links( $post_id ) {
 				),
 				'https://resumes.indeed.com/'
 			),
+			'hinweis' => __( 'Noch kein Arbeitgeber-Konto bei Indeed Smart Sourcing eingerichtet – bitte draufklicken und dort einmalig anlegen.', 'auto-emotion' ),
 		),
 		'arbeitsagentur' => array(
-			'label' => __( 'Bundesagentur für Arbeit – Bewerberbörse (Login erforderlich)', 'auto-emotion' ),
-			'url'   => 'https://www.arbeitsagentur.de/bewerberboerse/',
+			'label'   => __( 'Bundesagentur für Arbeit – Bewerberbörse (Login erforderlich)', 'auto-emotion' ),
+			'url'     => 'https://www.arbeitsagentur.de/bewerberboerse/',
+			'hinweis' => __( 'Noch kein Arbeitgeber-Zugang zur Bewerberbörse eingerichtet – bitte draufklicken und dort einmalig anlegen.', 'auto-emotion' ),
 		),
 		'stepstone' => array(
-			'label' => __( 'StepStone – CV-Center (Login erforderlich)', 'auto-emotion' ),
-			'url'   => 'https://www.stepstone.de/e-recruiting/',
+			'label'   => __( 'StepStone – CV-Center (Login erforderlich)', 'auto-emotion' ),
+			'url'     => 'https://www.stepstone.de/e-recruiting/',
+			'hinweis' => __( 'Noch kein Arbeitgeber-Konto bei StepStone eingerichtet – bitte draufklicken und dort einmalig anlegen.', 'auto-emotion' ),
 		),
 	);
 }

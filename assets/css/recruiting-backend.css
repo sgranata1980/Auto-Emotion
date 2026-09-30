@@ -574,6 +574,13 @@ body.ae-app {
 	text-decoration: underline;
 }
 
+.ae-list__hinweis {
+	display: block;
+	color: var(--ae-warning);
+	font-size: 11.5px;
+	margin: -2px 0 4px;
+}
+
 .ae-list__actions {
 	display: flex;
 	align-items: center;
