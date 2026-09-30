@@ -166,8 +166,9 @@ function auto_emotion_bewerbungen_template_redirect() {
 	auto_emotion_staff_require_login();
 
 	if ( 'bewerbungen' === $route ) {
-		$auto_emotion_filter_status = isset( $_GET['status'] ) ? sanitize_key( wp_unslash( $_GET['status'] ) ) : '';
-		$auto_emotion_query_args    = array(
+		$auto_emotion_filter_status   = isset( $_GET['status'] ) ? sanitize_key( wp_unslash( $_GET['status'] ) ) : '';
+		$auto_emotion_filter_position = isset( $_GET['position'] ) ? sanitize_text_field( wp_unslash( $_GET['position'] ) ) : '';
+		$auto_emotion_query_args      = array(
 			'post_type'      => 'bewerbung',
 			'post_status'    => 'publish',
 			'posts_per_page' => -1,
@@ -175,13 +176,21 @@ function auto_emotion_bewerbungen_template_redirect() {
 			'order'          => 'DESC',
 		);
 
+		$auto_emotion_meta_query = array();
 		if ( $auto_emotion_filter_status && array_key_exists( $auto_emotion_filter_status, auto_emotion_bewerbung_status_labels() ) ) {
-			$auto_emotion_query_args['meta_query'] = array(
-				array(
-					'key'   => '_bewerbung_status',
-					'value' => $auto_emotion_filter_status,
-				),
+			$auto_emotion_meta_query[] = array(
+				'key'   => '_bewerbung_status',
+				'value' => $auto_emotion_filter_status,
 			);
+		}
+		if ( $auto_emotion_filter_position ) {
+			$auto_emotion_meta_query[] = array(
+				'key'   => '_bewerbung_position',
+				'value' => $auto_emotion_filter_position,
+			);
+		}
+		if ( $auto_emotion_meta_query ) {
+			$auto_emotion_query_args['meta_query'] = $auto_emotion_meta_query;
 		}
 
 		$auto_emotion_bewerbungen = get_posts( $auto_emotion_query_args );
@@ -204,6 +213,7 @@ function auto_emotion_bewerbungen_template_redirect() {
 			array(
 				'auto_emotion_bewerbungen'      => $auto_emotion_bewerbungen,
 				'auto_emotion_filter_status'    => $auto_emotion_filter_status,
+				'auto_emotion_filter_position'  => $auto_emotion_filter_position,
 				'auto_emotion_view'             => $auto_emotion_view,
 				'auto_emotion_alle_bewerbungen' => $auto_emotion_alle_bewerbungen,
 			)
@@ -364,6 +374,35 @@ function auto_emotion_handle_bewerbung_email_senden() {
 	exit;
 }
 add_action( 'admin_post_auto_emotion_bewerbung_email_senden', 'auto_emotion_handle_bewerbung_email_senden' );
+
+/**
+ * Zählt echte eingegangene Bewerbungen zu einer Position – das
+ * Gegenstück zur "Klicks/Bewerbungen pro Anzeige"-Ansicht, die man aus
+ * dem Indeed-/StepStone-Arbeitgeber-Dashboard kennt. Bewusst nur mit
+ * echten, selbst eingegangenen Daten (Abgleich über den exakten
+ * Positions-Titel, wie ihn die Karriere-Formulare als "Stelle"
+ * mitschicken) – keine erfundenen Kennzahlen wie Impressions/Klicks,
+ * die wir mangels eigener Anzeigenschaltung gar nicht hätten.
+ */
+function auto_emotion_bewerbungen_fuer_position( $position_titel ) {
+	if ( ! $position_titel ) {
+		return array();
+	}
+
+	return get_posts(
+		array(
+			'post_type'      => 'bewerbung',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'meta_query'      => array(
+				array(
+					'key'   => '_bewerbung_position',
+					'value' => $position_titel,
+				),
+			),
+		)
+	);
+}
 
 /**
  * Status-Pipeline wie bei gängigen Bewerbermanagement-Systemen

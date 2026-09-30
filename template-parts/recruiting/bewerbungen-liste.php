@@ -22,6 +22,13 @@ auto_emotion_staff_shell_start( __( 'Bewerbungen', 'auto-emotion' ), 'bewerbunge
 	<?php esc_html_e( 'Eingehende Bewerbungen aus den Karriere-Formularen. Unterlagen sind nur hier, geschützt, einsehbar und lassen sich an Kollegen weiterleiten – nie über eine öffentliche URL.', 'auto-emotion' ); ?>
 </p>
 
+<?php if ( ! empty( $auto_emotion_filter_position ) ) : ?>
+	<p class="ae-notice" style="background:var(--ae-accent-soft); border-color:var(--ae-accent); color:var(--ae-accent);">
+		<?php echo esc_html( sprintf( __( 'Gefiltert nach Position: %s', 'auto-emotion' ), $auto_emotion_filter_position ) ); ?>
+		· <a href="<?php echo esc_url( remove_query_arg( 'position' ) ); ?>" style="text-decoration:underline;"><?php esc_html_e( 'Filter entfernen', 'auto-emotion' ); ?></a>
+	</p>
+<?php endif; ?>
+
 <div class="ae-toolbar">
 	<div class="ae-status-tabs">
 		<a href="<?php echo esc_url( home_url( '/mitarbeiter/bewerbungen/' ) ); ?>" class="<?php echo empty( $auto_emotion_filter_status ) ? 'is-active' : ''; ?>"><?php esc_html_e( 'Alle', 'auto-emotion' ); ?></a>

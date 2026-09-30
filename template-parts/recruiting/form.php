@@ -46,6 +46,25 @@ auto_emotion_staff_shell_start( $auto_emotion_seite_titel, 'dashboard' );
 
 <h1><?php echo esc_html( $auto_emotion_seite_titel ); ?></h1>
 
+<?php if ( $auto_emotion_is_edit ) : ?>
+	<?php $auto_emotion_bewerbungen_anzahl = count( auto_emotion_bewerbungen_fuer_position( $auto_emotion_title ) ); ?>
+	<div class="ae-kpis">
+		<div class="ae-kpi">
+			<div class="ae-kpi__value"><?php echo esc_html( $auto_emotion_bewerbungen_anzahl ); ?></div>
+			<div class="ae-kpi__label"><?php esc_html_e( 'Eingegangene Bewerbungen', 'auto-emotion' ); ?></div>
+		</div>
+		<div class="ae-kpi">
+			<div class="ae-kpi__value"><?php echo esc_html( count( auto_emotion_get_kandidaten( $auto_emotion_post_id ) ) ); ?></div>
+			<div class="ae-kpi__label"><?php esc_html_e( 'Kandidaten auf der Liste', 'auto-emotion' ); ?></div>
+		</div>
+	</div>
+	<?php if ( $auto_emotion_bewerbungen_anzahl > 0 ) : ?>
+		<p class="ae-list__meta" style="margin:-16px 0 20px;">
+			<a href="<?php echo esc_url( add_query_arg( 'position', rawurlencode( $auto_emotion_title ), home_url( '/mitarbeiter/bewerbungen/' ) ) ); ?>"><?php esc_html_e( 'Bewerbungen zu dieser Stelle ansehen →', 'auto-emotion' ); ?></a>
+		</p>
+	<?php endif; ?>
+<?php endif; ?>
+
 <div class="ae-card">
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 		<input type="hidden" name="action" value="auto_emotion_recruiting_save">

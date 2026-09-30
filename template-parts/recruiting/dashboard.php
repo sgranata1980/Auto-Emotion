@@ -60,6 +60,7 @@ auto_emotion_staff_shell_start( __( 'Suchprofile', 'auto-emotion' ), 'dashboard'
 			$auto_emotion_art        = get_post_meta( $auto_emotion_profile->ID, '_suchprofil_anstellungsart', true );
 			$auto_emotion_links      = auto_emotion_suchprofil_links( $auto_emotion_profile->ID );
 			$auto_emotion_edit_url   = home_url( '/mitarbeiter/recruiting/' . $auto_emotion_profile->ID . '/' );
+			$auto_emotion_bewerbungen_anzahl = function_exists( 'auto_emotion_bewerbungen_fuer_position' ) ? count( auto_emotion_bewerbungen_fuer_position( $auto_emotion_profile->post_title ) ) : 0;
 			?>
 			<li>
 				<div class="ae-list__main">
@@ -71,6 +72,10 @@ auto_emotion_staff_shell_start( __( 'Suchprofile', 'auto-emotion' ), 'dashboard'
 					</p>
 					<p class="ae-list__meta">
 						<?php echo esc_html( trim( implode( ' · ', array_filter( array( $auto_emotion_standort, $auto_emotion_art ) ) ) ) ); ?>
+						·
+						<a href="<?php echo esc_url( add_query_arg( 'position', rawurlencode( $auto_emotion_profile->post_title ), home_url( '/mitarbeiter/bewerbungen/' ) ) ); ?>">
+							<?php echo esc_html( sprintf( _n( '%d Bewerbung', '%d Bewerbungen', $auto_emotion_bewerbungen_anzahl, 'auto-emotion' ), $auto_emotion_bewerbungen_anzahl ) ); ?>
+						</a>
 					</p>
 				</div>
 				<div class="ae-list__links">
