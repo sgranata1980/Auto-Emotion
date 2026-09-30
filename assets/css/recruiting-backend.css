@@ -9,8 +9,8 @@
  */
 
 :root {
-	--ae-bg: #f5f5f7;
-	--ae-sidebar-bg: #fbfbfd;
+	--ae-bg: #ffffff;
+	--ae-sidebar-bg: #f5f5f7;
 	--ae-surface: #ffffff;
 	--ae-border: #e3e3e6;
 	--ae-border-strong: #d1d1d6;
@@ -91,13 +91,28 @@ body.ae-app {
 }
 
 .ae-sidebar__brand {
-	display: block;
+	display: flex;
+	align-items: center;
+	gap: 10px;
 	font-weight: 600;
-	font-size: 15px;
+	font-size: 14px;
 	letter-spacing: -0.01em;
 	padding: 4px 10px 22px;
 	color: var(--ae-text);
 	text-decoration: none;
+}
+
+.ae-sidebar__brand img {
+	display: block;
+	flex-shrink: 0;
+}
+
+.ae-sidebar__brand small {
+	display: block;
+	font-size: 11px;
+	font-weight: 500;
+	color: var(--ae-text-secondary);
+	letter-spacing: 0.01em;
 }
 
 .ae-sidebar__nav {

@@ -210,7 +210,13 @@ function auto_emotion_staff_shell_start( $title, $active = '' ) {
 <body class="ae-app">
 	<div class="ae-shell">
 		<aside class="ae-sidebar">
-			<a class="ae-sidebar__brand" href="<?php echo esc_url( home_url( '/mitarbeiter/recruiting/' ) ); ?>"><?php bloginfo( 'name' ); ?></a>
+			<a class="ae-sidebar__brand" href="<?php echo esc_url( home_url( '/mitarbeiter/recruiting/' ) ); ?>">
+				<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/logo-icon-hires.png' ); ?>" alt="" width="22" height="22">
+				<span>
+					<?php bloginfo( 'name' ); ?>
+					<small><?php esc_html_e( 'Recruiting', 'auto-emotion' ); ?></small>
+				</span>
+			</a>
 			<nav class="ae-sidebar__nav">
 				<a href="<?php echo esc_url( home_url( '/mitarbeiter/recruiting/' ) ); ?>" class="<?php echo 'dashboard' === $active ? 'is-active' : ''; ?>">
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 13h6V4H4v9Zm0 7h6v-5H4v5Zm10 0h6v-9h-6v9Zm0-16v5h6V4h-6Z" fill="currentColor"/></svg>
