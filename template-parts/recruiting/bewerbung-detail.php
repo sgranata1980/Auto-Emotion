@@ -27,6 +27,11 @@ $auto_emotion_bewertung = (int) get_post_meta( $auto_emotion_id, '_bewerbung_bew
 $auto_emotion_notiz     = get_post_meta( $auto_emotion_id, '_bewerbung_notiz', true );
 $auto_emotion_vorlagen  = auto_emotion_bewerbung_email_vorlagen( $auto_emotion_name, $auto_emotion_position );
 
+$auto_emotion_feedback_angefragt_am  = get_post_meta( $auto_emotion_id, '_bewerbung_feedback_angefragt_am', true );
+$auto_emotion_feedback_beantwortet   = get_post_meta( $auto_emotion_id, '_bewerbung_feedback_beantwortet', true );
+$auto_emotion_feedback_score         = get_post_meta( $auto_emotion_id, '_bewerbung_feedback_score', true );
+$auto_emotion_feedback_kommentar     = get_post_meta( $auto_emotion_id, '_bewerbung_feedback_kommentar', true );
+
 auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 ?>
 
@@ -42,6 +47,9 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 <?php endif; ?>
 <?php if ( isset( $_GET['email_gesendet'] ) ) : ?>
 	<p class="ae-notice"><?php esc_html_e( 'E-Mail wurde an den Bewerber gesendet.', 'auto-emotion' ); ?></p>
+<?php endif; ?>
+<?php if ( isset( $_GET['feedback_angefragt'] ) ) : ?>
+	<p class="ae-notice"><?php esc_html_e( 'Feedback-Anfrage wurde per E-Mail versendet.', 'auto-emotion' ); ?></p>
 <?php endif; ?>
 
 <div class="ae-card">
@@ -156,6 +164,54 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 		<?php endforeach; ?>
 	<?php endif; ?>
 </div>
+
+<?php if ( $auto_emotion_email && in_array( $auto_emotion_status, array( 'eingestellt', 'abgesagt' ), true ) ) : ?>
+<div class="ae-card">
+	<h2><?php esc_html_e( 'Candidate-Feedback', 'auto-emotion' ); ?></h2>
+	<?php if ( $auto_emotion_feedback_beantwortet ) : ?>
+		<p class="ae-intro" style="margin:0 0 6px;">
+			<?php
+			echo esc_html(
+				sprintf(
+					/* translators: %d: Bewertung 0–10 */
+					__( 'Bewertung: %d/10', 'auto-emotion' ),
+					(int) $auto_emotion_feedback_score
+				)
+			);
+			?>
+		</p>
+		<?php if ( $auto_emotion_feedback_kommentar ) : ?>
+			<p class="ae-intro" style="margin:0;"><?php echo esc_html( $auto_emotion_feedback_kommentar ); ?></p>
+		<?php endif; ?>
+	<?php elseif ( $auto_emotion_feedback_angefragt_am ) : ?>
+		<p class="ae-intro" style="margin:0 0 12px;">
+			<?php
+			echo esc_html(
+				sprintf(
+					/* translators: %s: Datum/Uhrzeit */
+					__( 'Feedback angefragt am %s – noch keine Antwort.', 'auto-emotion' ),
+					mysql2date( 'd.m.Y H:i', $auto_emotion_feedback_angefragt_am )
+				)
+			);
+			?>
+		</p>
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+			<input type="hidden" name="action" value="auto_emotion_feedback_anfragen">
+			<input type="hidden" name="ae_bewerbung_id" value="<?php echo esc_attr( $auto_emotion_id ); ?>">
+			<?php wp_nonce_field( 'auto_emotion_feedback_anfragen_' . $auto_emotion_id, 'auto_emotion_feedback_anfragen_nonce' ); ?>
+			<button type="submit" class="ae-btn ae-btn--ghost" style="width:auto;"><?php esc_html_e( 'Erneut anfragen', 'auto-emotion' ); ?></button>
+		</form>
+	<?php else : ?>
+		<p class="ae-intro" style="margin:0 0 12px;"><?php esc_html_e( 'Frage eine kurze, freiwillige Rückmeldung zur Bewerbungserfahrung an.', 'auto-emotion' ); ?></p>
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+			<input type="hidden" name="action" value="auto_emotion_feedback_anfragen">
+			<input type="hidden" name="ae_bewerbung_id" value="<?php echo esc_attr( $auto_emotion_id ); ?>">
+			<?php wp_nonce_field( 'auto_emotion_feedback_anfragen_' . $auto_emotion_id, 'auto_emotion_feedback_anfragen_nonce' ); ?>
+			<button type="submit" class="ae-btn" style="width:auto;"><?php esc_html_e( 'Feedback anfragen', 'auto-emotion' ); ?></button>
+		</form>
+	<?php endif; ?>
+</div>
+<?php endif; ?>
 
 <div class="ae-card">
 	<h2><?php esc_html_e( 'An Kollegen weiterleiten', 'auto-emotion' ); ?></h2>

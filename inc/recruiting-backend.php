@@ -396,6 +396,12 @@ function auto_emotion_uebersicht_daten() {
 		}
 	}
 
+	$auto_emotion_feedback = function_exists( 'auto_emotion_feedback_kennzahlen' ) ? auto_emotion_feedback_kennzahlen() : array(
+		'anzahl'       => 0,
+		'nps'          => 0,
+		'durchschnitt' => 0,
+	);
+
 	return array(
 		'auto_emotion_suchprofile_gesamt'    => count( $suchprofile ),
 		'auto_emotion_suchprofile_aktiv'     => $aktive_suchprofile,
@@ -404,6 +410,7 @@ function auto_emotion_uebersicht_daten() {
 		'auto_emotion_status_verteilung'     => $status_verteilung,
 		'auto_emotion_status_labels'         => $status_labels,
 		'auto_emotion_neueste_bewerbungen'   => array_slice( $alle_bewerbungen, 0, 6 ),
+		'auto_emotion_feedback'              => $auto_emotion_feedback,
 	);
 }
 

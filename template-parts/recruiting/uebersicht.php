@@ -8,7 +8,7 @@
  * Erwartet: auto_emotion_suchprofile_gesamt, auto_emotion_suchprofile_aktiv,
  * auto_emotion_bewerbungen_gesamt, auto_emotion_bewerbungen_woche,
  * auto_emotion_status_verteilung, auto_emotion_status_labels,
- * auto_emotion_neueste_bewerbungen
+ * auto_emotion_neueste_bewerbungen, auto_emotion_feedback
  *
  * @package Auto Emotion
  */
@@ -58,6 +58,28 @@ $auto_emotion_status_max = max( 1, max( $auto_emotion_status_verteilung ) );
 			</a>
 		<?php endforeach; ?>
 	</div>
+</div>
+
+<div class="ae-card">
+	<h2><?php esc_html_e( 'Candidate-Feedback', 'auto-emotion' ); ?></h2>
+	<?php if ( empty( $auto_emotion_feedback['anzahl'] ) ) : ?>
+		<p class="ae-list__meta" style="margin:0;"><?php esc_html_e( 'Noch keine Rückmeldungen – frage sie bei einer abgeschlossenen Bewerbung über "Feedback anfragen" an.', 'auto-emotion' ); ?></p>
+	<?php else : ?>
+		<div class="ae-kpis" style="margin-bottom:0;">
+			<div class="ae-kpi">
+				<div class="ae-kpi__value"><?php echo esc_html( $auto_emotion_feedback['nps'] ); ?></div>
+				<div class="ae-kpi__label"><?php esc_html_e( 'Candidate-NPS', 'auto-emotion' ); ?></div>
+			</div>
+			<div class="ae-kpi">
+				<div class="ae-kpi__value"><?php echo esc_html( number_format_i18n( $auto_emotion_feedback['durchschnitt'], 1 ) ); ?>/10</div>
+				<div class="ae-kpi__label"><?php esc_html_e( 'Ø Bewertung', 'auto-emotion' ); ?></div>
+			</div>
+			<div class="ae-kpi">
+				<div class="ae-kpi__value"><?php echo esc_html( $auto_emotion_feedback['anzahl'] ); ?></div>
+				<div class="ae-kpi__label"><?php esc_html_e( 'Rückmeldungen', 'auto-emotion' ); ?></div>
+			</div>
+		</div>
+	<?php endif; ?>
 </div>
 
 <div class="ae-card">
