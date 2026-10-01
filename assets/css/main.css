@@ -60,6 +60,13 @@ h6 {
 	text-transform: uppercase;
 	letter-spacing: 0.0230em;
 	line-height: 1;
+	/* Lange deutsche Komposita (z. B. "Fahrzeugsuche") haben keine
+	   Leerzeichen zum Umbrechen. Ohne "hyphens" bricht der Browser sie
+	   an einer beliebigen Stelle mitten im Wort ("FAHRZEUGSUC-HE") –
+	   mit "hyphens: auto" nutzt er stattdessen die echten deutschen
+	   Trennregeln ("FAHRZEUG-SUCHE"). overflow-wrap bleibt als
+	   Sicherheitsnetz für Browser ohne Trennwörterbuch. */
+	hyphens: auto;
 	overflow-wrap: break-word;
 }
 
@@ -731,7 +738,13 @@ body.has-transparent-header .site-header.is-scrolled {
 .story-grid__title,
 .date-card__title {
 	font-size: var(--text-heading-sm);
+	line-height: 1.2;
 	margin-bottom: var(--spacing-16);
+	/* Reserviert immer Platz für 3 Zeilen, unabhängig davon, ob der
+	   tatsächliche Titel 2 oder 3 Zeilen braucht. Ohne das fallen die
+	   Vorschaubilder in einer Grid-Reihe je nach Titellänge
+	   unterschiedlich hoch an – die Reihe wirkt "nicht bündig". */
+	min-height: calc(var(--text-heading-sm) * 1.2 * 3);
 }
 
 /* ---------------------------------------------------------------- */
@@ -786,6 +799,22 @@ body.has-transparent-header .site-main {
 	padding: var(--spacing-40) var(--spacing-24);
 	background: var(--surface-carbony);
 	color: var(--surface-canvas-white);
+	border-left: 3px solid transparent;
+	transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.brand-tile:hover {
+	background: #000;
+	border-left-color: var(--color-rosso-vivo);
+}
+
+.brand-tile .btn-arrow {
+	display: inline-block;
+	transition: transform 0.25s ease;
+}
+
+.brand-tile:hover .btn-arrow {
+	transform: translateX(6px);
 }
 
 .brand-tile__name {
