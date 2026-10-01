@@ -71,6 +71,39 @@ function auto_emotion_speichere_bewerbung( $daten ) {
 	update_post_meta( $post_id, '_bewerbung_nachricht', $daten['nachricht'] );
 	update_post_meta( $post_id, '_bewerbung_status', 'neu' );
 	update_post_meta( $post_id, '_bewerbung_dateien', $daten['dateien'] );
+	auto_emotion_bewerbung_status_historie_eintrag_hinzufuegen( $post_id, 'neu' );
+}
+
+/**
+ * Protokolliert einen Statuswechsel einer Bewerbung mit Zeitpunkt und
+ * Bearbeiter – wie man es von gängigen Bewerbermanagement-Systemen
+ * kennt. Läuft auch beim Anlegen der Bewerbung (Status "neu") als
+ * erster Eintrag.
+ */
+function auto_emotion_bewerbung_status_historie_eintrag_hinzufuegen( $post_id, $status ) {
+	$historie = get_post_meta( $post_id, '_bewerbung_status_historie', true );
+	if ( ! is_array( $historie ) ) {
+		$historie = array();
+	}
+
+	$benutzer = wp_get_current_user();
+
+	$historie[] = array(
+		'status' => $status,
+		'datum'  => current_time( 'mysql' ),
+		'user'   => ( $benutzer && $benutzer->exists() ) ? $benutzer->display_name : __( 'Bewerber (online)', 'auto-emotion' ),
+	);
+
+	update_post_meta( $post_id, '_bewerbung_status_historie', $historie );
+}
+
+/**
+ * Liefert den gespeicherten Statusverlauf einer Bewerbung (chronologisch,
+ * ältester Eintrag zuerst).
+ */
+function auto_emotion_bewerbung_status_historie( $post_id ) {
+	$historie = get_post_meta( $post_id, '_bewerbung_status_historie', true );
+	return is_array( $historie ) ? $historie : array();
 }
 
 /**
@@ -419,6 +452,11 @@ function auto_emotion_bewerbung_status_labels() {
 	);
 }
 
+function auto_emotion_bewerbung_status_label( $status ) {
+	$labels = auto_emotion_bewerbung_status_labels();
+	return isset( $labels[ $status ] ) ? $labels[ $status ] : $status;
+}
+
 /**
  * Speichert Status, Sterne-Bewertung (0–5) und interne Notiz zu einer
  * Bewerbung – die eigentliche "Bewertung" der Bewerber, wie man sie von
@@ -451,9 +489,15 @@ function auto_emotion_handle_bewerbung_bewerten() {
 	}
 	$bewertung = min( 5, max( 0, $bewertung ) );
 
+	$alter_status = get_post_meta( $post_id, '_bewerbung_status', true );
+
 	update_post_meta( $post_id, '_bewerbung_status', $status );
 	update_post_meta( $post_id, '_bewerbung_bewertung', $bewertung );
 	update_post_meta( $post_id, '_bewerbung_notiz', $notiz );
+
+	if ( $status !== $alter_status ) {
+		auto_emotion_bewerbung_status_historie_eintrag_hinzufuegen( $post_id, $status );
+	}
 
 	wp_safe_redirect( add_query_arg( 'gespeichert', '1', home_url( '/mitarbeiter/bewerbungen/' . $post_id . '/' ) ) );
 	exit;

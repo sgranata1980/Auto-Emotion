@@ -131,16 +131,20 @@ function auto_emotion_anthropic_request( $system_prompt, $user_message, $max_tok
 }
 
 /**
- * Sucht ein Anforderungsprofil (Stichworte/Aufgaben/Anforderungen) zur
- * Positionsbezeichnung einer Bewerbung – erst im eigenen Suchprofil,
- * dann in der Stellenbibliothek. Liefert leeren String, wenn nichts
- * Passendes gefunden wird (dann bewertet die KI nur anhand des
- * Positionstitels, ohne erfundene Anforderungen).
+ * Sucht die einzelnen Anforderungskriterien zur Positionsbezeichnung
+ * einer Bewerbung – erst die Stichworte aus dem eigenen Suchprofil
+ * (kommagetrennt), dann die Anforderungen aus der Stellenbibliothek
+ * (eine pro Zeile). Liefert ein leeres Array, wenn nichts Passendes
+ * gefunden wird (dann bewertet die KI nur anhand des Positionstitels,
+ * ohne erfundene Anforderungen). Auf maximal 12 Kriterien begrenzt,
+ * damit die KI-Antwort nicht ausufert.
  */
-function auto_emotion_anforderungsprofil_fuer_position( $position_titel ) {
+function auto_emotion_anforderungskriterien_fuer_position( $position_titel ) {
 	if ( ! $position_titel ) {
-		return '';
+		return array();
 	}
+
+	$kriterien = array();
 
 	$suchprofil_treffer = get_posts(
 		array(
@@ -153,7 +157,7 @@ function auto_emotion_anforderungsprofil_fuer_position( $position_titel ) {
 	if ( $suchprofil_treffer ) {
 		$stichworte = get_post_meta( $suchprofil_treffer[0]->ID, '_suchprofil_stichworte', true );
 		if ( $stichworte ) {
-			return __( 'Gesuchte Skills/Stichworte laut Suchprofil: ', 'auto-emotion' ) . $stichworte;
+			$kriterien = array_merge( $kriterien, explode( ',', $stichworte ) );
 		}
 	}
 
@@ -166,19 +170,16 @@ function auto_emotion_anforderungsprofil_fuer_position( $position_titel ) {
 		)
 	);
 	if ( $vorlage_treffer ) {
-		$aufgaben      = get_post_meta( $vorlage_treffer[0]->ID, '_vorlage_aufgaben', true );
 		$anforderungen = get_post_meta( $vorlage_treffer[0]->ID, '_vorlage_anforderungen', true );
-		$text          = '';
-		if ( $aufgaben ) {
-			$text .= __( 'Typische Aufgaben:', 'auto-emotion' ) . "\n" . $aufgaben . "\n\n";
-		}
 		if ( $anforderungen ) {
-			$text .= __( 'Anforderungen:', 'auto-emotion' ) . "\n" . $anforderungen;
+			$kriterien = array_merge( $kriterien, explode( "\n", $anforderungen ) );
 		}
-		return $text;
 	}
 
-	return '';
+	$kriterien = array_map( 'trim', $kriterien );
+	$kriterien = array_values( array_unique( array_filter( $kriterien ) ) );
+
+	return array_slice( $kriterien, 0, 12 );
 }
 
 function auto_emotion_handle_bewerbung_einschaetzung() {
@@ -204,24 +205,30 @@ function auto_emotion_handle_bewerbung_einschaetzung() {
 		exit;
 	}
 
-	$name          = get_post_meta( $post_id, '_bewerbung_name', true );
-	$position      = get_post_meta( $post_id, '_bewerbung_position', true );
-	$nachricht     = get_post_meta( $post_id, '_bewerbung_nachricht', true );
-	$anforderungen = auto_emotion_anforderungsprofil_fuer_position( $position );
+	$name      = get_post_meta( $post_id, '_bewerbung_name', true );
+	$position  = get_post_meta( $post_id, '_bewerbung_position', true );
+	$nachricht = get_post_meta( $post_id, '_bewerbung_nachricht', true );
+	$kriterien = auto_emotion_anforderungskriterien_fuer_position( $position );
 
 	$system_prompt = "Du unterstützt das Recruiting-Team eines Autohauses (Auto Emotion) bei der Vorqualifizierung einer Bewerbung. "
-		. "Bewerte ausschließlich anhand des gegebenen Bewerbungstextes und Anforderungsprofils – erfinde keine Fähigkeiten, Erfahrungen oder Qualifikationen, die nicht genannt sind. "
+		. "Bewerte ausschließlich anhand des gegebenen Bewerbungstextes und der Kriterienliste – erfinde keine Fähigkeiten, Erfahrungen oder Qualifikationen, die nicht genannt sind. "
+		. "Bewerte jedes Kriterium einzeln: 'match' wenn der Text es klar belegt, 'partial' wenn teilweise oder unklar belegt, 'no_match' wenn der Text ihm klar widerspricht, 'unknown' wenn der Text dazu schlicht keine Information enthält. "
+		. "WICHTIG: 'unknown' ist nicht dasselbe wie 'no_match' – fehlende Information bedeutet nicht automatisch, dass das Kriterium nicht erfüllt ist, das muss klar unterschieden werden. "
 		. "Wenn der Bewerbungstext knapp ist oder wenig Information enthält, sage das ehrlich statt zu spekulieren. "
 		. "Dies ist eine unterstützende Einschätzung für die Vorauswahl, keine abschließende Entscheidung. "
 		. 'Antworte ausschließlich mit einem einzigen JSON-Objekt, exakt in dieser Form, ohne Markdown-Codeblock und ohne weiteren Text: '
-		. '{"einschaetzung_prozent": <ganzzahl 0-100, wie gut der Text zum Anforderungsprofil passt>, "einschaetzung_text": "<2-4 Sätze Begründung>", "staerken": ["<Stichpunkt>", ...], "moegliche_luecken": ["<Stichpunkt>", ...], "empfehlung": "<einer von: einladen, pruefen, eher_absagen>"}';
+		. '{"einschaetzung_prozent": <ganzzahl 0-100, wie gut der Text insgesamt passt>, "einschaetzung_text": "<2-4 Sätze Gesamteinschätzung>", "kriterien": [{"kriterium": "<genauer Wortlaut aus der Liste>", "status": "<match|partial|no_match|unknown>", "begruendung": "<ein kurzer Satz mit Bezug auf den Text>"}, ...], "empfehlung": "<einer von: einladen, pruefen, eher_absagen>"}';
+
+	$kriterien_text = $kriterien
+		? "Zu bewertende Kriterien (eines pro Zeile):\n" . implode( "\n", $kriterien )
+		: 'Kein hinterlegtes Anforderungsprofil zu dieser Position gefunden – liefere eine leere "kriterien"-Liste und bewerte nur anhand des Positionstitels.';
 
 	$user_message = 'Position: ' . ( $position ? $position : '(nicht angegeben)' ) . "\n\n"
-		. ( $anforderungen ? $anforderungen . "\n\n" : "Kein hinterlegtes Anforderungsprofil zu dieser Position gefunden.\n\n" )
+		. $kriterien_text . "\n\n"
 		. "Bewerbungstext (Nachricht aus dem Formular):\n"
 		. ( $nachricht ? $nachricht : '(Bewerber hat keine Nachricht hinterlassen – Bewertung nur anhand des Positionstitels möglich.)' );
 
-	$ergebnis = auto_emotion_anthropic_request( $system_prompt, $user_message, 700 );
+	$ergebnis = auto_emotion_anthropic_request( $system_prompt, $user_message, 1400 );
 
 	if ( $ergebnis['error'] ) {
 		wp_safe_redirect( add_query_arg( 'ki_fehler', rawurlencode( $ergebnis['error'] ), home_url( '/mitarbeiter/bewerbungen/' . $post_id . '/' ) ) );
@@ -237,13 +244,33 @@ function auto_emotion_handle_bewerbung_einschaetzung() {
 		exit;
 	}
 
+	$erlaubte_kriterien_status = array( 'match', 'partial', 'no_match', 'unknown' );
+	$kriterien_ergebnis        = array();
+	if ( isset( $geparst['kriterien'] ) && is_array( $geparst['kriterien'] ) ) {
+		foreach ( $geparst['kriterien'] as $kriterien_eintrag ) {
+			if ( ! is_array( $kriterien_eintrag ) || empty( $kriterien_eintrag['kriterium'] ) ) {
+				continue;
+			}
+			$kriterien_status = isset( $kriterien_eintrag['status'] ) ? sanitize_key( $kriterien_eintrag['status'] ) : 'unknown';
+			if ( ! in_array( $kriterien_status, $erlaubte_kriterien_status, true ) ) {
+				$kriterien_status = 'unknown';
+			}
+			$kriterien_ergebnis[] = array(
+				'kriterium'   => sanitize_text_field( $kriterien_eintrag['kriterium'] ),
+				'status'      => $kriterien_status,
+				'begruendung' => isset( $kriterien_eintrag['begruendung'] ) ? sanitize_text_field( $kriterien_eintrag['begruendung'] ) : '',
+			);
+		}
+	}
+
 	update_post_meta( $post_id, '_bewerbung_ki_einschaetzung_prozent', isset( $geparst['einschaetzung_prozent'] ) ? absint( $geparst['einschaetzung_prozent'] ) : '' );
 	update_post_meta( $post_id, '_bewerbung_ki_einschaetzung_text', sanitize_textarea_field( $geparst['einschaetzung_text'] ) );
-	update_post_meta( $post_id, '_bewerbung_ki_staerken', isset( $geparst['staerken'] ) && is_array( $geparst['staerken'] ) ? implode( "\n", array_map( 'sanitize_text_field', $geparst['staerken'] ) ) : '' );
-	update_post_meta( $post_id, '_bewerbung_ki_luecken', isset( $geparst['moegliche_luecken'] ) && is_array( $geparst['moegliche_luecken'] ) ? implode( "\n", array_map( 'sanitize_text_field', $geparst['moegliche_luecken'] ) ) : '' );
+	update_post_meta( $post_id, '_bewerbung_ki_kriterien', $kriterien_ergebnis );
 	update_post_meta( $post_id, '_bewerbung_ki_empfehlung', isset( $geparst['empfehlung'] ) ? sanitize_key( $geparst['empfehlung'] ) : '' );
 	update_post_meta( $post_id, '_bewerbung_ki_datum', current_time( 'mysql' ) );
 	delete_post_meta( $post_id, '_bewerbung_ki_rohtext' );
+	delete_post_meta( $post_id, '_bewerbung_ki_staerken' );
+	delete_post_meta( $post_id, '_bewerbung_ki_luecken' );
 
 	wp_safe_redirect( add_query_arg( 'ki_erstellt', '1', home_url( '/mitarbeiter/bewerbungen/' . $post_id . '/' ) ) );
 	exit;

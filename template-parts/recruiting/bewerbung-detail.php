@@ -36,8 +36,10 @@ $auto_emotion_feedback_link          = $auto_emotion_feedback_token ? home_url( 
 
 $auto_emotion_ki_prozent    = get_post_meta( $auto_emotion_id, '_bewerbung_ki_einschaetzung_prozent', true );
 $auto_emotion_ki_text       = get_post_meta( $auto_emotion_id, '_bewerbung_ki_einschaetzung_text', true );
-$auto_emotion_ki_staerken   = get_post_meta( $auto_emotion_id, '_bewerbung_ki_staerken', true );
-$auto_emotion_ki_luecken    = get_post_meta( $auto_emotion_id, '_bewerbung_ki_luecken', true );
+$auto_emotion_ki_kriterien  = get_post_meta( $auto_emotion_id, '_bewerbung_ki_kriterien', true );
+if ( ! is_array( $auto_emotion_ki_kriterien ) ) {
+	$auto_emotion_ki_kriterien = array();
+}
 $auto_emotion_ki_empfehlung = get_post_meta( $auto_emotion_id, '_bewerbung_ki_empfehlung', true );
 $auto_emotion_ki_datum      = get_post_meta( $auto_emotion_id, '_bewerbung_ki_datum', true );
 $auto_emotion_ki_empfehlung_labels = array(
@@ -45,6 +47,26 @@ $auto_emotion_ki_empfehlung_labels = array(
 	'pruefen'       => __( 'Genauer prüfen', 'auto-emotion' ),
 	'eher_absagen'  => __( 'Eher absagen', 'auto-emotion' ),
 );
+$auto_emotion_ki_kriterien_status = array(
+	'match'    => array(
+		'label' => __( 'Erfüllt', 'auto-emotion' ),
+		'class' => 'eingestellt',
+	),
+	'partial'  => array(
+		'label' => __( 'Teilweise', 'auto-emotion' ),
+		'class' => 'interview',
+	),
+	'no_match' => array(
+		'label' => __( 'Nicht erfüllt', 'auto-emotion' ),
+		'class' => 'abgesagt',
+	),
+	'unknown'  => array(
+		'label' => __( 'Unklar', 'auto-emotion' ),
+		'class' => 'pruefung',
+	),
+);
+
+$auto_emotion_status_historie = auto_emotion_bewerbung_status_historie( $auto_emotion_id );
 
 auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 ?>
@@ -94,19 +116,24 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 				<?php endif; ?>
 			</div>
 			<p class="ae-intro" style="margin:0 0 12px;"><?php echo esc_html( $auto_emotion_ki_text ); ?></p>
-			<?php if ( $auto_emotion_ki_staerken ) : ?>
-				<p class="ae-list__title" style="font-size:13px; margin-bottom:4px;"><?php esc_html_e( 'Stärken', 'auto-emotion' ); ?></p>
-				<ul style="margin:0 0 12px; padding-left:18px;">
-					<?php foreach ( explode( "\n", $auto_emotion_ki_staerken ) as $auto_emotion_zeile ) : ?>
-						<li class="ae-list__meta"><?php echo esc_html( $auto_emotion_zeile ); ?></li>
-					<?php endforeach; ?>
-				</ul>
-			<?php endif; ?>
-			<?php if ( $auto_emotion_ki_luecken ) : ?>
-				<p class="ae-list__title" style="font-size:13px; margin-bottom:4px;"><?php esc_html_e( 'Mögliche Lücken', 'auto-emotion' ); ?></p>
-				<ul style="margin:0 0 12px; padding-left:18px;">
-					<?php foreach ( explode( "\n", $auto_emotion_ki_luecken ) as $auto_emotion_zeile ) : ?>
-						<li class="ae-list__meta"><?php echo esc_html( $auto_emotion_zeile ); ?></li>
+			<?php if ( $auto_emotion_ki_kriterien ) : ?>
+				<p class="ae-list__title" style="font-size:13px; margin-bottom:6px;"><?php esc_html_e( 'Kriterien im Detail', 'auto-emotion' ); ?></p>
+				<ul style="margin:0 0 12px; padding:0; list-style:none; display:flex; flex-direction:column; gap:8px;">
+					<?php foreach ( $auto_emotion_ki_kriterien as $auto_emotion_kriterium ) : ?>
+						<?php
+						$auto_emotion_kriterium_status = isset( $auto_emotion_ki_kriterien_status[ $auto_emotion_kriterium['status'] ] )
+							? $auto_emotion_ki_kriterien_status[ $auto_emotion_kriterium['status'] ]
+							: $auto_emotion_ki_kriterien_status['unknown'];
+						?>
+						<li>
+							<div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+								<span class="ae-status ae-status--<?php echo esc_attr( $auto_emotion_kriterium_status['class'] ); ?>"><?php echo esc_html( $auto_emotion_kriterium_status['label'] ); ?></span>
+								<strong style="font-size:13.5px;"><?php echo esc_html( $auto_emotion_kriterium['kriterium'] ); ?></strong>
+							</div>
+							<?php if ( ! empty( $auto_emotion_kriterium['begruendung'] ) ) : ?>
+								<p class="ae-list__meta" style="margin:2px 0 0;"><?php echo esc_html( $auto_emotion_kriterium['begruendung'] ); ?></p>
+							<?php endif; ?>
+						</li>
 					<?php endforeach; ?>
 				</ul>
 			<?php endif; ?>
@@ -165,6 +192,22 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 			<button type="submit" class="ae-btn" style="width:auto;"><?php esc_html_e( 'Bewertung speichern', 'auto-emotion' ); ?></button>
 		</div>
 	</form>
+</div>
+
+<div class="ae-card">
+	<h2><?php esc_html_e( 'Verlauf', 'auto-emotion' ); ?></h2>
+	<?php if ( empty( $auto_emotion_status_historie ) ) : ?>
+		<p class="ae-list__meta" style="margin:0;"><?php esc_html_e( 'Noch kein Statusverlauf vorhanden.', 'auto-emotion' ); ?></p>
+	<?php else : ?>
+		<ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:10px;">
+			<?php foreach ( array_reverse( $auto_emotion_status_historie ) as $auto_emotion_verlauf_eintrag ) : ?>
+				<li style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+					<span class="ae-status ae-status--<?php echo esc_attr( $auto_emotion_verlauf_eintrag['status'] ); ?>"><?php echo esc_html( auto_emotion_bewerbung_status_label( $auto_emotion_verlauf_eintrag['status'] ) ); ?></span>
+					<span class="ae-list__meta"><?php echo esc_html( mysql2date( 'd.m.Y H:i', $auto_emotion_verlauf_eintrag['datum'] ) ); ?> Uhr · <?php echo esc_html( $auto_emotion_verlauf_eintrag['user'] ); ?></span>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+	<?php endif; ?>
 </div>
 
 <div class="ae-card">
