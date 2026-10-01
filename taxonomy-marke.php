@@ -485,9 +485,11 @@ $auto_emotion_angebote = new WP_Query(
 		<h2 class="section-heading__title"><?php esc_html_e( 'News', 'auto-emotion' ); ?></h2>
 	</div>
 
-	<?php while ( have_posts() ) : the_post(); ?>
-		<?php get_template_part( 'template-parts/content' ); ?>
-	<?php endwhile; ?>
+	<div class="story-grid">
+		<?php while ( have_posts() ) : the_post(); ?>
+			<?php get_template_part( 'template-parts/content' ); ?>
+		<?php endwhile; ?>
+	</div>
 
 	<?php the_posts_pagination(); ?>
 <?php endif; ?>

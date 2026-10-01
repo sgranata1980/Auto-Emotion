@@ -830,9 +830,15 @@ body.has-transparent-header .site-main {
 
 .product-tile__caption {
 	font-size: var(--text-body);
+	line-height: var(--leading-body);
 	text-transform: uppercase;
 	letter-spacing: 0.0230em;
 	margin-top: var(--spacing-16);
+	/* Reserviert Platz für 3 Zeilen, damit unterschiedlich lange
+	   Titel ("Cupra Born VZ" vs. "Cupra Leon Sportstourer:
+	   Leasingraten für TSI und e-HYBRID") nicht dazu führen, dass
+	   Karten in derselben Grid-Reihe unterschiedlich hoch enden. */
+	min-height: calc(var(--text-body) * var(--leading-body) * 3);
 }
 
 /* ---------------------------------------------------------------- */

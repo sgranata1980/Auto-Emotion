@@ -11,9 +11,11 @@ get_header();
 ?>
 
 <?php if ( have_posts() ) : ?>
-	<?php while ( have_posts() ) : the_post(); ?>
-		<?php get_template_part( 'template-parts/content' ); ?>
-	<?php endwhile; ?>
+	<div class="story-grid">
+		<?php while ( have_posts() ) : the_post(); ?>
+			<?php get_template_part( 'template-parts/content' ); ?>
+		<?php endwhile; ?>
+	</div>
 
 	<?php the_posts_pagination(); ?>
 <?php else : ?>
