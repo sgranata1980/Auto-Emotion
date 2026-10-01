@@ -24,6 +24,23 @@ if ( ! $auto_emotion_status ) {
 	$auto_emotion_status = 'aktiv';
 }
 
+/**
+ * Vorbefüllung aus der Stellenbibliothek: ein Klick auf "Neues
+ * Suchprofil mit dieser Vorlage" übergibt Titel/Stichworte/Art als
+ * Startpunkt – nur bei einem neuen, noch leeren Suchprofil.
+ */
+if ( ! $auto_emotion_is_edit ) {
+	if ( ! empty( $_GET['vorlage_titel'] ) ) {
+		$auto_emotion_title = sanitize_text_field( wp_unslash( $_GET['vorlage_titel'] ) );
+	}
+	if ( ! empty( $_GET['vorlage_stichworte'] ) ) {
+		$auto_emotion_stichworte = sanitize_text_field( wp_unslash( $_GET['vorlage_stichworte'] ) );
+	}
+	if ( ! empty( $_GET['vorlage_art'] ) ) {
+		$auto_emotion_art = sanitize_key( wp_unslash( $_GET['vorlage_art'] ) );
+	}
+}
+
 $auto_emotion_art_optionen = array(
 	''            => __( '– bitte wählen –', 'auto-emotion' ),
 	'vollzeit'    => __( 'Vollzeit', 'auto-emotion' ),

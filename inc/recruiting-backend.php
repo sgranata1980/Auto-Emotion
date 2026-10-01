@@ -251,6 +251,10 @@ function auto_emotion_staff_shell_start( $title, $active = '' ) {
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 13h6V4H4v9Zm0 7h6v-5H4v5Zm10 0h6v-9h-6v9Zm0-16v5h6V4h-6Z" fill="currentColor"/></svg>
 					<?php esc_html_e( 'Suchprofile', 'auto-emotion' ); ?>
 				</a>
+				<a href="<?php echo esc_url( home_url( '/mitarbeiter/stellenbibliothek/' ) ); ?>" class="<?php echo 'stellenbibliothek' === $active ? 'is-active' : ''; ?>">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19.5V4.5C4 3.67 4.67 3 5.5 3H18a1 1 0 0 1 1 1v15" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M6.5 3v18M6.5 17H19a2 2 0 0 1 2 2v1H6.5" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+					<?php esc_html_e( 'Stellenbibliothek', 'auto-emotion' ); ?>
+				</a>
 				<a href="<?php echo esc_url( home_url( '/mitarbeiter/bewerbungen/' ) ); ?>" class="<?php echo in_array( $active, array( 'bewerbungen', 'bewerbung' ), true ) ? 'is-active' : ''; ?>">
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 2h9l5 5v15H6V2Z" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M9 12h8M9 16h8M9 8h4" stroke="currentColor" stroke-width="1.6"/></svg>
 					<?php esc_html_e( 'Bewerbungen', 'auto-emotion' ); ?>
@@ -511,7 +515,7 @@ function auto_emotion_recruiting_template_redirect() {
 			auto_emotion_staff_require_login();
 			$auto_emotion_papierkorb_items = get_posts(
 				array(
-					'post_type'      => array( 'suchprofil', 'bewerbung', 'kontakt', 'nachricht' ),
+					'post_type'      => array( 'suchprofil', 'bewerbung', 'kontakt', 'nachricht', 'stellenvorlage' ),
 					'post_status'    => 'trash',
 					'posts_per_page' => -1,
 					'orderby'        => 'modified',
@@ -825,7 +829,7 @@ function auto_emotion_handle_papierkorb_wiederherstellen() {
 	}
 
 	$post = get_post( $post_id );
-	if ( $post && in_array( $post->post_type, array( 'suchprofil', 'bewerbung', 'kontakt', 'nachricht' ), true ) ) {
+	if ( $post && in_array( $post->post_type, array( 'suchprofil', 'bewerbung', 'kontakt', 'nachricht', 'stellenvorlage' ), true ) ) {
 		wp_untrash_post( $post_id );
 		/**
 		 * wp_untrash_post() verlässt sich auf den vor dem Löschen
@@ -861,7 +865,7 @@ function auto_emotion_handle_papierkorb_endgueltig_loeschen() {
 	}
 
 	$post = get_post( $post_id );
-	if ( $post && in_array( $post->post_type, array( 'suchprofil', 'bewerbung', 'kontakt', 'nachricht' ), true ) ) {
+	if ( $post && in_array( $post->post_type, array( 'suchprofil', 'bewerbung', 'kontakt', 'nachricht', 'stellenvorlage' ), true ) ) {
 		wp_delete_post( $post_id, true );
 	}
 
