@@ -1310,6 +1310,24 @@ body.has-transparent-header .site-main {
 	padding-top: var(--spacing-24);
 }
 
+/* Größerer Tap-Bereich für den Mitarbeiter-Login-Link in der Fußzeile –
+   auf Mobilgeräten sonst ein winziges Ziel direkt unter dem schwebenden
+   Chat-Button. */
+.site-info a {
+	display: inline-block;
+	padding: var(--spacing-8) 0;
+}
+
+@media (max-width: 700px) {
+	/* Der Chat-Button schwebt fest unten rechts (siehe .chat-widget) und
+	   überlappt sonst den Login-Link am Ende der Fußzeile, sodass er auf
+	   dem Handy kaum noch anklickbar ist. Zusätzlicher Abstand hält den
+	   Linkbereich frei vom Button, wenn ganz nach unten gescrollt wird. */
+	.site-footer {
+		padding-bottom: calc(var(--spacing-64) + 56px);
+	}
+}
+
 /* ---------------------------------------------------------------- */
 /* Chat-Widget (Auto Emotion Assistent)                               */
 /* ---------------------------------------------------------------- */
