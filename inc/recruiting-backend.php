@@ -262,6 +262,10 @@ function auto_emotion_staff_shell_start( $title, $active = '' ) {
 						<span class="ae-sidebar__badge"><?php echo esc_html( $neue_anzahl ); ?></span>
 					<?php endif; ?>
 				</a>
+				<a href="<?php echo esc_url( home_url( '/mitarbeiter/automatisierung/' ) ); ?>" class="<?php echo 'automatisierung' === $active ? 'is-active' : ''; ?>">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.6"/></svg>
+					<?php esc_html_e( 'Automatisierung & KI', 'auto-emotion' ); ?>
+				</a>
 				<div class="ae-sidebar__section"><?php esc_html_e( 'Team', 'auto-emotion' ); ?></div>
 				<a href="<?php echo esc_url( home_url( '/mitarbeiter/nachrichten/' ) ); ?>" class="<?php echo 'nachrichten' === $active ? 'is-active' : ''; ?>">
 					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h16v12H8l-4 4V4Z" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>

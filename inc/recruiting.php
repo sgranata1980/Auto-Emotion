@@ -213,6 +213,26 @@ function auto_emotion_handle_bewerbung() {
 
 	wp_mail( $to, $subject, $body, $headers, $mail_attachments );
 
+	/**
+	 * Automatisierter Erstkontakt: sofortige Eingangsbestätigung an den/
+	 * die Bewerber:in, direkt nach dem Absenden – nur wenn im Formular
+	 * eine E-Mail-Adresse angegeben wurde (das Feld ist optional). Läuft
+	 * über die bestehende wp_mail()-Konfiguration, braucht also keine
+	 * zusätzlichen Zugangsdaten.
+	 */
+	if ( $email ) {
+		$bestaetigung_betreff = sprintf( __( 'Deine Bewerbung bei Auto Emotion ist eingegangen – %s', 'auto-emotion' ), $position ? $position : __( 'Initiativbewerbung', 'auto-emotion' ) );
+		$bestaetigung_text    = sprintf(
+			/* translators: 1: Name, 2: Position, 3: Telefonnummer */
+			__( "Liebe/r %1\$s,\n\nvielen Dank für deine Bewerbung bei Auto Emotion als %2\$s. Wir haben deine Unterlagen erhalten und melden uns zeitnah bei dir.\n\nFalls du in der Zwischenzeit Fragen hast, erreichst du uns telefonisch unter %3\$s.\n\nViele Grüße\nDein Auto Emotion Team", 'auto-emotion' ),
+			$name,
+			$position ? $position : __( 'Initiativbewerbung', 'auto-emotion' ),
+			auto_emotion_contact( 'phone' )
+		);
+		$bestaetigung_headers = array( 'Reply-To: ' . $to );
+		wp_mail( $email, $bestaetigung_betreff, $bestaetigung_text, $bestaetigung_headers );
+	}
+
 	if ( function_exists( 'auto_emotion_speichere_bewerbung' ) ) {
 		auto_emotion_speichere_bewerbung(
 			array(

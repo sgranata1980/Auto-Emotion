@@ -24,7 +24,7 @@ if ( ! isset( $_SERVER['PHP_AUTH_USER'] ) && isset( $_SERVER['HTTP_AUTHORIZATION
 	}
 }
 
-define( 'AUTO_EMOTION_VERSION', '1.14.1' );
+define( 'AUTO_EMOTION_VERSION', '1.15.0' );
 define( 'AUTO_EMOTION_DIR', get_template_directory() );
 define( 'AUTO_EMOTION_URI', get_template_directory_uri() );
 
@@ -60,6 +60,7 @@ require AUTO_EMOTION_DIR . '/inc/recruiting-kontakte.php';
 require AUTO_EMOTION_DIR . '/inc/recruiting-nachrichten.php';
 require AUTO_EMOTION_DIR . '/inc/recruiting-feedback.php';
 require AUTO_EMOTION_DIR . '/inc/recruiting-stellenbibliothek.php';
+require AUTO_EMOTION_DIR . '/inc/recruiting-automatisierung.php';
 require AUTO_EMOTION_DIR . '/inc/b2b.php';
 require AUTO_EMOTION_DIR . '/inc/finance-trade-in.php';
 require AUTO_EMOTION_DIR . '/inc/testdrive.php';
