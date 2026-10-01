@@ -1518,6 +1518,35 @@ body.has-transparent-header .site-main {
 	border-color: var(--color-rosso-vivo);
 }
 
+.finance-section__grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--spacing-64);
+	align-items: center;
+}
+
+.finance-section__grid > * {
+	min-width: 0;
+}
+
+.finance-section__image {
+	width: 100%;
+	height: 100%;
+	max-height: 420px;
+	object-fit: cover;
+}
+
+@media (max-width: 900px) {
+	.finance-section__grid {
+		grid-template-columns: 1fr;
+		gap: var(--spacing-32);
+	}
+
+	.finance-section__image {
+		max-height: 280px;
+	}
+}
+
 .service-teaser-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
