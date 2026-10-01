@@ -18,7 +18,7 @@ $auto_emotion_status = isset( $_GET['anfrage'] ) ? sanitize_text_field( wp_unsla
 
 <img
 	class="career-banner__image career-banner__image--fleet"
-	src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-nutzfahrzeuge.jpg' ); ?>"
+	src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-nutzfahrzeuge.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>"
 	alt=""
 	loading="lazy"
 >
