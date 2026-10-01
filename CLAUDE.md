@@ -62,3 +62,85 @@ Standard entspricht, bevor es auf der Seite verwendet wird. Nach jedem
 Durchgang das Ergebnis in voller Auflösung prüfen – speziell Fahrzeuglack
 auf Dunkelheit und jeden sichtbaren Hintergrundtext auf Lesbarkeit/
 Unverändertheit.
+
+## Prompt-Vorlage: Cinematic-Showroom-Set (Bilder + Werbespot)
+
+Bewährte, funktionierende Prompt-Vorlage für ein Referenzbilder-Set aus
+mehreren Perspektiven plus daraus geschnittenen Werbespot für ein
+Fahrzeug (Seat, Cupra oder Nissan). Erstmals eingesetzt für den CUPRA-
+Hero-Spot der Startseite (Oktober 2026) – bei Bedarf für andere Modelle/
+Marken wiederverwenden, einfach `[Marke/Modell]` ersetzen und das
+Ausgangsbild austauschen.
+
+**Werkzeuge**: Artlist MCP. Bildwinkel per `generate_image` mit Modell
+„GPT Image 2.5 Flare Edit High 2K" (modelId 3390, Bild-zu-Bild aus einem
+echten Pressefoto als `input: { assetId }`), Settings
+`{"aspect_ratio": "16:9", "resolution": "high", "output_resolution": "2K"}`.
+Spot per `generate_video` mit Modell „Seedance 2.5 – R2V – Image – 1080p"
+(modelId 3108, Multi-Referenz aus den vier generierten Bildern via
+`input: [{generationId}, ...]`), Settings `{"duration": "12", "resolution":
+"1080p", "aspect_ratio": "16:9", "generate_audio": true}`. Seedance 2.5 in
+1080p ist teuer (bei 4 Referenzbildern ca. 12.000 Credits für 12 Sekunden) –
+Kosten vor dem Start mit `get_generation_cost` prüfen und beim Nutzer
+freigeben lassen, güns­tigere Alternativen (720p/480p-Entwurf) anbieten.
+
+**Szenen-Grundlage** (für alle vier Bildwinkel identisch, nur die
+Kamera-Anweisung ändert sich):
+
+> Using the exact same [Marke/Modell] car from the reference image —
+> identical color, wheels, badges, trim — and the same dark cinematic
+> underground location with stone arches and the same dramatic lighting
+> style, generate a new shot from a [KAMERAWINKEL]. Keep the car's
+> design, color and wheels exactly identical to the reference.
+
+Vier Kamerawinkel, jeweils mit Kennzeichen-Anweisung wo ein Schild
+sichtbar ist (siehe „Kennzeichen auf generierten Fahrzeugbildern" oben):
+
+1. **Front 3/4 (Hero)** – meist nur ein minimaler Edit des
+   Ausgangsbilds nötig (Kennzeichen korrigieren, sonst nichts ändern):
+   „Keep this exact car and scene completely unchanged — same color,
+   wheels, lighting, dark underground stone-arches background, same
+   camera framing and angle. The ONLY change: replace the text on the
+   front license plate with 'AUTOEMOTION' in clean, sharp, legible black
+   lettering on a white plate, with a simple clean blue EU strip (no
+   blurry stars or letter mess), standard European plate proportions."
+2. **Seite** – „a full side-profile view: camera perpendicular to the
+   car, car facing left, entire car visible in profile." Kein Kennzeichen
+   in dieser Einstellung sichtbar.
+3. **Heck 3/4** – „a rear three-quarter angle, showing the back of the
+   car and taillights clearly." Plus Kennzeichen-Anweisung (Heckschild
+   „AUTOEMOTION").
+4. **Front gerade** – „a straight-on front view: camera directly in
+   front of the car, symmetrical framing." Plus Kennzeichen-Anweisung.
+
+**Werbespot-Prompt** (alle vier Bilder als Multi-Referenz):
+
+> Premium automotive commercial for a [Marke/Modell] car, dark moody
+> cinematic underground location with stone arches and wet reflective
+> floor, dramatic rim lighting and amber light strips along the walls.
+> Dynamic sequence: start with a slow establishing push-in on the car's
+> front three-quarter hero angle, smooth camera orbit around to the full
+> side profile revealing the silhouette and wheel design, cut to a rear
+> three-quarter reveal as the taillights ignite in sequence, finish on a
+> slow symmetrical push-in on the straight front view with the grille
+> and badge in focus. Smooth, elegant, high-end car-commercial camera
+> movement throughout — no fast cuts, no shaky motion, no text overlays,
+> no logos added. Keep the car's color, wheels, trim and design
+> completely consistent across the whole sequence, exactly as in the
+> reference images. Subtle ambient cinematic score, low engine hum, no
+> voiceover.
+
+**Nach der Generierung, vor dem Einbinden als Website-Video** immer:
+
+- Mit `ffmpeg` zu H.264 (`-c:v libx264 -pix_fmt yuv420p -crf 20 -preset
+  slow -movflags +faststart`) transkodieren – das von Seedance gelieferte
+  HEVC/H.265 spielt in vielen Browsern/Testumgebungen nicht zuverlässig.
+  Für einen stummen Hintergrund-Loop die Audiospur mit `-an` entfernen.
+- Zusätzlich eine WebM/VP9-Variante erzeugen (`-c:v libvpx-vp9 -crf 32
+  -b:v 0`) und im `<video>`-Tag als erste `<source>` vor dem MP4 anbieten
+  (kleinere Datei für Browser mit VP9-Unterstützung, MP4 bleibt
+  Fallback).
+- Alle Winkel und Frames in voller Auflösung sichtprüfen: Marke korrekt
+  (kein fremdes Logo), Kennzeichen auf jedem sichtbaren Schild lesbar
+  „AUTOEMOTION", Wagen über alle Einstellungen hinweg identisch (Farbe,
+  Felgen, Details).
