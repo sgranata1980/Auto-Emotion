@@ -75,9 +75,8 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 <div class="ae-card">
 	<h2><?php esc_html_e( 'KI-Einschätzung (Vorqualifizierung)', 'auto-emotion' ); ?></h2>
 	<?php if ( ! auto_emotion_anthropic_configured() ) : ?>
-		<p class="ae-intro" style="margin:0 0 4px;"><?php esc_html_e( 'Noch nicht eingerichtet. Füge in wp-config.php diese Zeile hinzu, dann steht die Funktion sofort zur Verfügung:', 'auto-emotion' ); ?></p>
-		<p class="ae-list__meta" style="font-family:monospace; background:rgba(127,127,127,.1); padding:8px 10px; border-radius:var(--ae-radius-sm);">define( 'AUTO_EMOTION_ANTHROPIC_API_KEY', 'sk-ant-...' );</p>
-		<p class="ae-list__meta" style="margin:8px 0 0;"><?php esc_html_e( 'Den API-Key erhältst du über ein Anthropic-Konto (console.anthropic.com), nutzungsbasierte Abrechnung.', 'auto-emotion' ); ?></p>
+		<p class="ae-intro" style="margin:0 0 12px;"><?php esc_html_e( 'Noch nicht eingerichtet. Trage im WordPress-Customizer unter „Auto Emotion Einstellungen" einen Claude API-Key ein (von console.anthropic.com), dann steht die Funktion sofort zur Verfügung – derselbe Key wird auch für den Chat-Assistenten auf der Website genutzt.', 'auto-emotion' ); ?></p>
+		<a class="ae-btn" style="width:auto;" href="<?php echo esc_url( admin_url( 'customize.php?autofocus[control]=ae_claude_api_key&url=' . rawurlencode( home_url( '/' ) ) ) ); ?>" target="_blank"><?php esc_html_e( 'API-Key jetzt eintragen', 'auto-emotion' ); ?></a>
 	<?php else : ?>
 		<?php if ( $auto_emotion_ki_text ) : ?>
 			<div class="ae-kpis" style="margin-bottom:16px;">

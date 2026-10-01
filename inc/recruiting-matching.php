@@ -6,12 +6,15 @@
  * API und liefert eine begründete, auf dem echten Text basierende
  * Einschätzung – kein erfundener Score ohne Grundlage.
  *
- * Braucht einen eigenen Anthropic-API-Key, der NICHT im Theme-Code
- * oder in git landet: entweder als PHP-Konstante in wp-config.php
- * ( define( 'AUTO_EMOTION_ANTHROPIC_API_KEY', 'sk-ant-...' ); ) oder
- * als Server-Umgebungsvariable ANTHROPIC_API_KEY. Ohne Key bleibt die
- * Funktion inaktiv und zeigt im Mitarbeiterbereich eine klare
- * Anleitung statt eines erfundenen Ergebnisses.
+ * Braucht einen Anthropic-API-Key, der NICHT im Theme-Code oder in
+ * git landet: hinterlegt im WordPress-Customizer ("Auto Emotion
+ * Einstellungen" → Feld "Claude API-Key", type=password, dieselbe
+ * Einstellung wie für den Chat-Assistenten in inc/chatbot.php – ein
+ * Key für beide Funktionen). Alternativ für Fortgeschrittene auch als
+ * PHP-Konstante in wp-config.php oder Server-Umgebungsvariable
+ * möglich. Ohne Key bleibt die Funktion inaktiv und zeigt im
+ * Mitarbeiterbereich eine klare Anleitung statt eines erfundenen
+ * Ergebnisses.
  *
  * Bewusst KEIN Composer-SDK: dieses Theme wird per Git-Push (WP
  * Pusher) ohne Build-Schritt deployt, ein vendor/-Verzeichnis gäbe es
@@ -29,6 +32,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function auto_emotion_anthropic_api_key() {
+	$theme_mod_key = get_theme_mod( 'ae_claude_api_key', '' );
+	if ( $theme_mod_key ) {
+		return $theme_mod_key;
+	}
+
 	if ( defined( 'AUTO_EMOTION_ANTHROPIC_API_KEY' ) && AUTO_EMOTION_ANTHROPIC_API_KEY ) {
 		return AUTO_EMOTION_ANTHROPIC_API_KEY;
 	}

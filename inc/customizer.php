@@ -75,8 +75,8 @@ function auto_emotion_customize_register( $wp_customize ) {
 	$wp_customize->add_control(
 		'ae_claude_api_key',
 		array(
-			'label'       => __( 'Claude API-Key (für den Chat-Assistenten)', 'auto-emotion' ),
-			'description' => __( 'Von console.anthropic.com. Solange dieses Feld leer ist, wird der Chat-Assistent auf der Website nicht angezeigt.', 'auto-emotion' ),
+			'label'       => __( 'Claude API-Key', 'auto-emotion' ),
+			'description' => __( 'Von console.anthropic.com (beginnt mit "sk-ant-api03-"). Wird für den Chat-Assistenten auf der Website UND für die KI-Einschätzung im Mitarbeiterbereich (Bewerbungen) genutzt. Solange dieses Feld leer ist, bleiben beide Funktionen inaktiv.', 'auto-emotion' ),
 			'section'     => 'auto_emotion_general',
 			'type'        => 'password',
 		)
