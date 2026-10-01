@@ -87,10 +87,12 @@ function auto_emotion_automatisierung_funktionen() {
 		),
 		array(
 			'titel'       => __( 'Vorqualifizierung & Match-Scores', 'auto-emotion' ),
-			'status'      => 'geplant',
-			'beschreibung' => __( 'Bräuchte eine bewusste Entscheidung für einen KI-/LLM-Anbieter samt Kosten. Es werden hier keine erfundenen "Match-Werte" ohne echte Grundlage angezeigt.', 'auto-emotion' ),
-			'link'        => '',
-			'link_label'  => '',
+			'status'      => auto_emotion_anthropic_configured() ? 'live' : 'teilweise',
+			'beschreibung' => auto_emotion_anthropic_configured()
+				? __( 'Bei jeder Bewerbung per Klick abrufbar: KI vergleicht den Bewerbungstext mit dem Anforderungsprofil der Position und gibt eine begründete Einschätzung inkl. Prozentwert, Stärken, möglichen Lücken und Empfehlung – nur auf Basis des echten Textes, keine erfundenen Werte.', 'auto-emotion' )
+				: __( 'Fertig programmiert, aber noch kein Anthropic-API-Key hinterlegt – Setup-Anleitung direkt bei jeder Bewerbung sichtbar. Berücksichtigt nur den Bewerbungstext, nicht hochgeladene Dateien.', 'auto-emotion' ),
+			'link'        => '/mitarbeiter/bewerbungen/',
+			'link_label'  => __( 'Zu den Bewerbungen', 'auto-emotion' ),
 		),
 		array(
 			'titel'       => __( 'Terminierung', 'auto-emotion' ),

@@ -34,6 +34,18 @@ $auto_emotion_feedback_kommentar     = get_post_meta( $auto_emotion_id, '_bewerb
 $auto_emotion_feedback_token         = get_post_meta( $auto_emotion_id, '_bewerbung_feedback_token', true );
 $auto_emotion_feedback_link          = $auto_emotion_feedback_token ? home_url( '/bewerbung-feedback/' . $auto_emotion_feedback_token . '/' ) : '';
 
+$auto_emotion_ki_prozent    = get_post_meta( $auto_emotion_id, '_bewerbung_ki_einschaetzung_prozent', true );
+$auto_emotion_ki_text       = get_post_meta( $auto_emotion_id, '_bewerbung_ki_einschaetzung_text', true );
+$auto_emotion_ki_staerken   = get_post_meta( $auto_emotion_id, '_bewerbung_ki_staerken', true );
+$auto_emotion_ki_luecken    = get_post_meta( $auto_emotion_id, '_bewerbung_ki_luecken', true );
+$auto_emotion_ki_empfehlung = get_post_meta( $auto_emotion_id, '_bewerbung_ki_empfehlung', true );
+$auto_emotion_ki_datum      = get_post_meta( $auto_emotion_id, '_bewerbung_ki_datum', true );
+$auto_emotion_ki_empfehlung_labels = array(
+	'einladen'      => __( 'Einladen', 'auto-emotion' ),
+	'pruefen'       => __( 'Genauer prüfen', 'auto-emotion' ),
+	'eher_absagen'  => __( 'Eher absagen', 'auto-emotion' ),
+);
+
 auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 ?>
 
@@ -53,6 +65,74 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 <?php if ( isset( $_GET['feedback_angefragt'] ) ) : ?>
 	<p class="ae-notice"><?php esc_html_e( 'Feedback-Anfrage wurde per E-Mail versendet.', 'auto-emotion' ); ?></p>
 <?php endif; ?>
+<?php if ( isset( $_GET['ki_erstellt'] ) ) : ?>
+	<p class="ae-notice"><?php esc_html_e( 'KI-Einschätzung wurde erstellt.', 'auto-emotion' ); ?></p>
+<?php endif; ?>
+<?php if ( isset( $_GET['ki_fehler'] ) ) : ?>
+	<p class="ae-notice" style="background:var(--ae-danger-soft); border-color:var(--ae-danger); color:var(--ae-danger);"><?php echo esc_html( sprintf( __( 'KI-Einschätzung fehlgeschlagen: %s', 'auto-emotion' ), sanitize_text_field( wp_unslash( $_GET['ki_fehler'] ) ) ) ); ?></p>
+<?php endif; ?>
+
+<div class="ae-card">
+	<h2><?php esc_html_e( 'KI-Einschätzung (Vorqualifizierung)', 'auto-emotion' ); ?></h2>
+	<?php if ( ! auto_emotion_anthropic_configured() ) : ?>
+		<p class="ae-intro" style="margin:0 0 4px;"><?php esc_html_e( 'Noch nicht eingerichtet. Füge in wp-config.php diese Zeile hinzu, dann steht die Funktion sofort zur Verfügung:', 'auto-emotion' ); ?></p>
+		<p class="ae-list__meta" style="font-family:monospace; background:rgba(127,127,127,.1); padding:8px 10px; border-radius:var(--ae-radius-sm);">define( 'AUTO_EMOTION_ANTHROPIC_API_KEY', 'sk-ant-...' );</p>
+		<p class="ae-list__meta" style="margin:8px 0 0;"><?php esc_html_e( 'Den API-Key erhältst du über ein Anthropic-Konto (console.anthropic.com), nutzungsbasierte Abrechnung.', 'auto-emotion' ); ?></p>
+	<?php else : ?>
+		<?php if ( $auto_emotion_ki_text ) : ?>
+			<div class="ae-kpis" style="margin-bottom:16px;">
+				<?php if ( '' !== $auto_emotion_ki_prozent ) : ?>
+					<div class="ae-kpi">
+						<div class="ae-kpi__value"><?php echo esc_html( $auto_emotion_ki_prozent ); ?>%</div>
+						<div class="ae-kpi__label"><?php esc_html_e( 'Geschätzte Passung', 'auto-emotion' ); ?></div>
+					</div>
+				<?php endif; ?>
+				<?php if ( $auto_emotion_ki_empfehlung && isset( $auto_emotion_ki_empfehlung_labels[ $auto_emotion_ki_empfehlung ] ) ) : ?>
+					<div class="ae-kpi">
+						<div class="ae-kpi__value" style="font-size:16px;"><?php echo esc_html( $auto_emotion_ki_empfehlung_labels[ $auto_emotion_ki_empfehlung ] ); ?></div>
+						<div class="ae-kpi__label"><?php esc_html_e( 'KI-Empfehlung', 'auto-emotion' ); ?></div>
+					</div>
+				<?php endif; ?>
+			</div>
+			<p class="ae-intro" style="margin:0 0 12px;"><?php echo esc_html( $auto_emotion_ki_text ); ?></p>
+			<?php if ( $auto_emotion_ki_staerken ) : ?>
+				<p class="ae-list__title" style="font-size:13px; margin-bottom:4px;"><?php esc_html_e( 'Stärken', 'auto-emotion' ); ?></p>
+				<ul style="margin:0 0 12px; padding-left:18px;">
+					<?php foreach ( explode( "\n", $auto_emotion_ki_staerken ) as $auto_emotion_zeile ) : ?>
+						<li class="ae-list__meta"><?php echo esc_html( $auto_emotion_zeile ); ?></li>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
+			<?php if ( $auto_emotion_ki_luecken ) : ?>
+				<p class="ae-list__title" style="font-size:13px; margin-bottom:4px;"><?php esc_html_e( 'Mögliche Lücken', 'auto-emotion' ); ?></p>
+				<ul style="margin:0 0 12px; padding-left:18px;">
+					<?php foreach ( explode( "\n", $auto_emotion_ki_luecken ) as $auto_emotion_zeile ) : ?>
+						<li class="ae-list__meta"><?php echo esc_html( $auto_emotion_zeile ); ?></li>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
+			<p class="ae-list__meta" style="margin:0 0 16px;">
+				<?php
+				echo esc_html(
+					sprintf(
+						/* translators: %s: Datum/Uhrzeit */
+						__( 'Erstellt am %s · berücksichtigt nur den Bewerbungstext, nicht hochgeladene Dateien.', 'auto-emotion' ),
+						mysql2date( 'd.m.Y H:i', $auto_emotion_ki_datum )
+					)
+				);
+				?>
+			</p>
+		<?php else : ?>
+			<p class="ae-intro" style="margin:0 0 12px;"><?php esc_html_e( 'Vergleicht den Bewerbungstext mit dem Anforderungsprofil der Position und gibt eine begründete Einschätzung – berücksichtigt nur den Text aus dem Formular, nicht hochgeladene Dateien.', 'auto-emotion' ); ?></p>
+		<?php endif; ?>
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+			<input type="hidden" name="action" value="auto_emotion_bewerbung_einschaetzung">
+			<input type="hidden" name="ae_bewerbung_id" value="<?php echo esc_attr( $auto_emotion_id ); ?>">
+			<?php wp_nonce_field( 'auto_emotion_bewerbung_einschaetzung_' . $auto_emotion_id, 'auto_emotion_bewerbung_einschaetzung_nonce' ); ?>
+			<button type="submit" class="ae-btn <?php echo $auto_emotion_ki_text ? 'ae-btn--ghost' : ''; ?>" style="width:auto;"><?php echo esc_html( $auto_emotion_ki_text ? __( 'Neu generieren', 'auto-emotion' ) : __( 'KI-Einschätzung erstellen', 'auto-emotion' ) ); ?></button>
+		</form>
+	<?php endif; ?>
+</div>
 
 <div class="ae-card">
 	<h2><?php esc_html_e( 'Bewertung', 'auto-emotion' ); ?></h2>
