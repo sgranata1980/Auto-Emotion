@@ -875,6 +875,59 @@ body.ae-app {
 	background: var(--ae-accent-hover);
 }
 
+/* Rangliste mit Balken (Dashboard: Bewerbungen je Position) */
+
+.ae-rangliste {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.ae-rangliste li {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 2fr auto;
+	align-items: center;
+	gap: 12px;
+}
+
+.ae-rangliste__label {
+	font-size: 13.5px;
+	text-decoration: none;
+	color: var(--ae-text);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.ae-rangliste__label:hover {
+	text-decoration: underline;
+}
+
+.ae-rangliste__bar-track {
+	background: var(--ae-sidebar-bg);
+	border-radius: 999px;
+	overflow: hidden;
+	height: 8px;
+}
+
+.ae-rangliste__bar {
+	display: block;
+	height: 100%;
+	background: var(--ae-accent);
+	border-radius: 999px;
+}
+
+.ae-rangliste__value {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--ae-text-secondary);
+	min-width: 1.5em;
+	text-align: right;
+}
+
 /* Kanban-Board */
 
 .ae-board {

@@ -89,7 +89,9 @@ auto_emotion_staff_shell_start( __( 'Bewerbungen', 'auto-emotion' ), 'bewerbunge
 			$auto_emotion_detail_url    = home_url( '/mitarbeiter/bewerbungen/' . $auto_emotion_bewerbung->ID . '/' );
 			$auto_emotion_status_val    = get_post_meta( $auto_emotion_bewerbung->ID, '_bewerbung_status', true );
 			$auto_emotion_status_val    = $auto_emotion_status_val ? $auto_emotion_status_val : 'neu';
-			$auto_emotion_bewertung_val = (int) get_post_meta( $auto_emotion_bewerbung->ID, '_bewerbung_bewertung', true );
+			$auto_emotion_bewertung_val  = (int) get_post_meta( $auto_emotion_bewerbung->ID, '_bewerbung_bewertung', true );
+			$auto_emotion_termin_val     = get_post_meta( $auto_emotion_bewerbung->ID, '_bewerbung_termin', true );
+			$auto_emotion_termin_zukunft = $auto_emotion_termin_val && strtotime( $auto_emotion_termin_val ) >= current_time( 'timestamp' ); // phpcs:ignore -- Vergleich zweier lokaler Pseudo-Unix-Zeiten, siehe recruiting-bewerbungen.php.
 			?>
 			<li>
 				<div class="ae-list__main">
@@ -104,6 +106,9 @@ auto_emotion_staff_shell_start( __( 'Bewerbungen', 'auto-emotion' ), 'bewerbunge
 						<?php echo esc_html( trim( implode( ' · ', array_filter( array( $auto_emotion_position, $auto_emotion_telefon, get_the_date( 'd.m.Y', $auto_emotion_bewerbung ) ) ) ) ) ); ?>
 						<?php if ( ! empty( $auto_emotion_dateien ) ) : ?>
 							· <?php echo esc_html( sprintf( _n( '%d Datei', '%d Dateien', count( $auto_emotion_dateien ), 'auto-emotion' ), count( $auto_emotion_dateien ) ) ); ?>
+						<?php endif; ?>
+						<?php if ( $auto_emotion_termin_zukunft ) : ?>
+							· <?php echo esc_html( sprintf( __( 'Termin %s Uhr', 'auto-emotion' ), mysql2date( 'd.m.Y H:i', $auto_emotion_termin_val ) ) ); ?>
 						<?php endif; ?>
 					</p>
 				</div>

@@ -483,17 +483,38 @@ function auto_emotion_handle_bewerbung_bewerten() {
 	$status     = isset( $_POST['ae_bewerbung_status'] ) ? sanitize_key( wp_unslash( $_POST['ae_bewerbung_status'] ) ) : 'neu';
 	$bewertung  = isset( $_POST['ae_bewerbung_bewertung'] ) ? absint( $_POST['ae_bewerbung_bewertung'] ) : 0;
 	$notiz      = isset( $_POST['ae_bewerbung_notiz'] ) ? sanitize_textarea_field( wp_unslash( $_POST['ae_bewerbung_notiz'] ) ) : '';
+	$termin_raw = isset( $_POST['ae_bewerbung_termin'] ) ? sanitize_text_field( wp_unslash( $_POST['ae_bewerbung_termin'] ) ) : '';
 
 	if ( ! array_key_exists( $status, auto_emotion_bewerbung_status_labels() ) ) {
 		$status = 'neu';
 	}
 	$bewertung = min( 5, max( 0, $bewertung ) );
 
+	// Erwartet das Format eines <input type="datetime-local">
+	// ("Y-m-d\TH:i") – bewusst ohne Zeitzonen-Umrechnung übernommen, wie
+	// auch sonst in diesem Bereich (current_time('mysql')) lokale
+	// Wanduhrzeit statt UTC gespeichert wird.
+	$termin = '';
+	if ( $termin_raw ) {
+		$termin_obj = DateTime::createFromFormat( 'Y-m-d\TH:i', $termin_raw );
+		if ( $termin_obj ) {
+			$termin = $termin_obj->format( 'Y-m-d H:i:s' );
+		}
+	}
+
 	$alter_status = get_post_meta( $post_id, '_bewerbung_status', true );
+	$alter_termin = get_post_meta( $post_id, '_bewerbung_termin', true );
 
 	update_post_meta( $post_id, '_bewerbung_status', $status );
 	update_post_meta( $post_id, '_bewerbung_bewertung', $bewertung );
 	update_post_meta( $post_id, '_bewerbung_notiz', $notiz );
+	update_post_meta( $post_id, '_bewerbung_termin', $termin );
+
+	if ( $termin !== $alter_termin ) {
+		// Bei neuem/geändertem Termin darf die Erinnerungs-Mail für den
+		// (neuen) Termin wieder verschickt werden.
+		delete_post_meta( $post_id, '_bewerbung_termin_erinnerung_gesendet' );
+	}
 
 	if ( $status !== $alter_status ) {
 		auto_emotion_bewerbung_status_historie_eintrag_hinzufuegen( $post_id, $status );
@@ -503,6 +524,163 @@ function auto_emotion_handle_bewerbung_bewerten() {
 	exit;
 }
 add_action( 'admin_post_auto_emotion_bewerbung_bewerten', 'auto_emotion_handle_bewerbung_bewerten' );
+
+/**
+ * Team-Kommentare je Bewerbung: anders als die einzelne, bei jedem
+ * Speichern überschreibbare "Interne Notiz" können hier mehrere
+ * Kollegen nacheinander ihre Einschätzung hinterlassen – mit Name und
+ * Zeitpunkt, wie der Meinungsaustausch im Team bei gängigen
+ * Bewerbermanagement-Systemen.
+ */
+function auto_emotion_bewerbung_kommentare( $post_id ) {
+	$kommentare = get_post_meta( $post_id, '_bewerbung_kommentare', true );
+	return is_array( $kommentare ) ? $kommentare : array();
+}
+
+function auto_emotion_handle_bewerbung_kommentar_hinzufuegen() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	$post_id = isset( $_POST['ae_bewerbung_id'] ) ? absint( $_POST['ae_bewerbung_id'] ) : 0;
+
+	if ( ! isset( $_POST['auto_emotion_bewerbung_kommentar_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['auto_emotion_bewerbung_kommentar_nonce'] ) ), 'auto_emotion_bewerbung_kommentar_' . $post_id ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$post = get_post( $post_id );
+	$text = isset( $_POST['ae_kommentar_text'] ) ? sanitize_textarea_field( wp_unslash( $_POST['ae_kommentar_text'] ) ) : '';
+
+	if ( $post && 'bewerbung' === $post->post_type && $text ) {
+		$kommentare   = auto_emotion_bewerbung_kommentare( $post_id );
+		$benutzer     = wp_get_current_user();
+		$kommentare[] = array(
+			'text'    => $text,
+			'user'    => $benutzer->display_name,
+			'datum'   => current_time( 'mysql' ),
+		);
+		update_post_meta( $post_id, '_bewerbung_kommentare', $kommentare );
+	}
+
+	wp_safe_redirect( home_url( '/mitarbeiter/bewerbungen/' . $post_id . '/#kommentare' ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_bewerbung_kommentar_hinzufuegen', 'auto_emotion_handle_bewerbung_kommentar_hinzufuegen' );
+
+function auto_emotion_handle_bewerbung_kommentar_delete() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	$post_id = isset( $_GET['ae_bewerbung_id'] ) ? absint( $_GET['ae_bewerbung_id'] ) : 0;
+	$index   = isset( $_GET['ae_kommentar_index'] ) ? absint( $_GET['ae_kommentar_index'] ) : -1;
+
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'auto_emotion_bewerbung_kommentar_delete_' . $post_id . '_' . $index ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$kommentare = auto_emotion_bewerbung_kommentare( $post_id );
+	if ( isset( $kommentare[ $index ] ) ) {
+		unset( $kommentare[ $index ] );
+		update_post_meta( $post_id, '_bewerbung_kommentare', array_values( $kommentare ) );
+	}
+
+	wp_safe_redirect( home_url( '/mitarbeiter/bewerbungen/' . $post_id . '/#kommentare' ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_bewerbung_kommentar_delete', 'auto_emotion_handle_bewerbung_kommentar_delete' );
+
+/**
+ * Anstehende Vorstellungsgespräch-Termine, chronologisch aufsteigend –
+ * Grundlage für die "Anstehende Termine"-Karte im Dashboard und für die
+ * automatische Erinnerungs-Mail (siehe weiter unten).
+ */
+function auto_emotion_anstehende_termine( $limit = 5 ) {
+	return get_posts(
+		array(
+			'post_type'      => 'bewerbung',
+			'post_status'    => 'publish',
+			'posts_per_page' => $limit,
+			'meta_key'       => '_bewerbung_termin',
+			'orderby'        => 'meta_value',
+			'order'          => 'ASC',
+			'meta_query'     => array(
+				array(
+					'key'     => '_bewerbung_termin',
+					'value'   => current_time( 'mysql' ),
+					'compare' => '>=',
+					'type'    => 'DATETIME',
+				),
+			),
+		)
+	);
+}
+
+/**
+ * Prüft täglich, ob für morgen ein Vorstellungsgespräch-Termin ansteht,
+ * und schickt dafür einmalig eine Erinnerungs-Mail ans Team – die
+ * "automatisierten Erinnerungen", die man von einem integrierten
+ * Kalender in gängigen Recruiting-Tools kennt, hier ohne eigenen
+ * Kalender-Dienst, nur mit dem bereits vorhandenen E-Mail-Versand.
+ */
+function auto_emotion_termin_erinnerung_cron() {
+	$jetzt        = current_time( 'timestamp' ); // phpcs:ignore -- lokale Pseudo-Unix-Zeit wie an anderer Stelle in diesem Projekt verwendet.
+	$morgen_start = gmdate( 'Y-m-d 00:00:00', $jetzt + DAY_IN_SECONDS );
+	$morgen_ende  = gmdate( 'Y-m-d 23:59:59', $jetzt + DAY_IN_SECONDS );
+
+	$bewerbungen = get_posts(
+		array(
+			'post_type'      => 'bewerbung',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'meta_query'     => array(
+				array(
+					'key'     => '_bewerbung_termin',
+					'value'   => array( $morgen_start, $morgen_ende ),
+					'compare' => 'BETWEEN',
+					'type'    => 'DATETIME',
+				),
+				array(
+					'key'     => '_bewerbung_termin_erinnerung_gesendet',
+					'compare' => 'NOT EXISTS',
+				),
+			),
+		)
+	);
+
+	$empfaenger = auto_emotion_contact( 'email' );
+
+	foreach ( $bewerbungen as $bewerbung ) {
+		if ( $empfaenger ) {
+			$name     = get_post_meta( $bewerbung->ID, '_bewerbung_name', true );
+			$position = get_post_meta( $bewerbung->ID, '_bewerbung_position', true );
+			$termin   = get_post_meta( $bewerbung->ID, '_bewerbung_termin', true );
+
+			$betreff = sprintf( '[Erinnerung] Vorstellungsgespräch morgen: %s', $name );
+			$body    = sprintf(
+				"Erinnerung: Morgen um %s Uhr ist das Vorstellungsgespräch mit %s (%s).\n\n%s",
+				mysql2date( 'H:i', $termin ),
+				$name,
+				$position,
+				home_url( '/mitarbeiter/bewerbungen/' . $bewerbung->ID . '/' )
+			);
+
+			wp_mail( $empfaenger, $betreff, $body );
+		}
+
+		update_post_meta( $bewerbung->ID, '_bewerbung_termin_erinnerung_gesendet', '1' );
+	}
+}
+add_action( 'auto_emotion_termin_erinnerung_pruefen', 'auto_emotion_termin_erinnerung_cron' );
+
+function auto_emotion_schedule_termin_erinnerung() {
+	if ( ! wp_next_scheduled( 'auto_emotion_termin_erinnerung_pruefen' ) ) {
+		wp_schedule_event( time(), 'daily', 'auto_emotion_termin_erinnerung_pruefen' );
+	}
+}
+add_action( 'init', 'auto_emotion_schedule_termin_erinnerung' );
 
 /**
  * Verschiebt eine Bewerbung in den Papierkorb (reversibel).

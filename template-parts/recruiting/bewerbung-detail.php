@@ -27,6 +27,17 @@ $auto_emotion_bewertung = (int) get_post_meta( $auto_emotion_id, '_bewerbung_bew
 $auto_emotion_notiz     = get_post_meta( $auto_emotion_id, '_bewerbung_notiz', true );
 $auto_emotion_vorlagen  = auto_emotion_bewerbung_email_vorlagen( $auto_emotion_name, $auto_emotion_position );
 
+$auto_emotion_termin          = get_post_meta( $auto_emotion_id, '_bewerbung_termin', true );
+$auto_emotion_termin_input    = '';
+if ( $auto_emotion_termin ) {
+	$auto_emotion_termin_obj = DateTime::createFromFormat( 'Y-m-d H:i:s', $auto_emotion_termin );
+	if ( $auto_emotion_termin_obj ) {
+		$auto_emotion_termin_input = $auto_emotion_termin_obj->format( 'Y-m-d\TH:i' );
+	}
+}
+
+$auto_emotion_kommentare = auto_emotion_bewerbung_kommentare( $auto_emotion_id );
+
 $auto_emotion_feedback_angefragt_am  = get_post_meta( $auto_emotion_id, '_bewerbung_feedback_angefragt_am', true );
 $auto_emotion_feedback_beantwortet   = get_post_meta( $auto_emotion_id, '_bewerbung_feedback_beantwortet', true );
 $auto_emotion_feedback_score         = get_post_meta( $auto_emotion_id, '_bewerbung_feedback_score', true );
@@ -184,6 +195,10 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 				<?php endfor; ?>
 			</select>
 		</div>
+		<div class="ae-field">
+			<label for="ae_bewerbung_termin"><?php esc_html_e( 'Termin Vorstellungsgespräch', 'auto-emotion' ); ?></label>
+			<input type="datetime-local" id="ae_bewerbung_termin" name="ae_bewerbung_termin" value="<?php echo esc_attr( $auto_emotion_termin_input ); ?>">
+		</div>
 		<div class="ae-field ae-field--full">
 			<label for="ae_bewerbung_notiz"><?php esc_html_e( 'Interne Notiz (nur für Kollegen sichtbar)', 'auto-emotion' ); ?></label>
 			<textarea id="ae_bewerbung_notiz" name="ae_bewerbung_notiz" rows="4"><?php echo esc_textarea( $auto_emotion_notiz ); ?></textarea>
@@ -191,6 +206,48 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 		<div class="ae-field ae-field--full">
 			<button type="submit" class="ae-btn" style="width:auto;"><?php esc_html_e( 'Bewertung speichern', 'auto-emotion' ); ?></button>
 		</div>
+	</form>
+	<?php if ( $auto_emotion_termin ) : ?>
+		<p class="ae-list__meta" style="margin:12px 0 0;">
+			<?php
+			echo esc_html(
+				sprintf(
+					/* translators: %s: Datum/Uhrzeit */
+					__( 'Termin gespeichert für %s Uhr – eine Erinnerungs-Mail geht automatisch am Vortag raus.', 'auto-emotion' ),
+					mysql2date( 'd.m.Y H:i', $auto_emotion_termin )
+				)
+			);
+			?>
+		</p>
+	<?php endif; ?>
+</div>
+
+<div class="ae-card" id="kommentare">
+	<h2><?php esc_html_e( 'Team-Kommentare', 'auto-emotion' ); ?></h2>
+	<?php if ( empty( $auto_emotion_kommentare ) ) : ?>
+		<p class="ae-list__meta" style="margin:0 0 16px;"><?php esc_html_e( 'Noch keine Kommentare – teile hier Einschätzungen mit Kollegen, ohne die Notiz oben zu überschreiben.', 'auto-emotion' ); ?></p>
+	<?php else : ?>
+		<ul style="margin:0 0 16px; padding:0; list-style:none; display:flex; flex-direction:column; gap:12px;">
+			<?php foreach ( $auto_emotion_kommentare as $auto_emotion_kommentar_index => $auto_emotion_kommentar ) : ?>
+				<li>
+					<div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+						<span class="ae-list__meta"><strong><?php echo esc_html( $auto_emotion_kommentar['user'] ); ?></strong> · <?php echo esc_html( mysql2date( 'd.m.Y H:i', $auto_emotion_kommentar['datum'] ) ); ?> Uhr</span>
+						<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=auto_emotion_bewerbung_kommentar_delete&ae_bewerbung_id=' . $auto_emotion_id . '&ae_kommentar_index=' . $auto_emotion_kommentar_index ), 'auto_emotion_bewerbung_kommentar_delete_' . $auto_emotion_id . '_' . $auto_emotion_kommentar_index ) ); ?>" class="ae-list__meta" style="text-decoration:underline;" onclick="return confirm('<?php echo esc_js( __( 'Kommentar wirklich löschen?', 'auto-emotion' ) ); ?>');"><?php esc_html_e( 'Löschen', 'auto-emotion' ); ?></a>
+					</div>
+					<p style="margin:4px 0 0; white-space:pre-wrap;"><?php echo esc_html( $auto_emotion_kommentar['text'] ); ?></p>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+	<?php endif; ?>
+	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+		<input type="hidden" name="action" value="auto_emotion_bewerbung_kommentar_hinzufuegen">
+		<input type="hidden" name="ae_bewerbung_id" value="<?php echo esc_attr( $auto_emotion_id ); ?>">
+		<?php wp_nonce_field( 'auto_emotion_bewerbung_kommentar_' . $auto_emotion_id, 'auto_emotion_bewerbung_kommentar_nonce' ); ?>
+		<div class="ae-field ae-field--full">
+			<label for="ae_kommentar_text"><?php esc_html_e( 'Deine Einschätzung', 'auto-emotion' ); ?></label>
+			<textarea id="ae_kommentar_text" name="ae_kommentar_text" rows="3" required></textarea>
+		</div>
+		<button type="submit" class="ae-btn" style="width:auto;"><?php esc_html_e( 'Kommentar hinzufügen', 'auto-emotion' ); ?></button>
 	</form>
 </div>
 
