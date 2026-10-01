@@ -53,6 +53,11 @@ $auto_emotion_status_max = max( 1, max( $auto_emotion_status_verteilung ) );
 		<div class="ae-kpi__value"><?php echo null === $auto_emotion_tage_bis_entscheidung ? '–' : esc_html( $auto_emotion_tage_bis_entscheidung ); ?></div>
 		<div class="ae-kpi__label"><?php esc_html_e( 'Ø Tage bis Entscheidung', 'auto-emotion' ); ?></div>
 	</div>
+	<div class="ae-kpi">
+		<div class="ae-kpi__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9Z" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M12 11.5 20 7M12 11.5 4 7M12 11.5V21" stroke="currentColor" stroke-width="1.6"/></svg></div>
+		<div class="ae-kpi__value"><a href="<?php echo esc_url( add_query_arg( 'talentpool', '1', home_url( '/mitarbeiter/bewerbungen/' ) ) ); ?>"><?php echo esc_html( $auto_emotion_talentpool_anzahl ); ?></a></div>
+		<div class="ae-kpi__label"><?php esc_html_e( 'Im Talent-Pool', 'auto-emotion' ); ?></div>
+	</div>
 </div>
 
 <div class="ae-card">
@@ -81,6 +86,25 @@ $auto_emotion_status_max = max( 1, max( $auto_emotion_status_verteilung ) );
 					<span class="ae-rangliste__bar" style="width: <?php echo esc_attr( round( ( $auto_emotion_position_anzahl / $auto_emotion_positionen_max ) * 100 ) ); ?>%;"></span>
 				</span>
 				<span class="ae-rangliste__value"><?php echo esc_html( $auto_emotion_position_anzahl ); ?></span>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<?php if ( ! empty( $auto_emotion_herkunft_top ) ) : ?>
+<div class="ae-card">
+	<h2><?php esc_html_e( 'Bewerbungen nach Herkunft', 'auto-emotion' ); ?></h2>
+	<p class="ae-list__meta" style="margin:-4px 0 12px;"><?php esc_html_e( 'Abgeleitet aus dem Referrer beim Aufruf der Stellenanzeige – bestmögliche Zuordnung, kein vollständiges Kampagnen-Tracking.', 'auto-emotion' ); ?></p>
+	<?php $auto_emotion_herkunft_max = max( $auto_emotion_herkunft_top ); ?>
+	<ul class="ae-rangliste">
+		<?php foreach ( $auto_emotion_herkunft_top as $auto_emotion_herkunft_label => $auto_emotion_herkunft_anzahl ) : ?>
+			<li>
+				<span class="ae-rangliste__label"><?php echo esc_html( $auto_emotion_herkunft_label ); ?></span>
+				<span class="ae-rangliste__bar-track">
+					<span class="ae-rangliste__bar" style="width: <?php echo esc_attr( round( ( $auto_emotion_herkunft_anzahl / $auto_emotion_herkunft_max ) * 100 ) ); ?>%;"></span>
+				</span>
+				<span class="ae-rangliste__value"><?php echo esc_html( $auto_emotion_herkunft_anzahl ); ?></span>
 			</li>
 		<?php endforeach; ?>
 	</ul>

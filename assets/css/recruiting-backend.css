@@ -1059,3 +1059,75 @@ body.ae-app {
 	font-size: 11.5px;
 	color: var(--ae-text-secondary);
 }
+
+/* Automatisierung & KI: Kartenraster statt einfacher Liste, mit Icon
+   und farbigem linkem Rand je Status (live/teilweise/geplant). */
+.ae-automation-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	gap: 16px;
+	margin-bottom: 8px;
+}
+
+.ae-automation-card {
+	background: var(--ae-surface);
+	border: 1px solid var(--ae-border);
+	border-left: 3px solid var(--ae-border-strong);
+	border-radius: var(--ae-radius);
+	box-shadow: var(--ae-shadow-sm);
+	padding: 18px 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	transition: box-shadow .15s ease, transform .15s ease;
+}
+
+.ae-automation-card:hover {
+	box-shadow: var(--ae-shadow);
+	transform: translateY(-1px);
+}
+
+.ae-automation-card--live {
+	border-left-color: var(--ae-success);
+}
+
+.ae-automation-card--teilweise {
+	border-left-color: var(--ae-warning);
+}
+
+.ae-automation-card--geplant {
+	border-left-color: var(--ae-text-tertiary);
+}
+
+.ae-automation-card__top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.ae-automation-card__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	border-radius: 10px;
+	background: var(--ae-accent-soft);
+	color: var(--ae-accent);
+	flex-shrink: 0;
+}
+
+.ae-automation-card__title {
+	font-size: 14.5px;
+	font-weight: 600;
+	margin: 2px 0 0;
+}
+
+.ae-automation-card__beschreibung {
+	font-size: 12.5px;
+	line-height: 1.5;
+	color: var(--ae-text-secondary);
+	margin: 0 0 4px;
+	flex: 1;
+}

@@ -453,6 +453,26 @@ function auto_emotion_uebersicht_daten() {
 	arsort( $positionen_verteilung );
 	$auto_emotion_positionen_top = array_slice( $positionen_verteilung, 0, 5, true );
 
+	// Bewerbungen nach Herkunft – aus dem beim Formular-Aufruf erfassten
+	// HTTP-Referrer abgeleitet (siehe auto_emotion_herkunft_aus_referrer()
+	// in inc/recruiting.php), kein erfundenes Kampagnen-Tracking.
+	$herkunft_verteilung = array();
+	$talentpool_anzahl   = 0;
+	foreach ( $alle_bewerbungen as $bewerbung ) {
+		$herkunft = get_post_meta( $bewerbung->ID, '_bewerbung_herkunft', true );
+		if ( $herkunft ) {
+			if ( ! isset( $herkunft_verteilung[ $herkunft ] ) ) {
+				$herkunft_verteilung[ $herkunft ] = 0;
+			}
+			++$herkunft_verteilung[ $herkunft ];
+		}
+		if ( function_exists( 'auto_emotion_bewerbung_im_talentpool' ) && auto_emotion_bewerbung_im_talentpool( $bewerbung->ID ) ) {
+			++$talentpool_anzahl;
+		}
+	}
+	arsort( $herkunft_verteilung );
+	$auto_emotion_herkunft_top = array_slice( $herkunft_verteilung, 0, 5, true );
+
 	return array(
 		'auto_emotion_suchprofile_gesamt'       => count( $suchprofile ),
 		'auto_emotion_suchprofile_aktiv'        => $aktive_suchprofile,
@@ -464,6 +484,8 @@ function auto_emotion_uebersicht_daten() {
 		'auto_emotion_feedback'                 => $auto_emotion_feedback,
 		'auto_emotion_tage_bis_entscheidung'    => $auto_emotion_tage_bis_entscheidung,
 		'auto_emotion_positionen_top'           => $auto_emotion_positionen_top,
+		'auto_emotion_herkunft_top'             => $auto_emotion_herkunft_top,
+		'auto_emotion_talentpool_anzahl'        => $talentpool_anzahl,
 		'auto_emotion_anstehende_termine'       => function_exists( 'auto_emotion_anstehende_termine' ) ? auto_emotion_anstehende_termine( 5 ) : array(),
 	);
 }

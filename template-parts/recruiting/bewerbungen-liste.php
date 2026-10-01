@@ -4,7 +4,8 @@
  * Listen- oder Kanban-Board-Ansicht (?view=board).
  * Erwartet: $auto_emotion_bewerbungen, $auto_emotion_filter_status,
  * $auto_emotion_filter_suche, $auto_emotion_filter_tag,
- * $auto_emotion_alle_tags, $auto_emotion_view, $auto_emotion_alle_bewerbungen
+ * $auto_emotion_filter_talentpool, $auto_emotion_alle_tags,
+ * $auto_emotion_view, $auto_emotion_alle_bewerbungen
  *
  * @package Auto Emotion
  */
@@ -41,12 +42,18 @@ auto_emotion_staff_shell_start( __( 'Bewerbungen', 'auto-emotion' ), 'bewerbunge
 		<a href="<?php echo esc_url( remove_query_arg( 'view' ) ); ?>" class="<?php echo 'liste' === $auto_emotion_view ? 'is-active' : ''; ?>"><?php esc_html_e( 'Liste', 'auto-emotion' ); ?></a>
 		<a href="<?php echo esc_url( add_query_arg( 'view', 'board' ) ); ?>" class="<?php echo 'board' === $auto_emotion_view ? 'is-active' : ''; ?>"><?php esc_html_e( 'Board', 'auto-emotion' ); ?></a>
 	</div>
+	<div class="ae-status-tabs">
+		<a href="<?php echo esc_url( $auto_emotion_filter_talentpool ? remove_query_arg( 'talentpool' ) : add_query_arg( 'talentpool', '1' ) ); ?>" class="<?php echo $auto_emotion_filter_talentpool ? 'is-active' : ''; ?>">★ <?php esc_html_e( 'Talent-Pool', 'auto-emotion' ); ?></a>
+	</div>
 	<form method="get" action="<?php echo esc_url( home_url( '/mitarbeiter/bewerbungen/' ) ); ?>" class="ae-suche">
 		<?php if ( $auto_emotion_filter_status ) : ?>
 			<input type="hidden" name="status" value="<?php echo esc_attr( $auto_emotion_filter_status ); ?>">
 		<?php endif; ?>
 		<?php if ( 'board' === $auto_emotion_view ) : ?>
 			<input type="hidden" name="view" value="board">
+		<?php endif; ?>
+		<?php if ( $auto_emotion_filter_talentpool ) : ?>
+			<input type="hidden" name="talentpool" value="1">
 		<?php endif; ?>
 		<input type="search" name="suche" value="<?php echo esc_attr( $auto_emotion_filter_suche ); ?>" placeholder="<?php esc_attr_e( 'Suche: Name, Position, Notiz, Tag …', 'auto-emotion' ); ?>">
 		<button type="submit" class="ae-btn ae-btn--ghost"><?php esc_html_e( 'Suchen', 'auto-emotion' ); ?></button>
@@ -135,6 +142,8 @@ auto_emotion_staff_shell_start( __( 'Bewerbungen', 'auto-emotion' ), 'bewerbunge
 			$auto_emotion_termin_zukunft = $auto_emotion_termin_val && strtotime( $auto_emotion_termin_val ) >= current_time( 'timestamp' ); // phpcs:ignore -- Vergleich zweier lokaler Pseudo-Unix-Zeiten, siehe recruiting-bewerbungen.php.
 			$auto_emotion_name_val       = get_post_meta( $auto_emotion_bewerbung->ID, '_bewerbung_name', true );
 			$auto_emotion_tags_val       = auto_emotion_bewerbung_tags( $auto_emotion_bewerbung->ID );
+			$auto_emotion_talentpool_val = auto_emotion_bewerbung_im_talentpool( $auto_emotion_bewerbung->ID );
+			$auto_emotion_dubletten_val  = get_post_meta( $auto_emotion_bewerbung->ID, '_bewerbung_dubletten', true );
 			?>
 			<li>
 				<span class="ae-avatar" style="background:<?php echo esc_attr( auto_emotion_avatar_farbe( $auto_emotion_name_val ) ); ?>;"><?php echo esc_html( auto_emotion_initialen( $auto_emotion_name_val ) ); ?></span>
@@ -142,6 +151,12 @@ auto_emotion_staff_shell_start( __( 'Bewerbungen', 'auto-emotion' ), 'bewerbunge
 					<p class="ae-list__title">
 						<a href="<?php echo esc_url( $auto_emotion_detail_url ); ?>"><?php echo esc_html( $auto_emotion_name_val ); ?></a>
 						<span class="ae-status ae-status--<?php echo esc_attr( $auto_emotion_status_val ); ?>"><?php echo esc_html( isset( $auto_emotion_status_labels[ $auto_emotion_status_val ] ) ? $auto_emotion_status_labels[ $auto_emotion_status_val ] : $auto_emotion_status_val ); ?></span>
+						<?php if ( $auto_emotion_talentpool_val ) : ?>
+							<span class="ae-tag" title="<?php esc_attr_e( 'Im Talent-Pool', 'auto-emotion' ); ?>">★ <?php esc_html_e( 'Talent-Pool', 'auto-emotion' ); ?></span>
+						<?php endif; ?>
+						<?php if ( ! empty( $auto_emotion_dubletten_val ) ) : ?>
+							<span class="ae-status ae-status--interview" title="<?php esc_attr_e( 'Mögliche Dublette – bitte prüfen', 'auto-emotion' ); ?>"><?php esc_html_e( 'Mögliche Dublette', 'auto-emotion' ); ?></span>
+						<?php endif; ?>
 						<?php if ( $auto_emotion_bewertung_val > 0 ) : ?>
 							<span class="ae-sterne" aria-label="<?php echo esc_attr( $auto_emotion_bewertung_val . ' von 5 Sternen' ); ?>"><?php echo esc_html( str_repeat( '★', $auto_emotion_bewertung_val ) . str_repeat( '☆', 5 - $auto_emotion_bewertung_val ) ); ?></span>
 						<?php endif; ?>

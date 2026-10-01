@@ -71,7 +71,64 @@ function auto_emotion_speichere_bewerbung( $daten ) {
 	update_post_meta( $post_id, '_bewerbung_nachricht', $daten['nachricht'] );
 	update_post_meta( $post_id, '_bewerbung_status', 'neu' );
 	update_post_meta( $post_id, '_bewerbung_dateien', $daten['dateien'] );
+	update_post_meta( $post_id, '_bewerbung_herkunft', isset( $daten['herkunft'] ) ? $daten['herkunft'] : '' );
 	auto_emotion_bewerbung_status_historie_eintrag_hinzufuegen( $post_id, 'neu' );
+
+	$auto_emotion_dubletten = auto_emotion_bewerbung_dubletten_finden( $post_id, $daten['email'], $daten['telefon'] );
+	if ( $auto_emotion_dubletten ) {
+		update_post_meta( $post_id, '_bewerbung_dubletten', $auto_emotion_dubletten );
+	}
+}
+
+/**
+ * Sucht unter den bereits gespeicherten Bewerbungen nach möglichen
+ * Dubletten (exakte E-Mail-Übereinstimmung oder auf Ziffern reduziertes
+ * Telefon) – markiert sie nur zur Prüfung durch Kollegen, führt nie
+ * automatisch Datensätze zusammen.
+ */
+function auto_emotion_bewerbung_dubletten_finden( $neue_id, $email, $telefon ) {
+	$email_normalisiert   = $email ? strtolower( trim( $email ) ) : '';
+	$telefon_normalisiert = $telefon ? preg_replace( '/\D+/', '', $telefon ) : '';
+
+	if ( ! $email_normalisiert && ! $telefon_normalisiert ) {
+		return array();
+	}
+
+	$andere_bewerbungen = get_posts(
+		array(
+			'post_type'      => 'bewerbung',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'exclude'        => array( $neue_id ),
+		)
+	);
+
+	$treffer = array();
+	foreach ( $andere_bewerbungen as $andere_id ) {
+		$passt = false;
+
+		if ( $email_normalisiert ) {
+			$andere_email = strtolower( trim( get_post_meta( $andere_id, '_bewerbung_email', true ) ) );
+			if ( $andere_email && $andere_email === $email_normalisiert ) {
+				$passt = true;
+			}
+		}
+
+		if ( ! $passt && $telefon_normalisiert ) {
+			$andere_telefon = preg_replace( '/\D+/', '', get_post_meta( $andere_id, '_bewerbung_telefon', true ) );
+			// Mind. 6 Ziffern, damit kurze/leere Reste nicht fälschlich matchen.
+			if ( $andere_telefon && strlen( $andere_telefon ) >= 6 && $andere_telefon === $telefon_normalisiert ) {
+				$passt = true;
+			}
+		}
+
+		if ( $passt ) {
+			$treffer[] = $andere_id;
+		}
+	}
+
+	return $treffer;
 }
 
 /**
@@ -203,6 +260,7 @@ function auto_emotion_bewerbungen_template_redirect() {
 		$auto_emotion_filter_position = isset( $_GET['position'] ) ? sanitize_text_field( wp_unslash( $_GET['position'] ) ) : '';
 		$auto_emotion_filter_suche    = isset( $_GET['suche'] ) ? sanitize_text_field( wp_unslash( $_GET['suche'] ) ) : '';
 		$auto_emotion_filter_tag      = isset( $_GET['tag'] ) ? sanitize_text_field( wp_unslash( $_GET['tag'] ) ) : '';
+		$auto_emotion_filter_talentpool = ! empty( $_GET['talentpool'] );
 		$auto_emotion_query_args      = array(
 			'post_type'      => 'bewerbung',
 			'post_status'    => 'publish',
@@ -222,6 +280,12 @@ function auto_emotion_bewerbungen_template_redirect() {
 			$auto_emotion_meta_query[] = array(
 				'key'   => '_bewerbung_position',
 				'value' => $auto_emotion_filter_position,
+			);
+		}
+		if ( $auto_emotion_filter_talentpool ) {
+			$auto_emotion_meta_query[] = array(
+				'key'   => '_bewerbung_talentpool',
+				'value' => '1',
 			);
 		}
 		if ( $auto_emotion_meta_query ) {
@@ -295,6 +359,7 @@ function auto_emotion_bewerbungen_template_redirect() {
 				'auto_emotion_filter_position'  => $auto_emotion_filter_position,
 				'auto_emotion_filter_suche'     => $auto_emotion_filter_suche,
 				'auto_emotion_filter_tag'       => $auto_emotion_filter_tag,
+				'auto_emotion_filter_talentpool' => $auto_emotion_filter_talentpool,
 				'auto_emotion_alle_tags'        => auto_emotion_alle_bewerbung_tags(),
 				'auto_emotion_view'             => $auto_emotion_view,
 				'auto_emotion_alle_bewerbungen' => $auto_emotion_alle_bewerbungen,
@@ -826,3 +891,109 @@ function auto_emotion_handle_bewerbung_delete() {
 	exit;
 }
 add_action( 'admin_post_auto_emotion_bewerbung_delete', 'auto_emotion_handle_bewerbung_delete' );
+
+/**
+ * Talent-Pool: eine Bewerbung kann unabhängig vom Pipeline-Status (auch
+ * nach "Abgesagt") als für später interessant markiert werden – mit
+ * Zweck und optionaler Frist. Ersetzt nicht den Status, sondern liegt
+ * quer dazu (siehe Momenti-Review: "Eine Bewerbung darf historisch
+ * abgeschlossen bleiben, während der Kandidat zusätzlich im Talent Pool
+ * liegt").
+ */
+function auto_emotion_bewerbung_im_talentpool( $post_id ) {
+	return (bool) get_post_meta( $post_id, '_bewerbung_talentpool', true );
+}
+
+function auto_emotion_handle_bewerbung_talentpool() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	$post_id = isset( $_POST['ae_bewerbung_id'] ) ? absint( $_POST['ae_bewerbung_id'] ) : 0;
+
+	if ( ! isset( $_POST['auto_emotion_bewerbung_talentpool_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['auto_emotion_bewerbung_talentpool_nonce'] ) ), 'auto_emotion_bewerbung_talentpool_' . $post_id ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$post = get_post( $post_id );
+	if ( ! $post || 'bewerbung' !== $post->post_type ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/bewerbungen/' ) );
+		exit;
+	}
+
+	$aktiv  = ! empty( $_POST['ae_talentpool_aktiv'] );
+	$zweck  = isset( $_POST['ae_talentpool_zweck'] ) ? sanitize_text_field( wp_unslash( $_POST['ae_talentpool_zweck'] ) ) : '';
+	$frist  = isset( $_POST['ae_talentpool_frist'] ) ? sanitize_text_field( wp_unslash( $_POST['ae_talentpool_frist'] ) ) : '';
+
+	// Erwartet das Format eines <input type="date"> ("Y-m-d").
+	$frist_valide = '';
+	if ( $frist ) {
+		$frist_obj = DateTime::createFromFormat( 'Y-m-d', $frist );
+		if ( $frist_obj ) {
+			$frist_valide = $frist_obj->format( 'Y-m-d' );
+		}
+	}
+
+	update_post_meta( $post_id, '_bewerbung_talentpool', $aktiv ? '1' : '' );
+	update_post_meta( $post_id, '_bewerbung_talentpool_zweck', $zweck );
+	update_post_meta( $post_id, '_bewerbung_talentpool_frist', $frist_valide );
+
+	wp_safe_redirect( add_query_arg( 'talentpool_gespeichert', '1', home_url( '/mitarbeiter/bewerbungen/' . $post_id . '/' ) ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_bewerbung_talentpool', 'auto_emotion_handle_bewerbung_talentpool' );
+
+/**
+ * DSGVO-Löschantrag: anders als "In den Papierkorb" (reversibel, erst
+ * nach 30 Tagen endgültig) löscht dies Bewerbung samt Unterlagen SOFORT
+ * und UNWIDERRUFLICH – für den Fall, dass ein Bewerber ausdrücklich die
+ * sofortige Löschung verlangt (DSGVO Art. 17). Protokolliert den
+ * Vorgang datensparsam (Datum, bearbeitende Person, Position) – bewusst
+ * ohne Name/E-Mail/Telefon der gelöschten Person, damit das Protokoll
+ * selbst keine personenbezogenen Daten konserviert, die eigentlich
+ * gelöscht werden sollten.
+ */
+function auto_emotion_dsgvo_loeschlog() {
+	$log = get_option( 'auto_emotion_dsgvo_loeschlog', array() );
+	return is_array( $log ) ? $log : array();
+}
+
+function auto_emotion_handle_bewerbung_dsgvo_loeschen() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	$post_id = isset( $_GET['ae_bewerbung_id'] ) ? absint( $_GET['ae_bewerbung_id'] ) : 0;
+
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'auto_emotion_bewerbung_dsgvo_loeschen_' . $post_id ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$post = get_post( $post_id );
+	if ( $post && 'bewerbung' === $post->post_type ) {
+		$position = get_post_meta( $post_id, '_bewerbung_position', true );
+
+		// Löst before_delete_post aus, das die hochgeladenen Dateien von
+		// der Festplatte entfernt (siehe auto_emotion_delete_bewerbung_dateien
+		// weiter oben in dieser Datei) – true = kein Papierkorb, sofort
+		// endgültig.
+		wp_delete_post( $post_id, true );
+
+		$log   = auto_emotion_dsgvo_loeschlog();
+		$log[] = array(
+			'datum'      => current_time( 'mysql' ),
+			'bearbeiter' => wp_get_current_user()->display_name,
+			'position'   => $position,
+		);
+		// Nur die letzten 100 Einträge behalten – ein Protokoll über
+		// erledigte Löschungen, kein unbegrenzt wachsendes Archiv.
+		$log = array_slice( $log, -100 );
+		update_option( 'auto_emotion_dsgvo_loeschlog', $log, false );
+	}
+
+	wp_safe_redirect( add_query_arg( 'dsgvo_geloescht', '1', home_url( '/mitarbeiter/bewerbungen/' ) ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_bewerbung_dsgvo_loeschen', 'auto_emotion_handle_bewerbung_dsgvo_loeschen' );
