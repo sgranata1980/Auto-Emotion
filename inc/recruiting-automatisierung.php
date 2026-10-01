@@ -38,6 +38,7 @@ function auto_emotion_automatisierung_funktionen() {
 	return array(
 		array(
 			'titel'       => __( 'Stellenanzeigen erstellen & ausspielen', 'auto-emotion' ),
+			'icon'        => 'anzeige',
 			'status'      => 'live',
 			'beschreibung' => __( 'Suchprofil anlegen – daraus wird automatisch ein fertiger Anzeigentext fürs Portal sowie eine Social-Media-Caption generiert.', 'auto-emotion' ),
 			'link'        => '/mitarbeiter/recruiting/',
@@ -45,6 +46,7 @@ function auto_emotion_automatisierung_funktionen() {
 		),
 		array(
 			'titel'       => __( 'Multiposting auf Jobportalen', 'auto-emotion' ),
+			'icon'        => 'multiposting',
 			'status'      => 'teilweise',
 			'beschreibung' => __( 'Vorausgefüllte Direktlinks zu Indeed, StepStone, der Arbeitsagentur, LinkedIn und Xing je Position. Echtes automatisches Multiposting (ein Klick, alle Portale gleichzeitig) bräuchte kostenpflichtige API-Partnerschaften mit jedem einzelnen Portal – die gibt es hier nicht.', 'auto-emotion' ),
 			'link'        => '/mitarbeiter/recruiting/',
@@ -52,6 +54,7 @@ function auto_emotion_automatisierung_funktionen() {
 		),
 		array(
 			'titel'       => __( 'Social-Recruiting-Kampagnen', 'auto-emotion' ),
+			'icon'        => 'social',
 			'status'      => 'teilweise',
 			'beschreibung' => __( 'Fertige Social-Caption je Stellenanzeige zum Kopieren. Automatisches Posten/Kampagnen-Steuerung auf Instagram, TikTok & Co. bräuchte eigene Business-API-Zugänge je Plattform.', 'auto-emotion' ),
 			'link'        => '/mitarbeiter/recruiting/',
@@ -59,6 +62,7 @@ function auto_emotion_automatisierung_funktionen() {
 		),
 		array(
 			'titel'       => __( 'Bewerber-Funnel & Bewerbermanagement', 'auto-emotion' ),
+			'icon'        => 'funnel',
 			'status'      => 'live',
 			'beschreibung' => __( 'Status-Pipeline (Neu → Eingestellt/Abgesagt), Kanban-Board, Filter, Bewertung und interne Notizen je Bewerbung.', 'auto-emotion' ),
 			'link'        => '/mitarbeiter/bewerbungen/',
@@ -66,6 +70,7 @@ function auto_emotion_automatisierung_funktionen() {
 		),
 		array(
 			'titel'       => __( 'Automatisierter Erstkontakt', 'auto-emotion' ),
+			'icon'        => 'erstkontakt',
 			'status'      => 'live',
 			'beschreibung' => __( 'Bewerber:innen erhalten sofort nach dem Absenden des Formulars automatisch eine Eingangsbestätigung per E-Mail (sofern eine E-Mail-Adresse angegeben wurde).', 'auto-emotion' ),
 			'link'        => '',
@@ -73,6 +78,7 @@ function auto_emotion_automatisierung_funktionen() {
 		),
 		array(
 			'titel'       => __( 'WhatsApp-Kommunikation', 'auto-emotion' ),
+			'icon'        => 'whatsapp',
 			'status'      => 'geplant',
 			'beschreibung' => __( 'Bräuchte einen eigenen WhatsApp-Business-API- oder Twilio-Zugang – den gibt es hier noch nicht. Als Zwischenlösung läuft die interne Team-Benachrichtigung bereits per E-Mail (siehe "Nachrichten").', 'auto-emotion' ),
 			'link'        => '/mitarbeiter/nachrichten/',
@@ -80,6 +86,7 @@ function auto_emotion_automatisierung_funktionen() {
 		),
 		array(
 			'titel'       => __( 'KI-Telefoninterviews', 'auto-emotion' ),
+			'icon'        => 'telefon',
 			'status'      => 'geplant',
 			'beschreibung' => __( 'Bräuchte eine Telefonie-/Voice-KI-Anbindung (z. B. Twilio plus Sprachmodell) – bisher nicht angebunden und mit laufenden Kosten pro Anruf verbunden. Noch keine Entscheidung dafür getroffen.', 'auto-emotion' ),
 			'link'        => '',
@@ -87,6 +94,7 @@ function auto_emotion_automatisierung_funktionen() {
 		),
 		array(
 			'titel'       => __( 'Vorqualifizierung & Match-Scores', 'auto-emotion' ),
+			'icon'        => 'ki',
 			'status'      => auto_emotion_anthropic_configured() ? 'live' : 'teilweise',
 			'beschreibung' => auto_emotion_anthropic_configured()
 				? __( 'Bei jeder Bewerbung per Klick abrufbar: KI vergleicht den Bewerbungstext mit dem Anforderungsprofil der Position und gibt eine begründete Einschätzung inkl. Prozentwert, Stärken, möglichen Lücken und Empfehlung – nur auf Basis des echten Textes, keine erfundenen Werte.', 'auto-emotion' )
@@ -96,10 +104,43 @@ function auto_emotion_automatisierung_funktionen() {
 		),
 		array(
 			'titel'       => __( 'Terminierung', 'auto-emotion' ),
+			'icon'        => 'termin',
 			'status'      => 'teilweise',
-			'beschreibung' => __( 'Fertige E-Mail-Vorlage "Einladung zum Vorstellungsgespräch" mit Terminvorschlag-Platzhaltern bei jeder Bewerbung. Ein eigenes Kalender-/Terminbuchungssystem (automatische Terminfindung) gibt es noch nicht.', 'auto-emotion' ),
+			'beschreibung' => __( 'Fertige E-Mail-Vorlage "Einladung zum Vorstellungsgespräch" mit Terminvorschlag-Platzhaltern bei jeder Bewerbung, Termin mit automatischer Erinnerungs-Mail am Vortag. Ein eigenes Kalender-/Terminbuchungssystem (automatische Terminfindung mit dem Bewerber) gibt es noch nicht.', 'auto-emotion' ),
 			'link'        => '/mitarbeiter/bewerbungen/',
 			'link_label'  => __( 'Zu den Bewerbungen', 'auto-emotion' ),
+		),
+		array(
+			'titel'       => __( 'Herkunfts-Auswertung', 'auto-emotion' ),
+			'icon'        => 'herkunft',
+			'status'      => 'live',
+			'beschreibung' => __( 'Erkennt beim Formular-Aufruf automatisch aus dem Referrer, ob eine Bewerbung z. B. über Indeed, Google, StepStone oder direkt kam – ohne zusätzliches Formularfeld. Verteilung im Dashboard sichtbar.', 'auto-emotion' ),
+			'link'        => '/mitarbeiter/uebersicht/',
+			'link_label'  => __( 'Zum Dashboard', 'auto-emotion' ),
+		),
+		array(
+			'titel'       => __( 'Dubletten-Erkennung', 'auto-emotion' ),
+			'icon'        => 'dubletten',
+			'status'      => 'live',
+			'beschreibung' => __( 'Neue Bewerbungen werden automatisch mit bestehenden auf übereinstimmende E-Mail oder Telefonnummer geprüft und als mögliche Dublette markiert – zur manuellen Prüfung, nie automatisch zusammengeführt.', 'auto-emotion' ),
+			'link'        => '/mitarbeiter/bewerbungen/',
+			'link_label'  => __( 'Zu den Bewerbungen', 'auto-emotion' ),
+		),
+		array(
+			'titel'       => __( 'Talent-Pool', 'auto-emotion' ),
+			'icon'        => 'talentpool',
+			'status'      => 'live',
+			'beschreibung' => __( 'Bewerbungen lassen sich unabhängig vom Pipeline-Status (auch nach einer Absage) mit Zweck und optionaler Frist für später vormerken – eigener Filter in der Bewerbungsliste.', 'auto-emotion' ),
+			'link'        => '/mitarbeiter/bewerbungen/?talentpool=1',
+			'link_label'  => __( 'Zum Talent-Pool', 'auto-emotion' ),
+		),
+		array(
+			'titel'       => __( 'DSGVO-Löschprozess', 'auto-emotion' ),
+			'icon'        => 'dsgvo',
+			'status'      => 'live',
+			'beschreibung' => __( 'Eigener, von der reversiblen Papierkorb-Funktion getrennter Vorgang für den Fall eines ausdrücklichen Löschwunschs: löscht Bewerbung und Unterlagen sofort und unwiderruflich, protokolliert Datum und Bearbeiter – ohne personenbezogene Daten im Protokoll.', 'auto-emotion' ),
+			'link'        => '',
+			'link_label'  => '',
 		),
 	);
 }
@@ -124,6 +165,7 @@ function auto_emotion_automatisierung_template_redirect() {
 		array(
 			'auto_emotion_funktionen'      => auto_emotion_automatisierung_funktionen(),
 			'auto_emotion_status_labels'   => auto_emotion_automatisierung_status_labels(),
+			'auto_emotion_dsgvo_log'       => function_exists( 'auto_emotion_dsgvo_loeschlog' ) ? array_reverse( auto_emotion_dsgvo_loeschlog() ) : array(),
 		)
 	);
 	exit;

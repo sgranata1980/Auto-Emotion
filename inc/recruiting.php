@@ -156,6 +156,55 @@ function auto_emotion_bewerbung_sichere_upload_ordner() {
 	}
 }
 
+/**
+ * Leitet aus dem HTTP-Referrer beim Laden der Karriere-Seite eine grobe
+ * Herkunfts-Kategorie ab ("Woher kam die Bewerbung?") – bewusst ohne
+ * zusätzliches, sichtbares Formularfeld (das Formular bleibt absichtlich
+ * bei fünf Feldern, siehe page-karriere-*.php). Nur echte, aus dem
+ * tatsächlichen Referrer ableitbare Kategorien, kein erfundenes
+ * Klick-/Kampagnen-Tracking. Erkennt nur den Referrer beim ersten Aufruf
+ * der jeweiligen Job-Seite – klickt sich jemand vorher durch die eigene
+ * Website, geht die ursprüngliche externe Quelle entsprechend verloren.
+ */
+function auto_emotion_herkunft_aus_referrer( $referrer_url ) {
+	if ( ! $referrer_url ) {
+		return __( 'Direkt / Lesezeichen', 'auto-emotion' );
+	}
+
+	$host = wp_parse_url( $referrer_url, PHP_URL_HOST );
+	if ( ! $host ) {
+		return __( 'Direkt / Lesezeichen', 'auto-emotion' );
+	}
+	$host = strtolower( preg_replace( '/^www\./', '', $host ) );
+
+	$eigener_host = strtolower( preg_replace( '/^www\./', '', (string) wp_parse_url( home_url(), PHP_URL_HOST ) ) );
+	if ( $host === $eigener_host ) {
+		return __( 'Intern (eigene Website)', 'auto-emotion' );
+	}
+
+	$bekannte_quellen = array(
+		'indeed.'          => 'Indeed',
+		'stepstone.'       => 'StepStone',
+		'arbeitsagentur.de' => 'Bundesagentur für Arbeit',
+		'linkedin.'        => 'LinkedIn',
+		'xing.com'         => 'Xing',
+		'google.'          => 'Google',
+		'facebook.com'     => 'Facebook',
+		'instagram.com'    => 'Instagram',
+	);
+	foreach ( $bekannte_quellen as $erkennung => $label ) {
+		if ( false !== strpos( $host, $erkennung ) ) {
+			return $label;
+		}
+	}
+
+	return sprintf(
+		/* translators: %s: Domain der verweisenden Seite */
+		__( 'Sonstige Quelle (%s)', 'auto-emotion' ),
+		$host
+	);
+}
+
 function auto_emotion_handle_bewerbung() {
 	if ( ! isset( $_POST['auto_emotion_bewerbung_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['auto_emotion_bewerbung_nonce'] ) ), 'auto_emotion_bewerbung' ) ) {
 		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen. Bitte Seite neu laden und erneut versuchen.', 'auto-emotion' ) );
@@ -174,6 +223,8 @@ function auto_emotion_handle_bewerbung() {
 	$position     = isset( $_POST['bewerbung_stelle'] ) ? sanitize_text_field( wp_unslash( $_POST['bewerbung_stelle'] ) ) : '';
 	$message      = isset( $_POST['bewerbung_nachricht'] ) ? sanitize_textarea_field( wp_unslash( $_POST['bewerbung_nachricht'] ) ) : '';
 	$consent      = ! empty( $_POST['bewerbung_dsgvo'] );
+	$herkunft_ref = isset( $_POST['bewerbung_herkunft_referrer'] ) ? esc_url_raw( wp_unslash( $_POST['bewerbung_herkunft_referrer'] ) ) : '';
+	$herkunft     = auto_emotion_herkunft_aus_referrer( $herkunft_ref );
 
 	$redirect_base = wp_get_referer() ?: home_url( '/' );
 
@@ -243,6 +294,7 @@ function auto_emotion_handle_bewerbung() {
 				'position'     => $position,
 				'nachricht'    => $message,
 				'dateien'      => $dateien,
+				'herkunft'     => $herkunft,
 			)
 		);
 	}

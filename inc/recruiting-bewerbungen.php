@@ -71,7 +71,64 @@ function auto_emotion_speichere_bewerbung( $daten ) {
 	update_post_meta( $post_id, '_bewerbung_nachricht', $daten['nachricht'] );
 	update_post_meta( $post_id, '_bewerbung_status', 'neu' );
 	update_post_meta( $post_id, '_bewerbung_dateien', $daten['dateien'] );
+	update_post_meta( $post_id, '_bewerbung_herkunft', isset( $daten['herkunft'] ) ? $daten['herkunft'] : '' );
 	auto_emotion_bewerbung_status_historie_eintrag_hinzufuegen( $post_id, 'neu' );
+
+	$auto_emotion_dubletten = auto_emotion_bewerbung_dubletten_finden( $post_id, $daten['email'], $daten['telefon'] );
+	if ( $auto_emotion_dubletten ) {
+		update_post_meta( $post_id, '_bewerbung_dubletten', $auto_emotion_dubletten );
+	}
+}
+
+/**
+ * Sucht unter den bereits gespeicherten Bewerbungen nach möglichen
+ * Dubletten (exakte E-Mail-Übereinstimmung oder auf Ziffern reduziertes
+ * Telefon) – markiert sie nur zur Prüfung durch Kollegen, führt nie
+ * automatisch Datensätze zusammen.
+ */
+function auto_emotion_bewerbung_dubletten_finden( $neue_id, $email, $telefon ) {
+	$email_normalisiert   = $email ? strtolower( trim( $email ) ) : '';
+	$telefon_normalisiert = $telefon ? preg_replace( '/\D+/', '', $telefon ) : '';
+
+	if ( ! $email_normalisiert && ! $telefon_normalisiert ) {
+		return array();
+	}
+
+	$andere_bewerbungen = get_posts(
+		array(
+			'post_type'      => 'bewerbung',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'exclude'        => array( $neue_id ),
+		)
+	);
+
+	$treffer = array();
+	foreach ( $andere_bewerbungen as $andere_id ) {
+		$passt = false;
+
+		if ( $email_normalisiert ) {
+			$andere_email = strtolower( trim( get_post_meta( $andere_id, '_bewerbung_email', true ) ) );
+			if ( $andere_email && $andere_email === $email_normalisiert ) {
+				$passt = true;
+			}
+		}
+
+		if ( ! $passt && $telefon_normalisiert ) {
+			$andere_telefon = preg_replace( '/\D+/', '', get_post_meta( $andere_id, '_bewerbung_telefon', true ) );
+			// Mind. 6 Ziffern, damit kurze/leere Reste nicht fälschlich matchen.
+			if ( $andere_telefon && strlen( $andere_telefon ) >= 6 && $andere_telefon === $telefon_normalisiert ) {
+				$passt = true;
+			}
+		}
+
+		if ( $passt ) {
+			$treffer[] = $andere_id;
+		}
+	}
+
+	return $treffer;
 }
 
 /**
@@ -201,6 +258,9 @@ function auto_emotion_bewerbungen_template_redirect() {
 	if ( 'bewerbungen' === $route ) {
 		$auto_emotion_filter_status   = isset( $_GET['status'] ) ? sanitize_key( wp_unslash( $_GET['status'] ) ) : '';
 		$auto_emotion_filter_position = isset( $_GET['position'] ) ? sanitize_text_field( wp_unslash( $_GET['position'] ) ) : '';
+		$auto_emotion_filter_suche    = isset( $_GET['suche'] ) ? sanitize_text_field( wp_unslash( $_GET['suche'] ) ) : '';
+		$auto_emotion_filter_tag      = isset( $_GET['tag'] ) ? sanitize_text_field( wp_unslash( $_GET['tag'] ) ) : '';
+		$auto_emotion_filter_talentpool = ! empty( $_GET['talentpool'] );
 		$auto_emotion_query_args      = array(
 			'post_type'      => 'bewerbung',
 			'post_status'    => 'publish',
@@ -222,12 +282,62 @@ function auto_emotion_bewerbungen_template_redirect() {
 				'value' => $auto_emotion_filter_position,
 			);
 		}
+		if ( $auto_emotion_filter_talentpool ) {
+			$auto_emotion_meta_query[] = array(
+				'key'   => '_bewerbung_talentpool',
+				'value' => '1',
+			);
+		}
 		if ( $auto_emotion_meta_query ) {
 			$auto_emotion_query_args['meta_query'] = $auto_emotion_meta_query;
 		}
 
 		$auto_emotion_bewerbungen = get_posts( $auto_emotion_query_args );
-		$auto_emotion_view        = isset( $_GET['view'] ) && 'board' === $_GET['view'] ? 'board' : 'liste';
+
+		// Volltextsuche und Tag-Filter laufen bewusst in PHP statt per
+		// meta_query: Tags liegen als serialisiertes Array vor, und bei der
+		// überschaubaren Bewerbungsmenge eines einzelnen Autohauses ist ein
+		// einfacher, korrekter Textvergleich der robustere Weg als eine
+		// fehleranfällige LIKE-Suche auf serialisierten Daten.
+		if ( $auto_emotion_filter_suche ) {
+			$auto_emotion_suche_lower = mb_strtolower( $auto_emotion_filter_suche );
+			$auto_emotion_bewerbungen = array_values(
+				array_filter(
+					$auto_emotion_bewerbungen,
+					function ( $auto_emotion_b ) use ( $auto_emotion_suche_lower ) {
+						$auto_emotion_heuhaufen = mb_strtolower(
+							implode(
+								' ',
+								array_filter(
+									array(
+										get_post_meta( $auto_emotion_b->ID, '_bewerbung_name', true ),
+										get_post_meta( $auto_emotion_b->ID, '_bewerbung_position', true ),
+										get_post_meta( $auto_emotion_b->ID, '_bewerbung_email', true ),
+										get_post_meta( $auto_emotion_b->ID, '_bewerbung_telefon', true ),
+										get_post_meta( $auto_emotion_b->ID, '_bewerbung_notiz', true ),
+										implode( ' ', auto_emotion_bewerbung_tags( $auto_emotion_b->ID ) ),
+									)
+								)
+							)
+						);
+						return false !== mb_strpos( $auto_emotion_heuhaufen, $auto_emotion_suche_lower );
+					}
+				)
+			);
+		}
+
+		if ( $auto_emotion_filter_tag ) {
+			$auto_emotion_bewerbungen = array_values(
+				array_filter(
+					$auto_emotion_bewerbungen,
+					function ( $auto_emotion_b ) use ( $auto_emotion_filter_tag ) {
+						return in_array( $auto_emotion_filter_tag, auto_emotion_bewerbung_tags( $auto_emotion_b->ID ), true );
+					}
+				)
+			);
+		}
+
+		$auto_emotion_view = isset( $_GET['view'] ) && 'board' === $_GET['view'] ? 'board' : 'liste';
 
 		$auto_emotion_alle_bewerbungen = 'board' === $auto_emotion_view
 			? get_posts(
@@ -247,6 +357,10 @@ function auto_emotion_bewerbungen_template_redirect() {
 				'auto_emotion_bewerbungen'      => $auto_emotion_bewerbungen,
 				'auto_emotion_filter_status'    => $auto_emotion_filter_status,
 				'auto_emotion_filter_position'  => $auto_emotion_filter_position,
+				'auto_emotion_filter_suche'     => $auto_emotion_filter_suche,
+				'auto_emotion_filter_tag'       => $auto_emotion_filter_tag,
+				'auto_emotion_filter_talentpool' => $auto_emotion_filter_talentpool,
+				'auto_emotion_alle_tags'        => auto_emotion_alle_bewerbung_tags(),
 				'auto_emotion_view'             => $auto_emotion_view,
 				'auto_emotion_alle_bewerbungen' => $auto_emotion_alle_bewerbungen,
 			)
@@ -483,17 +597,51 @@ function auto_emotion_handle_bewerbung_bewerten() {
 	$status     = isset( $_POST['ae_bewerbung_status'] ) ? sanitize_key( wp_unslash( $_POST['ae_bewerbung_status'] ) ) : 'neu';
 	$bewertung  = isset( $_POST['ae_bewerbung_bewertung'] ) ? absint( $_POST['ae_bewerbung_bewertung'] ) : 0;
 	$notiz      = isset( $_POST['ae_bewerbung_notiz'] ) ? sanitize_textarea_field( wp_unslash( $_POST['ae_bewerbung_notiz'] ) ) : '';
+	$termin_raw = isset( $_POST['ae_bewerbung_termin'] ) ? sanitize_text_field( wp_unslash( $_POST['ae_bewerbung_termin'] ) ) : '';
+	$tags_raw   = isset( $_POST['ae_bewerbung_tags'] ) ? sanitize_text_field( wp_unslash( $_POST['ae_bewerbung_tags'] ) ) : '';
 
 	if ( ! array_key_exists( $status, auto_emotion_bewerbung_status_labels() ) ) {
 		$status = 'neu';
 	}
 	$bewertung = min( 5, max( 0, $bewertung ) );
 
+	// Erwartet das Format eines <input type="datetime-local">
+	// ("Y-m-d\TH:i") – bewusst ohne Zeitzonen-Umrechnung übernommen, wie
+	// auch sonst in diesem Bereich (current_time('mysql')) lokale
+	// Wanduhrzeit statt UTC gespeichert wird.
+	$termin = '';
+	if ( $termin_raw ) {
+		$termin_obj = DateTime::createFromFormat( 'Y-m-d\TH:i', $termin_raw );
+		if ( $termin_obj ) {
+			$termin = $termin_obj->format( 'Y-m-d H:i:s' );
+		}
+	}
+
+	// Frei definierbare Tags, kommagetrennt eingegeben ("Quereinsteiger,
+	// mehrsprachig") – dedupliziert, leere Einträge raus, Reihenfolge der
+	// Eingabe bleibt erhalten.
+	$tags = array_values(
+		array_unique(
+			array_filter(
+				array_map( 'trim', explode( ',', $tags_raw ) )
+			)
+		)
+	);
+
 	$alter_status = get_post_meta( $post_id, '_bewerbung_status', true );
+	$alter_termin = get_post_meta( $post_id, '_bewerbung_termin', true );
 
 	update_post_meta( $post_id, '_bewerbung_status', $status );
 	update_post_meta( $post_id, '_bewerbung_bewertung', $bewertung );
 	update_post_meta( $post_id, '_bewerbung_notiz', $notiz );
+	update_post_meta( $post_id, '_bewerbung_termin', $termin );
+	update_post_meta( $post_id, '_bewerbung_tags', $tags );
+
+	if ( $termin !== $alter_termin ) {
+		// Bei neuem/geändertem Termin darf die Erinnerungs-Mail für den
+		// (neuen) Termin wieder verschickt werden.
+		delete_post_meta( $post_id, '_bewerbung_termin_erinnerung_gesendet' );
+	}
 
 	if ( $status !== $alter_status ) {
 		auto_emotion_bewerbung_status_historie_eintrag_hinzufuegen( $post_id, $status );
@@ -503,6 +651,221 @@ function auto_emotion_handle_bewerbung_bewerten() {
 	exit;
 }
 add_action( 'admin_post_auto_emotion_bewerbung_bewerten', 'auto_emotion_handle_bewerbung_bewerten' );
+
+/**
+ * Frei definierbare Tags je Bewerbung (z. B. "Quereinsteiger",
+ * "mehrsprachig", "Ausbildung gesucht") – lassen sich in der Liste
+ * filtern und machen aus der reinen Status-Pipeline eine durchsuchbare,
+ * frei organisierbare Bewerber-Datenbank.
+ */
+function auto_emotion_bewerbung_tags( $post_id ) {
+	$tags = get_post_meta( $post_id, '_bewerbung_tags', true );
+	return is_array( $tags ) ? $tags : array();
+}
+
+/**
+ * Alle im System tatsächlich vergebenen Tags, alphabetisch – Grundlage
+ * für Filter-Chips und Autovervollständigung, keine erfundene Liste.
+ */
+function auto_emotion_alle_bewerbung_tags() {
+	$alle_ids = get_posts(
+		array(
+			'post_type'      => 'bewerbung',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		)
+	);
+
+	$tags = array();
+	foreach ( $alle_ids as $id ) {
+		foreach ( auto_emotion_bewerbung_tags( $id ) as $tag ) {
+			$tags[ $tag ] = true;
+		}
+	}
+
+	$tags = array_keys( $tags );
+	natcasesort( $tags );
+	return array_values( $tags );
+}
+
+/**
+ * Initialen und eine dazu deterministische Farbe aus dem Namen – für
+ * die Avatar-Kreise in Liste, Board und Detailansicht. Bewusst keine
+ * echten Fotos (DSGVO-Datensparsamkeit, keine Foto-Upload-Funktion).
+ */
+function auto_emotion_initialen( $name ) {
+	$teile = array_values( array_filter( preg_split( '/\s+/', trim( (string) $name ) ) ) );
+	if ( empty( $teile ) ) {
+		return '?';
+	}
+	$erster  = mb_substr( $teile[0], 0, 1 );
+	$letzter = count( $teile ) > 1 ? mb_substr( end( $teile ), 0, 1 ) : '';
+	return mb_strtoupper( $erster . $letzter );
+}
+
+function auto_emotion_avatar_farbe( $name ) {
+	$palette = array( '#0071e3', '#8e44ad', '#16a085', '#d35400', '#c0392b', '#2c3e50', '#2980b9', '#27ae60' );
+	$index   = abs( crc32( (string) $name ) ) % count( $palette );
+	return $palette[ $index ];
+}
+
+/**
+ * Team-Kommentare je Bewerbung: anders als die einzelne, bei jedem
+ * Speichern überschreibbare "Interne Notiz" können hier mehrere
+ * Kollegen nacheinander ihre Einschätzung hinterlassen – mit Name und
+ * Zeitpunkt, wie der Meinungsaustausch im Team bei gängigen
+ * Bewerbermanagement-Systemen.
+ */
+function auto_emotion_bewerbung_kommentare( $post_id ) {
+	$kommentare = get_post_meta( $post_id, '_bewerbung_kommentare', true );
+	return is_array( $kommentare ) ? $kommentare : array();
+}
+
+function auto_emotion_handle_bewerbung_kommentar_hinzufuegen() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	$post_id = isset( $_POST['ae_bewerbung_id'] ) ? absint( $_POST['ae_bewerbung_id'] ) : 0;
+
+	if ( ! isset( $_POST['auto_emotion_bewerbung_kommentar_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['auto_emotion_bewerbung_kommentar_nonce'] ) ), 'auto_emotion_bewerbung_kommentar_' . $post_id ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$post = get_post( $post_id );
+	$text = isset( $_POST['ae_kommentar_text'] ) ? sanitize_textarea_field( wp_unslash( $_POST['ae_kommentar_text'] ) ) : '';
+
+	if ( $post && 'bewerbung' === $post->post_type && $text ) {
+		$kommentare   = auto_emotion_bewerbung_kommentare( $post_id );
+		$benutzer     = wp_get_current_user();
+		$kommentare[] = array(
+			'text'    => $text,
+			'user'    => $benutzer->display_name,
+			'datum'   => current_time( 'mysql' ),
+		);
+		update_post_meta( $post_id, '_bewerbung_kommentare', $kommentare );
+	}
+
+	wp_safe_redirect( home_url( '/mitarbeiter/bewerbungen/' . $post_id . '/#kommentare' ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_bewerbung_kommentar_hinzufuegen', 'auto_emotion_handle_bewerbung_kommentar_hinzufuegen' );
+
+function auto_emotion_handle_bewerbung_kommentar_delete() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	$post_id = isset( $_GET['ae_bewerbung_id'] ) ? absint( $_GET['ae_bewerbung_id'] ) : 0;
+	$index   = isset( $_GET['ae_kommentar_index'] ) ? absint( $_GET['ae_kommentar_index'] ) : -1;
+
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'auto_emotion_bewerbung_kommentar_delete_' . $post_id . '_' . $index ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$kommentare = auto_emotion_bewerbung_kommentare( $post_id );
+	if ( isset( $kommentare[ $index ] ) ) {
+		unset( $kommentare[ $index ] );
+		update_post_meta( $post_id, '_bewerbung_kommentare', array_values( $kommentare ) );
+	}
+
+	wp_safe_redirect( home_url( '/mitarbeiter/bewerbungen/' . $post_id . '/#kommentare' ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_bewerbung_kommentar_delete', 'auto_emotion_handle_bewerbung_kommentar_delete' );
+
+/**
+ * Anstehende Vorstellungsgespräch-Termine, chronologisch aufsteigend –
+ * Grundlage für die "Anstehende Termine"-Karte im Dashboard und für die
+ * automatische Erinnerungs-Mail (siehe weiter unten).
+ */
+function auto_emotion_anstehende_termine( $limit = 5 ) {
+	return get_posts(
+		array(
+			'post_type'      => 'bewerbung',
+			'post_status'    => 'publish',
+			'posts_per_page' => $limit,
+			'meta_key'       => '_bewerbung_termin',
+			'orderby'        => 'meta_value',
+			'order'          => 'ASC',
+			'meta_query'     => array(
+				array(
+					'key'     => '_bewerbung_termin',
+					'value'   => current_time( 'mysql' ),
+					'compare' => '>=',
+					'type'    => 'DATETIME',
+				),
+			),
+		)
+	);
+}
+
+/**
+ * Prüft täglich, ob für morgen ein Vorstellungsgespräch-Termin ansteht,
+ * und schickt dafür einmalig eine Erinnerungs-Mail ans Team – die
+ * "automatisierten Erinnerungen", die man von einem integrierten
+ * Kalender in gängigen Recruiting-Tools kennt, hier ohne eigenen
+ * Kalender-Dienst, nur mit dem bereits vorhandenen E-Mail-Versand.
+ */
+function auto_emotion_termin_erinnerung_cron() {
+	$jetzt        = current_time( 'timestamp' ); // phpcs:ignore -- lokale Pseudo-Unix-Zeit wie an anderer Stelle in diesem Projekt verwendet.
+	$morgen_start = gmdate( 'Y-m-d 00:00:00', $jetzt + DAY_IN_SECONDS );
+	$morgen_ende  = gmdate( 'Y-m-d 23:59:59', $jetzt + DAY_IN_SECONDS );
+
+	$bewerbungen = get_posts(
+		array(
+			'post_type'      => 'bewerbung',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'meta_query'     => array(
+				array(
+					'key'     => '_bewerbung_termin',
+					'value'   => array( $morgen_start, $morgen_ende ),
+					'compare' => 'BETWEEN',
+					'type'    => 'DATETIME',
+				),
+				array(
+					'key'     => '_bewerbung_termin_erinnerung_gesendet',
+					'compare' => 'NOT EXISTS',
+				),
+			),
+		)
+	);
+
+	$empfaenger = auto_emotion_contact( 'email' );
+
+	foreach ( $bewerbungen as $bewerbung ) {
+		if ( $empfaenger ) {
+			$name     = get_post_meta( $bewerbung->ID, '_bewerbung_name', true );
+			$position = get_post_meta( $bewerbung->ID, '_bewerbung_position', true );
+			$termin   = get_post_meta( $bewerbung->ID, '_bewerbung_termin', true );
+
+			$betreff = sprintf( '[Erinnerung] Vorstellungsgespräch morgen: %s', $name );
+			$body    = sprintf(
+				"Erinnerung: Morgen um %s Uhr ist das Vorstellungsgespräch mit %s (%s).\n\n%s",
+				mysql2date( 'H:i', $termin ),
+				$name,
+				$position,
+				home_url( '/mitarbeiter/bewerbungen/' . $bewerbung->ID . '/' )
+			);
+
+			wp_mail( $empfaenger, $betreff, $body );
+		}
+
+		update_post_meta( $bewerbung->ID, '_bewerbung_termin_erinnerung_gesendet', '1' );
+	}
+}
+add_action( 'auto_emotion_termin_erinnerung_pruefen', 'auto_emotion_termin_erinnerung_cron' );
+
+function auto_emotion_schedule_termin_erinnerung() {
+	if ( ! wp_next_scheduled( 'auto_emotion_termin_erinnerung_pruefen' ) ) {
+		wp_schedule_event( time(), 'daily', 'auto_emotion_termin_erinnerung_pruefen' );
+	}
+}
+add_action( 'init', 'auto_emotion_schedule_termin_erinnerung' );
 
 /**
  * Verschiebt eine Bewerbung in den Papierkorb (reversibel).
@@ -528,3 +891,109 @@ function auto_emotion_handle_bewerbung_delete() {
 	exit;
 }
 add_action( 'admin_post_auto_emotion_bewerbung_delete', 'auto_emotion_handle_bewerbung_delete' );
+
+/**
+ * Talent-Pool: eine Bewerbung kann unabhängig vom Pipeline-Status (auch
+ * nach "Abgesagt") als für später interessant markiert werden – mit
+ * Zweck und optionaler Frist. Ersetzt nicht den Status, sondern liegt
+ * quer dazu (siehe Momenti-Review: "Eine Bewerbung darf historisch
+ * abgeschlossen bleiben, während der Kandidat zusätzlich im Talent Pool
+ * liegt").
+ */
+function auto_emotion_bewerbung_im_talentpool( $post_id ) {
+	return (bool) get_post_meta( $post_id, '_bewerbung_talentpool', true );
+}
+
+function auto_emotion_handle_bewerbung_talentpool() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	$post_id = isset( $_POST['ae_bewerbung_id'] ) ? absint( $_POST['ae_bewerbung_id'] ) : 0;
+
+	if ( ! isset( $_POST['auto_emotion_bewerbung_talentpool_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['auto_emotion_bewerbung_talentpool_nonce'] ) ), 'auto_emotion_bewerbung_talentpool_' . $post_id ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$post = get_post( $post_id );
+	if ( ! $post || 'bewerbung' !== $post->post_type ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/bewerbungen/' ) );
+		exit;
+	}
+
+	$aktiv  = ! empty( $_POST['ae_talentpool_aktiv'] );
+	$zweck  = isset( $_POST['ae_talentpool_zweck'] ) ? sanitize_text_field( wp_unslash( $_POST['ae_talentpool_zweck'] ) ) : '';
+	$frist  = isset( $_POST['ae_talentpool_frist'] ) ? sanitize_text_field( wp_unslash( $_POST['ae_talentpool_frist'] ) ) : '';
+
+	// Erwartet das Format eines <input type="date"> ("Y-m-d").
+	$frist_valide = '';
+	if ( $frist ) {
+		$frist_obj = DateTime::createFromFormat( 'Y-m-d', $frist );
+		if ( $frist_obj ) {
+			$frist_valide = $frist_obj->format( 'Y-m-d' );
+		}
+	}
+
+	update_post_meta( $post_id, '_bewerbung_talentpool', $aktiv ? '1' : '' );
+	update_post_meta( $post_id, '_bewerbung_talentpool_zweck', $zweck );
+	update_post_meta( $post_id, '_bewerbung_talentpool_frist', $frist_valide );
+
+	wp_safe_redirect( add_query_arg( 'talentpool_gespeichert', '1', home_url( '/mitarbeiter/bewerbungen/' . $post_id . '/' ) ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_bewerbung_talentpool', 'auto_emotion_handle_bewerbung_talentpool' );
+
+/**
+ * DSGVO-Löschantrag: anders als "In den Papierkorb" (reversibel, erst
+ * nach 30 Tagen endgültig) löscht dies Bewerbung samt Unterlagen SOFORT
+ * und UNWIDERRUFLICH – für den Fall, dass ein Bewerber ausdrücklich die
+ * sofortige Löschung verlangt (DSGVO Art. 17). Protokolliert den
+ * Vorgang datensparsam (Datum, bearbeitende Person, Position) – bewusst
+ * ohne Name/E-Mail/Telefon der gelöschten Person, damit das Protokoll
+ * selbst keine personenbezogenen Daten konserviert, die eigentlich
+ * gelöscht werden sollten.
+ */
+function auto_emotion_dsgvo_loeschlog() {
+	$log = get_option( 'auto_emotion_dsgvo_loeschlog', array() );
+	return is_array( $log ) ? $log : array();
+}
+
+function auto_emotion_handle_bewerbung_dsgvo_loeschen() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	$post_id = isset( $_GET['ae_bewerbung_id'] ) ? absint( $_GET['ae_bewerbung_id'] ) : 0;
+
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'auto_emotion_bewerbung_dsgvo_loeschen_' . $post_id ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$post = get_post( $post_id );
+	if ( $post && 'bewerbung' === $post->post_type ) {
+		$position = get_post_meta( $post_id, '_bewerbung_position', true );
+
+		// Löst before_delete_post aus, das die hochgeladenen Dateien von
+		// der Festplatte entfernt (siehe auto_emotion_delete_bewerbung_dateien
+		// weiter oben in dieser Datei) – true = kein Papierkorb, sofort
+		// endgültig.
+		wp_delete_post( $post_id, true );
+
+		$log   = auto_emotion_dsgvo_loeschlog();
+		$log[] = array(
+			'datum'      => current_time( 'mysql' ),
+			'bearbeiter' => wp_get_current_user()->display_name,
+			'position'   => $position,
+		);
+		// Nur die letzten 100 Einträge behalten – ein Protokoll über
+		// erledigte Löschungen, kein unbegrenzt wachsendes Archiv.
+		$log = array_slice( $log, -100 );
+		update_option( 'auto_emotion_dsgvo_loeschlog', $log, false );
+	}
+
+	wp_safe_redirect( add_query_arg( 'dsgvo_geloescht', '1', home_url( '/mitarbeiter/bewerbungen/' ) ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_bewerbung_dsgvo_loeschen', 'auto_emotion_handle_bewerbung_dsgvo_loeschen' );

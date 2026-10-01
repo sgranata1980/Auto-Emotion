@@ -410,15 +410,83 @@ function auto_emotion_uebersicht_daten() {
 		'durchschnitt' => 0,
 	);
 
+	// Ø Tage bis Entscheidung: Spanne zwischen erstem ("neu") und letztem
+	// Eintrag der Statushistorie, nur für abgeschlossene Bewerbungen –
+	// echte eigene Daten statt einer erfundenen Kennzahl.
+	$entscheidungs_tage = array();
+	foreach ( $alle_bewerbungen as $bewerbung ) {
+		$status = get_post_meta( $bewerbung->ID, '_bewerbung_status', true );
+		if ( ! in_array( $status, array( 'eingestellt', 'abgesagt' ), true ) ) {
+			continue;
+		}
+
+		$historie = function_exists( 'auto_emotion_bewerbung_status_historie' ) ? auto_emotion_bewerbung_status_historie( $bewerbung->ID ) : array();
+		if ( count( $historie ) < 2 ) {
+			continue;
+		}
+
+		$erster_eintrag = $historie[0];
+		$letzter_eintrag = end( $historie );
+		$start = strtotime( $erster_eintrag['datum'] );
+		$ende  = strtotime( $letzter_eintrag['datum'] );
+
+		if ( $start && $ende && $ende > $start ) {
+			$entscheidungs_tage[] = ( $ende - $start ) / DAY_IN_SECONDS;
+		}
+	}
+	$auto_emotion_tage_bis_entscheidung = $entscheidungs_tage ? (int) round( array_sum( $entscheidungs_tage ) / count( $entscheidungs_tage ) ) : null;
+
+	// Bewerbungen je Position – zeigt, welche Suchprofile tatsächlich
+	// Resonanz bringen, nur auf Basis der echten eingegangenen
+	// Bewerbungen (kein erfundenes Klick-/Impressions-Tracking).
+	$positionen_verteilung = array();
+	foreach ( $alle_bewerbungen as $bewerbung ) {
+		$position = get_post_meta( $bewerbung->ID, '_bewerbung_position', true );
+		if ( ! $position ) {
+			continue;
+		}
+		if ( ! isset( $positionen_verteilung[ $position ] ) ) {
+			$positionen_verteilung[ $position ] = 0;
+		}
+		++$positionen_verteilung[ $position ];
+	}
+	arsort( $positionen_verteilung );
+	$auto_emotion_positionen_top = array_slice( $positionen_verteilung, 0, 5, true );
+
+	// Bewerbungen nach Herkunft – aus dem beim Formular-Aufruf erfassten
+	// HTTP-Referrer abgeleitet (siehe auto_emotion_herkunft_aus_referrer()
+	// in inc/recruiting.php), kein erfundenes Kampagnen-Tracking.
+	$herkunft_verteilung = array();
+	$talentpool_anzahl   = 0;
+	foreach ( $alle_bewerbungen as $bewerbung ) {
+		$herkunft = get_post_meta( $bewerbung->ID, '_bewerbung_herkunft', true );
+		if ( $herkunft ) {
+			if ( ! isset( $herkunft_verteilung[ $herkunft ] ) ) {
+				$herkunft_verteilung[ $herkunft ] = 0;
+			}
+			++$herkunft_verteilung[ $herkunft ];
+		}
+		if ( function_exists( 'auto_emotion_bewerbung_im_talentpool' ) && auto_emotion_bewerbung_im_talentpool( $bewerbung->ID ) ) {
+			++$talentpool_anzahl;
+		}
+	}
+	arsort( $herkunft_verteilung );
+	$auto_emotion_herkunft_top = array_slice( $herkunft_verteilung, 0, 5, true );
+
 	return array(
-		'auto_emotion_suchprofile_gesamt'    => count( $suchprofile ),
-		'auto_emotion_suchprofile_aktiv'     => $aktive_suchprofile,
-		'auto_emotion_bewerbungen_gesamt'    => count( $alle_bewerbungen ),
-		'auto_emotion_bewerbungen_woche'     => $bewerbungen_diese_woche,
-		'auto_emotion_status_verteilung'     => $status_verteilung,
-		'auto_emotion_status_labels'         => $status_labels,
-		'auto_emotion_neueste_bewerbungen'   => array_slice( $alle_bewerbungen, 0, 6 ),
-		'auto_emotion_feedback'              => $auto_emotion_feedback,
+		'auto_emotion_suchprofile_gesamt'       => count( $suchprofile ),
+		'auto_emotion_suchprofile_aktiv'        => $aktive_suchprofile,
+		'auto_emotion_bewerbungen_gesamt'       => count( $alle_bewerbungen ),
+		'auto_emotion_bewerbungen_woche'        => $bewerbungen_diese_woche,
+		'auto_emotion_status_verteilung'        => $status_verteilung,
+		'auto_emotion_status_labels'            => $status_labels,
+		'auto_emotion_neueste_bewerbungen'      => array_slice( $alle_bewerbungen, 0, 6 ),
+		'auto_emotion_feedback'                 => $auto_emotion_feedback,
+		'auto_emotion_tage_bis_entscheidung'    => $auto_emotion_tage_bis_entscheidung,
+		'auto_emotion_positionen_top'           => $auto_emotion_positionen_top,
+		'auto_emotion_herkunft_top'             => $auto_emotion_herkunft_top,
+		'auto_emotion_talentpool_anzahl'        => $talentpool_anzahl,
+		'auto_emotion_anstehende_termine'       => function_exists( 'auto_emotion_anstehende_termine' ) ? auto_emotion_anstehende_termine( 5 ) : array(),
 	);
 }
 

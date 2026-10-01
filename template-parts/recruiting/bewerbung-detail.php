@@ -27,6 +27,19 @@ $auto_emotion_bewertung = (int) get_post_meta( $auto_emotion_id, '_bewerbung_bew
 $auto_emotion_notiz     = get_post_meta( $auto_emotion_id, '_bewerbung_notiz', true );
 $auto_emotion_vorlagen  = auto_emotion_bewerbung_email_vorlagen( $auto_emotion_name, $auto_emotion_position );
 
+$auto_emotion_termin          = get_post_meta( $auto_emotion_id, '_bewerbung_termin', true );
+$auto_emotion_termin_input    = '';
+if ( $auto_emotion_termin ) {
+	$auto_emotion_termin_obj = DateTime::createFromFormat( 'Y-m-d H:i:s', $auto_emotion_termin );
+	if ( $auto_emotion_termin_obj ) {
+		$auto_emotion_termin_input = $auto_emotion_termin_obj->format( 'Y-m-d\TH:i' );
+	}
+}
+
+$auto_emotion_kommentare = auto_emotion_bewerbung_kommentare( $auto_emotion_id );
+$auto_emotion_tags       = auto_emotion_bewerbung_tags( $auto_emotion_id );
+$auto_emotion_alle_tags  = auto_emotion_alle_bewerbung_tags();
+
 $auto_emotion_feedback_angefragt_am  = get_post_meta( $auto_emotion_id, '_bewerbung_feedback_angefragt_am', true );
 $auto_emotion_feedback_beantwortet   = get_post_meta( $auto_emotion_id, '_bewerbung_feedback_beantwortet', true );
 $auto_emotion_feedback_score         = get_post_meta( $auto_emotion_id, '_bewerbung_feedback_score', true );
@@ -68,12 +81,34 @@ $auto_emotion_ki_kriterien_status = array(
 
 $auto_emotion_status_historie = auto_emotion_bewerbung_status_historie( $auto_emotion_id );
 
+$auto_emotion_herkunft = get_post_meta( $auto_emotion_id, '_bewerbung_herkunft', true );
+
+$auto_emotion_dubletten_ids = get_post_meta( $auto_emotion_id, '_bewerbung_dubletten', true );
+if ( ! is_array( $auto_emotion_dubletten_ids ) ) {
+	$auto_emotion_dubletten_ids = array();
+}
+
+$auto_emotion_talentpool       = auto_emotion_bewerbung_im_talentpool( $auto_emotion_id );
+$auto_emotion_talentpool_zweck = get_post_meta( $auto_emotion_id, '_bewerbung_talentpool_zweck', true );
+$auto_emotion_talentpool_frist = get_post_meta( $auto_emotion_id, '_bewerbung_talentpool_frist', true );
+$auto_emotion_talentpool_frist_abgelaufen = $auto_emotion_talentpool_frist && strtotime( $auto_emotion_talentpool_frist ) < strtotime( current_time( 'Y-m-d' ) ); // phpcs:ignore -- lokaler Datumsvergleich wie an anderer Stelle in diesem Projekt.
+
 auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 ?>
 
 <a class="ae-back-link" href="<?php echo esc_url( home_url( '/mitarbeiter/bewerbungen/' ) ); ?>">← <?php esc_html_e( 'Zurück zur Übersicht', 'auto-emotion' ); ?></a>
 
-<h1><?php echo esc_html( $auto_emotion_name ); ?></h1>
+<h1 style="display:flex; align-items:center; gap:14px;">
+	<span class="ae-avatar ae-avatar--lg" style="background:<?php echo esc_attr( auto_emotion_avatar_farbe( $auto_emotion_name ) ); ?>;"><?php echo esc_html( auto_emotion_initialen( $auto_emotion_name ) ); ?></span>
+	<?php echo esc_html( $auto_emotion_name ); ?>
+</h1>
+<?php if ( ! empty( $auto_emotion_tags ) ) : ?>
+	<p style="margin:-8px 0 16px;">
+		<?php foreach ( $auto_emotion_tags as $auto_emotion_tag ) : ?>
+			<span class="ae-tag">#<?php echo esc_html( $auto_emotion_tag ); ?></span>
+		<?php endforeach; ?>
+	</p>
+<?php endif; ?>
 
 <?php if ( isset( $_GET['weitergeleitet'] ) ) : ?>
 	<p class="ae-notice"><?php esc_html_e( 'Bewerbung wurde weitergeleitet.', 'auto-emotion' ); ?></p>
@@ -92,6 +127,20 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 <?php endif; ?>
 <?php if ( isset( $_GET['ki_fehler'] ) ) : ?>
 	<p class="ae-notice" style="background:var(--ae-danger-soft); border-color:var(--ae-danger); color:var(--ae-danger);"><?php echo esc_html( sprintf( __( 'KI-Einschätzung fehlgeschlagen: %s', 'auto-emotion' ), sanitize_text_field( wp_unslash( $_GET['ki_fehler'] ) ) ) ); ?></p>
+<?php endif; ?>
+<?php if ( isset( $_GET['talentpool_gespeichert'] ) ) : ?>
+	<p class="ae-notice"><?php esc_html_e( 'Talent-Pool-Eintrag gespeichert.', 'auto-emotion' ); ?></p>
+<?php endif; ?>
+
+<?php if ( ! empty( $auto_emotion_dubletten_ids ) ) : ?>
+	<p class="ae-notice" style="background:var(--ae-warning-soft, rgba(178,80,0,.12)); border-color:var(--ae-warning); color:var(--ae-warning);">
+		<?php esc_html_e( 'Mögliche Dublette – ähnliche E-Mail oder Telefonnummer gefunden:', 'auto-emotion' ); ?>
+		<?php foreach ( $auto_emotion_dubletten_ids as $auto_emotion_dublette_id ) : ?>
+			<?php $auto_emotion_dublette_name = get_post_meta( $auto_emotion_dublette_id, '_bewerbung_name', true ); ?>
+			<a href="<?php echo esc_url( home_url( '/mitarbeiter/bewerbungen/' . $auto_emotion_dublette_id . '/' ) ); ?>" style="text-decoration:underline;"><?php echo esc_html( $auto_emotion_dublette_name ? $auto_emotion_dublette_name : '#' . $auto_emotion_dublette_id ); ?></a>
+		<?php endforeach; ?>
+		· <?php esc_html_e( 'Bitte manuell prüfen, es wird nichts automatisch zusammengeführt.', 'auto-emotion' ); ?>
+	</p>
 <?php endif; ?>
 
 <div class="ae-card">
@@ -184,6 +233,21 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 				<?php endfor; ?>
 			</select>
 		</div>
+		<div class="ae-field">
+			<label for="ae_bewerbung_termin"><?php esc_html_e( 'Termin Vorstellungsgespräch', 'auto-emotion' ); ?></label>
+			<input type="datetime-local" id="ae_bewerbung_termin" name="ae_bewerbung_termin" value="<?php echo esc_attr( $auto_emotion_termin_input ); ?>">
+		</div>
+		<div class="ae-field">
+			<label for="ae_bewerbung_tags"><?php esc_html_e( 'Tags (kommagetrennt)', 'auto-emotion' ); ?></label>
+			<input type="text" id="ae_bewerbung_tags" name="ae_bewerbung_tags" list="ae_tags_vorschlaege" placeholder="<?php esc_attr_e( 'z. B. Quereinsteiger, mehrsprachig', 'auto-emotion' ); ?>" value="<?php echo esc_attr( implode( ', ', $auto_emotion_tags ) ); ?>">
+			<?php if ( ! empty( $auto_emotion_alle_tags ) ) : ?>
+				<datalist id="ae_tags_vorschlaege">
+					<?php foreach ( $auto_emotion_alle_tags as $auto_emotion_tag_vorschlag ) : ?>
+						<option value="<?php echo esc_attr( $auto_emotion_tag_vorschlag ); ?>">
+					<?php endforeach; ?>
+				</datalist>
+			<?php endif; ?>
+		</div>
 		<div class="ae-field ae-field--full">
 			<label for="ae_bewerbung_notiz"><?php esc_html_e( 'Interne Notiz (nur für Kollegen sichtbar)', 'auto-emotion' ); ?></label>
 			<textarea id="ae_bewerbung_notiz" name="ae_bewerbung_notiz" rows="4"><?php echo esc_textarea( $auto_emotion_notiz ); ?></textarea>
@@ -191,6 +255,48 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 		<div class="ae-field ae-field--full">
 			<button type="submit" class="ae-btn" style="width:auto;"><?php esc_html_e( 'Bewertung speichern', 'auto-emotion' ); ?></button>
 		</div>
+	</form>
+	<?php if ( $auto_emotion_termin ) : ?>
+		<p class="ae-list__meta" style="margin:12px 0 0;">
+			<?php
+			echo esc_html(
+				sprintf(
+					/* translators: %s: Datum/Uhrzeit */
+					__( 'Termin gespeichert für %s Uhr – eine Erinnerungs-Mail geht automatisch am Vortag raus.', 'auto-emotion' ),
+					mysql2date( 'd.m.Y H:i', $auto_emotion_termin )
+				)
+			);
+			?>
+		</p>
+	<?php endif; ?>
+</div>
+
+<div class="ae-card" id="kommentare">
+	<h2><?php esc_html_e( 'Team-Kommentare', 'auto-emotion' ); ?></h2>
+	<?php if ( empty( $auto_emotion_kommentare ) ) : ?>
+		<p class="ae-list__meta" style="margin:0 0 16px;"><?php esc_html_e( 'Noch keine Kommentare – teile hier Einschätzungen mit Kollegen, ohne die Notiz oben zu überschreiben.', 'auto-emotion' ); ?></p>
+	<?php else : ?>
+		<ul style="margin:0 0 16px; padding:0; list-style:none; display:flex; flex-direction:column; gap:12px;">
+			<?php foreach ( $auto_emotion_kommentare as $auto_emotion_kommentar_index => $auto_emotion_kommentar ) : ?>
+				<li>
+					<div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+						<span class="ae-list__meta"><strong><?php echo esc_html( $auto_emotion_kommentar['user'] ); ?></strong> · <?php echo esc_html( mysql2date( 'd.m.Y H:i', $auto_emotion_kommentar['datum'] ) ); ?> Uhr</span>
+						<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=auto_emotion_bewerbung_kommentar_delete&ae_bewerbung_id=' . $auto_emotion_id . '&ae_kommentar_index=' . $auto_emotion_kommentar_index ), 'auto_emotion_bewerbung_kommentar_delete_' . $auto_emotion_id . '_' . $auto_emotion_kommentar_index ) ); ?>" class="ae-list__meta" style="text-decoration:underline;" onclick="return confirm('<?php echo esc_js( __( 'Kommentar wirklich löschen?', 'auto-emotion' ) ); ?>');"><?php esc_html_e( 'Löschen', 'auto-emotion' ); ?></a>
+					</div>
+					<p style="margin:4px 0 0; white-space:pre-wrap;"><?php echo esc_html( $auto_emotion_kommentar['text'] ); ?></p>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+	<?php endif; ?>
+	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+		<input type="hidden" name="action" value="auto_emotion_bewerbung_kommentar_hinzufuegen">
+		<input type="hidden" name="ae_bewerbung_id" value="<?php echo esc_attr( $auto_emotion_id ); ?>">
+		<?php wp_nonce_field( 'auto_emotion_bewerbung_kommentar_' . $auto_emotion_id, 'auto_emotion_bewerbung_kommentar_nonce' ); ?>
+		<div class="ae-field ae-field--full">
+			<label for="ae_kommentar_text"><?php esc_html_e( 'Deine Einschätzung', 'auto-emotion' ); ?></label>
+			<textarea id="ae_kommentar_text" name="ae_kommentar_text" rows="3" required></textarea>
+		</div>
+		<button type="submit" class="ae-btn" style="width:auto;"><?php esc_html_e( 'Kommentar hinzufügen', 'auto-emotion' ); ?></button>
 	</form>
 </div>
 
@@ -208,6 +314,33 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 			<?php endforeach; ?>
 		</ul>
 	<?php endif; ?>
+</div>
+
+<div class="ae-card">
+	<h2><?php esc_html_e( 'Talent-Pool', 'auto-emotion' ); ?></h2>
+	<p class="ae-intro" style="margin:0 0 12px;"><?php esc_html_e( 'Unabhängig vom Status dieser Bewerbung: für später als interessant markieren, z. B. wenn gerade keine passende Stelle offen ist.', 'auto-emotion' ); ?></p>
+	<?php if ( $auto_emotion_talentpool && $auto_emotion_talentpool_frist_abgelaufen ) : ?>
+		<p class="ae-notice" style="background:var(--ae-danger-soft); border-color:var(--ae-danger); color:var(--ae-danger); margin-bottom:12px;"><?php esc_html_e( 'Frist abgelaufen – bitte prüfen und ggf. verlängern oder entfernen.', 'auto-emotion' ); ?></p>
+	<?php endif; ?>
+	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="ae-form-grid">
+		<input type="hidden" name="action" value="auto_emotion_bewerbung_talentpool">
+		<input type="hidden" name="ae_bewerbung_id" value="<?php echo esc_attr( $auto_emotion_id ); ?>">
+		<?php wp_nonce_field( 'auto_emotion_bewerbung_talentpool_' . $auto_emotion_id, 'auto_emotion_bewerbung_talentpool_nonce' ); ?>
+		<div class="ae-field ae-field--full">
+			<label><input type="checkbox" name="ae_talentpool_aktiv" value="1" <?php checked( $auto_emotion_talentpool ); ?>> <?php esc_html_e( 'Im Talent-Pool führen', 'auto-emotion' ); ?></label>
+		</div>
+		<div class="ae-field">
+			<label for="ae_talentpool_zweck"><?php esc_html_e( 'Zweck (wofür vormerken?)', 'auto-emotion' ); ?></label>
+			<input type="text" id="ae_talentpool_zweck" name="ae_talentpool_zweck" placeholder="<?php esc_attr_e( 'z. B. nächste Werkstattleiter-Stelle', 'auto-emotion' ); ?>" value="<?php echo esc_attr( $auto_emotion_talentpool_zweck ); ?>">
+		</div>
+		<div class="ae-field">
+			<label for="ae_talentpool_frist"><?php esc_html_e( 'Frist (optional)', 'auto-emotion' ); ?></label>
+			<input type="date" id="ae_talentpool_frist" name="ae_talentpool_frist" value="<?php echo esc_attr( $auto_emotion_talentpool_frist ); ?>">
+		</div>
+		<div class="ae-field ae-field--full">
+			<button type="submit" class="ae-btn" style="width:auto;"><?php esc_html_e( 'Talent-Pool speichern', 'auto-emotion' ); ?></button>
+		</div>
+	</form>
 </div>
 
 <div class="ae-card">
@@ -233,6 +366,12 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 		<dt><?php esc_html_e( 'Eingegangen am', 'auto-emotion' ); ?></dt>
 		<dd><?php echo esc_html( get_the_date( 'd.m.Y H:i', $auto_emotion_bewerbung_post ) ); ?> Uhr</dd>
 	</dl>
+	<?php if ( $auto_emotion_herkunft ) : ?>
+		<dl class="ae-detail-block">
+			<dt><?php esc_html_e( 'Herkunft', 'auto-emotion' ); ?></dt>
+			<dd><?php echo esc_html( $auto_emotion_herkunft ); ?></dd>
+		</dl>
+	<?php endif; ?>
 	<?php if ( $auto_emotion_nachricht ) : ?>
 		<dl class="ae-detail-block">
 			<dt><?php esc_html_e( 'Nachricht', 'auto-emotion' ); ?></dt>
@@ -362,6 +501,7 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 
 <div class="ae-form-actions">
 	<a class="ae-btn ae-btn--danger" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=auto_emotion_bewerbung_delete&ae_bewerbung_id=' . $auto_emotion_id ), 'auto_emotion_bewerbung_delete_' . $auto_emotion_id ) ); ?>" onclick="return confirm('<?php echo esc_js( __( 'Bewerbung wirklich in den Papierkorb verschieben? Unterlagen werden nach 30 Tagen endgültig gelöscht.', 'auto-emotion' ) ); ?>');"><?php esc_html_e( 'In den Papierkorb', 'auto-emotion' ); ?></a>
+	<a class="ae-btn ae-btn--danger" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=auto_emotion_bewerbung_dsgvo_loeschen&ae_bewerbung_id=' . $auto_emotion_id ), 'auto_emotion_bewerbung_dsgvo_loeschen_' . $auto_emotion_id ) ); ?>" onclick="return confirm('<?php echo esc_js( __( 'DSGVO-Löschantrag: Bewerbung samt Unterlagen SOFORT und UNWIDERRUFLICH löschen (kein Papierkorb)? Nur bei ausdrücklichem Löschwunsch der Person verwenden. Der Vorgang wird dokumentiert.', 'auto-emotion' ) ); ?>');"><?php esc_html_e( 'DSGVO-Löschantrag sofort ausführen', 'auto-emotion' ); ?></a>
 </div>
 
 <?php auto_emotion_staff_shell_end(); ?>

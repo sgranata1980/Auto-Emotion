@@ -29,20 +29,34 @@ $auto_emotion_status_max = max( 1, max( $auto_emotion_status_verteilung ) );
 
 <div class="ae-kpis">
 	<div class="ae-kpi">
+		<div class="ae-kpi__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19.5V4.5C4 3.67 4.67 3 5.5 3H18a1 1 0 0 1 1 1v15" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M6.5 3v18M6.5 17H19a2 2 0 0 1 2 2v1H6.5" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></div>
 		<div class="ae-kpi__value"><?php echo esc_html( $auto_emotion_suchprofile_gesamt ); ?></div>
 		<div class="ae-kpi__label"><?php esc_html_e( 'Suchprofile gesamt', 'auto-emotion' ); ?></div>
 	</div>
 	<div class="ae-kpi">
+		<div class="ae-kpi__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke="currentColor" stroke-width="1.6"/></svg></div>
 		<div class="ae-kpi__value"><?php echo esc_html( $auto_emotion_suchprofile_aktiv ); ?></div>
 		<div class="ae-kpi__label"><?php esc_html_e( 'Aktiv gesucht', 'auto-emotion' ); ?></div>
 	</div>
 	<div class="ae-kpi">
+		<div class="ae-kpi__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 2h9l5 5v15H6V2Z" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M9 12h8M9 16h8M9 8h4" stroke="currentColor" stroke-width="1.6"/></svg></div>
 		<div class="ae-kpi__value"><?php echo esc_html( $auto_emotion_bewerbungen_gesamt ); ?></div>
 		<div class="ae-kpi__label"><?php esc_html_e( 'Bewerbungen gesamt', 'auto-emotion' ); ?></div>
 	</div>
 	<div class="ae-kpi">
+		<div class="ae-kpi__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8"/></svg></div>
 		<div class="ae-kpi__value"><?php echo esc_html( $auto_emotion_bewerbungen_woche ); ?></div>
 		<div class="ae-kpi__label"><?php esc_html_e( 'Neu diese Woche', 'auto-emotion' ); ?></div>
+	</div>
+	<div class="ae-kpi">
+		<div class="ae-kpi__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></div>
+		<div class="ae-kpi__value"><?php echo null === $auto_emotion_tage_bis_entscheidung ? '–' : esc_html( $auto_emotion_tage_bis_entscheidung ); ?></div>
+		<div class="ae-kpi__label"><?php esc_html_e( 'Ø Tage bis Entscheidung', 'auto-emotion' ); ?></div>
+	</div>
+	<div class="ae-kpi">
+		<div class="ae-kpi__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9Z" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M12 11.5 20 7M12 11.5 4 7M12 11.5V21" stroke="currentColor" stroke-width="1.6"/></svg></div>
+		<div class="ae-kpi__value"><a href="<?php echo esc_url( add_query_arg( 'talentpool', '1', home_url( '/mitarbeiter/bewerbungen/' ) ) ); ?>"><?php echo esc_html( $auto_emotion_talentpool_anzahl ); ?></a></div>
+		<div class="ae-kpi__label"><?php esc_html_e( 'Im Talent-Pool', 'auto-emotion' ); ?></div>
 	</div>
 </div>
 
@@ -59,6 +73,64 @@ $auto_emotion_status_max = max( 1, max( $auto_emotion_status_verteilung ) );
 		<?php endforeach; ?>
 	</div>
 </div>
+
+<?php if ( ! empty( $auto_emotion_positionen_top ) ) : ?>
+<div class="ae-card">
+	<h2><?php esc_html_e( 'Bewerbungen je Position', 'auto-emotion' ); ?></h2>
+	<?php $auto_emotion_positionen_max = max( $auto_emotion_positionen_top ); ?>
+	<ul class="ae-rangliste">
+		<?php foreach ( $auto_emotion_positionen_top as $auto_emotion_position_titel => $auto_emotion_position_anzahl ) : ?>
+			<li>
+				<a class="ae-rangliste__label" href="<?php echo esc_url( add_query_arg( 'position', rawurlencode( $auto_emotion_position_titel ), home_url( '/mitarbeiter/bewerbungen/' ) ) ); ?>"><?php echo esc_html( $auto_emotion_position_titel ); ?></a>
+				<span class="ae-rangliste__bar-track">
+					<span class="ae-rangliste__bar" style="width: <?php echo esc_attr( round( ( $auto_emotion_position_anzahl / $auto_emotion_positionen_max ) * 100 ) ); ?>%;"></span>
+				</span>
+				<span class="ae-rangliste__value"><?php echo esc_html( $auto_emotion_position_anzahl ); ?></span>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<?php if ( ! empty( $auto_emotion_herkunft_top ) ) : ?>
+<div class="ae-card">
+	<h2><?php esc_html_e( 'Bewerbungen nach Herkunft', 'auto-emotion' ); ?></h2>
+	<p class="ae-list__meta" style="margin:-4px 0 12px;"><?php esc_html_e( 'Abgeleitet aus dem Referrer beim Aufruf der Stellenanzeige – bestmögliche Zuordnung, kein vollständiges Kampagnen-Tracking.', 'auto-emotion' ); ?></p>
+	<?php $auto_emotion_herkunft_max = max( $auto_emotion_herkunft_top ); ?>
+	<ul class="ae-rangliste">
+		<?php foreach ( $auto_emotion_herkunft_top as $auto_emotion_herkunft_label => $auto_emotion_herkunft_anzahl ) : ?>
+			<li>
+				<span class="ae-rangliste__label"><?php echo esc_html( $auto_emotion_herkunft_label ); ?></span>
+				<span class="ae-rangliste__bar-track">
+					<span class="ae-rangliste__bar" style="width: <?php echo esc_attr( round( ( $auto_emotion_herkunft_anzahl / $auto_emotion_herkunft_max ) * 100 ) ); ?>%;"></span>
+				</span>
+				<span class="ae-rangliste__value"><?php echo esc_html( $auto_emotion_herkunft_anzahl ); ?></span>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<?php if ( ! empty( $auto_emotion_anstehende_termine ) ) : ?>
+<div class="ae-card">
+	<h2><?php esc_html_e( 'Anstehende Termine', 'auto-emotion' ); ?></h2>
+	<ul class="ae-list" style="box-shadow:none; border:none;">
+		<?php foreach ( $auto_emotion_anstehende_termine as $auto_emotion_termin_bewerbung ) : ?>
+			<li style="padding-left:0; padding-right:0;">
+				<div class="ae-list__main">
+					<p class="ae-list__title">
+						<a href="<?php echo esc_url( home_url( '/mitarbeiter/bewerbungen/' . $auto_emotion_termin_bewerbung->ID . '/' ) ); ?>"><?php echo esc_html( get_post_meta( $auto_emotion_termin_bewerbung->ID, '_bewerbung_name', true ) ); ?></a>
+					</p>
+					<p class="ae-list__meta">
+						<?php echo esc_html( mysql2date( 'd.m.Y H:i', get_post_meta( $auto_emotion_termin_bewerbung->ID, '_bewerbung_termin', true ) ) ); ?> Uhr
+						· <?php echo esc_html( get_post_meta( $auto_emotion_termin_bewerbung->ID, '_bewerbung_position', true ) ); ?>
+					</p>
+				</div>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
 
 <div class="ae-card">
 	<h2><?php esc_html_e( 'Candidate-Feedback', 'auto-emotion' ); ?></h2>

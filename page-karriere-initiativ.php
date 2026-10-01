@@ -16,6 +16,7 @@ get_header();
 
 $auto_emotion_status   = isset( $_GET['bewerbung'] ) ? sanitize_text_field( wp_unslash( $_GET['bewerbung'] ) ) : '';
 $auto_emotion_prefill  = isset( $_GET['stelle'] ) ? sanitize_text_field( wp_unslash( $_GET['stelle'] ) ) : '';
+$auto_emotion_herkunft_referrer = isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
 ?>
 
 <div class="section-heading">
@@ -38,6 +39,7 @@ $auto_emotion_prefill  = isset( $_GET['stelle'] ) ? sanitize_text_field( wp_unsl
 
 <form class="application-form" method="post" enctype="multipart/form-data" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 	<input type="hidden" name="action" value="auto_emotion_bewerbung">
+	<input type="hidden" name="bewerbung_herkunft_referrer" value="<?php echo esc_attr( $auto_emotion_herkunft_referrer ); ?>">
 	<?php wp_nonce_field( 'auto_emotion_bewerbung', 'auto_emotion_bewerbung_nonce' ); ?>
 
 	<p class="application-form__honeypot" aria-hidden="true">

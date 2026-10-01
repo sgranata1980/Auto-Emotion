@@ -303,6 +303,18 @@ body.ae-app {
 	box-shadow: var(--ae-shadow-sm);
 }
 
+.ae-kpi__icon {
+	width: 30px;
+	height: 30px;
+	border-radius: 8px;
+	background: var(--ae-accent-soft);
+	color: var(--ae-accent);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 10px;
+}
+
 .ae-kpi__value {
 	font-size: 26px;
 	font-weight: 700;
@@ -645,6 +657,71 @@ body.ae-app {
 	gap: 8px;
 }
 
+/* Avatar-Initialen (Liste, Board, Detailansicht) */
+
+.ae-avatar {
+	flex-shrink: 0;
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	font-weight: 600;
+	font-size: 14px;
+	letter-spacing: 0.02em;
+}
+
+.ae-avatar--sm {
+	width: 24px;
+	height: 24px;
+	font-size: 10.5px;
+}
+
+.ae-avatar--lg {
+	width: 44px;
+	height: 44px;
+	font-size: 17px;
+}
+
+/* Tags/Labels */
+
+.ae-tag {
+	display: inline-block;
+	padding: 2px 9px;
+	border-radius: 999px;
+	background: var(--ae-sidebar-bg);
+	color: var(--ae-text-secondary);
+	font-size: 11px;
+	font-weight: 500;
+	margin-right: 4px;
+}
+
+/* Suchfeld in der Bewerbungsliste */
+
+.ae-suche {
+	display: flex;
+	gap: 8px;
+	margin-left: auto;
+}
+
+.ae-suche input[type="search"] {
+	border: 1px solid var(--ae-border-strong);
+	border-radius: var(--ae-radius-sm);
+	padding: 7px 12px;
+	font-family: var(--ae-font);
+	font-size: 13px;
+	min-width: 220px;
+	background: var(--ae-surface);
+	color: var(--ae-text);
+}
+
+.ae-suche .ae-btn--ghost {
+	width: auto;
+	padding: 7px 14px;
+}
+
 .ae-empty {
 	color: var(--ae-text-secondary);
 	padding: 48px 0;
@@ -875,6 +952,59 @@ body.ae-app {
 	background: var(--ae-accent-hover);
 }
 
+/* Rangliste mit Balken (Dashboard: Bewerbungen je Position) */
+
+.ae-rangliste {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.ae-rangliste li {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 2fr auto;
+	align-items: center;
+	gap: 12px;
+}
+
+.ae-rangliste__label {
+	font-size: 13.5px;
+	text-decoration: none;
+	color: var(--ae-text);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.ae-rangliste__label:hover {
+	text-decoration: underline;
+}
+
+.ae-rangliste__bar-track {
+	background: var(--ae-sidebar-bg);
+	border-radius: 999px;
+	overflow: hidden;
+	height: 8px;
+}
+
+.ae-rangliste__bar {
+	display: block;
+	height: 100%;
+	background: var(--ae-accent);
+	border-radius: 999px;
+}
+
+.ae-rangliste__value {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--ae-text-secondary);
+	min-width: 1.5em;
+	text-align: right;
+}
+
 /* Kanban-Board */
 
 .ae-board {
@@ -928,4 +1058,76 @@ body.ae-app {
 .ae-board__card-meta {
 	font-size: 11.5px;
 	color: var(--ae-text-secondary);
+}
+
+/* Automatisierung & KI: Kartenraster statt einfacher Liste, mit Icon
+   und farbigem linkem Rand je Status (live/teilweise/geplant). */
+.ae-automation-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	gap: 16px;
+	margin-bottom: 8px;
+}
+
+.ae-automation-card {
+	background: var(--ae-surface);
+	border: 1px solid var(--ae-border);
+	border-left: 3px solid var(--ae-border-strong);
+	border-radius: var(--ae-radius);
+	box-shadow: var(--ae-shadow-sm);
+	padding: 18px 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	transition: box-shadow .15s ease, transform .15s ease;
+}
+
+.ae-automation-card:hover {
+	box-shadow: var(--ae-shadow);
+	transform: translateY(-1px);
+}
+
+.ae-automation-card--live {
+	border-left-color: var(--ae-success);
+}
+
+.ae-automation-card--teilweise {
+	border-left-color: var(--ae-warning);
+}
+
+.ae-automation-card--geplant {
+	border-left-color: var(--ae-text-tertiary);
+}
+
+.ae-automation-card__top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.ae-automation-card__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	border-radius: 10px;
+	background: var(--ae-accent-soft);
+	color: var(--ae-accent);
+	flex-shrink: 0;
+}
+
+.ae-automation-card__title {
+	font-size: 14.5px;
+	font-weight: 600;
+	margin: 2px 0 0;
+}
+
+.ae-automation-card__beschreibung {
+	font-size: 12.5px;
+	line-height: 1.5;
+	color: var(--ae-text-secondary);
+	margin: 0 0 4px;
+	flex: 1;
 }
