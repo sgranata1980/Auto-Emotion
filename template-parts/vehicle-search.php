@@ -34,7 +34,24 @@ $auto_emotion_angebot_count = (int) wp_count_posts( 'angebot' )->publish;
 		</div>
 
 		<div class="vehicle-search__inner">
-			<h2 id="vehicle-search-heading" class="vehicle-search__headline"><?php esc_html_e( 'Fahrzeugsuche', 'auto-emotion' ); ?></h2>
+			<?php
+			/**
+			 * Weiches Trennzeichen (U+00AD) zwischen den beiden
+			 * Wortteilen: Server-seitiges CSS-"hyphens: auto" trennt
+			 * deutsche Komposita nur, wenn der Browser ein
+			 * Trennwörterbuch für die Sprache mitbringt (bei vielen
+			 * Chromium-Builds unter Linux nicht der Fall) – sonst bricht
+			 * "Fahrzeugsuche" an beliebiger Stelle mitten im Wort um
+			 * ("FAHRZEUGSUC-HE"). Das unsichtbare Trennzeichen garantiert
+			 * den richtigen Umbruchpunkt ("FAHRZEUG-SUCHE") in jedem
+			 * Browser, ganz ohne sich auf Wörterbücher zu verlassen.
+			 */
+			$auto_emotion_fahrzeugsuche = __( 'Fahrzeugsuche', 'auto-emotion' );
+			if ( 'Fahrzeugsuche' === $auto_emotion_fahrzeugsuche ) {
+				$auto_emotion_fahrzeugsuche = 'Fahrzeug' . "\xC2\xAD" . 'suche';
+			}
+			?>
+			<h2 id="vehicle-search-heading" class="vehicle-search__headline"><?php echo esc_html( $auto_emotion_fahrzeugsuche ); ?></h2>
 			<p><?php esc_html_e( 'Fahrzeug finden. Anfragen. Losfahren.', 'auto-emotion' ); ?></p>
 
 			<form class="vehicle-search__form" method="get" action="<?php echo esc_url( get_post_type_archive_link( 'angebot' ) ); ?>">
