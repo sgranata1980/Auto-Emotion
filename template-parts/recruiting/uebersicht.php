@@ -29,22 +29,27 @@ $auto_emotion_status_max = max( 1, max( $auto_emotion_status_verteilung ) );
 
 <div class="ae-kpis">
 	<div class="ae-kpi">
+		<div class="ae-kpi__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19.5V4.5C4 3.67 4.67 3 5.5 3H18a1 1 0 0 1 1 1v15" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M6.5 3v18M6.5 17H19a2 2 0 0 1 2 2v1H6.5" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></div>
 		<div class="ae-kpi__value"><?php echo esc_html( $auto_emotion_suchprofile_gesamt ); ?></div>
 		<div class="ae-kpi__label"><?php esc_html_e( 'Suchprofile gesamt', 'auto-emotion' ); ?></div>
 	</div>
 	<div class="ae-kpi">
+		<div class="ae-kpi__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke="currentColor" stroke-width="1.6"/></svg></div>
 		<div class="ae-kpi__value"><?php echo esc_html( $auto_emotion_suchprofile_aktiv ); ?></div>
 		<div class="ae-kpi__label"><?php esc_html_e( 'Aktiv gesucht', 'auto-emotion' ); ?></div>
 	</div>
 	<div class="ae-kpi">
+		<div class="ae-kpi__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 2h9l5 5v15H6V2Z" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M9 12h8M9 16h8M9 8h4" stroke="currentColor" stroke-width="1.6"/></svg></div>
 		<div class="ae-kpi__value"><?php echo esc_html( $auto_emotion_bewerbungen_gesamt ); ?></div>
 		<div class="ae-kpi__label"><?php esc_html_e( 'Bewerbungen gesamt', 'auto-emotion' ); ?></div>
 	</div>
 	<div class="ae-kpi">
+		<div class="ae-kpi__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8"/></svg></div>
 		<div class="ae-kpi__value"><?php echo esc_html( $auto_emotion_bewerbungen_woche ); ?></div>
 		<div class="ae-kpi__label"><?php esc_html_e( 'Neu diese Woche', 'auto-emotion' ); ?></div>
 	</div>
 	<div class="ae-kpi">
+		<div class="ae-kpi__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></div>
 		<div class="ae-kpi__value"><?php echo null === $auto_emotion_tage_bis_entscheidung ? '–' : esc_html( $auto_emotion_tage_bis_entscheidung ); ?></div>
 		<div class="ae-kpi__label"><?php esc_html_e( 'Ø Tage bis Entscheidung', 'auto-emotion' ); ?></div>
 	</div>

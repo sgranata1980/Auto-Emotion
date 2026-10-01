@@ -37,6 +37,8 @@ if ( $auto_emotion_termin ) {
 }
 
 $auto_emotion_kommentare = auto_emotion_bewerbung_kommentare( $auto_emotion_id );
+$auto_emotion_tags       = auto_emotion_bewerbung_tags( $auto_emotion_id );
+$auto_emotion_alle_tags  = auto_emotion_alle_bewerbung_tags();
 
 $auto_emotion_feedback_angefragt_am  = get_post_meta( $auto_emotion_id, '_bewerbung_feedback_angefragt_am', true );
 $auto_emotion_feedback_beantwortet   = get_post_meta( $auto_emotion_id, '_bewerbung_feedback_beantwortet', true );
@@ -84,7 +86,17 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 
 <a class="ae-back-link" href="<?php echo esc_url( home_url( '/mitarbeiter/bewerbungen/' ) ); ?>">← <?php esc_html_e( 'Zurück zur Übersicht', 'auto-emotion' ); ?></a>
 
-<h1><?php echo esc_html( $auto_emotion_name ); ?></h1>
+<h1 style="display:flex; align-items:center; gap:14px;">
+	<span class="ae-avatar ae-avatar--lg" style="background:<?php echo esc_attr( auto_emotion_avatar_farbe( $auto_emotion_name ) ); ?>;"><?php echo esc_html( auto_emotion_initialen( $auto_emotion_name ) ); ?></span>
+	<?php echo esc_html( $auto_emotion_name ); ?>
+</h1>
+<?php if ( ! empty( $auto_emotion_tags ) ) : ?>
+	<p style="margin:-8px 0 16px;">
+		<?php foreach ( $auto_emotion_tags as $auto_emotion_tag ) : ?>
+			<span class="ae-tag">#<?php echo esc_html( $auto_emotion_tag ); ?></span>
+		<?php endforeach; ?>
+	</p>
+<?php endif; ?>
 
 <?php if ( isset( $_GET['weitergeleitet'] ) ) : ?>
 	<p class="ae-notice"><?php esc_html_e( 'Bewerbung wurde weitergeleitet.', 'auto-emotion' ); ?></p>
@@ -198,6 +210,17 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 		<div class="ae-field">
 			<label for="ae_bewerbung_termin"><?php esc_html_e( 'Termin Vorstellungsgespräch', 'auto-emotion' ); ?></label>
 			<input type="datetime-local" id="ae_bewerbung_termin" name="ae_bewerbung_termin" value="<?php echo esc_attr( $auto_emotion_termin_input ); ?>">
+		</div>
+		<div class="ae-field">
+			<label for="ae_bewerbung_tags"><?php esc_html_e( 'Tags (kommagetrennt)', 'auto-emotion' ); ?></label>
+			<input type="text" id="ae_bewerbung_tags" name="ae_bewerbung_tags" list="ae_tags_vorschlaege" placeholder="<?php esc_attr_e( 'z. B. Quereinsteiger, mehrsprachig', 'auto-emotion' ); ?>" value="<?php echo esc_attr( implode( ', ', $auto_emotion_tags ) ); ?>">
+			<?php if ( ! empty( $auto_emotion_alle_tags ) ) : ?>
+				<datalist id="ae_tags_vorschlaege">
+					<?php foreach ( $auto_emotion_alle_tags as $auto_emotion_tag_vorschlag ) : ?>
+						<option value="<?php echo esc_attr( $auto_emotion_tag_vorschlag ); ?>">
+					<?php endforeach; ?>
+				</datalist>
+			<?php endif; ?>
 		</div>
 		<div class="ae-field ae-field--full">
 			<label for="ae_bewerbung_notiz"><?php esc_html_e( 'Interne Notiz (nur für Kollegen sichtbar)', 'auto-emotion' ); ?></label>

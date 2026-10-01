@@ -201,6 +201,8 @@ function auto_emotion_bewerbungen_template_redirect() {
 	if ( 'bewerbungen' === $route ) {
 		$auto_emotion_filter_status   = isset( $_GET['status'] ) ? sanitize_key( wp_unslash( $_GET['status'] ) ) : '';
 		$auto_emotion_filter_position = isset( $_GET['position'] ) ? sanitize_text_field( wp_unslash( $_GET['position'] ) ) : '';
+		$auto_emotion_filter_suche    = isset( $_GET['suche'] ) ? sanitize_text_field( wp_unslash( $_GET['suche'] ) ) : '';
+		$auto_emotion_filter_tag      = isset( $_GET['tag'] ) ? sanitize_text_field( wp_unslash( $_GET['tag'] ) ) : '';
 		$auto_emotion_query_args      = array(
 			'post_type'      => 'bewerbung',
 			'post_status'    => 'publish',
@@ -227,7 +229,51 @@ function auto_emotion_bewerbungen_template_redirect() {
 		}
 
 		$auto_emotion_bewerbungen = get_posts( $auto_emotion_query_args );
-		$auto_emotion_view        = isset( $_GET['view'] ) && 'board' === $_GET['view'] ? 'board' : 'liste';
+
+		// Volltextsuche und Tag-Filter laufen bewusst in PHP statt per
+		// meta_query: Tags liegen als serialisiertes Array vor, und bei der
+		// überschaubaren Bewerbungsmenge eines einzelnen Autohauses ist ein
+		// einfacher, korrekter Textvergleich der robustere Weg als eine
+		// fehleranfällige LIKE-Suche auf serialisierten Daten.
+		if ( $auto_emotion_filter_suche ) {
+			$auto_emotion_suche_lower = mb_strtolower( $auto_emotion_filter_suche );
+			$auto_emotion_bewerbungen = array_values(
+				array_filter(
+					$auto_emotion_bewerbungen,
+					function ( $auto_emotion_b ) use ( $auto_emotion_suche_lower ) {
+						$auto_emotion_heuhaufen = mb_strtolower(
+							implode(
+								' ',
+								array_filter(
+									array(
+										get_post_meta( $auto_emotion_b->ID, '_bewerbung_name', true ),
+										get_post_meta( $auto_emotion_b->ID, '_bewerbung_position', true ),
+										get_post_meta( $auto_emotion_b->ID, '_bewerbung_email', true ),
+										get_post_meta( $auto_emotion_b->ID, '_bewerbung_telefon', true ),
+										get_post_meta( $auto_emotion_b->ID, '_bewerbung_notiz', true ),
+										implode( ' ', auto_emotion_bewerbung_tags( $auto_emotion_b->ID ) ),
+									)
+								)
+							)
+						);
+						return false !== mb_strpos( $auto_emotion_heuhaufen, $auto_emotion_suche_lower );
+					}
+				)
+			);
+		}
+
+		if ( $auto_emotion_filter_tag ) {
+			$auto_emotion_bewerbungen = array_values(
+				array_filter(
+					$auto_emotion_bewerbungen,
+					function ( $auto_emotion_b ) use ( $auto_emotion_filter_tag ) {
+						return in_array( $auto_emotion_filter_tag, auto_emotion_bewerbung_tags( $auto_emotion_b->ID ), true );
+					}
+				)
+			);
+		}
+
+		$auto_emotion_view = isset( $_GET['view'] ) && 'board' === $_GET['view'] ? 'board' : 'liste';
 
 		$auto_emotion_alle_bewerbungen = 'board' === $auto_emotion_view
 			? get_posts(
@@ -247,6 +293,9 @@ function auto_emotion_bewerbungen_template_redirect() {
 				'auto_emotion_bewerbungen'      => $auto_emotion_bewerbungen,
 				'auto_emotion_filter_status'    => $auto_emotion_filter_status,
 				'auto_emotion_filter_position'  => $auto_emotion_filter_position,
+				'auto_emotion_filter_suche'     => $auto_emotion_filter_suche,
+				'auto_emotion_filter_tag'       => $auto_emotion_filter_tag,
+				'auto_emotion_alle_tags'        => auto_emotion_alle_bewerbung_tags(),
 				'auto_emotion_view'             => $auto_emotion_view,
 				'auto_emotion_alle_bewerbungen' => $auto_emotion_alle_bewerbungen,
 			)
@@ -484,6 +533,7 @@ function auto_emotion_handle_bewerbung_bewerten() {
 	$bewertung  = isset( $_POST['ae_bewerbung_bewertung'] ) ? absint( $_POST['ae_bewerbung_bewertung'] ) : 0;
 	$notiz      = isset( $_POST['ae_bewerbung_notiz'] ) ? sanitize_textarea_field( wp_unslash( $_POST['ae_bewerbung_notiz'] ) ) : '';
 	$termin_raw = isset( $_POST['ae_bewerbung_termin'] ) ? sanitize_text_field( wp_unslash( $_POST['ae_bewerbung_termin'] ) ) : '';
+	$tags_raw   = isset( $_POST['ae_bewerbung_tags'] ) ? sanitize_text_field( wp_unslash( $_POST['ae_bewerbung_tags'] ) ) : '';
 
 	if ( ! array_key_exists( $status, auto_emotion_bewerbung_status_labels() ) ) {
 		$status = 'neu';
@@ -502,6 +552,17 @@ function auto_emotion_handle_bewerbung_bewerten() {
 		}
 	}
 
+	// Frei definierbare Tags, kommagetrennt eingegeben ("Quereinsteiger,
+	// mehrsprachig") – dedupliziert, leere Einträge raus, Reihenfolge der
+	// Eingabe bleibt erhalten.
+	$tags = array_values(
+		array_unique(
+			array_filter(
+				array_map( 'trim', explode( ',', $tags_raw ) )
+			)
+		)
+	);
+
 	$alter_status = get_post_meta( $post_id, '_bewerbung_status', true );
 	$alter_termin = get_post_meta( $post_id, '_bewerbung_termin', true );
 
@@ -509,6 +570,7 @@ function auto_emotion_handle_bewerbung_bewerten() {
 	update_post_meta( $post_id, '_bewerbung_bewertung', $bewertung );
 	update_post_meta( $post_id, '_bewerbung_notiz', $notiz );
 	update_post_meta( $post_id, '_bewerbung_termin', $termin );
+	update_post_meta( $post_id, '_bewerbung_tags', $tags );
 
 	if ( $termin !== $alter_termin ) {
 		// Bei neuem/geändertem Termin darf die Erinnerungs-Mail für den
@@ -524,6 +586,64 @@ function auto_emotion_handle_bewerbung_bewerten() {
 	exit;
 }
 add_action( 'admin_post_auto_emotion_bewerbung_bewerten', 'auto_emotion_handle_bewerbung_bewerten' );
+
+/**
+ * Frei definierbare Tags je Bewerbung (z. B. "Quereinsteiger",
+ * "mehrsprachig", "Ausbildung gesucht") – lassen sich in der Liste
+ * filtern und machen aus der reinen Status-Pipeline eine durchsuchbare,
+ * frei organisierbare Bewerber-Datenbank.
+ */
+function auto_emotion_bewerbung_tags( $post_id ) {
+	$tags = get_post_meta( $post_id, '_bewerbung_tags', true );
+	return is_array( $tags ) ? $tags : array();
+}
+
+/**
+ * Alle im System tatsächlich vergebenen Tags, alphabetisch – Grundlage
+ * für Filter-Chips und Autovervollständigung, keine erfundene Liste.
+ */
+function auto_emotion_alle_bewerbung_tags() {
+	$alle_ids = get_posts(
+		array(
+			'post_type'      => 'bewerbung',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		)
+	);
+
+	$tags = array();
+	foreach ( $alle_ids as $id ) {
+		foreach ( auto_emotion_bewerbung_tags( $id ) as $tag ) {
+			$tags[ $tag ] = true;
+		}
+	}
+
+	$tags = array_keys( $tags );
+	natcasesort( $tags );
+	return array_values( $tags );
+}
+
+/**
+ * Initialen und eine dazu deterministische Farbe aus dem Namen – für
+ * die Avatar-Kreise in Liste, Board und Detailansicht. Bewusst keine
+ * echten Fotos (DSGVO-Datensparsamkeit, keine Foto-Upload-Funktion).
+ */
+function auto_emotion_initialen( $name ) {
+	$teile = array_values( array_filter( preg_split( '/\s+/', trim( (string) $name ) ) ) );
+	if ( empty( $teile ) ) {
+		return '?';
+	}
+	$erster  = mb_substr( $teile[0], 0, 1 );
+	$letzter = count( $teile ) > 1 ? mb_substr( end( $teile ), 0, 1 ) : '';
+	return mb_strtoupper( $erster . $letzter );
+}
+
+function auto_emotion_avatar_farbe( $name ) {
+	$palette = array( '#0071e3', '#8e44ad', '#16a085', '#d35400', '#c0392b', '#2c3e50', '#2980b9', '#27ae60' );
+	$index   = abs( crc32( (string) $name ) ) % count( $palette );
+	return $palette[ $index ];
+}
 
 /**
  * Team-Kommentare je Bewerbung: anders als die einzelne, bei jedem

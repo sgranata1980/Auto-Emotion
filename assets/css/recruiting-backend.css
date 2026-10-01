@@ -303,6 +303,18 @@ body.ae-app {
 	box-shadow: var(--ae-shadow-sm);
 }
 
+.ae-kpi__icon {
+	width: 30px;
+	height: 30px;
+	border-radius: 8px;
+	background: var(--ae-accent-soft);
+	color: var(--ae-accent);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 10px;
+}
+
 .ae-kpi__value {
 	font-size: 26px;
 	font-weight: 700;
@@ -643,6 +655,71 @@ body.ae-app {
 	display: flex;
 	align-items: center;
 	gap: 8px;
+}
+
+/* Avatar-Initialen (Liste, Board, Detailansicht) */
+
+.ae-avatar {
+	flex-shrink: 0;
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	font-weight: 600;
+	font-size: 14px;
+	letter-spacing: 0.02em;
+}
+
+.ae-avatar--sm {
+	width: 24px;
+	height: 24px;
+	font-size: 10.5px;
+}
+
+.ae-avatar--lg {
+	width: 44px;
+	height: 44px;
+	font-size: 17px;
+}
+
+/* Tags/Labels */
+
+.ae-tag {
+	display: inline-block;
+	padding: 2px 9px;
+	border-radius: 999px;
+	background: var(--ae-sidebar-bg);
+	color: var(--ae-text-secondary);
+	font-size: 11px;
+	font-weight: 500;
+	margin-right: 4px;
+}
+
+/* Suchfeld in der Bewerbungsliste */
+
+.ae-suche {
+	display: flex;
+	gap: 8px;
+	margin-left: auto;
+}
+
+.ae-suche input[type="search"] {
+	border: 1px solid var(--ae-border-strong);
+	border-radius: var(--ae-radius-sm);
+	padding: 7px 12px;
+	font-family: var(--ae-font);
+	font-size: 13px;
+	min-width: 220px;
+	background: var(--ae-surface);
+	color: var(--ae-text);
+}
+
+.ae-suche .ae-btn--ghost {
+	width: auto;
+	padding: 7px 14px;
 }
 
 .ae-empty {
