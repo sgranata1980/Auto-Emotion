@@ -131,6 +131,9 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 <?php if ( isset( $_GET['talentpool_gespeichert'] ) ) : ?>
 	<p class="ae-notice"><?php esc_html_e( 'Talent-Pool-Eintrag gespeichert.', 'auto-emotion' ); ?></p>
 <?php endif; ?>
+<?php if ( isset( $_GET['kriterien_korrigiert'] ) ) : ?>
+	<p class="ae-notice"><?php esc_html_e( 'Korrektur gespeichert.', 'auto-emotion' ); ?></p>
+<?php endif; ?>
 
 <?php if ( ! empty( $auto_emotion_dubletten_ids ) ) : ?>
 	<p class="ae-notice" style="background:var(--ae-warning-soft, rgba(178,80,0,.12)); border-color:var(--ae-warning); color:var(--ae-warning);">
@@ -167,24 +170,49 @@ auto_emotion_staff_shell_start( $auto_emotion_name, 'bewerbungen' );
 			<p class="ae-intro" style="margin:0 0 12px;"><?php echo esc_html( $auto_emotion_ki_text ); ?></p>
 			<?php if ( $auto_emotion_ki_kriterien ) : ?>
 				<p class="ae-list__title" style="font-size:13px; margin-bottom:6px;"><?php esc_html_e( 'Kriterien im Detail', 'auto-emotion' ); ?></p>
-				<ul style="margin:0 0 12px; padding:0; list-style:none; display:flex; flex-direction:column; gap:8px;">
-					<?php foreach ( $auto_emotion_ki_kriterien as $auto_emotion_kriterium ) : ?>
-						<?php
-						$auto_emotion_kriterium_status = isset( $auto_emotion_ki_kriterien_status[ $auto_emotion_kriterium['status'] ] )
-							? $auto_emotion_ki_kriterien_status[ $auto_emotion_kriterium['status'] ]
-							: $auto_emotion_ki_kriterien_status['unknown'];
-						?>
-						<li>
-							<div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-								<span class="ae-status ae-status--<?php echo esc_attr( $auto_emotion_kriterium_status['class'] ); ?>"><?php echo esc_html( $auto_emotion_kriterium_status['label'] ); ?></span>
-								<strong style="font-size:13.5px;"><?php echo esc_html( $auto_emotion_kriterium['kriterium'] ); ?></strong>
-							</div>
-							<?php if ( ! empty( $auto_emotion_kriterium['begruendung'] ) ) : ?>
-								<p class="ae-list__meta" style="margin:2px 0 0;"><?php echo esc_html( $auto_emotion_kriterium['begruendung'] ); ?></p>
-							<?php endif; ?>
-						</li>
-					<?php endforeach; ?>
-				</ul>
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+					<input type="hidden" name="action" value="auto_emotion_bewerbung_kriterium_korrigieren">
+					<input type="hidden" name="ae_bewerbung_id" value="<?php echo esc_attr( $auto_emotion_id ); ?>">
+					<?php wp_nonce_field( 'auto_emotion_bewerbung_kriterien_' . $auto_emotion_id, 'auto_emotion_bewerbung_kriterien_nonce' ); ?>
+					<ul style="margin:0 0 12px; padding:0; list-style:none; display:flex; flex-direction:column; gap:10px;">
+						<?php foreach ( $auto_emotion_ki_kriterien as $auto_emotion_kriterium_index => $auto_emotion_kriterium ) : ?>
+							<?php
+							$auto_emotion_kriterium_status = isset( $auto_emotion_ki_kriterien_status[ $auto_emotion_kriterium['status'] ] )
+								? $auto_emotion_ki_kriterien_status[ $auto_emotion_kriterium['status'] ]
+								: $auto_emotion_ki_kriterien_status['unknown'];
+							?>
+							<li>
+								<div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+									<span class="ae-status ae-status--<?php echo esc_attr( $auto_emotion_kriterium_status['class'] ); ?>"><?php echo esc_html( $auto_emotion_kriterium_status['label'] ); ?></span>
+									<strong style="font-size:13.5px;"><?php echo esc_html( $auto_emotion_kriterium['kriterium'] ); ?></strong>
+								</div>
+								<?php if ( ! empty( $auto_emotion_kriterium['begruendung'] ) ) : ?>
+									<p class="ae-list__meta" style="margin:2px 0 0;"><?php echo esc_html( $auto_emotion_kriterium['begruendung'] ); ?></p>
+								<?php endif; ?>
+								<?php if ( ! empty( $auto_emotion_kriterium['korrigiert_von'] ) ) : ?>
+									<p class="ae-list__meta" style="margin:2px 0 0; font-style:italic;">
+										<?php
+										echo esc_html(
+											sprintf(
+												/* translators: 1: Name, 2: Datum/Uhrzeit */
+												__( 'Manuell korrigiert von %1$s am %2$s', 'auto-emotion' ),
+												$auto_emotion_kriterium['korrigiert_von'],
+												mysql2date( 'd.m.Y H:i', $auto_emotion_kriterium['korrigiert_am'] )
+											)
+										);
+										?>
+									</p>
+								<?php endif; ?>
+								<select name="ae_kriterium_status[<?php echo esc_attr( $auto_emotion_kriterium_index ); ?>]" style="margin-top:6px; font-size:12.5px;" aria-label="<?php echo esc_attr( sprintf( __( 'Status für Kriterium „%s" korrigieren', 'auto-emotion' ), $auto_emotion_kriterium['kriterium'] ) ); ?>">
+									<?php foreach ( $auto_emotion_ki_kriterien_status as $auto_emotion_status_option_key => $auto_emotion_status_option ) : ?>
+										<option value="<?php echo esc_attr( $auto_emotion_status_option_key ); ?>" <?php selected( $auto_emotion_kriterium['status'], $auto_emotion_status_option_key ); ?>><?php echo esc_html( $auto_emotion_status_option['label'] ); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+					<button type="submit" class="ae-btn ae-btn--ghost" style="width:auto; margin-bottom:12px;"><?php esc_html_e( 'Korrekturen speichern', 'auto-emotion' ); ?></button>
+				</form>
 			<?php endif; ?>
 			<p class="ae-list__meta" style="margin:0 0 16px;">
 				<?php

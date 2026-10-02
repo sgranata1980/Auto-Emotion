@@ -246,6 +246,92 @@ function auto_emotion_maybe_flush_bewerbungen_rewrite_rules() {
 }
 add_action( 'init', 'auto_emotion_maybe_flush_bewerbungen_rewrite_rules', 20 );
 
+/**
+ * Zentrale Filterlogik für die Bewerbungsliste – von der Listenansicht
+ * UND vom CSV-Export genutzt, damit beide garantiert dieselben
+ * Bewerbungen liefern (keine zwei leicht unterschiedlichen Kopien der
+ * Filterregeln).
+ */
+function auto_emotion_gefilterte_bewerbungen( $auto_emotion_filter_status, $auto_emotion_filter_position, $auto_emotion_filter_suche, $auto_emotion_filter_tag, $auto_emotion_filter_talentpool ) {
+	$auto_emotion_query_args = array(
+		'post_type'      => 'bewerbung',
+		'post_status'    => 'publish',
+		'posts_per_page' => -1,
+		'orderby'        => 'date',
+		'order'          => 'DESC',
+	);
+
+	$auto_emotion_meta_query = array();
+	if ( $auto_emotion_filter_status && array_key_exists( $auto_emotion_filter_status, auto_emotion_bewerbung_status_labels() ) ) {
+		$auto_emotion_meta_query[] = array(
+			'key'   => '_bewerbung_status',
+			'value' => $auto_emotion_filter_status,
+		);
+	}
+	if ( $auto_emotion_filter_position ) {
+		$auto_emotion_meta_query[] = array(
+			'key'   => '_bewerbung_position',
+			'value' => $auto_emotion_filter_position,
+		);
+	}
+	if ( $auto_emotion_filter_talentpool ) {
+		$auto_emotion_meta_query[] = array(
+			'key'   => '_bewerbung_talentpool',
+			'value' => '1',
+		);
+	}
+	if ( $auto_emotion_meta_query ) {
+		$auto_emotion_query_args['meta_query'] = $auto_emotion_meta_query;
+	}
+
+	$auto_emotion_bewerbungen = get_posts( $auto_emotion_query_args );
+
+	// Volltextsuche und Tag-Filter laufen bewusst in PHP statt per
+	// meta_query: Tags liegen als serialisiertes Array vor, und bei der
+	// überschaubaren Bewerbungsmenge eines einzelnen Autohauses ist ein
+	// einfacher, korrekter Textvergleich der robustere Weg als eine
+	// fehleranfällige LIKE-Suche auf serialisierten Daten.
+	if ( $auto_emotion_filter_suche ) {
+		$auto_emotion_suche_lower = mb_strtolower( $auto_emotion_filter_suche );
+		$auto_emotion_bewerbungen = array_values(
+			array_filter(
+				$auto_emotion_bewerbungen,
+				function ( $auto_emotion_b ) use ( $auto_emotion_suche_lower ) {
+					$auto_emotion_heuhaufen = mb_strtolower(
+						implode(
+							' ',
+							array_filter(
+								array(
+									get_post_meta( $auto_emotion_b->ID, '_bewerbung_name', true ),
+									get_post_meta( $auto_emotion_b->ID, '_bewerbung_position', true ),
+									get_post_meta( $auto_emotion_b->ID, '_bewerbung_email', true ),
+									get_post_meta( $auto_emotion_b->ID, '_bewerbung_telefon', true ),
+									get_post_meta( $auto_emotion_b->ID, '_bewerbung_notiz', true ),
+									implode( ' ', auto_emotion_bewerbung_tags( $auto_emotion_b->ID ) ),
+								)
+							)
+						)
+					);
+					return false !== mb_strpos( $auto_emotion_heuhaufen, $auto_emotion_suche_lower );
+				}
+			)
+		);
+	}
+
+	if ( $auto_emotion_filter_tag ) {
+		$auto_emotion_bewerbungen = array_values(
+			array_filter(
+				$auto_emotion_bewerbungen,
+				function ( $auto_emotion_b ) use ( $auto_emotion_filter_tag ) {
+					return in_array( $auto_emotion_filter_tag, auto_emotion_bewerbung_tags( $auto_emotion_b->ID ), true );
+				}
+			)
+		);
+	}
+
+	return $auto_emotion_bewerbungen;
+}
+
 function auto_emotion_bewerbungen_template_redirect() {
 	$route = get_query_var( 'ae_staff_route' );
 
@@ -261,81 +347,8 @@ function auto_emotion_bewerbungen_template_redirect() {
 		$auto_emotion_filter_suche    = isset( $_GET['suche'] ) ? sanitize_text_field( wp_unslash( $_GET['suche'] ) ) : '';
 		$auto_emotion_filter_tag      = isset( $_GET['tag'] ) ? sanitize_text_field( wp_unslash( $_GET['tag'] ) ) : '';
 		$auto_emotion_filter_talentpool = ! empty( $_GET['talentpool'] );
-		$auto_emotion_query_args      = array(
-			'post_type'      => 'bewerbung',
-			'post_status'    => 'publish',
-			'posts_per_page' => -1,
-			'orderby'        => 'date',
-			'order'          => 'DESC',
-		);
 
-		$auto_emotion_meta_query = array();
-		if ( $auto_emotion_filter_status && array_key_exists( $auto_emotion_filter_status, auto_emotion_bewerbung_status_labels() ) ) {
-			$auto_emotion_meta_query[] = array(
-				'key'   => '_bewerbung_status',
-				'value' => $auto_emotion_filter_status,
-			);
-		}
-		if ( $auto_emotion_filter_position ) {
-			$auto_emotion_meta_query[] = array(
-				'key'   => '_bewerbung_position',
-				'value' => $auto_emotion_filter_position,
-			);
-		}
-		if ( $auto_emotion_filter_talentpool ) {
-			$auto_emotion_meta_query[] = array(
-				'key'   => '_bewerbung_talentpool',
-				'value' => '1',
-			);
-		}
-		if ( $auto_emotion_meta_query ) {
-			$auto_emotion_query_args['meta_query'] = $auto_emotion_meta_query;
-		}
-
-		$auto_emotion_bewerbungen = get_posts( $auto_emotion_query_args );
-
-		// Volltextsuche und Tag-Filter laufen bewusst in PHP statt per
-		// meta_query: Tags liegen als serialisiertes Array vor, und bei der
-		// überschaubaren Bewerbungsmenge eines einzelnen Autohauses ist ein
-		// einfacher, korrekter Textvergleich der robustere Weg als eine
-		// fehleranfällige LIKE-Suche auf serialisierten Daten.
-		if ( $auto_emotion_filter_suche ) {
-			$auto_emotion_suche_lower = mb_strtolower( $auto_emotion_filter_suche );
-			$auto_emotion_bewerbungen = array_values(
-				array_filter(
-					$auto_emotion_bewerbungen,
-					function ( $auto_emotion_b ) use ( $auto_emotion_suche_lower ) {
-						$auto_emotion_heuhaufen = mb_strtolower(
-							implode(
-								' ',
-								array_filter(
-									array(
-										get_post_meta( $auto_emotion_b->ID, '_bewerbung_name', true ),
-										get_post_meta( $auto_emotion_b->ID, '_bewerbung_position', true ),
-										get_post_meta( $auto_emotion_b->ID, '_bewerbung_email', true ),
-										get_post_meta( $auto_emotion_b->ID, '_bewerbung_telefon', true ),
-										get_post_meta( $auto_emotion_b->ID, '_bewerbung_notiz', true ),
-										implode( ' ', auto_emotion_bewerbung_tags( $auto_emotion_b->ID ) ),
-									)
-								)
-							)
-						);
-						return false !== mb_strpos( $auto_emotion_heuhaufen, $auto_emotion_suche_lower );
-					}
-				)
-			);
-		}
-
-		if ( $auto_emotion_filter_tag ) {
-			$auto_emotion_bewerbungen = array_values(
-				array_filter(
-					$auto_emotion_bewerbungen,
-					function ( $auto_emotion_b ) use ( $auto_emotion_filter_tag ) {
-						return in_array( $auto_emotion_filter_tag, auto_emotion_bewerbung_tags( $auto_emotion_b->ID ), true );
-					}
-				)
-			);
-		}
+		$auto_emotion_bewerbungen = auto_emotion_gefilterte_bewerbungen( $auto_emotion_filter_status, $auto_emotion_filter_position, $auto_emotion_filter_suche, $auto_emotion_filter_tag, $auto_emotion_filter_talentpool );
 
 		$auto_emotion_view = isset( $_GET['view'] ) && 'board' === $_GET['view'] ? 'board' : 'liste';
 
@@ -935,14 +948,108 @@ function auto_emotion_handle_bewerbung_talentpool() {
 		}
 	}
 
+	$alte_frist = get_post_meta( $post_id, '_bewerbung_talentpool_frist', true );
+
 	update_post_meta( $post_id, '_bewerbung_talentpool', $aktiv ? '1' : '' );
 	update_post_meta( $post_id, '_bewerbung_talentpool_zweck', $zweck );
 	update_post_meta( $post_id, '_bewerbung_talentpool_frist', $frist_valide );
+
+	if ( $frist_valide !== $alte_frist ) {
+		// Bei neuer/geänderter Frist darf die Erinnerungs-Mail für die
+		// (neue) Frist wieder verschickt werden.
+		delete_post_meta( $post_id, '_bewerbung_talentpool_frist_erinnerung_gesendet' );
+	}
 
 	wp_safe_redirect( add_query_arg( 'talentpool_gespeichert', '1', home_url( '/mitarbeiter/bewerbungen/' . $post_id . '/' ) ) );
 	exit;
 }
 add_action( 'admin_post_auto_emotion_bewerbung_talentpool', 'auto_emotion_handle_bewerbung_talentpool' );
+
+/**
+ * Prüft täglich, ob für Talent-Pool-Einträge eine Frist erreicht oder
+ * überschritten ist, und schickt dafür eine einmalige Sammel-Erinnerung
+ * ans Team (eine Digest-Mail statt einzeln je Eintrag, damit es bei
+ * mehreren fälligen Einträgen am selben Tag nicht zuspammt) – analog zur
+ * bestehenden Vorstellungsgespräch-Erinnerung weiter unten in dieser
+ * Datei.
+ */
+function auto_emotion_talentpool_frist_erinnerung_cron() {
+	$heute = current_time( 'Y-m-d' );
+
+	$bewerbungen = get_posts(
+		array(
+			'post_type'      => 'bewerbung',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'meta_query'     => array(
+				array(
+					'key'   => '_bewerbung_talentpool',
+					'value' => '1',
+				),
+				array(
+					'key'     => '_bewerbung_talentpool_frist_erinnerung_gesendet',
+					'compare' => 'NOT EXISTS',
+				),
+			),
+		)
+	);
+
+	$faellig = array_values(
+		array_filter(
+			$bewerbungen,
+			function ( $auto_emotion_b ) use ( $heute ) {
+				$frist = get_post_meta( $auto_emotion_b->ID, '_bewerbung_talentpool_frist', true );
+				return $frist && $frist <= $heute;
+			}
+		)
+	);
+
+	if ( ! $faellig ) {
+		return;
+	}
+
+	$empfaenger = auto_emotion_contact( 'email' );
+	if ( ! $empfaenger ) {
+		return;
+	}
+
+	$zeilen = array();
+	foreach ( $faellig as $bewerbung ) {
+		$name  = get_post_meta( $bewerbung->ID, '_bewerbung_name', true );
+		$zweck = get_post_meta( $bewerbung->ID, '_bewerbung_talentpool_zweck', true );
+		$frist = get_post_meta( $bewerbung->ID, '_bewerbung_talentpool_frist', true );
+
+		$zeilen[] = sprintf(
+			'- %s (Frist %s)%s: %s',
+			$name,
+			mysql2date( 'd.m.Y', $frist ),
+			$zweck ? ' – ' . $zweck : '',
+			home_url( '/mitarbeiter/bewerbungen/' . $bewerbung->ID . '/' )
+		);
+
+		update_post_meta( $bewerbung->ID, '_bewerbung_talentpool_frist_erinnerung_gesendet', '1' );
+	}
+
+	$betreff = sprintf(
+		/* translators: %d: Anzahl fälliger Talent-Pool-Fristen */
+		_n( '[Talent-Pool] %d Frist erreicht', '[Talent-Pool] %d Fristen erreicht', count( $zeilen ), 'auto-emotion' ),
+		count( $zeilen )
+	);
+	$body    = __( "Folgende Talent-Pool-Einträge haben ihre Frist erreicht oder überschritten:", 'auto-emotion' ) . "\n\n"
+		. implode( "\n", $zeilen )
+		. "\n\n" . __( 'Bitte prüfen: weiter vormerken (neue Frist setzen) oder aus dem Talent-Pool entfernen.', 'auto-emotion' ) . "\n\n"
+		. home_url( '/mitarbeiter/bewerbungen/?talentpool=1' );
+
+	wp_mail( $empfaenger, $betreff, $body );
+}
+add_action( 'auto_emotion_talentpool_frist_erinnerung_pruefen', 'auto_emotion_talentpool_frist_erinnerung_cron' );
+
+function auto_emotion_schedule_talentpool_frist_erinnerung() {
+	if ( ! wp_next_scheduled( 'auto_emotion_talentpool_frist_erinnerung_pruefen' ) ) {
+		wp_schedule_event( time(), 'daily', 'auto_emotion_talentpool_frist_erinnerung_pruefen' );
+	}
+}
+add_action( 'init', 'auto_emotion_schedule_talentpool_frist_erinnerung' );
 
 /**
  * DSGVO-Löschantrag: anders als "In den Papierkorb" (reversibel, erst
@@ -997,3 +1104,69 @@ function auto_emotion_handle_bewerbung_dsgvo_loeschen() {
 	exit;
 }
 add_action( 'admin_post_auto_emotion_bewerbung_dsgvo_loeschen', 'auto_emotion_handle_bewerbung_dsgvo_loeschen' );
+
+/**
+ * CSV-Export der aktuell gefilterten Bewerbungsliste – für Berichte und
+ * Weiterverarbeitung außerhalb des Systems. Nutzt dieselbe Filterlogik
+ * wie die Listenansicht (auto_emotion_gefilterte_bewerbungen()), damit
+ * der Export exakt den sichtbaren Treffern entspricht.
+ */
+function auto_emotion_handle_bewerbungen_csv_export() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'auto_emotion_bewerbungen_csv_export' ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$auto_emotion_filter_status     = isset( $_GET['status'] ) ? sanitize_key( wp_unslash( $_GET['status'] ) ) : '';
+	$auto_emotion_filter_position   = isset( $_GET['position'] ) ? sanitize_text_field( wp_unslash( $_GET['position'] ) ) : '';
+	$auto_emotion_filter_suche      = isset( $_GET['suche'] ) ? sanitize_text_field( wp_unslash( $_GET['suche'] ) ) : '';
+	$auto_emotion_filter_tag        = isset( $_GET['tag'] ) ? sanitize_text_field( wp_unslash( $_GET['tag'] ) ) : '';
+	$auto_emotion_filter_talentpool = ! empty( $_GET['talentpool'] );
+
+	$auto_emotion_bewerbungen = auto_emotion_gefilterte_bewerbungen( $auto_emotion_filter_status, $auto_emotion_filter_position, $auto_emotion_filter_suche, $auto_emotion_filter_tag, $auto_emotion_filter_talentpool );
+	$auto_emotion_status_labels = auto_emotion_bewerbung_status_labels();
+
+	nocache_headers();
+	header( 'Content-Type: text/csv; charset=UTF-8' );
+	header( 'Content-Disposition: attachment; filename="bewerbungen-' . gmdate( 'Y-m-d' ) . '.csv"' );
+	header( 'X-Robots-Tag: noindex' );
+
+	$auto_emotion_ausgabe = fopen( 'php://output', 'w' ); // phpcs:ignore -- gezielter CSV-Stream direkt an den Browser, kein WP_Filesystem nötig.
+	// UTF-8-BOM, damit Excel (auch die deutsche Version) Umlaute korrekt
+	// anzeigt; Semikolon statt Komma als Trennzeichen, da Excel in
+	// deutscher Spracheinstellung das Komma als Dezimaltrennzeichen
+	// erwartet und sonst keine sauberen Spalten erkennt.
+	fwrite( $auto_emotion_ausgabe, "\xEF\xBB\xBF" ); // phpcs:ignore
+
+	fputcsv( $auto_emotion_ausgabe, array( 'Name', 'Position', 'Status', 'Bewertung', 'Herkunft', 'Talent-Pool', 'Telefon', 'E-Mail', 'Eingegangen am', 'Tags' ), ';' );
+
+	foreach ( $auto_emotion_bewerbungen as $auto_emotion_b ) {
+		$auto_emotion_status_val = get_post_meta( $auto_emotion_b->ID, '_bewerbung_status', true );
+		$auto_emotion_status_val = $auto_emotion_status_val ? $auto_emotion_status_val : 'neu';
+
+		fputcsv(
+			$auto_emotion_ausgabe,
+			array(
+				get_post_meta( $auto_emotion_b->ID, '_bewerbung_name', true ),
+				get_post_meta( $auto_emotion_b->ID, '_bewerbung_position', true ),
+				isset( $auto_emotion_status_labels[ $auto_emotion_status_val ] ) ? $auto_emotion_status_labels[ $auto_emotion_status_val ] : $auto_emotion_status_val,
+				(int) get_post_meta( $auto_emotion_b->ID, '_bewerbung_bewertung', true ),
+				get_post_meta( $auto_emotion_b->ID, '_bewerbung_herkunft', true ),
+				auto_emotion_bewerbung_im_talentpool( $auto_emotion_b->ID ) ? 'Ja' : 'Nein',
+				get_post_meta( $auto_emotion_b->ID, '_bewerbung_telefon', true ),
+				get_post_meta( $auto_emotion_b->ID, '_bewerbung_email', true ),
+				get_the_date( 'd.m.Y H:i', $auto_emotion_b ),
+				implode( ', ', auto_emotion_bewerbung_tags( $auto_emotion_b->ID ) ),
+			),
+			';'
+		);
+	}
+
+	fclose( $auto_emotion_ausgabe ); // phpcs:ignore
+	exit;
+}
+add_action( 'admin_post_auto_emotion_bewerbungen_csv_export', 'auto_emotion_handle_bewerbungen_csv_export' );

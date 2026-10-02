@@ -58,6 +58,23 @@ auto_emotion_staff_shell_start( __( 'Bewerbungen', 'auto-emotion' ), 'bewerbunge
 		<input type="search" name="suche" value="<?php echo esc_attr( $auto_emotion_filter_suche ); ?>" placeholder="<?php esc_attr_e( 'Suche: Name, Position, Notiz, Tag …', 'auto-emotion' ); ?>">
 		<button type="submit" class="ae-btn ae-btn--ghost"><?php esc_html_e( 'Suchen', 'auto-emotion' ); ?></button>
 	</form>
+	<?php
+	$auto_emotion_csv_url = add_query_arg(
+		array_filter(
+			array(
+				'action'     => 'auto_emotion_bewerbungen_csv_export',
+				'status'     => $auto_emotion_filter_status,
+				'position'   => $auto_emotion_filter_position,
+				'suche'      => $auto_emotion_filter_suche,
+				'tag'        => $auto_emotion_filter_tag,
+				'talentpool' => $auto_emotion_filter_talentpool ? '1' : '',
+			)
+		),
+		admin_url( 'admin-post.php' )
+	);
+	$auto_emotion_csv_url = wp_nonce_url( $auto_emotion_csv_url, 'auto_emotion_bewerbungen_csv_export' );
+	?>
+	<a class="ae-btn ae-btn--ghost" style="width:auto;" href="<?php echo esc_url( $auto_emotion_csv_url ); ?>"><?php esc_html_e( 'CSV-Export', 'auto-emotion' ); ?></a>
 </div>
 
 <?php if ( $auto_emotion_filter_suche ) : ?>

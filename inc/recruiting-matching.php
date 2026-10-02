@@ -276,3 +276,68 @@ function auto_emotion_handle_bewerbung_einschaetzung() {
 	exit;
 }
 add_action( 'admin_post_auto_emotion_bewerbung_einschaetzung', 'auto_emotion_handle_bewerbung_einschaetzung' );
+
+/**
+ * Erlaubt Recruitern, den Status eines einzelnen KI-Kriteriums von Hand
+ * zu übersteuern (z. B. wenn die KI ein Kriterium mangels Information
+ * als "unknown" einstuft, der Recruiter aber aus einem Telefonat oder
+ * den Unterlagen mehr weiß). Verändert bewusst NICHT den von der KI
+ * berechneten Gesamt-Prozentwert/die Empfehlung – eine nachträgliche
+ * Neuberechnung würde eine Genauigkeit vortäuschen, die wir ohne
+ * bekannte Gewichtung der Kriterien nicht hätten. Die Korrektur steht
+ * stattdessen sichtbar neben der ursprünglichen KI-Einschätzung.
+ */
+function auto_emotion_handle_bewerbung_kriterium_korrigieren() {
+	if ( ! is_user_logged_in() || ! current_user_can( 'ae_recruiting_zugriff' ) ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/' ) );
+		exit;
+	}
+
+	$post_id = isset( $_POST['ae_bewerbung_id'] ) ? absint( $_POST['ae_bewerbung_id'] ) : 0;
+
+	if ( ! isset( $_POST['auto_emotion_bewerbung_kriterien_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['auto_emotion_bewerbung_kriterien_nonce'] ) ), 'auto_emotion_bewerbung_kriterien_' . $post_id ) ) {
+		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen.', 'auto-emotion' ) );
+	}
+
+	$post = get_post( $post_id );
+	if ( ! $post || 'bewerbung' !== $post->post_type ) {
+		wp_safe_redirect( home_url( '/mitarbeiter/bewerbungen/' ) );
+		exit;
+	}
+
+	$kriterien = get_post_meta( $post_id, '_bewerbung_ki_kriterien', true );
+	if ( ! is_array( $kriterien ) ) {
+		$kriterien = array();
+	}
+
+	$erlaubte_status   = array( 'match', 'partial', 'no_match', 'unknown' );
+	$eingereicht       = isset( $_POST['ae_kriterium_status'] ) && is_array( $_POST['ae_kriterium_status'] ) ? wp_unslash( $_POST['ae_kriterium_status'] ) : array();
+	$aktueller_nutzer  = wp_get_current_user();
+	$etwas_geaendert   = false;
+
+	foreach ( $eingereicht as $index => $neuer_status ) {
+		$index       = absint( $index );
+		$neuer_status = sanitize_key( $neuer_status );
+
+		if ( ! isset( $kriterien[ $index ] ) || ! in_array( $neuer_status, $erlaubte_status, true ) ) {
+			continue;
+		}
+
+		if ( $kriterien[ $index ]['status'] === $neuer_status ) {
+			continue;
+		}
+
+		$kriterien[ $index ]['status']           = $neuer_status;
+		$kriterien[ $index ]['korrigiert_von']    = $aktueller_nutzer->display_name;
+		$kriterien[ $index ]['korrigiert_am']     = current_time( 'mysql' );
+		$etwas_geaendert = true;
+	}
+
+	if ( $etwas_geaendert ) {
+		update_post_meta( $post_id, '_bewerbung_ki_kriterien', $kriterien );
+	}
+
+	wp_safe_redirect( add_query_arg( 'kriterien_korrigiert', '1', home_url( '/mitarbeiter/bewerbungen/' . $post_id . '/' ) ) );
+	exit;
+}
+add_action( 'admin_post_auto_emotion_bewerbung_kriterium_korrigieren', 'auto_emotion_handle_bewerbung_kriterium_korrigieren' );
