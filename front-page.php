@@ -121,6 +121,7 @@ $auto_emotion_news = new WP_Query(
 						<video
 							class="post-thumbnail--video"
 							src="<?php echo esc_url( $auto_emotion_news_video ); ?>"
+							<?php if ( has_post_thumbnail() ) : ?>poster="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ); ?>"<?php endif; ?>
 							width="1280" height="720"
 							autoplay muted loop playsinline webkit-playsinline preload="auto"
 						></video>

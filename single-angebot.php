@@ -34,6 +34,7 @@ $auto_emotion_probefahrt_status = isset( $_GET['probefahrt'] ) ? sanitize_text_f
 			<video
 				class="post-thumbnail post-thumbnail--video"
 				src="<?php echo esc_url( $auto_emotion_angebot_video ); ?>"
+				<?php if ( has_post_thumbnail() ) : ?>poster="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ); ?>"<?php endif; ?>
 				width="1280" height="720"
 				autoplay muted loop playsinline webkit-playsinline preload="auto"
 			></video>
