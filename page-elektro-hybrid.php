@@ -30,6 +30,8 @@ auto_emotion_register_faq_schema( $auto_emotion_elektro_faq );
 get_header();
 ?>
 
+<img class="content-header-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/cupra-born-vz.png?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Cupra Born, vollelektrisches Modell bei Auto Emotion" loading="lazy">
+
 <div class="section-heading">
 	<h1 class="section-heading__title"><?php esc_html_e( 'Elektro & Hybrid', 'auto-emotion' ); ?></h1>
 </div>

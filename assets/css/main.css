@@ -1069,6 +1069,56 @@ body.has-transparent-header .site-main {
 	margin: 0 0 var(--spacing-24);
 }
 
+.finance-calculator {
+	display: grid;
+	grid-template-columns: 1.2fr 1fr;
+	gap: var(--spacing-48);
+	max-width: var(--page-max-width);
+	margin: 0 auto var(--spacing-24);
+	padding: var(--spacing-32);
+	border: 1px solid var(--color-graphite-border);
+}
+
+@media (max-width: 800px) {
+	.finance-calculator {
+		grid-template-columns: 1fr;
+	}
+}
+
+.finance-calculator__inputs {
+	display: grid;
+	gap: var(--spacing-16);
+}
+
+.finance-calculator__result {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-16);
+	justify-content: center;
+}
+
+.finance-calculator__result-item {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-8);
+	padding: var(--spacing-16);
+	border: 1px solid var(--color-graphite-border);
+}
+
+.finance-calculator__result-item--highlight {
+	border-color: var(--color-giallo-vivo);
+}
+
+.finance-calculator__result-label {
+	font-size: var(--text-caption);
+	color: var(--color-steel-mid);
+}
+
+.finance-calculator__result-value {
+	font-size: var(--text-heading-sm);
+	font-weight: 700;
+}
+
 .legal-content h2 {
 	font-size: var(--text-heading);
 	margin-top: var(--spacing-48);

@@ -37,6 +37,10 @@ function auto_emotion_assets() {
 		wp_enqueue_script( 'auto-emotion-configurator', AUTO_EMOTION_URI . '/assets/js/configurator.js', array(), AUTO_EMOTION_VERSION, true );
 	}
 
+	if ( is_page( 'finanzierung-leasing' ) ) {
+		wp_enqueue_script( 'auto-emotion-finanzierungsrechner', AUTO_EMOTION_URI . '/assets/js/finanzierungsrechner.js', array(), AUTO_EMOTION_VERSION, true );
+	}
+
 	wp_enqueue_script( 'auto-emotion-chat', AUTO_EMOTION_URI . '/assets/js/chat-widget.js', array(), AUTO_EMOTION_VERSION, true );
 	wp_localize_script(
 		'auto-emotion-chat',

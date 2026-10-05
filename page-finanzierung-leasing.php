@@ -12,6 +12,8 @@ get_header();
 $auto_emotion_status = isset( $_GET['anfrage'] ) ? sanitize_text_field( wp_unslash( $_GET['anfrage'] ) ) : '';
 ?>
 
+<img class="content-header-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/finanzierung-beratung.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Finanzierungsberatung bei Auto Emotion" loading="lazy">
+
 <div class="section-heading">
 	<h1 class="section-heading__title"><?php esc_html_e( 'Finanzierung & Leasing', 'auto-emotion' ); ?></h1>
 </div>
@@ -19,6 +21,82 @@ $auto_emotion_status = isset( $_GET['anfrage'] ) ? sanitize_text_field( wp_unsla
 <div class="entry-content">
 	<p><?php esc_html_e( 'Für Ihr neues Fahrzeug arbeiten wir nicht mit einer einzigen festen Hausbank, sondern mit unabhängigen Finanzierungspartnern zusammen. Das heißt: Wir vergleichen die Konditionen verschiedener Banken für Sie und finden die passende Lösung – ob Kauf, Finanzierung oder Leasing.', 'auto-emotion' ); ?></p>
 	<p><?php esc_html_e( 'Sie behalten dabei die freie Bankwahl – es gibt keinen Zwang zu einem bestimmten Anbieter. Ihr individuelles Angebot mit den für Sie passenden Konditionen erstellen wir gerne persönlich.', 'auto-emotion' ); ?></p>
+</div>
+
+<div class="section-heading">
+	<h2 class="section-heading__title"><?php esc_html_e( 'Unverbindlicher Vorab-Rechner', 'auto-emotion' ); ?></h2>
+</div>
+<div class="entry-content">
+	<p><?php esc_html_e( 'Ein erster Richtwert, bevor Sie zu uns kommen – ersetzt aber keine individuelle Beratung und kein konkretes Angebot.', 'auto-emotion' ); ?></p>
+</div>
+
+<div class="finance-calculator" data-finanzierungsrechner>
+	<div class="finance-calculator__inputs">
+		<div class="application-form__field">
+			<label for="fr_preis"><?php esc_html_e( 'Fahrzeugpreis (€)', 'auto-emotion' ); ?></label>
+			<input type="number" id="fr_preis" min="0" step="100" value="30000" data-fr-preis>
+		</div>
+		<div class="application-form__field">
+			<label for="fr_anzahlung"><?php esc_html_e( 'Anzahlung (€)', 'auto-emotion' ); ?></label>
+			<input type="number" id="fr_anzahlung" min="0" step="100" value="3000" data-fr-anzahlung>
+		</div>
+		<div class="application-form__field">
+			<label for="fr_laufzeit"><?php esc_html_e( 'Laufzeit', 'auto-emotion' ); ?></label>
+			<select id="fr_laufzeit" data-fr-laufzeit>
+				<option value="12">12 <?php esc_html_e( 'Monate', 'auto-emotion' ); ?></option>
+				<option value="24">24 <?php esc_html_e( 'Monate', 'auto-emotion' ); ?></option>
+				<option value="36" selected>36 <?php esc_html_e( 'Monate', 'auto-emotion' ); ?></option>
+				<option value="48">48 <?php esc_html_e( 'Monate', 'auto-emotion' ); ?></option>
+				<option value="60">60 <?php esc_html_e( 'Monate', 'auto-emotion' ); ?></option>
+				<option value="72">72 <?php esc_html_e( 'Monate', 'auto-emotion' ); ?></option>
+			</select>
+		</div>
+		<div class="application-form__field">
+			<label for="fr_zins"><?php esc_html_e( 'Angenommener effektiver Jahreszins (%)', 'auto-emotion' ); ?></label>
+			<input type="number" id="fr_zins" min="0" max="20" step="0.1" value="5.9" data-fr-zins>
+		</div>
+	</div>
+
+	<div class="finance-calculator__result">
+		<div class="finance-calculator__result-item">
+			<span class="finance-calculator__result-label"><?php esc_html_e( 'Zu finanzierender Betrag', 'auto-emotion' ); ?></span>
+			<span class="finance-calculator__result-value" data-fr-ergebnis-kredit>–</span>
+		</div>
+		<div class="finance-calculator__result-item finance-calculator__result-item--highlight">
+			<span class="finance-calculator__result-label"><?php esc_html_e( 'Geschätzte Monatsrate', 'auto-emotion' ); ?></span>
+			<span class="finance-calculator__result-value" data-fr-ergebnis-rate>–</span>
+		</div>
+		<div class="finance-calculator__result-item">
+			<span class="finance-calculator__result-label"><?php esc_html_e( 'Geschätzter Gesamtbetrag', 'auto-emotion' ); ?></span>
+			<span class="finance-calculator__result-value" data-fr-ergebnis-gesamt>–</span>
+		</div>
+	</div>
+</div>
+
+<div class="entry-content">
+	<p class="model-card__disclaimer">
+		<?php
+		esc_html_e( 'Unverbindliche Beispielrechnung auf Basis des linearen Annuitätenmodells, kein Angebot und keine Finanzierungsberatung. Der voreingestellte Zinssatz von 5,9 % orientiert sich am Marktdurchschnitt für Autokredite laut Verivox-Verbraucheratlas (Stand: Anfang 2026, Bestzinsen für sehr gute Bonität lagen davon abweichend ab 3,49 %) und kann von Ihrem individuellen, bonitätsabhängigen Angebot erheblich abweichen. Maßgeblich ist stets unser schriftliches Angebot.', 'auto-emotion' );
+		?>
+	</p>
+</div>
+
+<div class="section-heading">
+	<h2 class="section-heading__title"><?php esc_html_e( 'Unsere Finanzierungspartner', 'auto-emotion' ); ?></h2>
+</div>
+<div class="entry-content">
+	<p><?php esc_html_e( 'Je nach Marke und Fahrzeug arbeiten wir unter anderem mit den herstellereigenen Finanzdienstleistern zusammen – ergänzt um weitere, unabhängige Finanzierungspartner, deren Konditionen wir für Sie vergleichen.', 'auto-emotion' ); ?></p>
+	<div class="service-teaser-grid">
+		<div class="service-teaser">
+			<h3 class="service-teaser__title">SEAT Leasing</h3>
+			<p><?php esc_html_e( 'Zweigniederlassung der Volkswagen Leasing GmbH – für Finanzierung und Leasing von Seat- und Cupra-Modellen.', 'auto-emotion' ); ?></p>
+		</div>
+		<div class="service-teaser">
+			<h3 class="service-teaser__title">Nissan Financial Services</h3>
+			<p><?php esc_html_e( 'Geschäftsbereich der RCI Banque S.A. Niederlassung Deutschland – für Finanzierung und Leasing von Nissan-Modellen.', 'auto-emotion' ); ?></p>
+		</div>
+	</div>
+	<p><?php esc_html_e( 'Weitere, markenunabhängige Finanzierungspartner nennen wir Ihnen gerne persönlich im Beratungsgespräch.', 'auto-emotion' ); ?></p>
 </div>
 
 <?php if ( 'ok' === $auto_emotion_status ) : ?>
