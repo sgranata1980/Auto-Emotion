@@ -35,15 +35,19 @@ $auto_emotion_status = isset( $_GET['anfrage'] ) ? sanitize_text_field( wp_unsla
 		<li><strong>Nissan Interstar</strong> &ndash; <?php esc_html_e( 'der große Transporter, als Diesel oder vollelektrisch (Interstar-e).', 'auto-emotion' ); ?></li>
 	</ul>
 	<p><?php esc_html_e( 'Ob einzelnes Fahrzeug oder ganzer Fuhrpark: Sprechen Sie uns an, wir erarbeiten ein Angebot für Ihren Betrieb – individuell auf Ihren Bedarf zugeschnitten.', 'auto-emotion' ); ?></p>
-	<p>
-		<?php
-		printf(
-			/* translators: %s: link to the Beklebungsservice page */
-			esc_html__( 'Für Ihren Fuhrpark übernimmt unsere eigene Grafikabteilung auch die Beschriftung und Beklebung der Fahrzeuge – vom Logo bis zur vollflächigen Fahrzeugfolierung, individuell nach Ihren Vorgaben. Mehr dazu auf unserer %s.', 'auto-emotion' ),
-			'<a href="' . esc_url( home_url( '/beklebungsservice/' ) ) . '">' . esc_html__( 'Seite zum Beklebungsservice', 'auto-emotion' ) . '</a>'
-		);
-		?>
-	</p>
+</div>
+
+<div class="service-teaser-grid">
+	<div class="service-teaser">
+		<h3 class="service-teaser__title"><?php esc_html_e( 'Beklebung & Beschriftung', 'auto-emotion' ); ?></h3>
+		<p><?php esc_html_e( 'Unsere eigene Grafikabteilung übernimmt die Beschriftung und Beklebung Ihrer Fahrzeuge – vom Logo bis zur vollflächigen Fahrzeugfolierung, individuell nach Ihren Vorgaben.', 'auto-emotion' ); ?></p>
+		<a class="btn btn-outline" href="<?php echo esc_url( home_url( '/beklebungsservice/' ) ); ?>"><?php esc_html_e( 'Zum Beklebungsservice', 'auto-emotion' ); ?><span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
+	</div>
+	<div class="service-teaser">
+		<h3 class="service-teaser__title"><?php esc_html_e( 'Service & Werkstatt für Ihren Fuhrpark', 'auto-emotion' ); ?></h3>
+		<p><?php esc_html_e( 'Wartung, Inspektion und Reparatur Ihrer Nutzfahrzeuge nach Herstellervorgaben – damit Ihr Fuhrpark einsatzbereit bleibt.', 'auto-emotion' ); ?></p>
+		<a class="btn btn-outline" href="<?php echo esc_url( home_url( '/service/' ) ); ?>"><?php esc_html_e( 'Zu Service & Werkstatt', 'auto-emotion' ); ?><span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
+	</div>
 </div>
 
 <?php

@@ -74,11 +74,41 @@ function auto_emotion_website_schema() {
 	);
 }
 
+/**
+ * Von einem Template vor wp_head aufgerufen, um echte, auf der Seite
+ * sichtbare FAQ-Einträge als FAQPage-Schema auszuzeichnen. Nur für
+ * Fragen/Antworten verwenden, die tatsächlich sichtbar auf derselben
+ * Seite stehen – siehe stefano-web-standard: "FAQPage nur bei echten
+ * sichtbaren FAQs".
+ */
+function auto_emotion_register_faq_schema( $items ) {
+	$GLOBALS['auto_emotion_faq_schema_items'] = $items;
+}
+
 function auto_emotion_output_schema() {
 	$graph = array( auto_emotion_autodealer_schema() );
 
 	if ( is_front_page() ) {
 		$graph[] = auto_emotion_website_schema();
+	}
+
+	if ( ! empty( $GLOBALS['auto_emotion_faq_schema_items'] ) ) {
+		$questions = array();
+		foreach ( $GLOBALS['auto_emotion_faq_schema_items'] as $item ) {
+			$questions[] = array(
+				'@type'          => 'Question',
+				'name'           => $item['q'],
+				'acceptedAnswer' => array(
+					'@type' => 'Answer',
+					'text'  => $item['a'],
+				),
+			);
+		}
+		$graph[] = array(
+			'@context'   => 'https://schema.org',
+			'@type'      => 'FAQPage',
+			'mainEntity' => $questions,
+		);
 	}
 
 	echo '<script type="application/ld+json">' . wp_json_encode( $graph, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>' . "\n";

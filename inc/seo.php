@@ -34,6 +34,7 @@ function auto_emotion_meta_description_overrides() {
 		'ersatzteile'                   => __( 'Original-Ersatzteile für Seat, Cupra und Nissan bei Auto Emotion in Offenbach – für die eigene Werkstatt und auf Anfrage als Einzelteil.', 'auto-emotion' ),
 		'podcast'                       => __( 'Podcast bei Auto Emotion: aktuell nicht vorhanden. Einblicke aus Showroom und Werkstatt gibt es bereits auf Instagram und Facebook.', 'auto-emotion' ),
 		'vlog'                          => __( 'Vlog bei Auto Emotion: aktuell nicht geplant. Videoinhalte aus Showroom und Werkstatt gibt es bereits auf Instagram und Facebook.', 'auto-emotion' ),
+		'elektro-hybrid'                => __( 'Elektro- und Hybridmodelle von Seat, Cupra und Nissan bei Auto Emotion: aktuelle Förderung, Geschichte der E-Mobilität und häufige Fragen.', 'auto-emotion' ),
 	);
 }
 
