@@ -11,6 +11,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Meta-Description-Überschreibungen je Seiten-Slug.
+ *
+ * Für Seiten, die per page-{slug}.php-Template gerendert werden (die
+ * eigentliche Darstellung kommt also aus dem Theme, nicht aus dem in
+ * der WP-Datenbank gespeicherten post_content): get_the_excerpt()
+ * liest weiterhin den gespeicherten post_content, unabhängig vom
+ * Template. Ohne diese Liste würde die Meta-Description z.B. weiter
+ * einen längst ersetzten "... in Vorbereitung"-Platzhaltertext zeigen,
+ * obwohl die Seite selbst schon echten Inhalt hat.
+ */
+function auto_emotion_meta_description_overrides() {
+	return array(
+		'unsere-kunden' => __( 'Familienunternehmen seit 2001 in Offenbach, ausgezeichnet als Nissan GT-R High Performance Center und CUPRA Specialist. Echte Kundenbewertungen bei Google.', 'auto-emotion' ),
+	);
+}
+
 function auto_emotion_get_meta_description() {
 	// Zuerst prüfen: front-page.php rendert die Startseite unabhängig
 	// vom Inhalt der als "Startseite" hinterlegten WP-Seite – die
@@ -22,6 +39,12 @@ function auto_emotion_get_meta_description() {
 	}
 
 	if ( is_singular() ) {
+		$overrides = auto_emotion_meta_description_overrides();
+		$slug      = get_post_field( 'post_name', get_queried_object_id() );
+		if ( isset( $overrides[ $slug ] ) ) {
+			return $overrides[ $slug ];
+		}
+
 		$excerpt = get_the_excerpt();
 		if ( $excerpt ) {
 			return wp_strip_all_tags( $excerpt );
