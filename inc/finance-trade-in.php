@@ -9,6 +9,106 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Leitet Fahrzeugankauf-Fotos in einen eigenen, nicht öffentlich
+ * verlinkten Ordner um – gleiches Sicherheitsmuster wie bei
+ * Bewerbungsunterlagen (inc/recruiting.php), eigener Ordner, da es
+ * sich inhaltlich und datenschutzrechtlich um einen anderen Vorgang
+ * handelt (keine Bewerbung).
+ */
+function auto_emotion_ankauf_private_upload_dir( $dirs ) {
+	$dirs['subdir'] = '/ankauf-privat' . $dirs['subdir'];
+	$dirs['path']   = $dirs['basedir'] . $dirs['subdir'];
+	$dirs['url']    = $dirs['baseurl'] . $dirs['subdir'];
+	return $dirs;
+}
+
+function auto_emotion_ankauf_sichere_upload_ordner() {
+	$upload_dir = wp_upload_dir();
+	$ordner     = $upload_dir['basedir'] . '/ankauf-privat';
+
+	if ( ! file_exists( $ordner ) ) {
+		wp_mkdir_p( $ordner );
+	}
+
+	$htaccess = $ordner . '/.htaccess';
+	if ( ! file_exists( $htaccess ) ) {
+		file_put_contents( $htaccess, "Deny from all\n" );
+	}
+
+	$index = $ordner . '/index.php';
+	if ( ! file_exists( $index ) ) {
+		file_put_contents( $index, "<?php\n// Silence is golden.\n" );
+	}
+}
+
+/**
+ * Verarbeitet die hochgeladenen Fahrzeugfotos (max. 8 MB je Datei,
+ * nur Bilddateien). Ungültige oder zu große Dateien werden
+ * übersprungen, damit die Anfrage trotzdem ankommt. Gibt eine Liste
+ * mit gespeichertem Pfad und MIME-Typ je Datei zurück.
+ */
+function auto_emotion_ankauf_handle_uploads( $field_name ) {
+	if ( empty( $_FILES[ $field_name ] ) ) {
+		return array();
+	}
+
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+
+	$erlaubte_mimes = array(
+		'jpg'  => 'image/jpeg',
+		'jpeg' => 'image/jpeg',
+		'png'  => 'image/png',
+		'webp' => 'image/webp',
+		'heic' => 'image/heic',
+	);
+	$max_bytes = 8 * MB_IN_BYTES;
+	$files     = $_FILES[ $field_name ];
+	$count     = is_array( $files['name'] ) ? count( $files['name'] ) : 1;
+	$ergebnis  = array();
+
+	add_filter( 'upload_dir', 'auto_emotion_ankauf_private_upload_dir' );
+	auto_emotion_ankauf_sichere_upload_ordner();
+
+	for ( $i = 0; $i < $count; $i++ ) {
+		$file = is_array( $files['name'] )
+			? array(
+				'name'     => $files['name'][ $i ],
+				'type'     => $files['type'][ $i ],
+				'tmp_name' => $files['tmp_name'][ $i ],
+				'error'    => $files['error'][ $i ],
+				'size'     => $files['size'][ $i ],
+			)
+			: $files;
+
+		if ( empty( $file['name'] ) || UPLOAD_ERR_NO_FILE === $file['error'] ) {
+			continue;
+		}
+
+		if ( UPLOAD_ERR_OK !== $file['error'] || $file['size'] > $max_bytes ) {
+			continue;
+		}
+
+		$overrides = array(
+			'test_form' => false,
+			'mimes'     => $erlaubte_mimes,
+		);
+
+		$moved = wp_handle_upload( $file, $overrides );
+
+		if ( ! empty( $moved['file'] ) ) {
+			$ergebnis[] = array(
+				'pfad' => $moved['file'],
+				'mime' => isset( $moved['type'] ) ? $moved['type'] : 'application/octet-stream',
+			);
+		}
+	}
+
+	remove_filter( 'upload_dir', 'auto_emotion_ankauf_private_upload_dir' );
+
+	return $ergebnis;
+}
+
 function auto_emotion_handle_finanzierung_anfrage() {
 	if ( ! isset( $_POST['auto_emotion_finanzierung_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['auto_emotion_finanzierung_nonce'] ) ), 'auto_emotion_finanzierung' ) ) {
 		wp_die( esc_html__( 'Sicherheitsprüfung fehlgeschlagen. Bitte Seite neu laden und erneut versuchen.', 'auto-emotion' ) );
@@ -82,6 +182,8 @@ function auto_emotion_handle_ankauf_anfrage() {
 		exit;
 	}
 
+	$fotos = auto_emotion_ankauf_handle_uploads( 'ankauf_fotos' );
+
 	$to      = auto_emotion_contact( 'email' );
 	$subject = sprintf( '[Fahrzeugankauf] %s %s', $marke, $modell );
 	$body    = "Neue Ankauf-/Inzahlungnahme-Anfrage über die Website:\n\n"
@@ -91,13 +193,20 @@ function auto_emotion_handle_ankauf_anfrage() {
 		. 'Marke: ' . $marke . "\n"
 		. 'Modell: ' . $modell . "\n"
 		. 'Baujahr: ' . ( $baujahr ? $baujahr : '-' ) . "\n"
-		. 'Kilometerstand: ' . ( $kilometer ? $kilometer : '-' ) . "\n";
+		. 'Kilometerstand: ' . ( $kilometer ? $kilometer : '-' ) . "\n"
+		. 'Fotos: ' . ( $fotos ? count( $fotos ) . ' Datei(en) im Anhang' : 'keine hochgeladen' ) . "\n";
 
 	if ( $nachricht ) {
 		$body .= "\nNachricht:\n" . $nachricht . "\n";
 	}
 
-	wp_mail( $to, $subject, $body, array( 'Reply-To: ' . $name . ' <' . $email . '>' ) );
+	$anhaenge = wp_list_pluck( $fotos, 'pfad' );
+
+	wp_mail( $to, $subject, $body, array( 'Reply-To: ' . $name . ' <' . $email . '>' ), $anhaenge );
+
+	foreach ( $anhaenge as $anhang_pfad ) {
+		wp_delete_file( $anhang_pfad );
+	}
 
 	wp_safe_redirect( add_query_arg( 'anfrage', 'ok', $redirect_base ) );
 	exit;

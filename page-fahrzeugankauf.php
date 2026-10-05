@@ -12,18 +12,35 @@ get_header();
 $auto_emotion_status = isset( $_GET['anfrage'] ) ? sanitize_text_field( wp_unslash( $_GET['anfrage'] ) ) : '';
 ?>
 
+<img class="content-header-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-verkaufsflaeche.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Verkaufsfläche bei Auto Emotion in Offenbach" loading="lazy">
+
 <div class="section-heading">
 	<h1 class="section-heading__title"><?php esc_html_e( 'Fahrzeugankauf & Inzahlungnahme', 'auto-emotion' ); ?></h1>
 </div>
 
 <div class="entry-content">
 	<p><?php esc_html_e( 'Beim Kauf Ihres neuen Seat, Cupra oder Nissan nehmen wir Ihr aktuelles Fahrzeug in Zahlung – unabhängig davon, welche Marke Sie bisher gefahren haben. In unserer Gebrauchtwagenhalle stehen Fahrzeuge unterschiedlichster Hersteller, die wir auf diesem Weg übernommen haben.', 'auto-emotion' ); ?></p>
-	<p><?php esc_html_e( 'Bringen Sie Ihr Fahrzeug einfach vorbei oder schicken Sie uns die Eckdaten über das Formular unten – wir erstellen Ihnen ein faires Angebot.', 'auto-emotion' ); ?></p>
+	<p><?php esc_html_e( 'Bringen Sie Ihr Fahrzeug einfach vorbei oder schicken Sie uns die Eckdaten samt ein paar Fotos über das Formular unten – unser Gebrauchtwagen-Team meldet sich schnellstmöglich mit einem fairen Angebot.', 'auto-emotion' ); ?></p>
+</div>
+
+<div class="service-teaser-grid">
+	<div class="service-teaser">
+		<h3 class="service-teaser__title">1. <?php esc_html_e( 'Angaben machen', 'auto-emotion' ); ?></h3>
+		<p><?php esc_html_e( 'Marke, Modell, Baujahr und Kilometerstand – je mehr Sie uns mitgeben, desto genauer die erste Einschätzung.', 'auto-emotion' ); ?></p>
+	</div>
+	<div class="service-teaser">
+		<h3 class="service-teaser__title">2. <?php esc_html_e( 'Fotos hochladen', 'auto-emotion' ); ?></h3>
+		<p><?php esc_html_e( 'Ein paar aussagekräftige Fotos von innen und außen helfen uns, den Zustand vorab einzuschätzen.', 'auto-emotion' ); ?></p>
+	</div>
+	<div class="service-teaser">
+		<h3 class="service-teaser__title">3. <?php esc_html_e( 'Angebot erhalten', 'auto-emotion' ); ?></h3>
+		<p><?php esc_html_e( 'Unser Gebrauchtwagen-Team meldet sich schnellstmöglich bei Ihnen – final bestätigt wird der Preis bei der Besichtigung vor Ort.', 'auto-emotion' ); ?></p>
+	</div>
 </div>
 
 <?php if ( 'ok' === $auto_emotion_status ) : ?>
 	<div class="application-notice application-notice--success">
-		<?php esc_html_e( 'Danke für Ihre Anfrage! Wir melden uns innerhalb von 24 Stunden bei Ihnen.', 'auto-emotion' ); ?>
+		<?php esc_html_e( 'Danke für Ihre Anfrage! Unser Gebrauchtwagen-Team meldet sich schnellstmöglich bei Ihnen.', 'auto-emotion' ); ?>
 	</div>
 <?php elseif ( 'fehler' === $auto_emotion_status ) : ?>
 	<div class="application-notice application-notice--error">
@@ -31,7 +48,7 @@ $auto_emotion_status = isset( $_GET['anfrage'] ) ? sanitize_text_field( wp_unsla
 	</div>
 <?php endif; ?>
 
-<form class="application-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+<form class="application-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">
 	<input type="hidden" name="action" value="auto_emotion_ankauf_anfrage">
 	<?php wp_nonce_field( 'auto_emotion_ankauf', 'auto_emotion_ankauf_nonce' ); ?>
 
@@ -78,6 +95,12 @@ $auto_emotion_status = isset( $_GET['anfrage'] ) ? sanitize_text_field( wp_unsla
 	<div class="application-form__field">
 		<label for="ankauf_nachricht"><?php esc_html_e( 'Nachricht (optional)', 'auto-emotion' ); ?></label>
 		<textarea id="ankauf_nachricht" name="ankauf_nachricht" rows="5"></textarea>
+	</div>
+
+	<div class="application-form__field">
+		<label for="ankauf_fotos"><?php esc_html_e( 'Fotos Ihres Fahrzeugs (optional)', 'auto-emotion' ); ?></label>
+		<input type="file" id="ankauf_fotos" name="ankauf_fotos[]" accept="image/*" multiple>
+		<p class="model-card__disclaimer"><?php esc_html_e( 'JPG, PNG, WEBP oder HEIC, je Datei max. 8 MB.', 'auto-emotion' ); ?></p>
 	</div>
 
 	<label class="application-form__consent">
