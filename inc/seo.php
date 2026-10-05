@@ -37,6 +37,7 @@ function auto_emotion_meta_description_overrides() {
 		'elektro-hybrid'                => __( 'Elektro- und Hybridmodelle von Seat, Cupra und Nissan bei Auto Emotion: aktuelle Förderung, Geschichte der E-Mobilität und häufige Fragen.', 'auto-emotion' ),
 		'finanzierung-leasing'          => __( 'Finanzierung und Leasing bei Auto Emotion in Offenbach: unverbindlicher Vorab-Rechner, unabhängige Finanzierungspartner und persönliche Beratung.', 'auto-emotion' ),
 		'jahreswagen-tageszulassungen'  => __( 'Jahreswagen und Tageszulassungen von Seat, Cupra und Nissan bei Auto Emotion: wie das Konzept entstanden ist, Vorteile und häufige Fragen.', 'auto-emotion' ),
+		'neuwagen'                      => __( 'Das komplette Neuwagen-Modellprogramm von Seat, Cupra und Nissan bei Auto Emotion in Offenbach: alle Modelle im Überblick, von Kleinwagen bis Elektro-SUV.', 'auto-emotion' ),
 	);
 }
 
