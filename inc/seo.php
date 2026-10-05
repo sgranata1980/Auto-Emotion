@@ -36,6 +36,7 @@ function auto_emotion_meta_description_overrides() {
 		'vlog'                          => __( 'Vlog bei Auto Emotion: aktuell nicht geplant. Videoinhalte aus Showroom und Werkstatt gibt es bereits auf Instagram und Facebook.', 'auto-emotion' ),
 		'elektro-hybrid'                => __( 'Elektro- und Hybridmodelle von Seat, Cupra und Nissan bei Auto Emotion: aktuelle Förderung, Geschichte der E-Mobilität und häufige Fragen.', 'auto-emotion' ),
 		'finanzierung-leasing'          => __( 'Finanzierung und Leasing bei Auto Emotion in Offenbach: unverbindlicher Vorab-Rechner, unabhängige Finanzierungspartner und persönliche Beratung.', 'auto-emotion' ),
+		'jahreswagen-tageszulassungen'  => __( 'Jahreswagen und Tageszulassungen von Seat, Cupra und Nissan bei Auto Emotion: wie das Konzept entstanden ist, Vorteile und häufige Fragen.', 'auto-emotion' ),
 	);
 }
 
