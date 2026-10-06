@@ -64,6 +64,7 @@ get_header();
 <div class="section-heading">
 	<h2 class="section-heading__title">NISSAN</h2>
 </div>
+<img class="content-header-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-nissan-lineup.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Juke, Qashqai und X-Trail, offizielles Herstellerfoto" loading="lazy">
 <div class="entry-content">
 	<p><?php esc_html_e( 'Der japanische Hersteller, bei Auto Emotion seit 2015 im Programm, seit 2018 zusätzlich als Nissan GT-R High Performance Center ausgezeichnet – bekannt für SUVs und frühe, konsequente Elektrifizierung.', 'auto-emotion' ); ?></p>
 	<h3>Nissan Micra</h3>
