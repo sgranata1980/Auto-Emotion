@@ -28,6 +28,7 @@ get_header();
 <div class="section-heading">
 	<h2 class="section-heading__title">SEAT</h2>
 </div>
+<img class="content-header-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-seat-lineup.png?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Seat Ibiza, Arona und Leon im Showroom von Auto Emotion" loading="lazy">
 <div class="entry-content">
 	<p><?php esc_html_e( 'Die spanische Volumenmarke des VW-Konzerns, bei Auto Emotion Gründungsmarke seit 2001 – zugängliche Preise, jugendliches Design, Verbrenner mit zunehmender Mild-Hybrid-Technik.', 'auto-emotion' ); ?></p>
 	<h3>Seat Ibiza</h3>
@@ -44,6 +45,7 @@ get_header();
 <div class="section-heading">
 	<h2 class="section-heading__title">CUPRA</h2>
 </div>
+<img class="content-header-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-cupra-lineup.png?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Cupra Formentor, Leon und Born im Showroom von Auto Emotion" loading="lazy">
 <div class="entry-content">
 	<p><?php esc_html_e( 'Die 2018 aus Seat ausgegründete Performance-Marke – eigenständiges Design, sportliche Abstimmung, konsequent elektrifiziert. Auto Emotion ist seit 2018 als CUPRA Specialist ausgezeichnet.', 'auto-emotion' ); ?></p>
 	<h3>Cupra Formentor</h3>
