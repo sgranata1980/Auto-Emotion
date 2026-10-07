@@ -54,6 +54,65 @@ function auto_emotion_chat_system_prompt() {
 		. "- Du bist kein Ersatz für eine verbindliche Beratung; bei allem, was Vertragsdetails, Finanzierung oder Termine betrifft, an das Team verweisen.";
 }
 
+/**
+ * FAQ-Kurzschluss: erkennt eindeutige Standardfragen per Keyword-Match
+ * und beantwortet sie direkt aus denselben echten Kontaktdaten, die auch
+ * in den System-Prompt einfließen - ohne jeden API-Aufruf, also ohne
+ * Kosten. Bewusst konservativ (klare Wortgrenzen, enge Themen), damit
+ * eine echte, nuancierte Frage nie fälschlich die Pauschalantwort
+ * bekommt - im Zweifel liefert die Funktion null und die Anfrage geht
+ * ganz normal an Claude.
+ */
+function auto_emotion_chat_faq_answer( $message ) {
+	$msg = mb_strtolower( trim( $message ) );
+	$msg = preg_replace( '/[^\p{L}\p{N}\s]/u', ' ', $msg );
+
+	if ( preg_match( '/\b(offen|geöffnet|öffnungszeiten?|zeiten)\b/u', $msg )
+		&& ! preg_match( '/\b(marke|marken|preis|finanzierung|probefahrt|stelle|job)\b/u', $msg ) ) {
+		return sprintf(
+			__( 'Verkauf geöffnet: %1$s. Werkstatt geöffnet: %2$s. Alle Details auch unter /kontakt/.', 'auto-emotion' ),
+			auto_emotion_contact( 'hours_sales' ),
+			auto_emotion_contact( 'hours_service' )
+		);
+	}
+
+	if ( preg_match( '/\b(adresse|standort|anfahrt|anschrift)\b/u', $msg )
+		|| preg_match( '/\bwo\s+(seid|ist|liegt)\b/u', $msg ) ) {
+		return sprintf(
+			__( 'Unsere Adresse: %1$s, %2$s %3$s.', 'auto-emotion' ),
+			auto_emotion_contact( 'street' ),
+			auto_emotion_contact( 'postal_code' ),
+			auto_emotion_contact( 'city' )
+		);
+	}
+
+	if ( preg_match( '/\b(telefonnummer|rufnummer|anrufen)\b/u', $msg )
+		|| ( preg_match( '/\btelefon\b/u', $msg ) && ! preg_match( '/\btermine?\b/u', $msg ) ) ) {
+		return sprintf(
+			__( 'Am besten erreichst du uns telefonisch unter %1$s oder per E-Mail an %2$s.', 'auto-emotion' ),
+			auto_emotion_contact( 'phone' ),
+			auto_emotion_contact( 'email' )
+		);
+	}
+
+	if ( preg_match( '/\bwelche\s+marken\b/u', $msg ) || preg_match( '/\bmarken\s+(führt|habt|verkauft)\b/u', $msg ) ) {
+		$marken       = get_terms( array( 'taxonomy' => 'marke', 'hide_empty' => false, 'fields' => 'names' ) );
+		$marken_liste = ! is_wp_error( $marken ) ? implode( ', ', $marken ) : 'Seat, Cupra, Nissan';
+		return sprintf( __( 'Wir sind Vertragshändler für %s.', 'auto-emotion' ), $marken_liste );
+	}
+
+	return null;
+}
+
+/**
+ * Cache-Key fuer eine (kontextlose) Chat-Nachricht - normalisiert, damit
+ * Gross-/Kleinschreibung und Leerzeichen am Rand keine neuen Cache-Eintraege
+ * erzeugen.
+ */
+function auto_emotion_chat_cache_key( $message ) {
+	return 'ae_chat_resp_' . md5( mb_strtolower( trim( $message ) ) );
+}
+
 function auto_emotion_register_chat_route() {
 	register_rest_route(
 		'auto-emotion/v1',
@@ -114,6 +173,28 @@ function auto_emotion_handle_chat_request( WP_REST_Request $request ) {
 		return new WP_Error( 'ae_chat_invalid', __( 'Ungültige Nachricht.', 'auto-emotion' ), array( 'status' => 400 ) );
 	}
 
+	/**
+	 * Kosten-Kurzschluss, nur bei der ERSTEN Nachricht eines Chats (keine
+	 * Historie): eine Folgefrage ("und am Wochenende?") ergibt ohne den
+	 * bisherigen Gesprächsverlauf keinen Sinn und geht deshalb immer an
+	 * die echte API. Bei einer Erstnachricht dagegen ist die Antwort
+	 * kontextunabhängig, also sicher cachebar:
+	 * 1) erkannte Standardfrage -> direkte Antwort, kein API-Aufruf.
+	 * 2) sonst: schon mal identisch gestellte Frage? -> gespeicherte
+	 *    Antwort aus dem letzten halben Tag, kein neuer API-Aufruf.
+	 */
+	if ( empty( $history ) ) {
+		$faq_answer = auto_emotion_chat_faq_answer( $message );
+		if ( $faq_answer ) {
+			return array( 'reply' => $faq_answer );
+		}
+
+		$cached_reply = get_transient( auto_emotion_chat_cache_key( $message ) );
+		if ( false !== $cached_reply ) {
+			return array( 'reply' => $cached_reply );
+		}
+	}
+
 	$messages = array();
 
 	if ( is_array( $history ) ) {
@@ -150,9 +231,34 @@ function auto_emotion_handle_chat_request( WP_REST_Request $request ) {
 			),
 			'body'    => wp_json_encode(
 				array(
-					'model'      => 'claude-haiku-4-5-20251001',
+					/**
+					 * Haiku 5.5 statt 4.5: gleiche Modell-Generation,
+					 * zehnmal günstiger pro Token (Stand Herbst 2026) und
+					 * der einzige Haiku-Tier mit niedriger genug
+					 * Mindest-Prompt-Länge (512 statt 4096 Token), damit
+					 * das untenstehende Prompt-Caching bei unserem kurzen
+					 * System-Prompt überhaupt greifen kann.
+					 */
+					'model'      => 'claude-haiku-5-5',
 					'max_tokens' => 400,
-					'system'     => auto_emotion_chat_system_prompt(),
+					/**
+					 * System-Prompt als eigener Content-Block mit
+					 * cache_control: identisch bei jeder Anfrage (baut sich
+					 * zwar pro Request neu auf, aber aus denselben Fakten),
+					 * wird also ab der zweiten Anfrage innerhalb der
+					 * 5-Minuten-Cache-TTL zum stark reduzierten
+					 * Cache-Read-Preis abgerechnet statt zum vollen
+					 * Input-Preis. Kein Nachteil, falls der Prompt doch mal
+					 * unter die Mindestlänge fällt - dann greift einfach
+					 * kein Caching, ohne Mehrkosten.
+					 */
+					'system'     => array(
+						array(
+							'type'          => 'text',
+							'text'          => auto_emotion_chat_system_prompt(),
+							'cache_control' => array( 'type' => 'ephemeral' ),
+						),
+					),
 					'messages'   => $messages,
 				)
 			),
@@ -170,5 +276,13 @@ function auto_emotion_handle_chat_request( WP_REST_Request $request ) {
 		return new WP_Error( 'ae_chat_upstream_error', __( 'Der Chat-Assistent ist gerade nicht erreichbar.', 'auto-emotion' ), array( 'status' => 502 ) );
 	}
 
-	return array( 'reply' => $body['content'][0]['text'] );
+	$reply = $body['content'][0]['text'];
+
+	// Nur Erstnachrichten cachen (s.o.: kontextabhängige Folgefragen wären
+	// als Cache-Eintrag falsch).
+	if ( empty( $history ) ) {
+		set_transient( auto_emotion_chat_cache_key( $message ), $reply, 12 * HOUR_IN_SECONDS );
+	}
+
+	return array( 'reply' => $reply );
 }
