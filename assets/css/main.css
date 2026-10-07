@@ -509,13 +509,16 @@ body.has-transparent-header .site-header.is-scrolled {
 }
 
 .model-showcase__headline {
-	font-family: var(--font-lambotype);
-	font-weight: var(--font-weight-light);
-	text-transform: uppercase;
-	letter-spacing: 0.0230em;
-	font-size: clamp(28px, 4vw, var(--text-heading-lg));
-	line-height: 1.1;
-	margin-bottom: var(--spacing-32);
+	/* Bewusst als Fließtext-Subheadline skaliert, nicht als Display-
+	   Headline: dieser Text ist der (gekürzte) Angebots-Excerpt, der je
+	   nach Fahrzeug mehrere Sätze lang sein kann - bei Display-Größe
+	   wirkt ein ganzer Absatz riesig und erschlägt den Rest der Karte. */
+	font-weight: var(--font-weight-regular);
+	font-size: var(--text-subheading);
+	line-height: var(--leading-body);
+	color: var(--color-steel-mid);
+	max-width: 520px;
+	margin: 0 auto var(--spacing-32);
 }
 
 .model-showcase__photo {
@@ -727,11 +730,12 @@ body.has-transparent-header .site-header.is-scrolled {
 	font-size: var(--text-heading-sm);
 	line-height: 1.2;
 	margin-bottom: var(--spacing-16);
-	/* Reserviert immer Platz für 3 Zeilen, unabhängig davon, ob der
-	   tatsächliche Titel 2 oder 3 Zeilen braucht. Ohne das fallen die
-	   Vorschaubilder in einer Grid-Reihe je nach Titellänge
-	   unterschiedlich hoch an – die Reihe wirkt "nicht bündig". */
-	min-height: calc(var(--text-heading-sm) * 1.2 * 3);
+	/* Reserviert immer Platz für 4 Zeilen, unabhängig davon, ob der
+	   tatsächliche Titel 2, 3 oder 4 Zeilen braucht (News-Titel laufen
+	   teils auf 4 Zeilen). Ohne das fallen die Vorschaubilder in einer
+	   Grid-Reihe je nach Titellänge unterschiedlich hoch an – die Reihe
+	   wirkt "nicht bündig". */
+	min-height: calc(var(--text-heading-sm) * 1.2 * 4);
 }
 
 /* ---------------------------------------------------------------- */
@@ -833,7 +837,12 @@ body.has-transparent-header .site-main {
 /* ---------------------------------------------------------------- */
 
 .event-banner {
-	background: var(--surface-carbony);
+	/* Gleicher roter Glow-Verlauf wie .career-banner: ohne ihn blieb auf
+	   breiten Desktop-Viewports neben der schmalen Content-Spalte eine
+	   große, komplett flache dunkle Fläche stehen ("Volkskatastrophe"
+	   auf großen Screens, auf Mobile durch die gestapelte Spalte
+	   unauffällig). */
+	background: radial-gradient(ellipse 1100px 1400px at 100% 0%, var(--color-rosso-vivo) 0%, var(--color-rosso-vivo) 18%, var(--color-carbony-black) 55%, var(--color-pure-black) 100%);
 	color: var(--surface-canvas-white);
 }
 
@@ -854,6 +863,17 @@ body.has-transparent-header .site-main {
 .event-banner__content {
 	max-width: 600px;
 	padding: var(--spacing-64) var(--spacing-24);
+}
+
+@media (min-width: 1200px) {
+	.event-banner__content,
+	.career-banner__content {
+		/* Auf breiten Desktop-Viewports bricht die Headline in der
+		   600px-Spalte in 4 kurze Zeilen um ("5 OFFENE / STELLEN IN /
+		   WERKSTATT UND / SERVICE"); eine breitere Spalte lässt sie in
+		   2-3 ausgewogenere Zeilen umbrechen. */
+		max-width: 780px;
+	}
 }
 
 .event-banner__headline {
@@ -1198,7 +1218,11 @@ body.has-transparent-header .site-main {
 }
 
 .vehicle-search__headline {
-	font-size: clamp(28px, 5vw, var(--text-display));
+	/* Bewusst kleiner als die Display-Skala: in der schmalen 480px-
+	   Spalte neben kurzem Begleittext wirkte die volle --text-display-
+	   Größe auf Desktop überdimensioniert gegenüber dem restlichen
+	   Inhalt der Sektion (Suchfeld, kurzer Hinweistext, ein Button). */
+	font-size: clamp(24px, 3vw, var(--text-heading-lg));
 	margin-bottom: var(--spacing-16);
 }
 
@@ -1577,7 +1601,11 @@ body.has-transparent-header .site-main {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: var(--spacing-64);
-	align-items: center;
+	/* "start" statt "center": die zwei Service-Teaser-Karten rechts
+	   sind zusammen niedriger als das 420px hohe Foto links - bei
+	   center-Ausrichtung hing das Foto dadurch oben UND unten über die
+	   Karten hinaus ("nicht bündig"), start richtet beide oben aus. */
+	align-items: start;
 }
 
 .finance-section__grid > * {

@@ -58,7 +58,19 @@ foreach ( $auto_emotion_showcase_brands as $auto_emotion_marke_name ) {
 			<?php if ( $auto_emotion_kfz ) : ?>
 				<p class="model-showcase__eyebrow"><?php echo esc_html( $auto_emotion_slide['brand'] ); ?></p>
 				<h2 class="model-showcase__badge"><?php echo esc_html( get_the_title( $auto_emotion_kfz ) ); ?></h2>
-				<p class="model-showcase__headline"><?php echo esc_html( get_the_excerpt( $auto_emotion_kfz ) ); ?></p>
+				<?php
+				/**
+				 * get_the_excerpt() liefert hier oft den vollständigen,
+				 * manuell gepflegten Leasing-Rechtstext (identisch mit dem
+				 * .model-showcase__disclaimer weiter unten) statt eines
+				 * kurzen Teasers. Auf 30 Wörter gekürzt, damit die Zeile
+				 * als Subheadline funktioniert statt als zweiter
+				 * Fließtextblock - der vollständige Text bleibt im
+				 * Disclaimer direkt darunter unverändert erhalten.
+				 */
+				$auto_emotion_showcase_excerpt = wp_strip_all_tags( get_the_excerpt( $auto_emotion_kfz ) );
+				?>
+				<p class="model-showcase__headline"><?php echo esc_html( wp_trim_words( $auto_emotion_showcase_excerpt, 30, '…' ) ); ?></p>
 
 				<?php if ( has_post_thumbnail( $auto_emotion_kfz ) ) : ?>
 					<?php echo get_the_post_thumbnail( $auto_emotion_kfz, 'large', array( 'class' => 'model-showcase__photo' ) ); ?>
