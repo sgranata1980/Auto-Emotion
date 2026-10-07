@@ -19,6 +19,8 @@ get_header();
 	<h1 class="section-heading__title"><?php esc_html_e( 'Unsere Kunden', 'auto-emotion' ); ?></h1>
 </div>
 
+<img class="content-header-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/standort-luftbild.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Luftbild des Auto Emotion Standorts in Offenbach" loading="lazy">
+
 <div class="entry-content">
 	<p><?php esc_html_e( 'Auto Emotion ist seit Mai 2001 als inhabergeführtes Familienunternehmen in Offenbach ansässig. Viele unserer Kunden sind uns seit dem ersten Tag treu – vom ersten Seat bis zum aktuellen Cupra oder Nissan.', 'auto-emotion' ); ?></p>
 	<p><?php esc_html_e( 'Was uns Kunden immer wieder zurückkehren lässt, sind keine großen Versprechen, sondern der direkte Draht: feste Ansprechpartner, eine Geschäftsführung, die im Haus erreichbar ist, und eine Werkstatt, die sich nicht nur auf Seat, Cupra und Nissan beschränkt, sondern als freie Werkstatt auch Fahrzeuge anderer Marken betreut.', 'auto-emotion' ); ?></p>

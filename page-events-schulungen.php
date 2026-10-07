@@ -19,6 +19,8 @@ get_header();
 	<h1 class="section-heading__title"><?php esc_html_e( 'Events & Schulungen', 'auto-emotion' ); ?></h1>
 </div>
 
+<img class="content-header-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/service-eingang-aussen.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Eingang des Auto Emotion Standorts in Offenbach" loading="lazy">
+
 <div class="entry-content">
 	<p><?php esc_html_e( 'Rund um Auto Emotion gibt es mehrere Anlässe, bei denen Sie uns persönlich treffen oder mehr erfahren können – von offenen Besuchstagen über Probefahrt-Termine bis zur technischen Weiterbildung unseres Werkstattteams.', 'auto-emotion' ); ?></p>
 </div>

@@ -32,6 +32,8 @@ get_header();
 	<h1 class="section-heading__title"><?php esc_html_e( 'Jahreswagen / Tageszulassungen', 'auto-emotion' ); ?></h1>
 </div>
 
+<img class="content-header-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-formentor-born.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Fahrzeuge im Showroom von Auto Emotion" loading="lazy">
+
 <div class="entry-content">
 	<p><?php esc_html_e( 'Jahreswagen und Tageszulassungen verbinden den günstigeren Preis eines Gebrauchtwagens mit dem Zustand eines Neuwagens – minimale Laufleistung, aktuelle Ausstattung, meist noch volle Herstellergarantie.', 'auto-emotion' ); ?></p>
 	<p><?php esc_html_e( 'Verfügbarkeit und Ausstattung wechseln laufend. Sprechen Sie uns an, wir sagen Ihnen gerne, welche Jahreswagen und Tageszulassungen von Seat, Cupra und Nissan aktuell bei uns verfügbar sind.', 'auto-emotion' ); ?></p>
