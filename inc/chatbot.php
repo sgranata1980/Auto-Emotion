@@ -232,14 +232,16 @@ function auto_emotion_handle_chat_request( WP_REST_Request $request ) {
 			'body'    => wp_json_encode(
 				array(
 					/**
-					 * Haiku 5.5 statt 4.5: gleiche Modell-Generation,
-					 * zehnmal günstiger pro Token (Stand Herbst 2026) und
-					 * der einzige Haiku-Tier mit niedriger genug
-					 * Mindest-Prompt-Länge (512 statt 4096 Token), damit
-					 * das untenstehende Prompt-Caching bei unserem kurzen
-					 * System-Prompt überhaupt greifen kann.
+					 * claude-haiku-4-5-20251001: bewusst beim bekannt
+					 * funktionierenden Modell geblieben. Ein Versuch, auf
+					 * claude-haiku-5-5 zu wechseln (gleicher Tier, deutlich
+					 * günstiger), scheiterte live mit 502-Fehlern von der
+					 * Anthropic-API - vermutlich noch keine Freigabe für
+					 * diesen API-Key/Account. Vor einem erneuten Versuch
+					 * erst gegen die Anthropic-API verifizieren, dass das
+					 * Modell für diesen Account tatsächlich erreichbar ist.
 					 */
-					'model'      => 'claude-haiku-5-5',
+					'model'      => 'claude-haiku-4-5-20251001',
 					'max_tokens' => 400,
 					/**
 					 * System-Prompt als eigener Content-Block mit
