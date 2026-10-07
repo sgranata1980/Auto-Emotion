@@ -480,9 +480,14 @@ body.has-transparent-header .site-header.is-scrolled {
 /* ---------------------------------------------------------------- */
 
 .model-showcase {
+	/* Kein eigenes vertikales Padding mehr: .site-main > * + * gibt
+	   zwischen allen Geschwister-Sektionen bereits --section-gap
+	   (80px). Mit zusätzlichem 64px/40px-Padding hier kam der Abstand
+	   zur Fahrzeugsuche davor und zu "Unsere Marken" danach doppelt so
+	   groß heraus wie bei jedem anderen Sektionsübergang der Seite. */
 	background: var(--surface-canvas-white);
 	text-align: center;
-	padding: var(--spacing-64) var(--spacing-24) var(--spacing-40);
+	padding: 0 var(--spacing-24);
 }
 
 .model-showcase__slide {
