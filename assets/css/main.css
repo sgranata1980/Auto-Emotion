@@ -865,17 +865,6 @@ body.has-transparent-header .site-main {
 	padding: var(--spacing-64) var(--spacing-24);
 }
 
-@media (min-width: 1200px) {
-	.event-banner__content,
-	.career-banner__content {
-		/* Auf breiten Desktop-Viewports bricht die Headline in der
-		   600px-Spalte in 4 kurze Zeilen um ("5 OFFENE / STELLEN IN /
-		   WERKSTATT UND / SERVICE"); eine breitere Spalte lässt sie in
-		   2-3 ausgewogenere Zeilen umbrechen. */
-		max-width: 780px;
-	}
-}
-
 .event-banner__headline {
 	font-size: clamp(28px, 6vw, var(--text-display));
 	margin-bottom: var(--spacing-24);
@@ -936,6 +925,19 @@ body.has-transparent-header .site-main {
 .career-banner__content {
 	max-width: 600px;
 	padding: var(--spacing-64) var(--spacing-24);
+}
+
+@media (min-width: 1200px) {
+	/* Auf breiten Desktop-Viewports bricht die Headline in der
+	   600px-Spalte in 4 kurze Zeilen um ("5 OFFENE / STELLEN IN /
+	   WERKSTATT UND / SERVICE"); eine breitere Spalte lässt sie in
+	   2-3 ausgewogenere Zeilen umbrechen. Muss NACH den Basis-Regeln
+	   stehen, sonst gewinnt die spätere unconditioned 600px-Regel bei
+	   gleicher Spezifität unabhängig vom Viewport (Cascade-Reihenfolge). */
+	.event-banner__content,
+	.career-banner__content {
+		max-width: 780px;
+	}
 }
 
 .career-banner__headline {
