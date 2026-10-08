@@ -672,13 +672,12 @@ body.has-transparent-header .site-header.is-scrolled {
 
 /* Serif-Italic-Akzent auf dem letzten Headline-Wort statt der
    durchgehenden Uppercase-Sans - bewusster Bruch im sonst strengen
-   Lambo-Schriftbild, der das vorher ungenutzte Giallo-Gold-Token
-   (--color-giallo-vivo) erstmals zum Einsatz bringt. */
+   Lambo-Schriftbild, in der echten Auto-Emotion-Akzentfarbe Rot. */
 .hero-stage__accent {
 	font-family: 'Instrument Serif', 'Times New Roman', Times, serif;
 	font-style: italic;
 	font-weight: 400;
-	color: var(--color-giallo-vivo);
+	color: var(--color-rosso-vivo);
 }
 
 .hero-stage__ctas {
