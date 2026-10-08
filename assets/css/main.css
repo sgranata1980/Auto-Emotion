@@ -639,11 +639,23 @@ body.has-transparent-header .site-header.is-scrolled {
 	max-width: 50%;
 }
 
-.hero-stage__eyebrow {
-	font-size: var(--text-body);
+/* Pill-Badge statt reinem Fließtext als Eyebrow - kompakter visueller
+   Einstiegspunkt, der den Blick zuerst auf einen kleinen, klar
+   abgegrenzten Claim lenkt, bevor die große Headline folgt. */
+.hero-stage__badge {
+	display: inline-flex;
+	align-items: center;
+	margin-bottom: var(--spacing-16);
+	padding: 8px 16px;
+	border: 1px solid rgba(255, 255, 255, 0.22);
+	border-radius: 999px;
+	background: linear-gradient(90deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%);
+	font-size: var(--text-caption);
+	font-weight: var(--font-weight-bold);
 	text-transform: uppercase;
 	letter-spacing: 0.0230em;
-	margin-bottom: var(--spacing-16);
+	backdrop-filter: blur(6px);
+	-webkit-backdrop-filter: blur(6px);
 }
 
 .hero-stage__headline {
@@ -651,6 +663,112 @@ body.has-transparent-header .site-header.is-scrolled {
 	line-height: var(--leading-hero);
 	margin-bottom: var(--spacing-32);
 	text-wrap: balance;
+}
+
+.hero-stage__headline .appear--mask {
+	display: block;
+	overflow: hidden;
+}
+
+/* Serif-Italic-Akzent auf dem letzten Headline-Wort statt der
+   durchgehenden Uppercase-Sans - bewusster Bruch im sonst strengen
+   Lambo-Schriftbild, der das vorher ungenutzte Giallo-Gold-Token
+   (--color-giallo-vivo) erstmals zum Einsatz bringt. */
+.hero-stage__accent {
+	font-family: 'Instrument Serif', 'Times New Roman', Times, serif;
+	font-style: italic;
+	font-weight: 400;
+	color: var(--color-giallo-vivo);
+}
+
+.hero-stage__ctas {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-16);
+}
+
+/* Hero-eigene Ghost-/Glas-Variante statt des globalen .btn-outline:
+   bewusst nur im Hero, um die etablierte Button-Sprache auf allen
+   anderen Seiten nicht sitewide zu verändern. */
+.hero-stage__cta-ghost {
+	position: relative;
+	overflow: hidden;
+	border: 1px solid rgba(255, 255, 255, 0.4);
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 100%);
+	color: var(--surface-canvas-white);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.hero-stage__cta-ghost:hover {
+	border-color: rgba(255, 255, 255, 0.7);
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+}
+
+/* Gestaffelte Eintritts-Animation: Badge, Headline und Buttons blenden
+   nacheinander ein statt alle gleichzeitig zu erscheinen. Ruhezustand
+   ist immer sichtbar (animation-fill-mode:both setzt nur den
+   0%-Keyframe während der delay-Phase), bei deaktivierter Bewegung
+   greift die globale prefers-reduced-motion-Regel oben und reduziert
+   jede Animation auf 0.01ms. */
+.hero-stage .appear {
+	animation-duration: 0.9s;
+	animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+	animation-fill-mode: both;
+}
+
+.hero-stage__badge.appear--pop {
+	animation-name: hero-in-pop;
+	animation-delay: 0.1s;
+}
+
+.hero-stage__headline .appear--mask {
+	animation-name: hero-in-mask;
+	animation-delay: 0.3s;
+}
+
+.appear--btn {
+	animation-name: hero-in-btn;
+	animation-delay: 0.55s;
+}
+
+.appear--btn-delay {
+	animation-name: hero-in-btn;
+	animation-delay: 0.68s;
+}
+
+@keyframes hero-in-pop {
+	from {
+		opacity: 0;
+		transform: scale(0.9);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes hero-in-mask {
+	from {
+		opacity: 0;
+		transform: translateY(40%);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes hero-in-btn {
+	from {
+		opacity: 0;
+		transform: translateY(16px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 @media (max-width: 768px) {

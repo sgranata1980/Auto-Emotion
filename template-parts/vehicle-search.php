@@ -18,7 +18,7 @@ $auto_emotion_marken = get_terms(
 
 $auto_emotion_angebot_count = (int) wp_count_posts( 'angebot' )->publish;
 ?>
-<section class="vehicle-search" aria-labelledby="vehicle-search-heading">
+<section id="fahrzeugsuche" class="vehicle-search" aria-labelledby="vehicle-search-heading">
 	<div class="vehicle-search__grid">
 		<div class="vehicle-search__visual">
 			<video

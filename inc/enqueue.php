@@ -16,7 +16,7 @@ function auto_emotion_assets() {
 	if ( 'all' === $consent ) {
 		wp_enqueue_style(
 			'auto-emotion-fonts',
-			'https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;700;900&family=Open+Sans:wght@400&display=swap',
+			'https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;700;900&family=Open+Sans:wght@400&family=Instrument+Serif:ital@1&display=swap',
 			array(),
 			null
 		);
