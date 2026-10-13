@@ -27,6 +27,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	</div>
 
+	<?php get_template_part( 'template-parts/newsletter-signup' ); ?>
+
 	<?php auto_emotion_render_footer_menu(); ?>
 
 	<div class="footer-contact">
@@ -80,6 +82,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <?php get_template_part( 'template-parts/chat-widget' ); ?>
 <?php get_template_part( 'template-parts/cookie-banner' ); ?>
+<?php get_template_part( 'template-parts/feedback-popup' ); ?>
 
 <?php wp_footer(); ?>
 </body>

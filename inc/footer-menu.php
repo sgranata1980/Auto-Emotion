@@ -42,6 +42,7 @@ function auto_emotion_footer_menu_columns() {
 				array( 'title' => __( 'Gebrauchtwagen', 'auto-emotion' ), 'url' => $home . 'gebrauchtwagen/' ),
 				array( 'title' => __( 'Jahreswagen / Tageszulassungen', 'auto-emotion' ), 'url' => $home . 'jahreswagen-tageszulassungen/' ),
 				array( 'title' => __( 'Elektro & Hybrid', 'auto-emotion' ), 'url' => $home . 'elektro-hybrid/' ),
+				array( 'title' => __( 'Probefahrt buchen', 'auto-emotion' ), 'url' => $home . 'angebote/' ),
 			),
 		),
 		array(

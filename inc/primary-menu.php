@@ -39,6 +39,15 @@ function auto_emotion_primary_menu_items() {
 			'children' => array(
 				array( 'title' => __( 'Finanzierung & Leasing', 'auto-emotion' ), 'url' => $home . 'finanzierung-leasing/' ),
 				array( 'title' => __( 'Fahrzeugankauf (Ihr Auto verkaufen)', 'auto-emotion' ), 'url' => $home . 'fahrzeugankauf/' ),
+				/**
+				 * Keine eigene "Probefahrt buchen"-Seite vorhanden - die
+				 * echte Anfrage läuft je Fahrzeug über das Formular auf
+				 * der jeweiligen Angebots-Einzelseite (siehe
+				 * inc/testdrive.php, #probefahrt auf single-angebot.php).
+				 * Führt daher bewusst zur Fahrzeugauswahl statt zu einer
+				 * erfundenen eigenen Seite.
+				 */
+				array( 'title' => __( 'Probefahrt buchen', 'auto-emotion' ), 'url' => $home . 'angebote/' ),
 			),
 		),
 		array(
