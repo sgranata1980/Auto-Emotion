@@ -126,26 +126,26 @@ function auto_emotion_seed_angebot_filter_terms() {
 
 	// post_id => array( karosserie, antrieb[] ) - antrieb leer = nicht sicher zuordenbar.
 	$zuordnung = array(
-		333 => array( 'Kleinwagen', array( 'Benzin' ) ),       // Seat Ibiza FR
-		332 => array( 'SUV', array( 'Benzin' ) ),               // CUPRA Formentor VZ Custom by ABT
+		333 => array( 'Kleinwagen', array( 'Benzin' ) ),        // Seat Ibiza FR - Beschreibung: "1,0 TSI"
+		332 => array( 'SUV', array( 'Benzin' ) ),               // CUPRA Formentor VZ Custom by ABT - "2,0 TSI"
 		330 => array( 'Nutzfahrzeug', array( 'Diesel' ) ),      // Nissan Interstar Kasten
 		329 => array( 'Nutzfahrzeug', array( 'Diesel' ) ),      // Nissan Primastar Kasten
-		328 => array( 'Nutzfahrzeug', array() ),                // Nissan Townstar Kasten - Diesel oder EV, unklar
-		324 => array( 'Kompakt', array( 'Elektro' ) ),          // Nissan Leaf Engage
-		323 => array( 'SUV', array( 'Hybrid' ) ),               // Nissan X-Trail e-POWER
-		322 => array( 'SUV', array( 'Hybrid' ) ),               // Nissan Qashqai Acenta (Mild-Hybrid-Antrieb)
-		321 => array( 'SUV', array( 'Benzin' ) ),               // Nissan Juke N-Tec
-		316 => array( 'Kompakt', array() ),                     // Nissan Micra Engage - Generation/Antrieb unklar
+		328 => array( 'Nutzfahrzeug', array() ),                // Nissan Townstar Kasten - gibt es als Benzin UND als Elektro-Variante, Beschreibung nennt keine davon
+		324 => array( 'Kompakt', array( 'Elektro' ) ),          // Nissan Leaf Engage - Beschreibung: "Elektrisch"
+		323 => array( 'SUV', array( 'Hybrid', 'Benzin' ) ),     // Nissan X-Trail e-POWER - Beschreibung: "e-POWER ... Benziner"
+		322 => array( 'SUV', array( 'Hybrid', 'Benzin' ) ),     // Nissan Qashqai Acenta - Beschreibung: "Mild-Hybrid ... Benziner"
+		321 => array( 'SUV', array( 'Benzin' ) ),               // Nissan Juke N-Tec - Beschreibung: "Benziner", keine Hybrid-Angabe
+		316 => array( 'Kompakt', array( 'Elektro' ) ),          // Nissan Micra Engage - Beschreibung: "vollelektrisches Stadtauto ... Elektrisch"
 		315 => array( 'Kombi', array( 'Benzin' ) ),             // Seat Leon Sportstourer FR Black Edition
 		314 => array( 'Kompakt', array( 'Benzin' ) ),           // Seat Leon FR Black Edition
 		313 => array( 'SUV', array( 'Benzin' ) ),               // Seat Arona FR Black Edition
 		312 => array( 'Kleinwagen', array( 'Benzin' ) ),        // Seat Ibiza FR Black Edition
-		311 => array( 'SUV', array( 'Elektro' ) ),              // Cupra Tavascan
-		310 => array( 'SUV', array() ),                         // Cupra Terramar - Antrieb im Titel nicht spezifiziert
-		309 => array( 'SUV', array( 'Benzin', 'Hybrid' ) ),     // Cupra Formentor: TSI und e-HYBRID
-		308 => array( 'Kombi', array( 'Benzin', 'Hybrid' ) ),   // Cupra Leon Sportstourer: TSI und e-HYBRID
-		307 => array( 'Kompakt', array( 'Benzin', 'Hybrid' ) ), // Cupra Leon: TSI und e-HYBRID
-		64  => array( 'Kompakt', array( 'Elektro' ) ),          // CUPRA Born VZ
+		311 => array( 'SUV', array( 'Elektro' ) ),              // Cupra Tavascan - Beschreibung: "140 kW/58 kWh"
+		310 => array( 'SUV', array( 'Benzin', 'Hybrid' ) ),     // Cupra Terramar - Beschreibung: "1.5 eTSI" UND "e-HYBRID"
+		309 => array( 'SUV', array( 'Benzin', 'Hybrid' ) ),     // Cupra Formentor - Beschreibung: "TSI" UND "e-HYBRID"
+		308 => array( 'Kombi', array( 'Benzin', 'Hybrid' ) ),   // Cupra Leon Sportstourer - Beschreibung: "TSI" UND "e-HYBRID"
+		307 => array( 'Kompakt', array( 'Benzin', 'Hybrid' ) ), // Cupra Leon - Beschreibung: "TSI" UND "e-HYBRID"
+		64  => array( 'Kompakt', array( 'Elektro' ) ),          // CUPRA Born VZ - Born ist ausschließlich als Elektrofahrzeug erhältlich
 	);
 
 	foreach ( $zuordnung as $post_id => $werte ) {
@@ -165,6 +165,41 @@ function auto_emotion_seed_angebot_filter_terms() {
 	update_option( 'auto_emotion_angebot_filter_terms_seeded', '1' );
 }
 add_action( 'init', 'auto_emotion_seed_angebot_filter_terms', 20 );
+
+/**
+ * Korrektur zur ersten Einordnung oben: beim ersten Durchlauf wurden
+ * nur die Angebots-TITEL geprüft. Die echten Beschreibungstexte
+ * (Post-Excerpt/-Content) nennen den tatsächlichen Antrieb aber oft
+ * explizit (z.B. "Mild-Hybrid ... Benziner", "vollelektrisches
+ * Stadtauto ... Elektrisch") - diese vier Fälle waren dadurch falsch
+ * oder unnötig leer. Läuft, weil der erste Durchlauf (Options-Flag
+ * oben) bereits erfolgt ist, als eigene einmalige Korrektur statt
+ * einer erneuten Komplett-Zuordnung.
+ */
+function auto_emotion_fix_angebot_antrieb_terms() {
+	if ( get_option( 'auto_emotion_angebot_antrieb_fixed_v2' ) ) {
+		return;
+	}
+
+	auto_emotion_register_cpt();
+
+	$korrekturen = array(
+		316 => array( 'Elektro' ),          // Nissan Micra Engage - Beschreibung: "vollelektrisches Stadtauto ... Elektrisch"
+		322 => array( 'Hybrid', 'Benzin' ), // Nissan Qashqai Acenta - Beschreibung: "Mild-Hybrid ... Benziner"
+		323 => array( 'Hybrid', 'Benzin' ), // Nissan X-Trail e-POWER - Beschreibung: "e-POWER ... Benziner"
+		310 => array( 'Hybrid', 'Benzin' ), // Cupra Terramar - Beschreibung: "1.5 eTSI" UND "e-HYBRID"
+	);
+
+	foreach ( $korrekturen as $post_id => $antriebe ) {
+		if ( 'angebot' !== get_post_type( $post_id ) ) {
+			continue;
+		}
+		wp_set_object_terms( $post_id, $antriebe, 'antrieb', false );
+	}
+
+	update_option( 'auto_emotion_angebot_antrieb_fixed_v2', '1' );
+}
+add_action( 'init', 'auto_emotion_fix_angebot_antrieb_terms', 21 );
 
 /**
  * Fahrzeugsuche: filtert das Angebot-Archiv nach Marke, Karosserieform
