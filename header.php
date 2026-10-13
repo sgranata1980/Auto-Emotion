@@ -51,15 +51,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 
 	<nav id="site-navigation" class="main-navigation" data-state="closed">
-		<?php
-		wp_nav_menu(
-			array(
-				'theme_location' => 'primary',
-				'menu_id'        => 'primary-menu',
-				'walker'         => new Auto_Emotion_Nav_Walker(),
-			)
-		);
-		?>
+		<?php auto_emotion_render_primary_menu(); ?>
 		<button type="button" class="main-navigation__ai-trigger">
 			<?php esc_html_e( 'AI-Assistent', 'auto-emotion' ); ?>
 		</button>
