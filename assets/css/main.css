@@ -477,11 +477,20 @@ body.has-transparent-header .site-header.is-scrolled {
 
 	.site-header {
 		justify-content: flex-start;
-		gap: var(--spacing-40);
+		gap: var(--spacing-24);
 	}
 
 	.header-actions {
 		margin-left: auto;
+		flex-shrink: 0;
+	}
+
+	/* Logo darf nie schrumpfen: ohne flex-shrink:0 drückten die 10+
+	   Hauptpunkte (white-space:nowrap, siehe .menu-item__link unten)
+	   bei schmaleren Desktop-Breiten (z.B. 1440px) das Logo auf 0px
+	   Breite zusammen, bis es komplett verschwand. */
+	.site-branding {
+		flex-shrink: 0;
 	}
 
 	.main-navigation,
@@ -493,13 +502,28 @@ body.has-transparent-header .site-header.is-scrolled {
 		padding: 0;
 		max-height: none;
 		overflow: visible;
-		gap: var(--spacing-32);
+		gap: var(--spacing-24);
+		/* Statt das Logo zu verdrängen, wird die Menüleiste selbst
+		   eingeschränkt: passen nicht alle Punkte in die verfügbare
+		   Breite, scrollt sie horizontal statt etwas zu zerquetschen. */
+		min-width: 0;
+	}
+
+	.main-navigation > div {
+		min-width: 0;
+		overflow-x: auto;
+		overflow-y: hidden;
+		scrollbar-width: none;
+	}
+
+	.main-navigation > div::-webkit-scrollbar {
+		display: none;
 	}
 
 	.main-navigation ul {
 		flex-direction: row;
 		align-items: center;
-		gap: var(--spacing-32);
+		gap: var(--spacing-24);
 	}
 
 	.main-navigation .menu-item {
@@ -521,6 +545,7 @@ body.has-transparent-header .site-header.is-scrolled {
 	}
 
 	.main-navigation__ai-trigger {
+		flex-shrink: 0;
 		font-size: var(--text-caption);
 		padding: 0;
 		white-space: nowrap;
