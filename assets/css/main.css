@@ -2069,9 +2069,17 @@ body.has-transparent-header .site-main {
 
 .footer-column__title {
 	font-size: var(--text-body);
+	line-height: 1.4;
 	text-transform: uppercase;
 	letter-spacing: 0.0230em;
 	margin: 0 0 var(--spacing-16);
+	/* "Service- & Dienstleistungen" ist als einzige Spaltenüberschrift
+	   lang genug, um in der Spaltenbreite zweizeilig umzubrechen - ohne
+	   reservierte Höhe startete nur ihre Liste tiefer als die der
+	   Nachbarspalten, die Reihe wirkte dadurch "schlecht getrennt"/
+	   nicht bündig. Platz für 2 Zeilen, wie bereits bei
+	   .story-grid__title gelöst. */
+	min-height: calc(var(--text-body) * 1.4 * 2);
 }
 
 .footer-column__list {
