@@ -1682,6 +1682,108 @@ body.has-transparent-header .site-main {
 }
 
 /* ---------------------------------------------------------------- */
+/* Fahrzeug-Filter (Angebote-Archiv, Kachel-UI nach bmw.de-Vorbild,   */
+/* in unserer eckigen Formensprache statt BMWs runden Karten)        */
+/* ---------------------------------------------------------------- */
+
+.vehicle-filter {
+	margin-bottom: var(--spacing-40);
+}
+
+.vehicle-filter__group {
+	border: none;
+	padding: 0;
+	margin: 0 0 var(--spacing-32);
+}
+
+.vehicle-filter__legend {
+	padding: 0;
+	font-size: var(--text-subheading);
+	font-weight: var(--font-weight-bold);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	margin-bottom: var(--spacing-16);
+}
+
+.vehicle-filter__tiles {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+	gap: var(--spacing-16);
+}
+
+.vehicle-filter__tiles--icons {
+	grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+}
+
+.vehicle-filter__tile {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--spacing-8);
+	padding: var(--spacing-24) var(--spacing-16);
+	border: 1px solid var(--color-ash-border);
+	cursor: pointer;
+	text-align: center;
+	transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Checkbox/Radio selbst unsichtbar, aber vorhanden und fokussierbar -
+   die ganze Kachel ist das Label, :has() steuert den gewählten
+   Zustand rein über CSS statt per JS-Klasse. */
+.vehicle-filter__tile input {
+	position: absolute;
+	opacity: 0;
+	width: 1px;
+	height: 1px;
+}
+
+.vehicle-filter__tile span {
+	font-size: var(--text-caption);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+}
+
+.vehicle-filter__icon {
+	width: 32px;
+	height: 32px;
+	color: var(--color-carbony-black);
+	transition: color 0.2s ease;
+}
+
+.vehicle-filter__tile:hover {
+	border-color: var(--color-rosso-vivo);
+}
+
+.vehicle-filter__tile:has(input:checked) {
+	border-color: var(--color-rosso-vivo);
+	background: var(--color-rosso-vivo);
+	color: var(--surface-canvas-white);
+}
+
+.vehicle-filter__tile:has(input:checked) .vehicle-filter__icon {
+	color: var(--surface-canvas-white);
+}
+
+.vehicle-filter__tile:has(input:focus-visible) {
+	outline: 2px solid var(--color-giallo-vivo);
+	outline-offset: 2px;
+}
+
+.vehicle-filter__tile--text {
+	flex-direction: row;
+	padding: var(--spacing-16);
+}
+
+.vehicle-filter__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--spacing-16);
+}
+
+/* ---------------------------------------------------------------- */
 /* Footer                                                             */
 /* ---------------------------------------------------------------- */
 

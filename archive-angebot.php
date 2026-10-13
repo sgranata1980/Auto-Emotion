@@ -11,17 +11,31 @@ get_header();
 
 $auto_emotion_marke_filter = isset( $_GET['marke'] ) ? sanitize_title( wp_unslash( $_GET['marke'] ) ) : '';
 $auto_emotion_marke_term   = $auto_emotion_marke_filter ? get_term_by( 'slug', $auto_emotion_marke_filter, 'marke' ) : false;
+
+$auto_emotion_active_filter_names = array();
+if ( $auto_emotion_marke_term ) {
+	$auto_emotion_active_filter_names[] = $auto_emotion_marke_term->name;
+}
+foreach ( array( 'karosserie', 'antrieb' ) as $auto_emotion_tax ) {
+	$auto_emotion_slugs = isset( $_GET[ $auto_emotion_tax ] ) ? array_map( 'sanitize_title', (array) wp_unslash( $_GET[ $auto_emotion_tax ] ) ) : array();
+	foreach ( $auto_emotion_slugs as $auto_emotion_slug ) {
+		$auto_emotion_term = get_term_by( 'slug', $auto_emotion_slug, $auto_emotion_tax );
+		if ( $auto_emotion_term ) {
+			$auto_emotion_active_filter_names[] = $auto_emotion_term->name;
+		}
+	}
+}
 ?>
 
 <div class="section-heading">
 	<h1 class="section-heading__title"><?php esc_html_e( 'Angebote', 'auto-emotion' ); ?></h1>
 </div>
 
-<?php if ( $auto_emotion_marke_term ) : ?>
+<?php get_template_part( 'template-parts/vehicle-filter' ); ?>
+
+<?php if ( $auto_emotion_active_filter_names ) : ?>
 	<p class="archive-filter-notice">
-		<?php echo esc_html( sprintf( __( 'Gefiltert nach: %s', 'auto-emotion' ), $auto_emotion_marke_term->name ) ); ?>
-		&middot;
-		<a href="<?php echo esc_url( get_post_type_archive_link( 'angebot' ) ); ?>"><?php esc_html_e( 'Filter zurücksetzen', 'auto-emotion' ); ?></a>
+		<?php echo esc_html( sprintf( __( 'Gefiltert nach: %s', 'auto-emotion' ), implode( ', ', $auto_emotion_active_filter_names ) ) ); ?>
 	</p>
 <?php endif; ?>
 
@@ -39,10 +53,10 @@ $auto_emotion_marke_term   = $auto_emotion_marke_filter ? get_term_by( 'slug', $
 	</div>
 
 	<?php the_posts_pagination(); ?>
-<?php elseif ( $auto_emotion_marke_term ) : ?>
+<?php elseif ( $auto_emotion_active_filter_names ) : ?>
 	<div class="no-results">
 		<p>
-			<?php echo esc_html( sprintf( __( 'Aktuell kein gelistetes Fahrzeug von %s. Sag uns, wonach du suchst – wir sagen dir, was möglich ist.', 'auto-emotion' ), $auto_emotion_marke_term->name ) ); ?>
+			<?php echo esc_html( sprintf( __( 'Aktuell kein gelistetes Fahrzeug mit dieser Auswahl (%s). Sag uns, wonach du suchst – wir sagen dir, was möglich ist.', 'auto-emotion' ), implode( ', ', $auto_emotion_active_filter_names ) ) ); ?>
 		</p>
 		<a class="btn btn-giallo" href="tel:<?php echo esc_attr( auto_emotion_contact( 'phone_href' ) ); ?>">
 			<?php echo esc_html( auto_emotion_contact( 'phone' ) ); ?>
