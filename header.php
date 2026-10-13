@@ -60,6 +60,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 			)
 		);
 		?>
+		<button type="button" class="main-navigation__ai-trigger">
+			<?php esc_html_e( 'AI-Assistent', 'auto-emotion' ); ?>
+		</button>
 	</nav>
 
 	<form role="search" method="get" class="header-search" id="header-search" data-state="closed" action="<?php echo esc_url( home_url( '/' ) ); ?>">

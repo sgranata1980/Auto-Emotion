@@ -17,6 +17,24 @@ document.addEventListener('DOMContentLoaded', function () {
 	bindToggle('.nav-toggle', '#site-navigation');
 	bindToggle('.search-toggle', '#header-search');
 
+	// "AI-Assistent" im Hauptmenü verlinkt auf keine eigene Seite,
+	// sondern öffnet direkt das bestehende Chat-Widget (Emo).
+	var aiChatTrigger = document.querySelector( '.main-navigation__ai-trigger' );
+	var chatToggle = document.querySelector( '.chat-widget__toggle' );
+	if ( aiChatTrigger && chatToggle ) {
+		aiChatTrigger.addEventListener( 'click', function () {
+			var nav = document.getElementById( 'site-navigation' );
+			var navToggleBtn = document.querySelector( '.nav-toggle' );
+			if ( nav && nav.getAttribute( 'data-state' ) === 'open' ) {
+				nav.setAttribute( 'data-state', 'closed' );
+				if ( navToggleBtn ) {
+					navToggleBtn.setAttribute( 'aria-expanded', 'false' );
+				}
+			}
+			chatToggle.click();
+		} );
+	}
+
 	// Hauptmenü: Untermenüs innerhalb des Overlays auf-/zuklappen - immer
 	// nur eines gleichzeitig offen (wie Tabs), statt mehrere Panels
 	// übereinander stehen zu lassen. Ohne das ließ sich z.B. "Fahrzeuge"

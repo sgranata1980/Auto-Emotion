@@ -411,13 +411,17 @@ body.has-transparent-header .site-header.is-scrolled {
 	transform: translateX(4px);
 }
 
-/* Desktop/Maus: Untermenü beim Hovern über den Menüpunkt automatisch
-   zeigen, statt den kleinen Pfeil exakt treffen zu müssen. Zum
-   Schließen eine kurze Verzögerung (0.3s), damit der Übergang zur
-   Maus auf einen Unterpunkt nicht sofort abbricht - wie bei Apples
-   eigener Navigation. Auf Touch-Geräten (Handy) gibt es kein Hover,
-   dort bleibt das bewährte Antippen des Pfeils die einzige
-   Interaktion - unverändert. */
+/* Desktop/Maus UNTERHALB der permanenten Topbar-Breite (siehe
+   min-width:1200px weiter unten): Untermenü beim Hovern über den
+   Menüpunkt automatisch zeigen, statt den kleinen Pfeil exakt treffen
+   zu müssen. Zum Schließen eine kurze Verzögerung (0.3s), damit der
+   Übergang zur Maus auf einen Unterpunkt nicht sofort abbricht - wie
+   bei Apples eigener Navigation. Ab der Topbar-Breite gilt bewusst
+   NUR noch Klick (wie bei bmw.de: Pfeil zeigt erst nach einem Klick
+   nach oben, nicht schon beim bloßen Drüberfahren) - siehe
+   min-width:1200px-Block, der das Hover-Verhalten dort wieder
+   zurücksetzt. Auf Touch-Geräten (Handy) gibt es ohnehin kein Hover,
+   dort bleibt das Antippen des Pfeils die einzige Interaktion. */
 @media (hover: hover) and (pointer: fine) {
 	.main-navigation .sub-menu {
 		transition-delay: 0.3s;
@@ -434,6 +438,129 @@ body.has-transparent-header .site-header.is-scrolled {
 	.main-navigation .menu-item-has-children:hover > .submenu-toggle .submenu-toggle-icon,
 	.main-navigation .menu-item-has-children:focus-within > .submenu-toggle .submenu-toggle-icon {
 		transform: rotate(-135deg);
+	}
+}
+
+/* Nur im Menü sichtbar, bis zur AI-Assistent-Taste gleich gestylt wie
+   die echten Menüpunkte (gleiche Typografie), funktional aber ein
+   Button statt eines Links - öffnet das Chat-Widget statt zu
+   navigieren (siehe assets/js/main.js). */
+.main-navigation__ai-trigger {
+	background: none;
+	border: none;
+	padding: var(--spacing-8) 0;
+	color: var(--surface-canvas-white);
+	font-family: var(--font-lambotype);
+	font-size: var(--text-body);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	text-align: left;
+	cursor: pointer;
+	transition: color 0.15s ease;
+}
+
+.main-navigation__ai-trigger:hover,
+.main-navigation__ai-trigger:focus-visible {
+	color: var(--color-rosso-vivo);
+}
+
+/* Permanente Desktop-Topbar statt Vollbild-Overlay (Vorbild: bmw.de -
+   feste Menüleiste, Klick auf einen Punkt klappt ein volles,
+   spaltenweises Panel darunter auf; nochmaliger Klick schließt es
+   wieder). Unterhalb dieser Breite bleibt das bewährte
+   Hamburger-Vollbild-Menü unverändert bestehen - bei 10+ Hauptpunkten
+   plus "AI-Assistent" ist dafür spürbar Platz nötig. */
+@media (min-width: 1200px) {
+	.nav-toggle {
+		display: none;
+	}
+
+	.site-header {
+		justify-content: flex-start;
+		gap: var(--spacing-40);
+	}
+
+	.header-actions {
+		margin-left: auto;
+	}
+
+	.main-navigation,
+	.main-navigation[data-state="closed"] {
+		display: flex;
+		align-items: center;
+		position: static;
+		background: none;
+		padding: 0;
+		max-height: none;
+		overflow: visible;
+		gap: var(--spacing-32);
+	}
+
+	.main-navigation ul {
+		flex-direction: row;
+		align-items: center;
+		gap: var(--spacing-32);
+	}
+
+	.main-navigation .menu-item {
+		position: relative;
+		flex-wrap: nowrap;
+		width: auto;
+	}
+
+	.main-navigation .menu-item__link {
+		flex: none;
+		padding: 0;
+		font-size: var(--text-caption);
+		white-space: nowrap;
+	}
+
+	.submenu-toggle {
+		width: 24px;
+		height: 24px;
+	}
+
+	.main-navigation__ai-trigger {
+		font-size: var(--text-caption);
+		padding: 0;
+		white-space: nowrap;
+	}
+
+	/* Ab hier bewusst NUR Klick, kein Hover-Autoöffnen (siehe Kommentar
+	   oben am @media(hover:hover)-Block) - setzt dessen Werte wieder
+	   auf "zu" zurück, sodass einzig data-state="open" (per Klick vom
+	   JS gesetzt) das Panel öffnet. */
+	.main-navigation .menu-item-has-children:hover > .sub-menu,
+	.main-navigation .menu-item-has-children:focus-within > .sub-menu {
+		max-height: 0;
+		opacity: 0;
+		margin: 0;
+	}
+
+	.main-navigation .menu-item-has-children:hover > .submenu-toggle .submenu-toggle-icon,
+	.main-navigation .menu-item-has-children:focus-within > .submenu-toggle .submenu-toggle-icon {
+		transform: rotate(45deg);
+	}
+
+	/* Panel hängt sich unabhängig vom auslösenden Menüpunkt an den
+	   Viewport (position:fixed), nicht an die Breite des einzelnen
+	   <li> - dadurch volle Breite unter der Topbar wie bei bmw.de,
+	   unabhängig davon, welcher Hauptpunkt gerade offen ist. */
+	.main-navigation .sub-menu {
+		position: fixed;
+		top: 64px;
+		left: 0;
+		right: 0;
+		width: 100%;
+		background: var(--surface-carbon-deep);
+		/* Vertikales Padding wird bei max-height:0 ohnehin mit
+		   abgeschnitten (overflow:hidden) - erst im offenen Zustand
+		   sichtbar, kein separater Übergang nötig. */
+		padding: var(--spacing-56);
+		box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		row-gap: var(--spacing-16);
+		z-index: 15;
 	}
 }
 
