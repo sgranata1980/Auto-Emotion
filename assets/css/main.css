@@ -561,7 +561,8 @@ body.has-transparent-header .site-header.is-scrolled {
 	   Viewport (position:fixed), nicht an die Breite des einzelnen
 	   <li> - dadurch volle Breite unter der Topbar wie bei bmw.de,
 	   unabhängig davon, welcher Hauptpunkt gerade offen ist. */
-	.main-navigation .sub-menu {
+	.main-navigation .sub-menu,
+	.main-navigation .sub-menu[data-state="open"] {
 		position: fixed;
 		top: 64px;
 		left: 0;
@@ -572,6 +573,12 @@ body.has-transparent-header .site-header.is-scrolled {
 		   abgeschnitten (overflow:hidden) - erst im offenen Zustand
 		   sichtbar, kein separater Übergang nötig. */
 		padding: var(--spacing-56);
+		/* Überschreibt den margin-top aus der mobilen Akkordeon-Version
+		   (dort nötig, um Abstand zum vorigen Listenpunkt zu schaffen) -
+		   bei position:fixed verschob dieser margin-top das Panel sonst
+		   um 16px nach unten und riss eine sichtbare Lücke zur Topbar
+		   auf, statt bündig direkt darunter anzuschließen. */
+		margin: 0;
 		box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
 		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 		row-gap: var(--spacing-16);
