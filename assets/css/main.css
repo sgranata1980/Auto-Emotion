@@ -323,20 +323,28 @@ body:not(.has-transparent-header) .site-main {
 	color: var(--color-rosso-vivo);
 }
 
-/* Touch-Target auf mindestens 44x44px gebracht (vorher nur 26x26px:
-   10px-Pfeil + 8px padding - auf dem Handy leicht knapp daneben
-   getippt, wirkte dadurch wie "reagiert nicht"). Der Pfeil selbst
-   bleibt optisch klein, nur die klickbare Fläche wächst. */
+/* Ein einziger Button aus Label + Pfeil für Hauptpunkte mit
+   Untermenü, statt Text als separatem Link + eigenem Pfeil-Button
+   daneben - das Label öffnet/schließt nur noch das Menü und navigiert
+   nie direkt weg (wie bei bmw.de beobachtet: "Kaufen" landete bei uns
+   vorher auf /finanzierung-leasing/, statt das Menü zu öffnen). Erbt
+   flex:1/padding von .menu-item__link (beide Klassen kombiniert),
+   dadurch bleibt die komplette Zeile ein großzügiges Touch-Target
+   statt nur eines kleinen 44x44px-Pfeils. */
 .submenu-toggle {
 	display: flex;
 	align-items: center;
-	justify-content: center;
-	width: 44px;
-	height: 44px;
+	justify-content: space-between;
+	gap: var(--spacing-16);
 	background: none;
 	border: none;
+	font-family: var(--font-lambotype);
+	font-size: var(--text-body);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
 	color: var(--surface-canvas-white);
-	flex-shrink: 0;
+	text-align: left;
+	cursor: pointer;
 }
 
 .submenu-toggle-icon {
@@ -561,8 +569,9 @@ body:not(.has-transparent-header) .site-main {
 	}
 
 	.submenu-toggle {
-		width: 24px;
-		height: 24px;
+		display: inline-flex;
+		width: auto;
+		gap: var(--spacing-8);
 	}
 
 	.main-navigation__ai-trigger {

@@ -119,13 +119,23 @@ function auto_emotion_render_primary_menu() {
 		$classes      = $has_children ? ' menu-item-has-children' : '';
 
 		echo '<li class="menu-item' . esc_attr( $classes ) . '">';
-		echo '<a href="' . esc_url( $item['url'] ) . '" class="menu-item__link">' . esc_html( $item['title'] ) . '</a>';
 
 		if ( $has_children ) {
-			echo '<button type="button" class="submenu-toggle" aria-expanded="false" aria-label="' . esc_attr(
+			/**
+			 * Hauptpunkte mit Untermenü sind - wie bei bmw.de beobachtet -
+			 * ein einziger Aufklapp-Button, der NIE selbst navigiert,
+			 * auch wenn der Punkt (wie "Fahrzeuge") eine echte eigene
+			 * Übersichtsseite hat. Wer die Übersichtsseite will, erreicht
+			 * sie über den "Alle X ansehen"-Link im geöffneten Panel.
+			 * Vorher klickte der Text direkt weg (z.B. "Kaufen" landete
+			 * auf /finanzierung-leasing/ statt das Menü zu öffnen) - das
+			 * wurde vom Nutzer live als Abweichung vom bmw.de-Vorbild
+			 * gemeldet.
+			 */
+			echo '<button type="button" class="menu-item__link submenu-toggle" aria-expanded="false" aria-label="' . esc_attr(
 				/* translators: %s: Menu item title. */
 				sprintf( __( 'Untermenü %s', 'auto-emotion' ), $item['title'] )
-			) . '"><span class="submenu-toggle-icon" aria-hidden="true"></span></button>';
+			) . '">' . esc_html( $item['title'] ) . '<span class="submenu-toggle-icon" aria-hidden="true"></span></button>';
 
 			echo '<ul class="sub-menu" data-state="closed">';
 
@@ -150,6 +160,8 @@ function auto_emotion_render_primary_menu() {
 			}
 
 			echo '</ul>';
+		} else {
+			echo '<a href="' . esc_url( $item['url'] ) . '" class="menu-item__link">' . esc_html( $item['title'] ) . '</a>';
 		}
 
 		echo '</li>';
