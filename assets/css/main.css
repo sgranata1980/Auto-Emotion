@@ -345,6 +345,24 @@ body:not(.has-transparent-header) .site-main {
 	color: var(--surface-canvas-white);
 }
 
+/* GTranslate-Sprachauswahl (IT/EN/AR/TR/ZH): per Plugin-Einstellung
+   ("Wrapper selector CSS" = .header-actions) direkt als Sprachcode-
+   Links in die bestehende Header-Actions-Leiste gerendert, nicht als
+   schwebendes Overlay - das kollidierte vorher mit dem letzten
+   Menüpunkt. Übernimmt automatisch den vorhandenen 16px-Flex-Gap der
+   Leiste, hier nur Typografie/Hover an den Rest des Headers angeglichen. */
+.header-actions .glink {
+	font-size: var(--text-caption);
+	letter-spacing: var(--tracking-caption);
+	color: var(--surface-canvas-white);
+	transition: color 0.2s ease;
+}
+
+.header-actions .glink:hover,
+.header-actions .glink.gt-current-lang {
+	color: var(--color-rosso-vivo);
+}
+
 .main-navigation[data-state="closed"] {
 	display: none;
 }
