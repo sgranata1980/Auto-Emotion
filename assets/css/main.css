@@ -330,17 +330,16 @@ body.has-transparent-header .site-header.is-scrolled {
 	transform: rotate(-135deg);
 }
 
-/* Weiches Auf-/Zuklappen (Höhe + Deckkraft) statt eines harten
-   display:none/flex-Umschaltens - bleibt dabei immer ein eigenes
-   flex-wrap-Element (siehe .menu-item oben), damit beim Schließen
-   nichts überlappt. */
+/* Flaches Mehrspalten-Panel statt eingerückter Einzelliste (Vorbild:
+   BMW.de-Hauptnavigation - Unterpunkte fließen in Spalten von links
+   nach rechts statt gestapelt in einer schmalen Liste zu stehen).
+   CSS-Columns statt fixer Spaltenzahl: bei wenig Platz (Smartphone)
+   passt automatisch nur eine Spalte, keine eigene Media Query nötig. */
 .main-navigation .sub-menu {
 	flex-basis: 100%;
-	display: flex;
-	flex-direction: column;
-	gap: var(--spacing-8);
-	padding-left: var(--spacing-16);
-	border-left: 1px solid var(--color-graphite-border);
+	display: block;
+	column-width: 200px;
+	column-gap: var(--spacing-40);
 	margin: 0;
 	max-height: 0;
 	overflow: hidden;
@@ -349,12 +348,19 @@ body.has-transparent-header .site-header.is-scrolled {
 }
 
 .main-navigation .sub-menu[data-state="open"] {
-	max-height: 700px;
+	max-height: 900px;
 	opacity: 1;
-	margin: var(--spacing-8) 0 var(--spacing-16);
+	margin: var(--spacing-16) 0 var(--spacing-24);
 	/* Überschreibt die Schließverzögerung unten (nur fürs Verlassen
 	   mit der Maus gedacht) - per Klick/Tipp geöffnet reagiert sofort. */
 	transition-delay: 0s;
+}
+
+.main-navigation .sub-menu .menu-item {
+	/* Verhindert, dass ein Listenpunkt mitten im Spaltenumbruch
+	   auseinandergerissen wird. */
+	break-inside: avoid;
+	margin-bottom: var(--spacing-8);
 }
 
 .main-navigation .sub-menu a {
@@ -362,12 +368,14 @@ body.has-transparent-header .site-header.is-scrolled {
 	color: var(--color-ash-border);
 }
 
-/* "Alle X ansehen"-Link an erster Stelle im Untermenü: optisch
-   abgesetzt von den eigentlichen Unterpunkten, damit sofort klar
-   ist, dass die Hauptkategorie selbst auch eine eigene Seite ist. */
+/* "Alle X ansehen"-Link an erster Stelle im Untermenü: spannt über
+   alle Spalten (column-span), optisch abgesetzt von den eigentlichen
+   Unterpunkten darunter - macht sofort klar, dass die Hauptkategorie
+   selbst auch eine eigene Seite ist. */
 .main-navigation .sub-menu .sub-menu__overview {
-	margin-bottom: var(--spacing-8);
-	padding-bottom: var(--spacing-8);
+	column-span: all;
+	margin-bottom: var(--spacing-16);
+	padding-bottom: var(--spacing-16);
 	border-bottom: 1px solid var(--color-graphite-border);
 }
 
@@ -409,9 +417,9 @@ body.has-transparent-header .site-header.is-scrolled {
 
 	.main-navigation .menu-item-has-children:hover > .sub-menu,
 	.main-navigation .menu-item-has-children:focus-within > .sub-menu {
-		max-height: 700px;
+		max-height: 900px;
 		opacity: 1;
-		margin: var(--spacing-8) 0 var(--spacing-16);
+		margin: var(--spacing-16) 0 var(--spacing-24);
 		transition-delay: 0s;
 	}
 
