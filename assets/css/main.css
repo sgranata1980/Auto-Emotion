@@ -134,6 +134,21 @@ body.has-transparent-header .site-header.is-scrolled {
 	background: var(--surface-carbony);
 }
 
+/* Unterseiten (alles außer Startseite): Header scrollt normal mit statt
+   dauerhaft fixiert über dem Seiteninhalt zu kleben - mit der jetzt
+   vollen Menüleiste fiel das deutlich störender auf als vorher mit nur
+   Logo+Hamburger ("das Menü ist immer über den Bildern"). Entspricht
+   außerdem bmw.de, deren Navigation laut Vorbild explizit nicht sticky
+   ist. Die Startseite behält die feste Positionierung für den
+   Hero-Überlagerungseffekt. */
+body:not(.has-transparent-header) .site-header {
+	position: static;
+}
+
+body:not(.has-transparent-header) .site-main {
+	padding-top: 0;
+}
+
 .nav-toggle {
 	display: inline-flex;
 	align-items: center;
