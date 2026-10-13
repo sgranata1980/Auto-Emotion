@@ -411,18 +411,24 @@ body.has-transparent-header .site-header.is-scrolled {
 	transform: translateX(4px);
 }
 
-/* Desktop/Maus UNTERHALB der permanenten Topbar-Breite (siehe
-   min-width:1200px weiter unten): Untermenü beim Hovern über den
-   Menüpunkt automatisch zeigen, statt den kleinen Pfeil exakt treffen
-   zu müssen. Zum Schließen eine kurze Verzögerung (0.3s), damit der
-   Übergang zur Maus auf einen Unterpunkt nicht sofort abbricht - wie
-   bei Apples eigener Navigation. Ab der Topbar-Breite gilt bewusst
-   NUR noch Klick (wie bei bmw.de: Pfeil zeigt erst nach einem Klick
-   nach oben, nicht schon beim bloßen Drüberfahren) - siehe
-   min-width:1200px-Block, der das Hover-Verhalten dort wieder
-   zurücksetzt. Auf Touch-Geräten (Handy) gibt es ohnehin kein Hover,
-   dort bleibt das Antippen des Pfeils die einzige Interaktion. */
-@media (hover: hover) and (pointer: fine) {
+/* Desktop/Maus UNTERHALB der permanenten Topbar-Breite (max-width
+   begrenzt genau auf den Bereich vor dem min-width:1200px-Block
+   weiter unten): Untermenü beim Hovern über den Menüpunkt automatisch
+   zeigen, statt den kleinen Pfeil exakt treffen zu müssen. Zum
+   Schließen eine kurze Verzögerung (0.3s), damit der Übergang zur
+   Maus auf einen Unterpunkt nicht sofort abbricht - wie bei Apples
+   eigener Navigation. Ab der Topbar-Breite gilt bewusst NUR noch
+   Klick (wie bei bmw.de: Pfeil zeigt erst nach einem Klick nach oben,
+   nicht schon beim bloßen Drüberfahren) - deshalb hier per max-width
+   sauber abgegrenzt, statt mit einer konkurrierenden
+   "Hover-zurücksetzen"-Regel zu arbeiten: eine solche Regel hätte
+   wegen :focus-within (ein Button bleibt nach dem Anklicken fokussiert)
+   eine höhere Spezifität als [data-state="open"] gehabt und das
+   gerade erst per Klick geöffnete Panel sofort wieder geschlossen -
+   dieser Bug trat genau so live auf und wurde hierdurch behoben. Auf
+   Touch-Geräten (Handy) gibt es ohnehin kein Hover, dort bleibt das
+   Antippen des Pfeils die einzige Interaktion. */
+@media (hover: hover) and (pointer: fine) and (max-width: 1199.98px) {
 	.main-navigation .sub-menu {
 		transition-delay: 0.3s;
 	}
@@ -549,22 +555,6 @@ body.has-transparent-header .site-header.is-scrolled {
 		font-size: var(--text-caption);
 		padding: 0;
 		white-space: nowrap;
-	}
-
-	/* Ab hier bewusst NUR Klick, kein Hover-Autoöffnen (siehe Kommentar
-	   oben am @media(hover:hover)-Block) - setzt dessen Werte wieder
-	   auf "zu" zurück, sodass einzig data-state="open" (per Klick vom
-	   JS gesetzt) das Panel öffnet. */
-	.main-navigation .menu-item-has-children:hover > .sub-menu,
-	.main-navigation .menu-item-has-children:focus-within > .sub-menu {
-		max-height: 0;
-		opacity: 0;
-		margin: 0;
-	}
-
-	.main-navigation .menu-item-has-children:hover > .submenu-toggle .submenu-toggle-icon,
-	.main-navigation .menu-item-has-children:focus-within > .submenu-toggle .submenu-toggle-icon {
-		transform: rotate(45deg);
 	}
 
 	/* Panel hängt sich unabhängig vom auslösenden Menüpunkt an den
