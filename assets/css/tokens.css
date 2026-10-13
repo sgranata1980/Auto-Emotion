@@ -82,7 +82,11 @@
 
 	/* Layout */
 	--page-max-width: 1440px;
-	--section-gap: 80px;
+	/* War 80px - im Vergleich zu enger getakteten Referenzen (bmw.de)
+	   wirkte der Abstand zwischen Sektionen eher lose/unpräzise als
+	   großzügig. 56px behält spürbaren Atem, zieht den Rhythmus aber
+	   straffer. */
+	--section-gap: 56px;
 	--card-padding: 24px;
 	--element-gap: 24px;
 

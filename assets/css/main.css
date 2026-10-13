@@ -1126,11 +1126,17 @@ body:not(.has-transparent-header) .site-main {
 	align-items: center;
 	justify-content: space-between;
 	gap: var(--spacing-24);
-	padding: var(--spacing-80) 0;
+	/* War var(--spacing-80) - straffer getaktet, siehe --section-gap. */
+	padding: var(--spacing-56) 0;
 }
 
 .section-heading__title {
-	font-size: clamp(28px, 5vw, var(--text-display));
+	/* War clamp(28px, 5vw, var(--text-display)) (54px-Obergrenze) -
+	   mittlere Überschriftenebene etwas zurückgenommen, damit sie
+	   neben der bewusst riesigen Hero-Headline (--text-hero) nicht
+	   selbst wie eine zweite Hero-Zeile wirkt, sondern als ruhigere,
+	   editorial wirkende Sektions-Überschrift. */
+	font-size: clamp(26px, 4vw, var(--text-heading-lg));
 	line-height: 1.15;
 	margin: 0;
 	/* Verhindert unschöne Umbrüche mitten in kurzen Wörtern/Resten
