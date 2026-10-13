@@ -93,6 +93,33 @@ $auto_emotion_angebote = new WP_Query(
 <?php endif; ?>
 
 <?php
+$auto_emotion_karosserien_home = get_terms(
+	array(
+		'taxonomy'   => 'karosserie',
+		'hide_empty' => true,
+	)
+);
+?>
+<?php if ( ! is_wp_error( $auto_emotion_karosserien_home ) && $auto_emotion_karosserien_home ) : ?>
+	<section class="container" aria-labelledby="karosserie-heading">
+		<div class="section-heading">
+			<h2 id="karosserie-heading" class="section-heading__title"><?php esc_html_e( 'Fahrzeuge nach Typ', 'auto-emotion' ); ?></h2>
+		</div>
+
+		<div class="category-strip">
+			<?php foreach ( $auto_emotion_karosserien_home as $auto_emotion_karosserie_home ) : ?>
+				<a class="category-strip__item" href="<?php echo esc_url( add_query_arg( 'karosserie[]', $auto_emotion_karosserie_home->slug, get_post_type_archive_link( 'angebot' ) ) ); ?>">
+					<svg class="category-strip__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<?php auto_emotion_vehicle_filter_icon( $auto_emotion_karosserie_home->slug ); ?>
+					</svg>
+					<span><?php echo esc_html( $auto_emotion_karosserie_home->name ); ?></span>
+				</a>
+			<?php endforeach; ?>
+		</div>
+	</section>
+<?php endif; ?>
+
+<?php
 $auto_emotion_news = new WP_Query(
 	array(
 		'post_type'      => 'post',

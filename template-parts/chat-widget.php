@@ -30,7 +30,12 @@ $auto_emotion_idle_src     = auto_emotion_emo_video_url( 'idle' );
 			></video>
 		</div>
 		<div class="chat-widget__header">
-			<span><?php esc_html_e( 'Emo – Auto Emotion Assistent', 'auto-emotion' ); ?></span>
+			<span class="chat-widget__header-label">
+				<?php esc_html_e( 'Emo – Auto Emotion Assistent', 'auto-emotion' ); ?>
+				<span class="ai-badge" title="<?php esc_attr_e( 'KI-generierte Inhalte', 'auto-emotion' ); ?>">
+					<?php auto_emotion_ai_badge_icon( 16 ); ?>
+				</span>
+			</span>
 			<button type="button" class="chat-widget__close" aria-label="<?php esc_attr_e( 'Chat schließen', 'auto-emotion' ); ?>">&times;</button>
 		</div>
 		<div class="chat-widget__messages" id="chat-widget-messages">

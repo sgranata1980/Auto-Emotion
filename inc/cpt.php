@@ -77,6 +77,30 @@ function auto_emotion_register_cpt() {
 add_action( 'init', 'auto_emotion_register_cpt' );
 
 /**
+ * Schlichte Umriss-Icons je Karosserieform/Antriebsart - eigene,
+ * einfache Formensprache (kein Fremd-Icon-Set kopiert), passend zum
+ * Rest des Themes mit stroke="currentColor". Zentral hier statt im
+ * Filter-Template, da sowohl der Fahrzeug-Filter (Angebote-Archiv)
+ * als auch die Karosserie-Schnellauswahl auf der Startseite dieselben
+ * Icons brauchen.
+ */
+function auto_emotion_vehicle_filter_icon( $slug ) {
+	$icons = array(
+		'suv'          => '<path d="M3 17h18M5 17l1.5-6.5a2 2 0 0 1 1.95-1.5h7.1a2 2 0 0 1 1.95 1.5L19 17M8 10V6h8v4" /><circle cx="7.5" cy="17.5" r="1.5" /><circle cx="16.5" cy="17.5" r="1.5" />',
+		'kombi'        => '<path d="M2 16h20M3 16l1-5a2 2 0 0 1 2-1.6h3L10 5h7l3 4.4h0a2 2 0 0 1 2 1.6l1 5" /><circle cx="7" cy="16.5" r="1.5" /><circle cx="17" cy="16.5" r="1.5" />',
+		'kompakt'      => '<path d="M2.5 16h19M3.5 16l1-4.5a2 2 0 0 1 2-1.6h2L11 6h4l3 3.9h0.5a2 2 0 0 1 2 1.6l1 4.5" /><circle cx="7.5" cy="16.5" r="1.5" /><circle cx="16.5" cy="16.5" r="1.5" />',
+		'kleinwagen'   => '<path d="M3 16h18M4 16l0.8-3.6a2 2 0 0 1 2-1.6h10.4a2 2 0 0 1 2 1.6L20 16M7.5 10.8 9 6.5h6l1.5 4.3" /><circle cx="7.5" cy="16.5" r="1.5" /><circle cx="16.5" cy="16.5" r="1.5" />',
+		'nutzfahrzeug' => '<path d="M2 16h2M4 16V7a1 1 0 0 1 1-1h8.5a1 1 0 0 1 .8.4L19 11h1a1 1 0 0 1 1 1v4h-2M4 16h10.5M18 16h-3.5V9h0l3 3.3V16Z" /><circle cx="7" cy="17" r="1.6" /><circle cx="17" cy="17" r="1.6" />',
+		'benzin'       => '<path d="M5 20V6a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v14M4 20h10M7 20v-6h4v6M15 9l2.3 2.3a1 1 0 0 1 .3.7V17a1.3 1.3 0 0 0 2.6 0v-3.2a1 1 0 0 0-.3-.7L17.5 10.7M8 8h2" />',
+		'diesel'       => '<path d="M5 20V6a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v14M4 20h10M7 20v-6h4v6M15 9l2.3 2.3a1 1 0 0 1 .3.7V17a1.3 1.3 0 0 0 2.6 0v-3.2a1 1 0 0 0-.3-.7L17.5 10.7M8 8h2M11.5 4.5c0 1-1 1.3-1 2.3a1 1 0 0 0 2 0c0-1-1-1.3-1-2.3Z" />',
+		'hybrid'       => '<path d="M13 3 6.5 13h4.5L9 21l8-11h-4.5L15 3Z" />',
+		'elektro'      => '<path d="M8 3h7l-1.5 7H17l-9 11 2-9H6.5L8 3Z" />',
+	);
+
+	echo $icons[ $slug ] ?? ''; // phpcs:ignore WordPress.Security.EscapeOutput -- feste, eigene SVG-Pfade, kein Nutzereingang.
+}
+
+/**
  * Legt die drei geführten Marken als Standard-Begriffe an –
  * einmalig bei Theme-Aktivierung, nicht bei jedem Request.
  */

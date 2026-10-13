@@ -14,7 +14,12 @@ $auto_emotion_tf_priority = auto_emotion_traumauto_priority_labels();
 ?>
 <section id="traumauto-finder" class="traumauto-finder" aria-labelledby="traumauto-finder-heading">
 	<div class="traumauto-finder__header">
-		<span class="traumauto-finder__badge"><?php esc_html_e( 'KI-gestützter Fahrzeug-Finder', 'auto-emotion' ); ?></span>
+		<span class="traumauto-finder__badge">
+			<span class="ai-badge" title="<?php esc_attr_e( 'KI-generierte Inhalte', 'auto-emotion' ); ?>">
+				<?php auto_emotion_ai_badge_icon( 16 ); ?>
+			</span>
+			<?php esc_html_e( 'KI-gestützter Fahrzeug-Finder', 'auto-emotion' ); ?>
+		</span>
 		<h2 id="traumauto-finder-heading" class="traumauto-finder__title"><?php esc_html_e( 'Finden Sie Ihr Traumauto', 'auto-emotion' ); ?></h2>
 		<p class="traumauto-finder__lede"><?php esc_html_e( 'Zwei Klicks, dann schlagen wir Ihnen passende Fahrzeuge aus unserem aktuellen Bestand vor – unverbindlich, egal ob Kauf, Finanzierung, Leasing oder gebraucht.', 'auto-emotion' ); ?></p>
 	</div>

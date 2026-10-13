@@ -19,6 +19,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	<?php endif; ?>
 
+	<div class="ai-disclosure">
+		<?php auto_emotion_ai_badge_icon( 28 ); ?>
+		<div class="ai-disclosure__text">
+			<p class="ai-disclosure__title"><?php esc_html_e( 'KI-generierte Inhalte', 'auto-emotion' ); ?></p>
+			<p><?php esc_html_e( 'Dieses Symbol weist darauf hin, dass die zugehörigen Inhalte mithilfe von künstlicher Intelligenz (KI) erstellt, generiert, verbessert oder bearbeitet wurden.', 'auto-emotion' ); ?></p>
+		</div>
+	</div>
+
+	<?php auto_emotion_render_footer_menu(); ?>
+
 	<div class="footer-contact">
 		<p>
 			<?php echo esc_html( auto_emotion_contact( 'street' ) . ', ' . auto_emotion_contact( 'postal_code' ) . ' ' . auto_emotion_contact( 'city' ) ); ?><br>

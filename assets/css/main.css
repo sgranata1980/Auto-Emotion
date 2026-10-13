@@ -14,10 +14,19 @@ html {
    Seite darf nie horizontal scrollbar werden. Die eigentliche Ursache
    (Grid-Items ohne min-width: 0, siehe .story-grid/.job-card-grid/
    .service-teaser-grid) wird gezielt behoben, das hier ist zusätzlich
-   ein Sicherheitsnetz gegen jede künftige Regression. */
-html,
-body {
+   ein Sicherheitsnetz gegen jede künftige Regression.
+   Nur auf <html>, nicht auf <body>: overflow-x ungleich "visible" auf
+   body berechnet overflow-y automatisch zu "auto" und macht body damit
+   selbst zum Scroll-Container - genau der, auf den sich position:sticky
+   dann bezieht, statt auf den Viewport. Ergebnis: jede sticky-Sidebar
+   (z.B. .angebote-layout__sidebar) scrollt einfach mit, statt stehen zu
+   bleiben. */
+html {
 	overflow-x: hidden;
+	max-width: 100%;
+}
+
+body {
 	max-width: 100%;
 }
 
@@ -101,6 +110,76 @@ a {
 button {
 	font-family: inherit;
 	cursor: pointer;
+}
+
+/* ---------------------------------------------------------------- */
+/* Utility-Bar (Adresse, Kontaktdaten, Telefon, Öffnungsstatus)      */
+/* ---------------------------------------------------------------- */
+
+/* Immer normal im Textfluss (nie fixiert) - läuft dadurch beim
+   Scrollen auf allen Seiten einfach mit weg, ohne die bereits fein
+   austarierte fixed/static-Logik von .site-header (siehe unten)
+   anzufassen. Auf der Startseite, wo der Header für den
+   Hero-Überlagerungseffekt fix auf top:0 sitzt, würde sie dauerhaft
+   darunter verdeckt bleiben - dort daher ausgeblendet. */
+.utility-bar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--spacing-24);
+	height: 36px;
+	padding: 0 var(--spacing-24);
+	background: var(--surface-carbon-deep);
+	color: var(--color-ash-border);
+	font-size: var(--text-caption);
+}
+
+body.has-transparent-header .utility-bar {
+	display: none;
+}
+
+.utility-bar__address {
+	margin: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.utility-bar__info {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-24);
+	flex-shrink: 0;
+}
+
+.utility-bar__item {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-8);
+	color: var(--color-ash-border);
+	white-space: nowrap;
+}
+
+a.utility-bar__item:hover {
+	color: var(--surface-canvas-white);
+}
+
+.utility-bar__item svg {
+	flex-shrink: 0;
+}
+
+.utility-bar__status {
+	color: var(--surface-canvas-white);
+}
+
+@media (max-width: 700px) {
+	.utility-bar__address {
+		display: none;
+	}
+
+	.utility-bar {
+		justify-content: flex-end;
+	}
 }
 
 /* ---------------------------------------------------------------- */
@@ -1141,6 +1220,17 @@ body.has-transparent-header .site-main {
 	margin-top: var(--section-gap);
 }
 
+/* Hero und Traumauto-Finder sind beide vollflächig-dunkle Sektionen
+   ohne eigenen "Seiten-Rand" - der normale Section-Abstand zwischen
+   ihnen lag auf dem weißen body-Hintergrund und zeigte dadurch einen
+   hellen Streifen zwischen Header und Finder ("weißer Balken"). Beide
+   Flächen gehen farblich ohnehin nahtlos ineinander über (Hero endet
+   dunkel, Finder startet mit dunklem Rot-Schwarz-Verlauf), daher hier
+   bewusst kein Abstand statt eines künstlich eingefärbten Spalts. */
+.hero-stage + .traumauto-finder {
+	margin-top: 0;
+}
+
 .container {
 	max-width: var(--page-max-width);
 	margin: 0 auto;
@@ -1202,17 +1292,47 @@ body.has-transparent-header .site-main {
 /* Product Image Tile                                                 */
 /* ---------------------------------------------------------------- */
 
+/* Kompakte, leicht erhabene Karte statt Bild + Text lose auf dem
+   Seitenhintergrund ("wirkt langweilig") - dezenter Schatten im
+   Ruhezustand, etwas kräftiger + minimal angehoben bei Hover, ganz im
+   Sinne der Apple-Produktkarten-Referenz: zurückhaltend, nicht
+   plakativ, keine runden Ecken (bleibt eckig wie der Rest des
+   Dark-Theater-Systems). */
+.product-tile {
+	display: flex;
+	flex-direction: column;
+	background: var(--surface-canvas-white);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 10px 28px rgba(0, 0, 0, 0.07);
+	transition: box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product-tile:hover {
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.09), 0 20px 40px rgba(0, 0, 0, 0.12);
+	transform: translateY(-3px);
+}
+
+.product-tile > a {
+	display: block;
+	overflow: hidden;
+}
+
+.product-tile img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
 .product-tile__caption {
 	font-size: var(--text-body);
 	line-height: var(--leading-body);
 	text-transform: uppercase;
 	letter-spacing: 0.0230em;
-	margin-top: var(--spacing-16);
+	padding: var(--spacing-16);
 	/* Reserviert Platz für 3 Zeilen, damit unterschiedlich lange
 	   Titel ("Cupra Born VZ" vs. "Cupra Leon Sportstourer:
 	   Leasingraten für TSI und e-HYBRID") nicht dazu führen, dass
 	   Karten in derselben Grid-Reihe unterschiedlich hoch enden. */
-	min-height: calc(var(--text-body) * var(--leading-body) * 3);
+	min-height: calc(var(--text-body) * var(--leading-body) * 3 + var(--spacing-16) * 2);
 }
 
 /* ---------------------------------------------------------------- */
@@ -1832,6 +1952,51 @@ body.has-transparent-header .site-main {
 }
 
 /* ---------------------------------------------------------------- */
+/* Karosserie-Schnellauswahl (Startseite, unter "Aktuelle Angebote") */
+/* Horizontale Kachelreihe in derselben Breite wie der Angebote-     */
+/* Bildraster darüber - beide stecken in derselben .container.       */
+/* ---------------------------------------------------------------- */
+
+.category-strip {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+	gap: var(--element-gap);
+}
+
+.category-strip__item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--spacing-8);
+	padding: var(--spacing-24) var(--spacing-8);
+	border: 1px solid var(--color-ash-border);
+	color: var(--color-carbony-black);
+	text-decoration: none;
+	text-align: center;
+	transition: border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.category-strip__item:hover,
+.category-strip__item:focus-visible {
+	border-color: var(--color-rosso-vivo);
+	background: var(--color-rosso-vivo);
+	color: var(--surface-canvas-white);
+}
+
+.category-strip__item span {
+	font-size: var(--text-caption);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+}
+
+.category-strip__icon {
+	width: 32px;
+	height: 32px;
+	transition: color 0.2s ease;
+}
+
+/* ---------------------------------------------------------------- */
 /* Footer                                                             */
 /* ---------------------------------------------------------------- */
 
@@ -1842,6 +2007,82 @@ body.has-transparent-header .site-main {
 }
 
 .site-footer a {
+	color: var(--surface-canvas-white);
+}
+
+/* "KI-generierte Inhalte"-Hinweis: erklärt das .ai-badge-Icon, das an
+   den tatsächlich KI-gestützten Stellen der Seite auftaucht
+   (Traumauto-Finder, Emo-Chatbot) - bewusst nicht bei der normalen
+   Stichwortsuche im Header, die keine KI einsetzt. */
+.ai-disclosure {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--spacing-16);
+	padding-bottom: var(--spacing-32);
+	margin-bottom: var(--spacing-48);
+	border-bottom: 1px solid var(--color-graphite-border);
+}
+
+.ai-disclosure .ai-badge-icon {
+	flex-shrink: 0;
+	margin-top: 2px;
+}
+
+.ai-disclosure__text p {
+	margin: 0;
+	font-size: var(--text-caption);
+	line-height: 1.6;
+	color: var(--color-ash-border);
+	max-width: 640px;
+}
+
+.ai-disclosure__title {
+	font-size: var(--text-body) !important;
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	color: var(--surface-canvas-white) !important;
+	margin-bottom: var(--spacing-8) !important;
+}
+
+/* Kleines Inline-Badge für Stellen mit echtem KI-Einsatz (Chatbot-
+   Kopfzeile, Traumauto-Finder-Badge) - der Abstand zum Text kommt vom
+   gap der jeweiligen Flex-Eltern (.chat-widget__header-label,
+   .traumauto-finder__badge), nicht von einer festen Richtung hier,
+   da das Icon mal vor, mal nach dem Text steht. */
+.ai-badge {
+	display: inline-flex;
+	vertical-align: middle;
+}
+
+.footer-columns {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: var(--spacing-40);
+	margin-bottom: var(--spacing-48);
+}
+
+.footer-column__title {
+	font-size: var(--text-body);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	margin: 0 0 var(--spacing-16);
+}
+
+.footer-column__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-8);
+}
+
+.footer-column__list a {
+	font-size: var(--text-caption);
+	color: var(--color-ash-border);
+}
+
+.footer-column__list a:hover {
 	color: var(--surface-canvas-white);
 }
 

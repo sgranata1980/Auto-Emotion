@@ -42,3 +42,42 @@ function auto_emotion_contact( $key ) {
 
 	return get_theme_mod( 'ae_' . $key, $default );
 }
+
+/**
+ * Strukturierte Verkaufs-Öffnungszeiten je Wochentag (0 = Sonntag),
+ * als echte Berechnungsgrundlage für den "Geöffnet/Geschlossen"-
+ * Hinweis im Header - deckt sich 1:1 mit dem Text in
+ * auto_emotion_contact('hours_sales') ("Mo–Fr 08:00–18:00 Uhr, Sa
+ * 09:00–14:00 Uhr"). Bei einer Änderung der Öffnungszeiten im
+ * Customizer muss diese Struktur manuell mitgepflegt werden, da der
+ * Customizer-Wert ein freier Text ist.
+ */
+function auto_emotion_opening_hours() {
+	return array(
+		0 => null,
+		1 => array( '08:00', '18:00' ),
+		2 => array( '08:00', '18:00' ),
+		3 => array( '08:00', '18:00' ),
+		4 => array( '08:00', '18:00' ),
+		5 => array( '08:00', '18:00' ),
+		6 => array( '09:00', '14:00' ),
+	);
+}
+
+/**
+ * Ob der Autohaus-Verkauf laut den echten, hinterlegten
+ * Öffnungszeiten gerade geöffnet hat - serverseitig in der
+ * WordPress-Zeitzone berechnet, keine geschätzte/erfundene Angabe.
+ */
+function auto_emotion_is_open_now() {
+	$hours = auto_emotion_opening_hours();
+	$day   = (int) current_time( 'w' );
+
+	if ( empty( $hours[ $day ] ) ) {
+		return false;
+	}
+
+	$now = current_time( 'H:i' );
+
+	return $now >= $hours[ $day ][0] && $now < $hours[ $day ][1];
+}

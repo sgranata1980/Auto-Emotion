@@ -24,7 +24,7 @@ if ( ! isset( $_SERVER['PHP_AUTH_USER'] ) && isset( $_SERVER['HTTP_AUTHORIZATION
 	}
 }
 
-define( 'AUTO_EMOTION_VERSION', '1.44.0' );
+define( 'AUTO_EMOTION_VERSION', '1.45.0' );
 define( 'AUTO_EMOTION_DIR', get_template_directory() );
 define( 'AUTO_EMOTION_URI', get_template_directory_uri() );
 
@@ -47,6 +47,7 @@ add_action( 'send_headers', 'auto_emotion_no_cache_headers' );
 require AUTO_EMOTION_DIR . '/inc/contact-info.php';
 require AUTO_EMOTION_DIR . '/inc/theme-setup.php';
 require AUTO_EMOTION_DIR . '/inc/primary-menu.php';
+require AUTO_EMOTION_DIR . '/inc/footer-menu.php';
 require AUTO_EMOTION_DIR . '/inc/enqueue.php';
 require AUTO_EMOTION_DIR . '/inc/customizer.php';
 require AUTO_EMOTION_DIR . '/inc/cpt.php';
