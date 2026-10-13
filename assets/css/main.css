@@ -285,6 +285,11 @@ body.has-transparent-header .site-header.is-scrolled {
 .main-navigation .menu-item {
 	display: flex;
 	align-items: center;
+	/* Ohne flex-wrap landete das Untermenü (flex-basis:100% weiter
+	   unten) als drittes Element IN DERSELBEN Zeile wie Link und
+	   Pfeil-Button statt darunter - dadurch überlagerten sich
+	   Untermenü- und nachfolgende Hauptmenüpunkte sichtbar. */
+	flex-wrap: wrap;
 	justify-content: space-between;
 	gap: var(--spacing-16);
 }
@@ -292,6 +297,15 @@ body.has-transparent-header .site-header.is-scrolled {
 .main-navigation .menu-item__link {
 	flex: 1;
 	padding: var(--spacing-8) 0;
+	transition: color 0.15s ease;
+}
+
+/* Macht sichtbar, dass der Text selbst der eigentliche Link zur
+   Hauptkategorie-Seite ist - unabhängig vom separaten Pfeil-Button
+   daneben, der nur das Untermenü auf-/zuklappt. */
+.main-navigation .menu-item__link:hover,
+.main-navigation .menu-item__link:focus-visible {
+	color: var(--color-rosso-vivo);
 }
 
 .submenu-toggle {
@@ -316,16 +330,31 @@ body.has-transparent-header .site-header.is-scrolled {
 	transform: rotate(-135deg);
 }
 
+/* Weiches Auf-/Zuklappen (Höhe + Deckkraft) statt eines harten
+   display:none/flex-Umschaltens - bleibt dabei immer ein eigenes
+   flex-wrap-Element (siehe .menu-item oben), damit beim Schließen
+   nichts überlappt. */
 .main-navigation .sub-menu {
 	flex-basis: 100%;
+	display: flex;
+	flex-direction: column;
 	gap: var(--spacing-8);
 	padding-left: var(--spacing-16);
 	border-left: 1px solid var(--color-graphite-border);
-	margin: var(--spacing-8) 0 var(--spacing-16);
+	margin: 0;
+	max-height: 0;
+	overflow: hidden;
+	opacity: 0;
+	transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, margin 0.35s ease;
 }
 
-.main-navigation .sub-menu[data-state="closed"] {
-	display: none;
+.main-navigation .sub-menu[data-state="open"] {
+	max-height: 700px;
+	opacity: 1;
+	margin: var(--spacing-8) 0 var(--spacing-16);
+	/* Überschreibt die Schließverzögerung unten (nur fürs Verlassen
+	   mit der Maus gedacht) - per Klick/Tipp geöffnet reagiert sofort. */
+	transition-delay: 0s;
 }
 
 .main-navigation .sub-menu a {
@@ -333,14 +362,57 @@ body.has-transparent-header .site-header.is-scrolled {
 	color: var(--color-ash-border);
 }
 
+/* "Alle X ansehen"-Link an erster Stelle im Untermenü: optisch
+   abgesetzt von den eigentlichen Unterpunkten, damit sofort klar
+   ist, dass die Hauptkategorie selbst auch eine eigene Seite ist. */
+.main-navigation .sub-menu .sub-menu__overview {
+	margin-bottom: var(--spacing-8);
+	padding-bottom: var(--spacing-8);
+	border-bottom: 1px solid var(--color-graphite-border);
+}
+
+.main-navigation .sub-menu .sub-menu__overview-link {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-8);
+	font-size: var(--text-caption);
+	font-weight: var(--font-weight-bold);
+	color: var(--surface-canvas-white);
+}
+
+.main-navigation .sub-menu .sub-menu__overview-link span {
+	color: var(--color-rosso-vivo);
+	transition: transform 0.2s ease;
+}
+
+.main-navigation .sub-menu .sub-menu__overview-link:hover,
+.main-navigation .sub-menu .sub-menu__overview-link:focus-visible {
+	color: var(--color-rosso-vivo);
+}
+
+.main-navigation .sub-menu .sub-menu__overview-link:hover span,
+.main-navigation .sub-menu .sub-menu__overview-link:focus-visible span {
+	transform: translateX(4px);
+}
+
 /* Desktop/Maus: Untermenü beim Hovern über den Menüpunkt automatisch
-   zeigen, statt den kleinen Pfeil exakt treffen zu müssen. Auf
-   Touch-Geräten (Handy) gibt es kein Hover, dort bleibt das bewährte
-   Antippen des Pfeils die einzige Interaktion – unverändert. */
+   zeigen, statt den kleinen Pfeil exakt treffen zu müssen. Zum
+   Schließen eine kurze Verzögerung (0.3s), damit der Übergang zur
+   Maus auf einen Unterpunkt nicht sofort abbricht - wie bei Apples
+   eigener Navigation. Auf Touch-Geräten (Handy) gibt es kein Hover,
+   dort bleibt das bewährte Antippen des Pfeils die einzige
+   Interaktion - unverändert. */
 @media (hover: hover) and (pointer: fine) {
+	.main-navigation .sub-menu {
+		transition-delay: 0.3s;
+	}
+
 	.main-navigation .menu-item-has-children:hover > .sub-menu,
 	.main-navigation .menu-item-has-children:focus-within > .sub-menu {
-		display: flex;
+		max-height: 700px;
+		opacity: 1;
+		margin: var(--spacing-8) 0 var(--spacing-16);
+		transition-delay: 0s;
 	}
 
 	.main-navigation .menu-item-has-children:hover > .submenu-toggle .submenu-toggle-icon,
