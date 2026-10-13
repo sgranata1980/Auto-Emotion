@@ -2350,13 +2350,12 @@ body.has-transparent-header .site-main {
 /* Traumauto-Finder (Startseite, über der Fahrzeugsuche)              */
 /* ---------------------------------------------------------------- */
 
-/* Bewusst als "Störer" angelegt: sattes Rot statt des sonst nur
-   sparsam als Akzent eingesetzten Carbony-Looks, damit die Sektion
-   zwischen Hero und Fahrzeugsuche sofort auffällt. */
+/* Als "Störer" angelegt, aber im selben dunklen Rot-Glow wie
+   .career-banner/.event-banner ("5 offene Stellen") statt eines
+   hellen, vollflächigen Rots - bleibt damit konsistent zum Rest der
+   Dark-Theater-Optik und wirkt trotzdem durch den Glow auffällig. */
 .traumauto-finder {
-	background:
-		radial-gradient(ellipse 1400px 900px at 50% -20%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 55%),
-		linear-gradient(180deg, #ff3b2c 0%, var(--color-rosso-vivo) 42%, var(--color-rosso-ombra) 100%);
+	background: radial-gradient(ellipse 1100px 1400px at 100% 0%, var(--color-rosso-vivo) 0%, var(--color-rosso-vivo) 18%, var(--color-carbony-black) 55%, var(--color-pure-black) 100%);
 	color: var(--surface-canvas-white);
 	padding: var(--spacing-64) var(--spacing-24);
 }
@@ -2372,9 +2371,11 @@ body.has-transparent-header .site-main {
 	align-items: center;
 	margin-bottom: var(--spacing-16);
 	padding: 8px 16px;
-	border: 1px solid rgba(255, 255, 255, 0.5);
+	border: 1px solid rgba(255, 255, 255, 0.22);
 	border-radius: 999px;
-	background: rgba(0, 0, 0, 0.18);
+	background: linear-gradient(90deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%);
+	backdrop-filter: blur(6px);
+	-webkit-backdrop-filter: blur(6px);
 	font-size: var(--text-caption);
 	font-weight: var(--font-weight-bold);
 	text-transform: uppercase;
@@ -2433,11 +2434,16 @@ body.has-transparent-header .site-main {
 	margin-bottom: var(--spacing-24);
 }
 
+/* Gleiche Glas-Optik wie .hero-stage__cta-ghost: hellt sich beim
+   Hover zum Bremslicht-Rot (.btn-giallo) auf statt zu Weiß, passend
+   zum jetzt dunklen Sektionshintergrund. */
 .traumauto-finder__option {
 	padding: var(--spacing-24) var(--spacing-16);
-	border: 1px solid rgba(255, 255, 255, 0.5);
+	border: 1px solid rgba(255, 255, 255, 0.35);
 	border-radius: var(--radius-buttons);
-	background: rgba(0, 0, 0, 0.12);
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 100%);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
 	color: var(--surface-canvas-white);
 	font-family: var(--font-lambotype);
 	font-size: var(--text-body);
@@ -2445,13 +2451,16 @@ body.has-transparent-header .site-main {
 	text-transform: uppercase;
 	letter-spacing: 0.0230em;
 	cursor: pointer;
-	transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+	transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .traumauto-finder__option:hover {
-	background: var(--surface-canvas-white);
-	border-color: var(--surface-canvas-white);
-	color: var(--color-rosso-vivo);
+	background:
+		radial-gradient(120% 150% at 28% -10%, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 42%),
+		linear-gradient(180deg, #ff3b2c 0%, var(--color-rosso-vivo) 48%, var(--color-rosso-ombra) 100%);
+	border-color: var(--color-rosso-vivo);
+	box-shadow: 0 6px 24px rgba(216, 0, 13, 0.45);
+	color: var(--surface-canvas-white);
 	transform: translateY(-2px);
 }
 
