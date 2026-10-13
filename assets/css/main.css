@@ -1682,37 +1682,81 @@ body.has-transparent-header .site-main {
 }
 
 /* ---------------------------------------------------------------- */
+/* Angebote-Layout: sticky Filter-Sidebar + Ergebnisse                */
+/* (bleibt beim Scrollen stehen, wie gewünscht "die ganze Zeit"      */
+/* sichtbar - statt wie zuvor oberhalb der Ergebnisse weggescrollt)  */
+/* ---------------------------------------------------------------- */
+
+.angebote-layout {
+	display: block;
+}
+
+@media (min-width: 960px) {
+	.angebote-layout {
+		display: grid;
+		grid-template-columns: 260px 1fr;
+		gap: var(--spacing-56);
+		align-items: start;
+	}
+
+	.angebote-layout__sidebar {
+		position: sticky;
+		/* Site-Header ist auf Unterseiten nicht fixiert (siehe
+		   .site-header-Regeln) - der Abstand hier ist daher bewusst
+		   knapp, nur Luft zum oberen Viewport-Rand beim Scrollen,
+		   nicht als Ausgleich für eine fixierte Leiste gedacht. */
+		top: var(--spacing-24);
+		max-height: calc(100vh - var(--spacing-48));
+		overflow-y: auto;
+	}
+}
+
+/* ---------------------------------------------------------------- */
 /* Fahrzeug-Filter (Angebote-Archiv, Kachel-UI nach bmw.de-Vorbild,   */
-/* in unserer eckigen Formensprache statt BMWs runden Karten)        */
+/* in unserer eckigen Formensprache statt BMWs runden Karten, als    */
+/* sticky Sidebar statt einer Werkzeugleiste oberhalb der Ergebnisse)*/
 /* ---------------------------------------------------------------- */
 
 .vehicle-filter {
 	margin-bottom: var(--spacing-40);
 }
 
+.vehicle-filter__title {
+	font-size: var(--text-heading-sm);
+	margin: 0 0 var(--spacing-32);
+}
+
 .vehicle-filter__group {
 	border: none;
 	padding: 0;
 	margin: 0 0 var(--spacing-32);
+	padding-bottom: var(--spacing-32);
+	border-bottom: 1px solid var(--color-ash-border);
+}
+
+.vehicle-filter__group:last-of-type {
+	border-bottom: none;
+	padding-bottom: 0;
 }
 
 .vehicle-filter__legend {
 	padding: 0;
-	font-size: var(--text-subheading);
+	font-size: var(--text-caption);
 	font-weight: var(--font-weight-bold);
 	text-transform: uppercase;
 	letter-spacing: 0.0230em;
+	color: var(--color-steel-mid);
 	margin-bottom: var(--spacing-16);
 }
 
 .vehicle-filter__tiles {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-	gap: var(--spacing-16);
+	grid-template-columns: repeat(2, 1fr);
+	gap: var(--spacing-8);
 }
 
 .vehicle-filter__tiles--icons {
-	grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+	grid-template-columns: repeat(2, 1fr);
 }
 
 .vehicle-filter__tile {
@@ -1722,11 +1766,15 @@ body.has-transparent-header .site-main {
 	align-items: center;
 	justify-content: center;
 	gap: var(--spacing-8);
-	padding: var(--spacing-24) var(--spacing-16);
+	padding: var(--spacing-16) var(--spacing-8);
 	border: 1px solid var(--color-ash-border);
 	cursor: pointer;
 	text-align: center;
-	transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+	transition: border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vehicle-filter__tile:active {
+	transform: scale(0.96);
 }
 
 /* Checkbox/Radio selbst unsichtbar, aber vorhanden und fokussierbar -

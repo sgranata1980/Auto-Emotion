@@ -64,6 +64,34 @@ document.addEventListener('DOMContentLoaded', function () {
 		} );
 	} );
 
+	/**
+	 * Das geöffnete Untermenü-Panel hängt (siehe CSS) bewusst per
+	 * position:fixed unter der Topbar, damit es unabhängig vom
+	 * auslösenden Menüpunkt die volle Breite bekommt. Scrollt man die
+	 * Seite dabei weiter - besonders auf Unterseiten, wo der Header
+	 * selbst NICHT fixiert ist und mit wegscrollt -, blieb das Panel
+	 * bisher freischwebend an seiner alten Position stehen, ohne noch
+	 * zur Topbar zu gehören. Schließt sich daher automatisch beim
+	 * Scrollen, wie bei den meisten Mega-Menüs üblich.
+	 */
+	var closeAllSubmenus = function () {
+		togglePairs.forEach( function ( pair ) {
+			pair.submenu.setAttribute( 'data-state', 'closed' );
+			pair.toggle.setAttribute( 'aria-expanded', 'false' );
+		} );
+	};
+
+	if ( togglePairs.length ) {
+		window.addEventListener( 'scroll', function () {
+			var hasOpenSubmenu = togglePairs.some( function ( pair ) {
+				return pair.submenu.getAttribute( 'data-state' ) === 'open';
+			} );
+			if ( hasOpenSubmenu ) {
+				closeAllSubmenus();
+			}
+		}, { passive: true } );
+	}
+
 	// Header: transparenter Verlauf über dem Hero, fest sobald gescrollt wird.
 	var header = document.querySelector('.site-header');
 	if (header && document.body.classList.contains('has-transparent-header')) {
@@ -79,6 +107,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		updateHeaderState();
 		window.addEventListener('scroll', updateHeaderState, { passive: true });
+	}
+
+	// Fahrzeug-Filter (Angebote-Archiv): Auswahl einer Kachel filtert
+	// sofort, ohne dass extra auf "Filtern" geklickt werden muss - für
+	// ein unmittelbareres, direkteres Gefühl statt eines zusätzlichen
+	// Zwischenschritts. Der Button bleibt als Fallback bestehen, falls
+	// JavaScript nicht verfügbar ist.
+	var vehicleFilterForm = document.querySelector( '.vehicle-filter__form' );
+	if ( vehicleFilterForm ) {
+		vehicleFilterForm.addEventListener( 'change', function ( event ) {
+			if ( event.target && ( event.target.type === 'checkbox' || event.target.type === 'radio' ) ) {
+				vehicleFilterForm.submit();
+			}
+		} );
 	}
 
 	// Model Showcase: Dots wechseln die sichtbare Marken-Slide.

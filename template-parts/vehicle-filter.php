@@ -42,6 +42,7 @@ function auto_emotion_vehicle_filter_icon( $slug ) {
 }
 ?>
 <div class="vehicle-filter">
+	<h2 class="vehicle-filter__title"><?php esc_html_e( 'Filter', 'auto-emotion' ); ?></h2>
 	<form class="vehicle-filter__form" method="get" action="<?php echo esc_url( get_post_type_archive_link( 'angebot' ) ); ?>">
 
 		<?php if ( ! is_wp_error( $auto_emotion_karosserien ) && $auto_emotion_karosserien ) : ?>
