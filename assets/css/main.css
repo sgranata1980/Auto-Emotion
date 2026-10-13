@@ -2345,3 +2345,228 @@ body.has-transparent-header .site-main {
 	border-color: var(--color-rosso-vivo);
 	color: var(--color-rosso-vivo);
 }
+
+/* ---------------------------------------------------------------- */
+/* Traumauto-Finder (Startseite, über der Fahrzeugsuche)              */
+/* ---------------------------------------------------------------- */
+
+/* Bewusst als "Störer" angelegt: sattes Rot statt des sonst nur
+   sparsam als Akzent eingesetzten Carbony-Looks, damit die Sektion
+   zwischen Hero und Fahrzeugsuche sofort auffällt. */
+.traumauto-finder {
+	background:
+		radial-gradient(ellipse 1400px 900px at 50% -20%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 55%),
+		linear-gradient(180deg, #ff3b2c 0%, var(--color-rosso-vivo) 42%, var(--color-rosso-ombra) 100%);
+	color: var(--surface-canvas-white);
+	padding: var(--spacing-64) var(--spacing-24);
+}
+
+.traumauto-finder__header {
+	max-width: 720px;
+	margin: 0 auto var(--spacing-40);
+	text-align: center;
+}
+
+.traumauto-finder__badge {
+	display: inline-flex;
+	align-items: center;
+	margin-bottom: var(--spacing-16);
+	padding: 8px 16px;
+	border: 1px solid rgba(255, 255, 255, 0.5);
+	border-radius: 999px;
+	background: rgba(0, 0, 0, 0.18);
+	font-size: var(--text-caption);
+	font-weight: var(--font-weight-bold);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+}
+
+.traumauto-finder__title {
+	font-size: clamp(28px, 5vw, var(--text-display));
+	line-height: 1.15;
+	margin-bottom: var(--spacing-16);
+	text-wrap: balance;
+}
+
+.traumauto-finder__lede {
+	margin: 0;
+	font-size: var(--text-subheading);
+	color: rgba(255, 255, 255, 0.92);
+}
+
+.traumauto-finder__progress {
+	display: flex;
+	justify-content: center;
+	gap: var(--spacing-8);
+	margin-bottom: var(--spacing-32);
+}
+
+.traumauto-finder__dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.3);
+	transition: background-color 0.25s ease;
+}
+
+.traumauto-finder__dot.is-active {
+	background: var(--surface-canvas-white);
+}
+
+.traumauto-finder__panel {
+	max-width: 880px;
+	margin: 0 auto;
+}
+
+.traumauto-finder__question {
+	text-align: center;
+	font-size: var(--text-heading-sm);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	margin-bottom: var(--spacing-24);
+}
+
+.traumauto-finder__options {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+	gap: var(--spacing-16);
+	margin-bottom: var(--spacing-24);
+}
+
+.traumauto-finder__option {
+	padding: var(--spacing-24) var(--spacing-16);
+	border: 1px solid rgba(255, 255, 255, 0.5);
+	border-radius: var(--radius-buttons);
+	background: rgba(0, 0, 0, 0.12);
+	color: var(--surface-canvas-white);
+	font-family: var(--font-lambotype);
+	font-size: var(--text-body);
+	font-weight: var(--font-weight-bold);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	cursor: pointer;
+	transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.traumauto-finder__option:hover {
+	background: var(--surface-canvas-white);
+	border-color: var(--surface-canvas-white);
+	color: var(--color-rosso-vivo);
+	transform: translateY(-2px);
+}
+
+.traumauto-finder__back {
+	display: block;
+	margin: 0 auto;
+	background: none;
+	border: none;
+	color: var(--surface-canvas-white);
+	text-decoration: underline;
+	font-family: var(--font-lambotype);
+	font-size: var(--text-caption);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	cursor: pointer;
+}
+
+.traumauto-finder__loading {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--spacing-16);
+	font-size: var(--text-subheading);
+}
+
+.traumauto-finder__spinner {
+	width: 22px;
+	height: 22px;
+	border: 3px solid rgba(255, 255, 255, 0.35);
+	border-top-color: var(--surface-canvas-white);
+	border-radius: 50%;
+	animation: traumauto-finder-spin 0.8s linear infinite;
+}
+
+@keyframes traumauto-finder-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.traumauto-finder__results {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: var(--spacing-16);
+	margin-bottom: var(--spacing-24);
+}
+
+.traumauto-finder__card {
+	display: flex;
+	flex-direction: column;
+	background: var(--surface-canvas-white);
+	color: var(--color-carbony-black);
+	text-decoration: none;
+	overflow: hidden;
+	transition: transform 0.2s ease;
+}
+
+.traumauto-finder__card:hover {
+	transform: translateY(-4px);
+}
+
+.traumauto-finder__card-image {
+	width: 100%;
+	height: 160px;
+	object-fit: cover;
+}
+
+.traumauto-finder__card-body {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-8);
+	padding: var(--spacing-16);
+}
+
+.traumauto-finder__card-brand {
+	font-size: var(--text-caption);
+	font-weight: var(--font-weight-bold);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	color: var(--color-rosso-vivo);
+}
+
+.traumauto-finder__card-title {
+	font-size: var(--text-subheading);
+	font-weight: var(--font-weight-bold);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+}
+
+.traumauto-finder__card-reason {
+	font-size: var(--text-caption);
+	color: var(--color-steel-mid);
+	line-height: var(--leading-body);
+}
+
+.traumauto-finder__notice,
+.traumauto-finder__error {
+	text-align: center;
+	font-size: var(--text-body);
+	margin: 0 0 var(--spacing-24);
+}
+
+.traumauto-finder__error a {
+	color: var(--surface-canvas-white);
+	text-decoration: underline;
+}
+
+.traumauto-finder .traumauto-finder__restart {
+	display: block;
+	margin: 0 auto;
+	border-color: rgba(255, 255, 255, 0.6);
+	color: var(--surface-canvas-white);
+}
+
+.traumauto-finder .traumauto-finder__restart:hover {
+	border-color: var(--surface-canvas-white);
+	background: rgba(255, 255, 255, 0.12);
+}

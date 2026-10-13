@@ -41,6 +41,17 @@ function auto_emotion_assets() {
 		wp_enqueue_script( 'auto-emotion-finanzierungsrechner', AUTO_EMOTION_URI . '/assets/js/finanzierungsrechner.js', array(), AUTO_EMOTION_VERSION, true );
 	}
 
+	if ( is_front_page() ) {
+		wp_enqueue_script( 'auto-emotion-traumauto-finder', AUTO_EMOTION_URI . '/assets/js/traumauto-finder.js', array(), AUTO_EMOTION_VERSION, true );
+		wp_localize_script(
+			'auto-emotion-traumauto-finder',
+			'autoEmotionTraumauto',
+			array(
+				'endpoint' => esc_url_raw( rest_url( 'auto-emotion/v1/traumauto-match' ) ),
+			)
+		);
+	}
+
 	wp_enqueue_script( 'auto-emotion-chat', AUTO_EMOTION_URI . '/assets/js/chat-widget.js', array(), AUTO_EMOTION_VERSION, true );
 	wp_localize_script(
 		'auto-emotion-chat',

@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 
 get_template_part( 'template-parts/hero' );
+get_template_part( 'template-parts/traumauto-finder' );
 get_template_part( 'template-parts/vehicle-search' );
 get_template_part( 'template-parts/model-showcase' );
 
