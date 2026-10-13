@@ -339,15 +339,22 @@ body.has-transparent-header .site-header.is-scrolled {
 }
 
 /* Flaches Mehrspalten-Panel statt eingerückter Einzelliste (Vorbild:
-   BMW.de-Hauptnavigation - Unterpunkte fließen in Spalten von links
-   nach rechts statt gestapelt in einer schmalen Liste zu stehen).
-   CSS-Columns statt fixer Spaltenzahl: bei wenig Platz (Smartphone)
-   passt automatisch nur eine Spalte, keine eigene Media Query nötig. */
+   BMW.de-Hauptnavigation - Unterpunkte fließen von links nach rechts
+   statt gestapelt in einer schmalen Liste zu stehen). CSS-Grid statt
+   CSS-Columns: column-span/column-width zeigte auf iOS Safari einen
+   Rendering-Bug, bei dem alle Unterpunkte nach dem "Alle X
+   ansehen"-Link unsichtbar blieben (in Chrome nicht reproduzierbar,
+   aber vom Nutzer per Screenshot auf echtem iPhone bestätigt) - Grid
+   mit auto-fill/minmax ist das robustere, breiter unterstützte
+   Äquivalent und passt bei wenig Platz (Smartphone) ebenso
+   automatisch auf eine Spalte, ganz ohne eigene Media Query. */
 .main-navigation .sub-menu {
 	flex-basis: 100%;
-	display: block;
-	column-width: 200px;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 	column-gap: var(--spacing-40);
+	row-gap: var(--spacing-8);
+	align-content: start;
 	margin: 0;
 	max-height: 0;
 	overflow: hidden;
@@ -364,24 +371,17 @@ body.has-transparent-header .site-header.is-scrolled {
 	transition-delay: 0s;
 }
 
-.main-navigation .sub-menu .menu-item {
-	/* Verhindert, dass ein Listenpunkt mitten im Spaltenumbruch
-	   auseinandergerissen wird. */
-	break-inside: avoid;
-	margin-bottom: var(--spacing-8);
-}
-
 .main-navigation .sub-menu a {
 	font-size: var(--text-caption);
 	color: var(--color-ash-border);
 }
 
 /* "Alle X ansehen"-Link an erster Stelle im Untermenü: spannt über
-   alle Spalten (column-span), optisch abgesetzt von den eigentlichen
-   Unterpunkten darunter - macht sofort klar, dass die Hauptkategorie
-   selbst auch eine eigene Seite ist. */
+   alle Spalten (grid-column: 1 / -1), optisch abgesetzt von den
+   eigentlichen Unterpunkten darunter - macht sofort klar, dass die
+   Hauptkategorie selbst auch eine eigene Seite ist. */
 .main-navigation .sub-menu .sub-menu__overview {
-	column-span: all;
+	grid-column: 1 / -1;
 	margin-bottom: var(--spacing-16);
 	padding-bottom: var(--spacing-16);
 	border-bottom: 1px solid var(--color-graphite-border);
