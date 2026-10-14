@@ -354,6 +354,11 @@ body:not(.has-transparent-header) .site-main {
 .header-actions .glink {
 	font-size: var(--text-caption);
 	letter-spacing: var(--tracking-caption);
+	/* Sprachcodes (EN, DE, AR …) kommen schon großgeschrieben vom
+	   Plugin - text-transform zusätzlich fest gesetzt, damit es sich
+	   wie der Rest des Menüs (.menu-item__link) verhält statt sich auf
+	   die Groß-/Kleinschreibung des gelieferten Textes zu verlassen. */
+	text-transform: uppercase;
 	color: var(--surface-canvas-white);
 	transition: color 0.2s ease;
 }
