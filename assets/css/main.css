@@ -663,9 +663,16 @@ body:not(.has-transparent-header) .site-main {
 		width: auto;
 	}
 
+	/* Vorher padding:0 auf Link/Button - die klickbare Fläche war exakt
+	   auf den Buchstaben geschrumpft ("man muss genau den Buchstaben
+	   treffen"). Padding vergrößert die tatsächliche Klick-/Hover-
+	   Fläche spürbar, die negative Margin gleicht den dadurch
+	   zusätzlichen Platzbedarf wieder aus, damit Text/Pfeil optisch an
+	   derselben Stelle stehen bleiben wie vorher. */
 	.main-navigation .menu-item__link {
 		flex: none;
-		padding: 0;
+		padding: var(--spacing-24) var(--spacing-8);
+		margin: calc(var(--spacing-24) * -1) calc(var(--spacing-8) * -1);
 		font-size: var(--text-caption);
 		white-space: nowrap;
 	}
@@ -2307,9 +2314,14 @@ body.has-transparent-header .site-main {
 .chat-widget__toggle {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-12);
+	/* War var(--spacing-12)/var(--spacing-20) - beide Tokens existieren
+	   nicht in tokens.css, der Browser hat das defekte var() still auf
+	   0 zurückfallen lassen. Dadurch klebte das rote Icon direkt am
+	   Text ("FRAG EMO" wirkte abgeschnitten/überlappt). Jetzt echte,
+	   vorhandene Tokens. */
+	gap: var(--spacing-16);
 	height: 56px;
-	padding: 0 var(--spacing-8) 0 var(--spacing-20);
+	padding: 0 var(--spacing-8) 0 var(--spacing-24);
 	border: none;
 	background: var(--surface-pure-black);
 	box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
