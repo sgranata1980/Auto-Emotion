@@ -102,7 +102,7 @@ function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
 
 <section class="career-banner" aria-labelledby="neuwagen-cupra-heading">
 	<div class="career-banner__media">
-		<img class="career-banner__image career-banner__image--garage" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-cupra-lineup.png?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Cupra Formentor, Leon und Born im Showroom von Auto Emotion" loading="lazy">
+		<img class="career-banner__image career-banner__image--formentor" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-cupra-formentor.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="CUPRA Formentor, offizielles Herstellerfoto" loading="lazy">
 	</div>
 	<div class="career-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'CUPRA Specialist seit 2018', 'auto-emotion' ); ?></p>
@@ -116,6 +116,9 @@ function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
 			<?php echo esc_html( auto_emotion_contact( 'phone' ) ); ?>
 			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
 		</a>
+		<p class="career-banner__wltp">
+			<?php esc_html_e( 'Abgebildet: CUPRA Formentor. Kraftstoffverbrauch kombiniert: 1,4–10,2 l/100 km; CO₂-Emissionen kombiniert: 32–231 g/km; CO₂-Klasse: B–G (Werte je nach Motorisierung, gemäß WLTP).', 'auto-emotion' ); ?>
+		</p>
 	</div>
 </section>
 
@@ -124,6 +127,7 @@ function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
 	auto_emotion_neuwagen_model_card( 'suv', 'Cupra Formentor', __( 'Das erste Modell, das von Grund auf als Cupra entwickelt wurde – ein coupéhaft gezeichneter Kompakt-SUV, das Topmodell stark motorisiert und wahlweise mit Allradantrieb.', 'auto-emotion' ) );
 	auto_emotion_neuwagen_model_card( 'kompakt', 'Cupra Leon / Sportstourer', __( 'Die sportliche Version des Seat Leon, als Fünftürer und als Kombi – straffere Abstimmung, mehr Leistung, eigenständige Optik.', 'auto-emotion' ) );
 	auto_emotion_neuwagen_model_card( 'kompakt', 'Cupra Born', __( 'Cupras erstes vollelektrisches Modell, auf der MEB-Plattform des VW-Konzerns – kompakte Außenmaße, sportlich abgestimmtes Fahrwerk.', 'auto-emotion' ) );
+	auto_emotion_neuwagen_model_card( 'kleinwagen', 'Cupra Raval', __( 'Der neue, vollelektrische Kleinwagen von Cupra – gebaut auf der MEB-Plattform, das bislang kompakteste und zugänglichste Modell der Marke.', 'auto-emotion' ) );
 	auto_emotion_neuwagen_model_card( 'suv', 'Cupra Tavascan', __( 'Ein vollelektrisches Coupé-SUV, ebenfalls auf der MEB-Plattform – größer und praktischer als der Born, mit markant abfallender Dachlinie.', 'auto-emotion' ) );
 	auto_emotion_neuwagen_model_card( 'suv', 'Cupra Terramar', __( 'Der neueste Zugang im Cupra-Programm: ein Kompakt-SUV mit Verbrenner- und Plug-in-Hybrid-Antrieben.', 'auto-emotion' ) );
 	?>

@@ -1483,6 +1483,21 @@ body.has-transparent-header .site-main {
 	object-position: center 53%;
 }
 
+.career-banner__image--formentor {
+	/* Offizielles CUPRA-Pressefoto (4:3), Fahrzeug samt Spiegelung im
+	   Wasserbecken - per Helligkeitsprofil vermessen: Fahrzeugbereich
+	   liegt bei ca. 25-50% der Bildhöhe, danach zunehmend dunklere
+	   Spiegelung im Boden. Zentrum bei ~38%. */
+	object-position: center 38%;
+}
+
+.career-banner__wltp {
+	margin: 0;
+	font-size: var(--text-caption);
+	line-height: 1.5;
+	color: rgba(255, 255, 255, 0.65);
+}
+
 .career-banner__content {
 	max-width: 600px;
 	padding: var(--spacing-64) var(--spacing-24);
