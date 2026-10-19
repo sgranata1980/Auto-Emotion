@@ -137,7 +137,7 @@ function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
 </div>
 
 <section class="career-banner" aria-labelledby="neuwagen-nissan-heading">
-	<img class="career-banner__image career-banner__image--nissan-garage" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-nissan-lineup.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Juke, Qashqai und X-Trail im Showroom von Auto Emotion" loading="lazy">
+	<img class="career-banner__image career-banner__image--qashqai" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-nissan-qashqai.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Qashqai, offizielles Herstellerfoto" loading="lazy">
 	<div class="career-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Nissan GT-R High Performance Center seit 2018', 'auto-emotion' ); ?></p>
 		<h2 id="neuwagen-nissan-heading" class="career-banner__headline">NISSAN</h2>
@@ -150,6 +150,9 @@ function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
 			<?php echo esc_html( auto_emotion_contact( 'phone' ) ); ?>
 			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
 		</a>
+		<p class="career-banner__wltp">
+			<?php esc_html_e( 'Abgebildet: Nissan Qashqai. Kraftstoffverbrauch kombiniert: 4,3–6,4 l/100 km; CO₂-Emissionen kombiniert: 98–145 g/km; CO₂-Klasse: C–E (Werte je nach Motorisierung, gemäß WLTP).', 'auto-emotion' ); ?>
+		</p>
 	</div>
 </section>
 

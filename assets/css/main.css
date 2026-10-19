@@ -1476,10 +1476,10 @@ body.has-transparent-header .site-main {
 	object-position: center 60%;
 }
 
-.career-banner__image--nissan-garage {
-	/* Eigenes Quadrat-Showroom-Bild, weniger Kopffreiheit als beim
-	   Cupra-Pendant - per Helligkeitsprofil vermessen: Fahrzeugbereich
-	   liegt bei ca. 23-83% der Bildhöhe, Zentrum bei ~53%. */
+.career-banner__image--qashqai {
+	/* Offizielles Nissan-Pressefoto (Seitenprofil, viel Himmel/Boden
+	   als Kontext) - per Helligkeitsprofil vermessen: Fahrzeugbereich
+	   liegt bei ca. 45-62% der Bildhöhe, Zentrum bei ~53%. */
 	object-position: center 53%;
 }
 
@@ -1492,14 +1492,25 @@ body.has-transparent-header .site-main {
 }
 
 .career-banner__image--seat-leon {
-	/* Offizielles SEAT-Keyvisual (3:2), Fahrzeug im oberen Bildbereich,
-	   darunter viel Boden/Pflaster - per Helligkeitsprofil vermessen:
-	   Fahrzeugbereich liegt bei ca. 20-55% der Bildhöhe, Zentrum bei ~40%. */
-	object-position: center 40%;
+	/* Offizielles SEAT-Keyvisual (3:2): zeigt sowohl das komplette Auto
+	   (Dach bis Räder) als auch den springenden Skater oben rechts - das
+	   ist der Bildwitz, beides muss sichtbar bleiben. Bei der
+	   Standard-Bannerhöhe (420px) ist das sichtbare Fenster rechnerisch
+	   zu schmal, um beides gleichzeitig zu zeigen (Skaterkopf bis
+	   Räder sind ca. 54% der Bildhöhe, das Fenster bei 420px deckt nur
+	   ~44% ab) - deshalb eigene, größere Bannerhöhe nur für dieses Bild. */
+	height: 560px;
+	object-position: center 52%;
+}
+
+@media (max-width: 700px) {
+	.career-banner__image--seat-leon {
+		height: 260px;
+	}
 }
 
 .career-banner__wltp {
-	margin: 0;
+	margin: var(--spacing-24) 0 0;
 	font-size: var(--text-caption);
 	line-height: 1.5;
 	color: rgba(255, 255, 255, 0.65);
