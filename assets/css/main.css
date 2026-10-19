@@ -665,14 +665,19 @@ body:not(.has-transparent-header) .site-main {
 
 	/* Vorher padding:0 auf Link/Button - die klickbare Fläche war exakt
 	   auf den Buchstaben geschrumpft ("man muss genau den Buchstaben
-	   treffen"). Padding vergrößert die tatsächliche Klick-/Hover-
-	   Fläche spürbar, die negative Margin gleicht den dadurch
-	   zusätzlichen Platzbedarf wieder aus, damit Text/Pfeil optisch an
-	   derselben Stelle stehen bleiben wie vorher. */
+	   treffen"). Höhe exakt auf die feste .site-header-Höhe (64px)
+	   gesetzt statt mit Padding + negativer Margin zu tricksen - erste
+	   Version davon reichte unten über den Header hinaus in den
+	   Seiteninhalt hinein. So bleibt die Klickfläche exakt auf die
+	   Topbar begrenzt, aber über die volle Höhe hinweg klickbar, Text
+	   bleibt per align-items:center vertikal mittig wie vorher. */
 	.main-navigation .menu-item__link {
 		flex: none;
-		padding: var(--spacing-24) var(--spacing-8);
-		margin: calc(var(--spacing-24) * -1) calc(var(--spacing-8) * -1);
+		display: flex;
+		align-items: center;
+		height: 64px;
+		padding: 0 var(--spacing-8);
+		margin: 0 calc(var(--spacing-8) * -1);
 		font-size: var(--text-caption);
 		white-space: nowrap;
 	}
