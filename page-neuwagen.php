@@ -102,7 +102,7 @@ function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
 
 <section class="career-banner" aria-labelledby="neuwagen-cupra-heading">
 	<div class="career-banner__media">
-		<img class="career-banner__image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-cupra-lineup.png?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Cupra Formentor, Leon und Born im Showroom von Auto Emotion" loading="lazy">
+		<img class="career-banner__image career-banner__image--garage" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-cupra-lineup.png?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Cupra Formentor, Leon und Born im Showroom von Auto Emotion" loading="lazy">
 	</div>
 	<div class="career-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'CUPRA Specialist seit 2018', 'auto-emotion' ); ?></p>

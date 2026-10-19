@@ -1466,6 +1466,15 @@ body.has-transparent-header .site-main {
 	object-position: center 65%;
 }
 
+.career-banner__image--garage {
+	/* Quadratisches Showroom-Bild mit sehr viel Kopffreiheit (Wand/
+	   Decke nimmt oben rund 40% ein, Autos erst im unteren Bereich) -
+	   ohne diesen Crop zeigte die 420px/220px hohe Banner-Leiste fast
+	   nur die leere Wand und nur die Dachkanten der Autos am unteren
+	   Rand. */
+	object-position: center 85%;
+}
+
 .career-banner__content {
 	max-width: 600px;
 	padding: var(--spacing-64) var(--spacing-24);
