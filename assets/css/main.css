@@ -1468,11 +1468,12 @@ body.has-transparent-header .site-main {
 
 .career-banner__image--garage {
 	/* Quadratisches Showroom-Bild mit sehr viel Kopffreiheit (Wand/
-	   Decke nimmt oben rund 40% ein, Autos erst im unteren Bereich) -
-	   ohne diesen Crop zeigte die 420px/220px hohe Banner-Leiste fast
-	   nur die leere Wand und nur die Dachkanten der Autos am unteren
-	   Rand. */
-	object-position: center 85%;
+	   Decke nimmt oben rund 45% ein, dazu Boden unten) - per
+	   Helligkeitsprofil (ImageMagick) vermessen: der eigentliche
+	   Fahrzeugbereich (Scheinwerfer bis Kennzeichen/Felgen) liegt bei
+	   ca. 47-74% der Bildhöhe, Zentrum bei ~60%. 85% zeigte zu viel
+	   leeren Boden darunter, 50% (Standard) fast nur die Wand darüber. */
+	object-position: center 60%;
 }
 
 .career-banner__content {
