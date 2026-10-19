@@ -130,7 +130,7 @@ function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
 </div>
 
 <section class="career-banner" aria-labelledby="neuwagen-nissan-heading">
-	<img class="career-banner__image career-banner__image--fleet" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-nissan-lineup.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Juke, Qashqai und X-Trail, offizielles Herstellerfoto" loading="lazy">
+	<img class="career-banner__image career-banner__image--nissan-garage" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-nissan-lineup.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Juke, Qashqai und X-Trail im Showroom von Auto Emotion" loading="lazy">
 	<div class="career-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Nissan GT-R High Performance Center seit 2018', 'auto-emotion' ); ?></p>
 		<h2 id="neuwagen-nissan-heading" class="career-banner__headline">NISSAN</h2>

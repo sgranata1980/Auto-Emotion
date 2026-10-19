@@ -1476,6 +1476,13 @@ body.has-transparent-header .site-main {
 	object-position: center 60%;
 }
 
+.career-banner__image--nissan-garage {
+	/* Eigenes Quadrat-Showroom-Bild, weniger Kopffreiheit als beim
+	   Cupra-Pendant - per Helligkeitsprofil vermessen: Fahrzeugbereich
+	   liegt bei ca. 23-83% der Bildhöhe, Zentrum bei ~53%. */
+	object-position: center 53%;
+}
+
 .career-banner__content {
 	max-width: 600px;
 	padding: var(--spacing-64) var(--spacing-24);
