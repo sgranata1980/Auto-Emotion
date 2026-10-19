@@ -8,6 +8,13 @@
  * Preise), die sich häufig ändern und projektweit ohnehin nicht
  * einzeln gepflegt werden. Aktuelle Preise/Ausstattungen verweisen auf
  * die Marken- und Angebotsseiten bzw. die persönliche Beratung.
+ *
+ * Kartenraster je Marke statt reiner H3+Absatz-Textwand (Nutzer-
+ * Feedback: "sieht billig aus") - Icon je Modell ist eine rein
+ * visuelle Einordnung der bereits vorhandenen, echten Beschreibung in
+ * unsere bestehende Karosserieform-Icon-Taxonomie
+ * (auto_emotion_vehicle_filter_icon(), siehe inc/cpt.php), keine neue
+ * erfundene Angabe.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -15,6 +22,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+
+/**
+ * @param string $slug  Icon-Slug aus auto_emotion_vehicle_filter_icon() (suv/kombi/kompakt/kleinwagen).
+ * @param string $title Modellname.
+ * @param string $text  Beschreibungstext.
+ */
+function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
+	?>
+	<article class="model-card">
+		<svg class="model-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+			<?php auto_emotion_vehicle_filter_icon( $slug ); ?>
+		</svg>
+		<h3 class="model-card__title"><?php echo esc_html( $title ); ?></h3>
+		<p class="model-card__text"><?php echo esc_html( $text ); ?></p>
+	</article>
+	<?php
+}
 ?>
 
 <div class="section-heading">
@@ -22,64 +46,115 @@ get_header();
 </div>
 
 <div class="entry-content">
-	<p><?php esc_html_e( 'Als Vertragshändler für Seat, Cupra und Nissan bieten wir Ihnen das komplette aktuelle Modellprogramm aller drei Marken – vom kompakten Stadtauto bis zum vollelektrischen SUV. Ein Überblick über die Modelle, ihre Einordnung und ihren Antrieb – für aktuelle Preise, Ausstattungslinien und Lieferzeiten sprechen Sie uns am besten direkt an, dazu ändert sich zu viel, als dass wir es hier verlässlich pflegen könnten.', 'auto-emotion' ); ?></p>
+	<p><?php esc_html_e( 'Als Vertragshändler für Seat, Cupra und Nissan bieten wir Ihnen das komplette aktuelle Modellprogramm aller drei Marken – vom kompakten Stadtauto bis zum vollelektrischen SUV. Für aktuelle Preise, Ausstattungslinien und Lieferzeiten sprechen Sie uns am besten direkt an, dazu ändert sich zu viel, als dass wir es hier verlässlich pflegen könnten.', 'auto-emotion' ); ?></p>
 </div>
 
-<div class="section-heading">
-	<h2 class="section-heading__title">SEAT</h2>
-</div>
-<img class="content-header-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-seat-lineup.png?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Seat Ibiza, Arona und Leon im Showroom von Auto Emotion" loading="lazy">
-<div class="entry-content">
-	<p><?php esc_html_e( 'Die spanische Volumenmarke des VW-Konzerns, bei Auto Emotion Gründungsmarke seit 2001 – zugängliche Preise, jugendliches Design, Verbrenner mit zunehmender Mild-Hybrid-Technik.', 'auto-emotion' ); ?></p>
-	<h3>Seat Ibiza</h3>
-	<p><?php esc_html_e( 'Der Kleinwagen der Marke, seit Jahrzehnten das meistverkaufte Modell von Seat – kompakt, wendig, mit vergleichsweise günstigem Einstiegspreis.', 'auto-emotion' ); ?></p>
-	<h3>Seat Arona</h3>
-	<p><?php esc_html_e( 'Der kompakte SUV auf Ibiza-Basis: höhere Sitzposition, mehr Kofferraum, gleiches zugängliches Preissegment.', 'auto-emotion' ); ?></p>
-	<h3>Seat Ateca</h3>
-	<p><?php esc_html_e( 'Der größere Kompakt-SUV von Seat, eine Klasse über dem Arona – mehr Platz für Familien, wahlweise mit Allradantrieb.', 'auto-emotion' ); ?></p>
-	<h3>Seat Leon</h3>
-	<p><?php esc_html_e( 'Das Kompaktklasse-Modell von Seat, als Fünftürer und als Kombi (Sportstourer) erhältlich – das technische Rückgrat, auf dem auch der Cupra Leon aufbaut.', 'auto-emotion' ); ?></p>
-	<p><a href="<?php echo esc_url( home_url( '/marke/seat/' ) ); ?>"><?php esc_html_e( 'Alle Seat-Modelle und aktuelle Angebote bei Auto Emotion', 'auto-emotion' ); ?></a></p>
-</div>
-
-<div class="section-heading">
-	<h2 class="section-heading__title">CUPRA</h2>
-</div>
-<img class="content-header-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-cupra-lineup.png?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Cupra Formentor, Leon und Born im Showroom von Auto Emotion" loading="lazy">
-<div class="entry-content">
-	<p><?php esc_html_e( 'Die 2018 aus Seat ausgegründete Performance-Marke – eigenständiges Design, sportliche Abstimmung, konsequent elektrifiziert. Auto Emotion ist seit 2018 als CUPRA Specialist ausgezeichnet.', 'auto-emotion' ); ?></p>
-	<h3>Cupra Formentor</h3>
-	<p><?php esc_html_e( 'Das erste Modell, das von Grund auf als Cupra entwickelt wurde, ohne direktes Seat-Pendant – ein coupéhaft gezeichneter Kompakt-SUV, das Topmodell der Baureihe ist seit jeher stark motorisiert und wahlweise mit Allradantrieb erhältlich.', 'auto-emotion' ); ?></p>
-	<h3>Cupra Leon / Leon Sportstourer</h3>
-	<p><?php esc_html_e( 'Die sportliche Version des Seat Leon, als Fünftürer und als Kombi – straffere Abstimmung, mehr Leistung, eigenständige Optik.', 'auto-emotion' ); ?></p>
-	<h3>Cupra Born</h3>
-	<p><?php esc_html_e( 'Cupras erstes vollelektrisches Modell, auf der MEB-Plattform des VW-Konzerns – kompakte Außenmaße, sportlich abgestimmtes Fahrwerk, sofortiger Drehmomentaufbau typisch für den Elektroantrieb.', 'auto-emotion' ); ?></p>
-	<h3>Cupra Tavascan</h3>
-	<p><?php esc_html_e( 'Ein vollelektrisches Coupé-SUV, ebenfalls auf der MEB-Plattform – größer und praktischer als der Born, mit markant abfallender Dachlinie.', 'auto-emotion' ); ?></p>
-	<h3>Cupra Terramar</h3>
-	<p><?php esc_html_e( 'Der neueste Zugang im Cupra-Programm: ein Kompakt-SUV mit Verbrenner- und Plug-in-Hybrid-Antrieben, positioniert zwischen Formentor und den größeren Konzern-SUVs.', 'auto-emotion' ); ?></p>
-	<p><a href="<?php echo esc_url( home_url( '/marke/cupra/' ) ); ?>"><?php esc_html_e( 'Alle Cupra-Modelle und aktuelle Angebote bei Auto Emotion', 'auto-emotion' ); ?></a></p>
+<div class="quick-actions">
+	<a class="quick-action" href="<?php echo esc_url( get_post_type_archive_link( 'angebot' ) ); ?>">
+		<svg class="quick-action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><line x1="14.8" y1="14.8" x2="20" y2="20"/></svg>
+		<span class="quick-action__title"><?php esc_html_e( 'Aktuelle Angebote', 'auto-emotion' ); ?></span>
+		<span class="btn btn-outline quick-action__btn"><?php esc_html_e( 'Angebote ansehen', 'auto-emotion' ); ?></span>
+	</a>
+	<a class="quick-action" href="<?php echo esc_url( home_url( '/finanzierung-leasing/' ) ); ?>">
+		<svg class="quick-action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="10.5" y2="12"/><line x1="13.5" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="10.5" y2="16"/><line x1="13.5" y1="16" x2="16" y2="16"/></svg>
+		<span class="quick-action__title"><?php esc_html_e( 'Finanzierung berechnen', 'auto-emotion' ); ?></span>
+		<span class="btn btn-outline quick-action__btn"><?php esc_html_e( 'Rechner öffnen', 'auto-emotion' ); ?></span>
+	</a>
+	<a class="quick-action" href="<?php echo esc_url( get_post_type_archive_link( 'angebot' ) ); ?>">
+		<svg class="quick-action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="3"/><path d="M11 13l8-8 2 2-2 2 1.5 1.5L19 12l-5.5 5.5"/><path d="M15.5 9.5l2 2"/></svg>
+		<span class="quick-action__title"><?php esc_html_e( 'Probefahrt vereinbaren', 'auto-emotion' ); ?></span>
+		<span class="btn btn-outline quick-action__btn"><?php esc_html_e( 'Jetzt anfragen', 'auto-emotion' ); ?></span>
+	</a>
+	<button type="button" class="quick-action js-open-chat">
+		<?php auto_emotion_ai_badge_icon( 24 ); ?>
+		<span class="quick-action__title"><?php esc_html_e( 'Welches Modell passt zu mir?', 'auto-emotion' ); ?></span>
+		<span class="btn btn-outline quick-action__btn"><?php esc_html_e( 'Emo fragen', 'auto-emotion' ); ?></span>
+	</button>
 </div>
 
-<div class="section-heading">
-	<h2 class="section-heading__title">NISSAN</h2>
+<section class="career-banner" aria-labelledby="neuwagen-seat-heading">
+	<div class="career-banner__media">
+		<img class="career-banner__image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-seat-lineup.png?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Seat Ibiza, Arona und Leon im Showroom von Auto Emotion" loading="lazy">
+	</div>
+	<div class="career-banner__content">
+		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Seit 2001 bei Auto Emotion', 'auto-emotion' ); ?></p>
+		<h2 id="neuwagen-seat-heading" class="career-banner__headline">SEAT</h2>
+		<p><?php esc_html_e( 'Die spanische Volumenmarke des VW-Konzerns – zugängliche Preise, jugendliches Design, Verbrenner mit zunehmender Mild-Hybrid-Technik.', 'auto-emotion' ); ?></p>
+		<a class="btn btn-giallo" href="<?php echo esc_url( home_url( '/marke/seat/' ) ); ?>">
+			<?php esc_html_e( 'Alle Seat-Angebote ansehen', 'auto-emotion' ); ?>
+			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
+		</a>
+		<a class="btn btn-outline" href="tel:<?php echo esc_attr( auto_emotion_contact( 'phone_href' ) ); ?>">
+			<?php echo esc_html( auto_emotion_contact( 'phone' ) ); ?>
+			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
+		</a>
+	</div>
+</section>
+
+<div class="model-grid">
+	<?php
+	auto_emotion_neuwagen_model_card( 'kleinwagen', 'Seat Ibiza', __( 'Der Kleinwagen der Marke, seit Jahrzehnten das meistverkaufte Modell von Seat – kompakt, wendig, mit vergleichsweise günstigem Einstiegspreis.', 'auto-emotion' ) );
+	auto_emotion_neuwagen_model_card( 'suv', 'Seat Arona', __( 'Der kompakte SUV auf Ibiza-Basis: höhere Sitzposition, mehr Kofferraum, gleiches zugängliches Preissegment.', 'auto-emotion' ) );
+	auto_emotion_neuwagen_model_card( 'suv', 'Seat Ateca', __( 'Der größere Kompakt-SUV von Seat, eine Klasse über dem Arona – mehr Platz für Familien, wahlweise mit Allradantrieb.', 'auto-emotion' ) );
+	auto_emotion_neuwagen_model_card( 'kompakt', 'Seat Leon', __( 'Das Kompaktklasse-Modell von Seat, als Fünftürer und als Kombi (Sportstourer) erhältlich – das technische Rückgrat, auf dem auch der Cupra Leon aufbaut.', 'auto-emotion' ) );
+	?>
 </div>
-<img class="content-header-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-nissan-lineup.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Juke, Qashqai und X-Trail, offizielles Herstellerfoto" loading="lazy">
-<div class="entry-content">
-	<p><?php esc_html_e( 'Der japanische Hersteller, bei Auto Emotion seit 2015 im Programm, seit 2018 zusätzlich als Nissan GT-R High Performance Center ausgezeichnet – bekannt für SUVs und frühe, konsequente Elektrifizierung.', 'auto-emotion' ); ?></p>
-	<h3>Nissan Micra</h3>
-	<p><?php esc_html_e( 'Der Kleinwagen der Marke, in aktueller Generation vollelektrisch – Nissans Antwort auf die Elektrifizierung des Kleinwagensegments.', 'auto-emotion' ); ?></p>
-	<h3>Nissan Juke</h3>
-	<p><?php esc_html_e( 'Der kompakte Crossover mit markantem, polarisierendem Design – seit seiner Einführung eines der prägenden Modelle im B-SUV-Segment.', 'auto-emotion' ); ?></p>
-	<h3>Nissan Qashqai</h3>
-	<p><?php esc_html_e( 'Nissans Erfolgsmodell und Namensgeber des Kompakt-SUV-Segments in Europa – unter anderem mit e-POWER erhältlich: ein Elektromotor treibt die Räder an, ein kleiner Verbrennungsmotor lädt lediglich die Batterie nach, ganz ohne externes Laden.', 'auto-emotion' ); ?></p>
-	<h3>Nissan X-Trail</h3>
-	<p><?php esc_html_e( 'Der größere SUV im Programm, wahlweise mit bis zu sieben Sitzen und e-4ORCE-Allradantrieb (zwei Elektromotoren, einer pro Achse) in Kombination mit e-POWER.', 'auto-emotion' ); ?></p>
-	<h3>Nissan Ariya</h3>
-	<p><?php esc_html_e( 'Nissans vollelektrisches Coupé-SUV, aufgebaut auf der konzerneigenen CMF-EV-Plattform – das bislang modernste Elektromodell der Marke.', 'auto-emotion' ); ?></p>
-	<h3>Nissan Leaf</h3>
-	<p><?php esc_html_e( 'Einer der ersten in Großserie gebauten Elektro-Pkw der Welt, seit 2010 im Markt – über die Jahre mehrfach überarbeitet und weiterentwickelt.', 'auto-emotion' ); ?></p>
-	<p><a href="<?php echo esc_url( home_url( '/marke/nissan/' ) ); ?>"><?php esc_html_e( 'Alle Nissan-Modelle und aktuelle Angebote bei Auto Emotion', 'auto-emotion' ); ?></a></p>
+
+<section class="career-banner" aria-labelledby="neuwagen-cupra-heading">
+	<div class="career-banner__media">
+		<img class="career-banner__image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-cupra-lineup.png?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Cupra Formentor, Leon und Born im Showroom von Auto Emotion" loading="lazy">
+	</div>
+	<div class="career-banner__content">
+		<p class="hero-stage__eyebrow"><?php esc_html_e( 'CUPRA Specialist seit 2018', 'auto-emotion' ); ?></p>
+		<h2 id="neuwagen-cupra-heading" class="career-banner__headline">CUPRA</h2>
+		<p><?php esc_html_e( 'Die 2018 aus Seat ausgegründete Performance-Marke – eigenständiges Design, sportliche Abstimmung, konsequent elektrifiziert.', 'auto-emotion' ); ?></p>
+		<a class="btn btn-giallo" href="<?php echo esc_url( home_url( '/marke/cupra/' ) ); ?>">
+			<?php esc_html_e( 'Alle Cupra-Angebote ansehen', 'auto-emotion' ); ?>
+			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
+		</a>
+		<a class="btn btn-outline" href="tel:<?php echo esc_attr( auto_emotion_contact( 'phone_href' ) ); ?>">
+			<?php echo esc_html( auto_emotion_contact( 'phone' ) ); ?>
+			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
+		</a>
+	</div>
+</section>
+
+<div class="model-grid">
+	<?php
+	auto_emotion_neuwagen_model_card( 'suv', 'Cupra Formentor', __( 'Das erste Modell, das von Grund auf als Cupra entwickelt wurde – ein coupéhaft gezeichneter Kompakt-SUV, das Topmodell stark motorisiert und wahlweise mit Allradantrieb.', 'auto-emotion' ) );
+	auto_emotion_neuwagen_model_card( 'kompakt', 'Cupra Leon / Sportstourer', __( 'Die sportliche Version des Seat Leon, als Fünftürer und als Kombi – straffere Abstimmung, mehr Leistung, eigenständige Optik.', 'auto-emotion' ) );
+	auto_emotion_neuwagen_model_card( 'kompakt', 'Cupra Born', __( 'Cupras erstes vollelektrisches Modell, auf der MEB-Plattform des VW-Konzerns – kompakte Außenmaße, sportlich abgestimmtes Fahrwerk.', 'auto-emotion' ) );
+	auto_emotion_neuwagen_model_card( 'suv', 'Cupra Tavascan', __( 'Ein vollelektrisches Coupé-SUV, ebenfalls auf der MEB-Plattform – größer und praktischer als der Born, mit markant abfallender Dachlinie.', 'auto-emotion' ) );
+	auto_emotion_neuwagen_model_card( 'suv', 'Cupra Terramar', __( 'Der neueste Zugang im Cupra-Programm: ein Kompakt-SUV mit Verbrenner- und Plug-in-Hybrid-Antrieben.', 'auto-emotion' ) );
+	?>
+</div>
+
+<section class="career-banner" aria-labelledby="neuwagen-nissan-heading">
+	<img class="career-banner__image career-banner__image--fleet" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-nissan-lineup.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Juke, Qashqai und X-Trail, offizielles Herstellerfoto" loading="lazy">
+	<div class="career-banner__content">
+		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Nissan GT-R High Performance Center seit 2018', 'auto-emotion' ); ?></p>
+		<h2 id="neuwagen-nissan-heading" class="career-banner__headline">NISSAN</h2>
+		<p><?php esc_html_e( 'Der japanische Hersteller, bei Auto Emotion seit 2015 im Programm – bekannt für SUVs und frühe, konsequente Elektrifizierung.', 'auto-emotion' ); ?></p>
+		<a class="btn btn-giallo" href="<?php echo esc_url( home_url( '/marke/nissan/' ) ); ?>">
+			<?php esc_html_e( 'Alle Nissan-Angebote ansehen', 'auto-emotion' ); ?>
+			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
+		</a>
+		<a class="btn btn-outline" href="tel:<?php echo esc_attr( auto_emotion_contact( 'phone_href' ) ); ?>">
+			<?php echo esc_html( auto_emotion_contact( 'phone' ) ); ?>
+			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
+		</a>
+	</div>
+</section>
+
+<div class="model-grid">
+	<?php
+	auto_emotion_neuwagen_model_card( 'kleinwagen', 'Nissan Micra', __( 'Der Kleinwagen der Marke, in aktueller Generation vollelektrisch – Nissans Antwort auf die Elektrifizierung des Kleinwagensegments.', 'auto-emotion' ) );
+	auto_emotion_neuwagen_model_card( 'suv', 'Nissan Juke', __( 'Der kompakte Crossover mit markantem, polarisierendem Design – eines der prägenden Modelle im B-SUV-Segment.', 'auto-emotion' ) );
+	auto_emotion_neuwagen_model_card( 'suv', 'Nissan Qashqai', __( 'Nissans Erfolgsmodell und Namensgeber des Kompakt-SUV-Segments – unter anderem mit e-POWER: ein Elektromotor treibt an, ein kleiner Verbrenner lädt nur die Batterie nach.', 'auto-emotion' ) );
+	auto_emotion_neuwagen_model_card( 'suv', 'Nissan X-Trail', __( 'Der größere SUV im Programm, wahlweise mit bis zu sieben Sitzen und e-4ORCE-Allradantrieb in Kombination mit e-POWER.', 'auto-emotion' ) );
+	auto_emotion_neuwagen_model_card( 'suv', 'Nissan Ariya', __( 'Nissans vollelektrisches Coupé-SUV, aufgebaut auf der konzerneigenen CMF-EV-Plattform – das modernste Elektromodell der Marke.', 'auto-emotion' ) );
+	auto_emotion_neuwagen_model_card( 'kompakt', 'Nissan Leaf', __( 'Einer der ersten in Großserie gebauten Elektro-Pkw der Welt, seit 2010 im Markt – über die Jahre mehrfach überarbeitet.', 'auto-emotion' ) );
+	?>
 </div>
 
 <div class="entry-content">

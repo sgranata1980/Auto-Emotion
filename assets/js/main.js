@@ -17,21 +17,26 @@ document.addEventListener('DOMContentLoaded', function () {
 	bindToggle('.nav-toggle', '#site-navigation');
 	bindToggle('.search-toggle', '#header-search');
 
-	// "AI-Assistent" im Hauptmenü verlinkt auf keine eigene Seite,
-	// sondern öffnet direkt das bestehende Chat-Widget (Emo).
-	var aiChatTrigger = document.querySelector( '.main-navigation__ai-trigger' );
+	// "AI-Assistent" im Hauptmenü und jeder weitere Button mit der Klasse
+	// .js-open-chat (z.B. die Quick-Action-Kachel auf der Neuwagen-Seite)
+	// verlinken auf keine eigene Seite, sondern öffnen direkt das
+	// bestehende Chat-Widget (Emo). querySelectorAll statt querySelector,
+	// damit mehrere solcher Buttons auf einer Seite funktionieren.
+	var aiChatTriggers = document.querySelectorAll( '.main-navigation__ai-trigger, .js-open-chat' );
 	var chatToggle = document.querySelector( '.chat-widget__toggle' );
-	if ( aiChatTrigger && chatToggle ) {
-		aiChatTrigger.addEventListener( 'click', function () {
-			var nav = document.getElementById( 'site-navigation' );
-			var navToggleBtn = document.querySelector( '.nav-toggle' );
-			if ( nav && nav.getAttribute( 'data-state' ) === 'open' ) {
-				nav.setAttribute( 'data-state', 'closed' );
-				if ( navToggleBtn ) {
-					navToggleBtn.setAttribute( 'aria-expanded', 'false' );
+	if ( aiChatTriggers.length && chatToggle ) {
+		aiChatTriggers.forEach( function ( trigger ) {
+			trigger.addEventListener( 'click', function () {
+				var nav = document.getElementById( 'site-navigation' );
+				var navToggleBtn = document.querySelector( '.nav-toggle' );
+				if ( nav && nav.getAttribute( 'data-state' ) === 'open' ) {
+					nav.setAttribute( 'data-state', 'closed' );
+					if ( navToggleBtn ) {
+						navToggleBtn.setAttribute( 'aria-expanded', 'false' );
+					}
 				}
-			}
-			chatToggle.click();
+				chatToggle.click();
+			} );
 		} );
 	}
 

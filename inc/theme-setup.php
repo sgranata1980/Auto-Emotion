@@ -27,6 +27,54 @@ function auto_emotion_setup() {
 add_action( 'after_setup_theme', 'auto_emotion_setup' );
 
 /**
+ * Site-Icon (Browser-Tab-Favicon) einmalig auf das echte Auto-Emotion-
+ * Logo setzen, statt des WordPress-Standard-"W", das vorher im Tab
+ * zu sehen war. Läuft nur, solange noch kein Site-Icon gesetzt ist -
+ * ein späteres eigenes Icon über Design > Customizer > Website-Icon
+ * wird dadurch nie überschrieben.
+ */
+function auto_emotion_set_default_site_icon() {
+	if ( get_option( 'auto_emotion_site_icon_set' ) || get_option( 'site_icon' ) ) {
+		return;
+	}
+
+	$file_path = AUTO_EMOTION_DIR . '/assets/images/logo-icon-red.png';
+
+	if ( ! file_exists( $file_path ) ) {
+		return;
+	}
+
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	require_once ABSPATH . 'wp-admin/includes/media.php';
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+
+	$filetype = wp_check_filetype( basename( $file_path ), null );
+	$upload   = wp_upload_bits( basename( $file_path ), null, file_get_contents( $file_path ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- lokale Theme-Datei, kein Remote-Request.
+
+	if ( ! empty( $upload['error'] ) ) {
+		return;
+	}
+
+	$attachment_id = wp_insert_attachment(
+		array(
+			'post_mime_type' => $filetype['type'],
+			'post_title'      => 'Auto Emotion Site Icon',
+			'post_status'     => 'inherit',
+		),
+		$upload['file']
+	);
+
+	if ( ! $attachment_id || is_wp_error( $attachment_id ) ) {
+		return;
+	}
+
+	wp_update_attachment_metadata( $attachment_id, wp_generate_attachment_metadata( $attachment_id, $upload['file'] ) );
+	update_option( 'site_icon', $attachment_id );
+	update_option( 'auto_emotion_site_icon_set', '1' );
+}
+add_action( 'init', 'auto_emotion_set_default_site_icon', 20 );
+
+/**
  * Seiteninhalte werden ausschließlich als fertiges HTML gepflegt (nie über
  * den klassischen Editor), Absätze stehen also immer schon explizit in
  * eigenen <p>-Tags. wpautop zerschießt dabei verschachteltes Markup wie

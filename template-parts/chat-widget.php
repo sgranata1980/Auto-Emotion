@@ -15,7 +15,13 @@ $auto_emotion_idle_src     = auto_emotion_emo_video_url( 'idle' );
 ?>
 <div class="chat-widget" data-state="closed">
 	<button type="button" class="chat-widget__toggle" aria-expanded="false" aria-controls="chat-widget-panel">
-		<span class="chat-widget__toggle-icon" aria-hidden="true"></span>
+		<span class="chat-widget__toggle-label">
+			<svg class="chat-widget__toggle-sparkle" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3l1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3Z"/></svg>
+			<?php esc_html_e( 'Frag Emo', 'auto-emotion' ); ?>
+		</span>
+		<span class="chat-widget__toggle-icon-wrap">
+			<span class="chat-widget__toggle-icon" aria-hidden="true"></span>
+		</span>
 		<span class="screen-reader-text"><?php esc_html_e( 'Chat öffnen', 'auto-emotion' ); ?></span>
 	</button>
 
