@@ -74,7 +74,7 @@ function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
 
 <section class="career-banner" aria-labelledby="neuwagen-seat-heading">
 	<div class="career-banner__media">
-		<img class="career-banner__image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-seat-lineup.png?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Seat Ibiza, Arona und Leon im Showroom von Auto Emotion" loading="lazy">
+		<img class="career-banner__image career-banner__image--seat-leon" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-seat-leon.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="SEAT Leon, offizielles Herstellerfoto" loading="lazy">
 	</div>
 	<div class="career-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Seit 2001 bei Auto Emotion', 'auto-emotion' ); ?></p>
@@ -88,6 +88,9 @@ function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
 			<?php echo esc_html( auto_emotion_contact( 'phone' ) ); ?>
 			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
 		</a>
+		<p class="career-banner__wltp">
+			<?php esc_html_e( 'Abgebildet: SEAT Leon. Kraftstoffverbrauch kombiniert: 1,2–5,9 l/100 km; CO₂-Emissionen kombiniert: 27–134 g/km; CO₂-Klasse: B–D (Werte je nach Motorisierung, gemäß WLTP).', 'auto-emotion' ); ?>
+		</p>
 	</div>
 </section>
 

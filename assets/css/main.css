@@ -1491,6 +1491,13 @@ body.has-transparent-header .site-main {
 	object-position: center 38%;
 }
 
+.career-banner__image--seat-leon {
+	/* Offizielles SEAT-Keyvisual (3:2), Fahrzeug im oberen Bildbereich,
+	   darunter viel Boden/Pflaster - per Helligkeitsprofil vermessen:
+	   Fahrzeugbereich liegt bei ca. 20-55% der Bildhöhe, Zentrum bei ~40%. */
+	object-position: center 40%;
+}
+
 .career-banner__wltp {
 	margin: 0;
 	font-size: var(--text-caption);
