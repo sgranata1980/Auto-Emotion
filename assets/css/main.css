@@ -1437,6 +1437,19 @@ body.has-transparent-header .site-main {
 	margin-top: var(--spacing-40);
 }
 
+/* Lesetext (Absätze, Überschriften-Zeilen) bekommt eine eigene,
+   schmalere Spalte statt die volle 1440px-Containerbreite
+   auszufüllen - bei 16px Fließtext sonst unlesbar lange Zeilen,
+   und wirkt "vollflächig" statt editorial-ruhig. Volle Breite bleibt
+   bewusst Grids/Galerien/Bannern vorbehalten (eigene Klassen, nicht
+   .entry-content/.section-heading), die die Breite brauchen. */
+.entry-content,
+.section-heading {
+	max-width: 760px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 /* ---------------------------------------------------------------- */
 /* Brand Tile                                                         */
 /* ---------------------------------------------------------------- */
