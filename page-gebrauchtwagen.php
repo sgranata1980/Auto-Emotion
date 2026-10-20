@@ -58,6 +58,15 @@ echo '<div class="container">';
 	<p><?php esc_html_e( 'Neben Neuwagen führen wir laufend geprüfte Gebrauchtfahrzeuge der Marken Seat, Cupra und Nissan sowie in Zahlung genommene Fahrzeuge anderer Hersteller. Jedes Fahrzeug durchläuft vor dem Verkauf unsere Werkstatt.', 'auto-emotion' ); ?></p>
 </div>
 
+<div class="photo-gallery">
+	<figure>
+		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-nissan-floor.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan-Fahrzeuge im Auto Emotion Showroom" loading="lazy">
+	</figure>
+	<figure>
+		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-lounge-seat.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Seat-Fahrzeug im Auto Emotion Showroom" loading="lazy">
+	</figure>
+</div>
+
 <div class="section-heading" id="bestand">
 	<h2 class="section-heading__title"><?php esc_html_e( 'Aktueller Fahrzeugbestand', 'auto-emotion' ); ?></h2>
 </div>
