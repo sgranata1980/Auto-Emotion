@@ -111,6 +111,7 @@ function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'CUPRA Specialist seit 2018', 'auto-emotion' ); ?></p>
 		<h2 id="neuwagen-cupra-heading" class="career-banner__headline">CUPRA</h2>
 		<p><?php esc_html_e( 'Die 2018 aus Seat ausgegründete Performance-Marke – eigenständiges Design, sportliche Abstimmung, konsequent elektrifiziert.', 'auto-emotion' ); ?></p>
+		<p class="hero-stage__badge"><?php esc_html_e( 'Trendmarke Nr. 1 2025 – Leserumfrage „auto motor und sport“', 'auto-emotion' ); ?></p>
 		<a class="btn btn-giallo" href="<?php echo esc_url( home_url( '/marke/cupra/' ) ); ?>">
 			<?php esc_html_e( 'Alle Cupra-Angebote ansehen', 'auto-emotion' ); ?>
 			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
