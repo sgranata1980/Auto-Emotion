@@ -1297,7 +1297,7 @@ body.has-transparent-header .site-main {
 .container {
 	max-width: var(--page-max-width);
 	margin: 0 auto;
-	padding: 0 var(--spacing-24);
+	padding: 0 var(--spacing-24) var(--spacing-64);
 }
 
 .container > * + * {
