@@ -1280,6 +1280,17 @@ body.has-transparent-header .site-main {
 	margin-top: 0;
 }
 
+/* Neuwagen-Seite: get_header() öffnet auf Nicht-Startseiten ein
+   .container-Div, das page-neuwagen.php sofort wieder schließt, damit
+   der Video-Hero danach vollflächig als direktes .site-main-Kind
+   rendern kann (siehe page-neuwagen.php). Dieses leere Container-Div
+   zählt für .site-main > * + * trotzdem als Geschwister vor dem Hero
+   und erzeugt sonst denselben "weißer Balken"-Effekt wie oben
+   zwischen Header und Hero - hier wieder bewusst kein Abstand. */
+.site-main > .container:empty + .hero-stage {
+	margin-top: 0;
+}
+
 .container {
 	max-width: var(--page-max-width);
 	margin: 0 auto;
