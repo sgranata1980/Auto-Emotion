@@ -26,20 +26,47 @@ $auto_emotion_jahreswagen_faq = array(
 auto_emotion_register_faq_schema( $auto_emotion_jahreswagen_faq );
 
 get_header();
+
+/**
+ * get_header() öffnet auf Nicht-Startseiten ein .container-Div
+ * (max-width 1440px, zentriert) direkt um den gesamten Seiteninhalt.
+ * Der Hero ist wie bei Gebrauchtwagen/Neuwagen als vollflächige
+ * Section gedacht - bricht hier kurz aus dem Container aus (siehe
+ * page-gebrauchtwagen.php für denselben Fix) und öffnet ihn danach
+ * wieder.
+ */
+echo '</div>';
+
+get_template_part(
+	'template-parts/hero',
+	null,
+	array(
+		'eyebrow'         => __( 'Seat · Cupra · Nissan', 'auto-emotion' ),
+		'headline_pre'    => __( 'Fast neu.', 'auto-emotion' ),
+		'headline_accent' => __( 'Kaum gefahren.', 'auto-emotion' ),
+		'cta_text'        => __( 'Mehr erfahren', 'auto-emotion' ),
+		'cta_url'         => '#konzept',
+		'cta2_text'       => __( 'Anfrage senden', 'auto-emotion' ),
+		'cta2_url'        => 'mailto:' . auto_emotion_contact( 'email' ) . '?subject=' . rawurlencode( 'Jahreswagen-Anfrage' ),
+		'image'           => AUTO_EMOTION_URI . '/assets/images/showroom-formentor-born.jpg?ver=' . AUTO_EMOTION_VERSION,
+		'video'           => '',
+		'video_webm'      => '',
+	)
+);
+
+echo '<div class="container">';
 ?>
 
 <div class="section-heading">
-	<h1 class="section-heading__title"><?php esc_html_e( 'Jahreswagen / Tageszulassungen', 'auto-emotion' ); ?></h1>
+	<h2 class="section-heading__title"><?php esc_html_e( 'Jahreswagen / Tageszulassungen', 'auto-emotion' ); ?></h2>
 </div>
-
-<img class="content-header-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-formentor-born.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Fahrzeuge im Showroom von Auto Emotion" loading="lazy">
 
 <div class="entry-content">
 	<p><?php esc_html_e( 'Jahreswagen und Tageszulassungen verbinden den günstigeren Preis eines Gebrauchtwagens mit dem Zustand eines Neuwagens – minimale Laufleistung, aktuelle Ausstattung, meist noch volle Herstellergarantie.', 'auto-emotion' ); ?></p>
 	<p><?php esc_html_e( 'Verfügbarkeit und Ausstattung wechseln laufend. Sprechen Sie uns an, wir sagen Ihnen gerne, welche Jahreswagen und Tageszulassungen von Seat, Cupra und Nissan aktuell bei uns verfügbar sind.', 'auto-emotion' ); ?></p>
 </div>
 
-<div class="section-heading">
+<div class="section-heading" id="konzept">
 	<h2 class="section-heading__title"><?php esc_html_e( 'Wie ist das Konzept entstanden?', 'auto-emotion' ); ?></h2>
 </div>
 <div class="entry-content">
