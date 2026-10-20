@@ -484,6 +484,13 @@ body:not(.has-transparent-header) .site-main {
 	max-height: 0;
 	overflow: hidden;
 	opacity: 0;
+	/* Geschlossen darf das Panel keine Klicks abfangen - bei 0 Höhe
+	   eigentlich unsichtbar, aber je nach Layout/Sticky-Header-Stacking
+	   lag es trotzdem über benachbarten Elementen (z.B. dem Logo) und
+	   hat deren Klicks geschluckt (Nutzer-Feedback: Logo-Klick ging ins
+	   Leere). pointer-events ist hier die robuste Absicherung,
+	   unabhängig von der genauen geometrischen Ursache. */
+	pointer-events: none;
 	transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, margin 0.35s ease;
 }
 
@@ -491,6 +498,7 @@ body:not(.has-transparent-header) .site-main {
 	max-height: 900px;
 	opacity: 1;
 	margin: var(--spacing-16) 0 var(--spacing-24);
+	pointer-events: auto;
 	/* Überschreibt die Schließverzögerung unten (nur fürs Verlassen
 	   mit der Maus gedacht) - per Klick/Tipp geöffnet reagiert sofort. */
 	transition-delay: 0s;

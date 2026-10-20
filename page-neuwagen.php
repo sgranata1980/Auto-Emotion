@@ -41,8 +41,27 @@ function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
 }
 ?>
 
-<div class="section-heading">
-	<h1 class="section-heading__title"><?php esc_html_e( 'Neuwagen', 'auto-emotion' ); ?></h1>
+<?php
+get_template_part(
+	'template-parts/hero',
+	null,
+	array(
+		'eyebrow'         => __( 'Seat · Cupra · Nissan', 'auto-emotion' ),
+		'headline_pre'    => __( 'Ihr neues', 'auto-emotion' ),
+		'headline_accent' => __( 'Auto.', 'auto-emotion' ),
+		'cta_text'        => __( 'Modelle ansehen', 'auto-emotion' ),
+		'cta_url'         => '#marken-liste',
+		'cta2_text'       => __( 'Angebote ansehen', 'auto-emotion' ),
+		'cta2_url'        => get_post_type_archive_link( 'angebot' ),
+		'image'           => AUTO_EMOTION_URI . '/assets/images/neuwagen-hero-poster.jpg?ver=' . AUTO_EMOTION_VERSION,
+		'video'           => AUTO_EMOTION_URI . '/assets/videos/cupra-neuwagen-hero.mp4?ver=' . AUTO_EMOTION_VERSION,
+		'video_webm'      => AUTO_EMOTION_URI . '/assets/videos/cupra-neuwagen-hero.webm?ver=' . AUTO_EMOTION_VERSION,
+	)
+);
+?>
+
+<div class="section-heading" id="marken-liste">
+	<h2 class="section-heading__title"><?php esc_html_e( 'Neuwagen', 'auto-emotion' ); ?></h2>
 </div>
 
 <div class="entry-content">

@@ -27,14 +27,36 @@ function auto_emotion_setup() {
 add_action( 'after_setup_theme', 'auto_emotion_setup' );
 
 /**
- * Site-Icon (Browser-Tab-Favicon) einmalig auf das echte Auto-Emotion-
- * Logo setzen, statt des WordPress-Standard-"W", das vorher im Tab
- * zu sehen war. Läuft nur, solange noch kein Site-Icon gesetzt ist -
- * ein späteres eigenes Icon über Design > Customizer > Website-Icon
- * wird dadurch nie überschrieben.
+ * Site-Icon (Browser-Tab-Favicon) auf das echte Auto-Emotion-Logo
+ * setzen, statt des WordPress-Standard-"W", das vorher im Tab zu
+ * sehen war. Versionsnummer statt reinem Boolean, damit eine
+ * nachträgliche Korrektur der Icon-Datei (z.B. engerer Bildausschnitt)
+ * das schon gesetzte Icon einmalig ersetzen kann - aber nur, solange
+ * das aktuell gesetzte Site-Icon noch unser eigenes, automatisch
+ * hochgeladenes ist. Ein später manuell über Design > Customizer >
+ * Website-Icon gewähltes eigenes Icon wird dadurch nie überschrieben.
  */
 function auto_emotion_set_default_site_icon() {
-	if ( get_option( 'auto_emotion_site_icon_set' ) || get_option( 'site_icon' ) ) {
+	$current_version = '2';
+	$applied_version = get_option( 'auto_emotion_site_icon_set' );
+	$current_site_icon_id = (int) get_option( 'site_icon' );
+	$our_attachment_id    = (int) get_option( 'auto_emotion_site_icon_attachment_id' );
+
+	if ( $applied_version === $current_version ) {
+		return;
+	}
+
+	// Ein Site-Icon ist gesetzt: Wenn wir schon einmal (egal in welcher
+	// Version) selbst eins gesetzt haben, aber noch keine eigene
+	// Attachment-ID gespeichert haben (Stand vor dieser Versionierung),
+	// gehen wir davon aus, dass das aktuelle Icon noch unseres ist.
+	// Erst eine abweichende, tatsächlich gespeicherte eigene
+	// Attachment-ID beweist, dass seitdem manuell geändert wurde.
+	$icon_is_ours = ! $current_site_icon_id
+		|| ( $our_attachment_id && $current_site_icon_id === $our_attachment_id )
+		|| ( ! $our_attachment_id && $applied_version );
+
+	if ( ! $icon_is_ours ) {
 		return;
 	}
 
@@ -70,7 +92,8 @@ function auto_emotion_set_default_site_icon() {
 
 	wp_update_attachment_metadata( $attachment_id, wp_generate_attachment_metadata( $attachment_id, $upload['file'] ) );
 	update_option( 'site_icon', $attachment_id );
-	update_option( 'auto_emotion_site_icon_set', '1' );
+	update_option( 'auto_emotion_site_icon_attachment_id', $attachment_id );
+	update_option( 'auto_emotion_site_icon_set', $current_version );
 }
 add_action( 'init', 'auto_emotion_set_default_site_icon', 20 );
 
