@@ -35,8 +35,8 @@ get_template_part(
 	null,
 	array(
 		'eyebrow'         => __( 'Seat · Cupra · Nissan', 'auto-emotion' ),
-		'headline_pre'    => __( 'Geprüfte', 'auto-emotion' ),
-		'headline_accent' => __( 'Gebrauchtwagen.', 'auto-emotion' ),
+		'headline_pre'    => __( 'Geprüft.', 'auto-emotion' ),
+		'headline_accent' => __( 'Gebraucht.', 'auto-emotion' ),
 		'cta_text'        => __( 'Fahrzeuge ansehen', 'auto-emotion' ),
 		'cta_url'         => '#bestand',
 		'cta2_text'       => __( 'Anfrage senden', 'auto-emotion' ),
