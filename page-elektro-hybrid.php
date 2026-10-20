@@ -28,12 +28,39 @@ $auto_emotion_elektro_faq = array(
 auto_emotion_register_faq_schema( $auto_emotion_elektro_faq );
 
 get_header();
+
+/**
+ * get_header() öffnet auf Nicht-Startseiten ein .container-Div
+ * (max-width 1440px, zentriert) direkt um den gesamten Seiteninhalt.
+ * Der Hero ist wie bei Gebrauchtwagen/Neuwagen als vollflächige
+ * Section gedacht - bricht hier kurz aus dem Container aus (siehe
+ * page-gebrauchtwagen.php für denselben Fix) und öffnet ihn danach
+ * wieder.
+ */
+echo '</div>';
+
+get_template_part(
+	'template-parts/hero',
+	null,
+	array(
+		'eyebrow'         => __( 'Seat · Cupra · Nissan', 'auto-emotion' ),
+		'headline_pre'    => __( 'Elektro &', 'auto-emotion' ),
+		'headline_accent' => __( 'Hybrid.', 'auto-emotion' ),
+		'cta_text'        => __( 'Förderung ansehen', 'auto-emotion' ),
+		'cta_url'         => '#foerderung',
+		'cta2_text'       => __( 'Anfrage senden', 'auto-emotion' ),
+		'cta2_url'        => 'mailto:' . auto_emotion_contact( 'email' ) . '?subject=' . rawurlencode( 'Elektro & Hybrid-Anfrage' ),
+		'image'           => AUTO_EMOTION_URI . '/assets/images/elektro-hybrid-hero-poster.jpg?ver=' . AUTO_EMOTION_VERSION,
+		'video'           => AUTO_EMOTION_URI . '/assets/videos/elektro-hero.mp4?ver=' . AUTO_EMOTION_VERSION,
+		'video_webm'      => AUTO_EMOTION_URI . '/assets/videos/elektro-hero.webm?ver=' . AUTO_EMOTION_VERSION,
+	)
+);
+
+echo '<div class="container">';
 ?>
 
-<img class="content-header-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/cupra-born-vz.png?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Cupra Born, vollelektrisches Modell bei Auto Emotion" loading="lazy">
-
 <div class="section-heading">
-	<h1 class="section-heading__title"><?php esc_html_e( 'Elektro & Hybrid', 'auto-emotion' ); ?></h1>
+	<h2 class="section-heading__title"><?php esc_html_e( 'Elektro & Hybrid', 'auto-emotion' ); ?></h2>
 </div>
 
 <div class="entry-content">
@@ -46,7 +73,7 @@ get_header();
 	<p><?php esc_html_e( 'In unserer Werkstatt sind speziell für Hochvoltfahrzeuge geschulte Mitarbeiter im Einsatz.', 'auto-emotion' ); ?></p>
 </div>
 
-<div class="section-heading">
+<div class="section-heading" id="foerderung">
 	<h2 class="section-heading__title"><?php esc_html_e( 'Staatliche Förderung', 'auto-emotion' ); ?></h2>
 </div>
 <div class="entry-content">
@@ -69,6 +96,62 @@ get_header();
 <div class="entry-content">
 	<p><?php esc_html_e( 'Seat, Cupra und Nissan bauen ihre Elektro- und Hybridmodelle kontinuierlich aus – Reichweiten steigen, Ladezeiten sinken, und mit dem Preisverfall bei Batterien rücken E-Autos auch preislich näher an vergleichbare Verbrenner heran. Wie schnell sich das entwickelt und wie die Förderlandschaft sich weiter verändert, lässt sich seriös nicht auf Jahre hinaus vorhersagen – wir halten Sie dazu gerne auf dem Laufenden, wenn Sie sich aktuell mit einem Kauf beschäftigen.', 'auto-emotion' ); ?></p>
 </div>
+
+<?php
+/**
+ * Featured-News-Raster (1 großes + 3 kleine Elemente) nach Vorbild
+ * des SEAT-Mediacenter-Newsrasters - zeigt bestehende, echte
+ * Elektro-/Hybrid-relevante Artikel statt eigens dafür erfundener
+ * News. Bewusst per fester Post-ID statt automatischer Tax-Abfrage,
+ * da die "marke"-Taxonomie auf diesen Artikeln nicht gepflegt ist.
+ */
+$auto_emotion_elektro_news_featured_id = 249; // Cupra Tavascan und Raval
+$auto_emotion_elektro_news_card_ids    = array( 194, 241, 247 ); // E-Auto-Förderung, Cupra Born, Cupra Terramar
+$auto_emotion_elektro_news_pills       = array(
+	249 => 'CUPRA',
+	194 => 'FÖRDERUNG',
+	241 => 'CUPRA',
+	247 => 'CUPRA',
+);
+$auto_emotion_elektro_news_featured    = get_post( $auto_emotion_elektro_news_featured_id );
+?>
+
+<?php if ( $auto_emotion_elektro_news_featured ) : ?>
+	<div class="section-heading">
+		<h2 class="section-heading__title"><?php esc_html_e( 'Neuigkeiten zur Elektromobilität', 'auto-emotion' ); ?></h2>
+	</div>
+
+	<div class="press-news__grid">
+		<article class="press-news__featured">
+			<?php if ( has_post_thumbnail( $auto_emotion_elektro_news_featured ) ) : ?>
+				<img class="press-news__featured-image" src="<?php echo esc_url( get_the_post_thumbnail_url( $auto_emotion_elektro_news_featured, 'large' ) ); ?>" alt="">
+			<?php endif; ?>
+			<div class="press-news__featured-panel">
+				<span class="press-news__date"><?php echo esc_html( get_the_date( 'd.m.Y', $auto_emotion_elektro_news_featured ) ); ?></span>
+				<h3 class="press-news__title"><a href="<?php echo esc_url( get_permalink( $auto_emotion_elektro_news_featured ) ); ?>"><?php echo esc_html( get_the_title( $auto_emotion_elektro_news_featured ) ); ?></a></h3>
+				<p class="press-news__excerpt"><?php echo esc_html( wp_trim_words( get_the_excerpt( $auto_emotion_elektro_news_featured ), 28 ) ); ?></p>
+			</div>
+		</article>
+
+		<div class="press-news__row">
+			<?php foreach ( $auto_emotion_elektro_news_card_ids as $auto_emotion_elektro_news_id ) : ?>
+				<?php $auto_emotion_elektro_news_post = get_post( $auto_emotion_elektro_news_id ); ?>
+				<?php if ( ! $auto_emotion_elektro_news_post ) : continue; endif; ?>
+				<article class="press-news__card">
+					<?php if ( has_post_thumbnail( $auto_emotion_elektro_news_post ) ) : ?>
+						<div class="press-news__card-image-wrap">
+							<img class="press-news__card-image" src="<?php echo esc_url( get_the_post_thumbnail_url( $auto_emotion_elektro_news_post, 'large' ) ); ?>" alt="">
+							<span class="press-news__pill"><?php echo esc_html( $auto_emotion_elektro_news_pills[ $auto_emotion_elektro_news_id ] ?? '' ); ?></span>
+						</div>
+					<?php endif; ?>
+					<span class="press-news__date"><?php echo esc_html( get_the_date( 'd.m.Y', $auto_emotion_elektro_news_post ) ); ?></span>
+					<h3 class="press-news__title"><a href="<?php echo esc_url( get_permalink( $auto_emotion_elektro_news_post ) ); ?>"><?php echo esc_html( get_the_title( $auto_emotion_elektro_news_post ) ); ?></a></h3>
+					<p class="press-news__excerpt"><?php echo esc_html( wp_trim_words( get_the_excerpt( $auto_emotion_elektro_news_post ), 18 ) ); ?></p>
+				</article>
+			<?php endforeach; ?>
+		</div>
+	</div>
+<?php endif; ?>
 
 <div class="section-heading">
 	<h2 class="section-heading__title"><?php esc_html_e( 'Häufige Fragen', 'auto-emotion' ); ?></h2>
