@@ -74,7 +74,7 @@ function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
 
 <section class="career-banner" aria-labelledby="neuwagen-seat-heading">
 	<div class="career-banner__media">
-		<img class="career-banner__image career-banner__image--seat-leon" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-seat-leon.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="SEAT Leon, offizielles Herstellerfoto" loading="lazy">
+		<img class="career-banner__image career-banner__image--brand-hero career-banner__image--seat-leon" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-seat-leon.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="SEAT Leon, offizielles Herstellerfoto" loading="lazy">
 	</div>
 	<div class="career-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Seit 2001 bei Auto Emotion', 'auto-emotion' ); ?></p>
@@ -105,7 +105,7 @@ function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
 
 <section class="career-banner" aria-labelledby="neuwagen-cupra-heading">
 	<div class="career-banner__media">
-		<img class="career-banner__image career-banner__image--formentor" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-cupra-formentor.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="CUPRA Formentor, offizielles Herstellerfoto" loading="lazy">
+		<img class="career-banner__image career-banner__image--brand-hero career-banner__image--formentor" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-cupra-formentor.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="CUPRA Formentor, offizielles Herstellerfoto" loading="lazy">
 	</div>
 	<div class="career-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'CUPRA Specialist seit 2018', 'auto-emotion' ); ?></p>
@@ -137,7 +137,7 @@ function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
 </div>
 
 <section class="career-banner" aria-labelledby="neuwagen-nissan-heading">
-	<img class="career-banner__image career-banner__image--qashqai" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-nissan-qashqai.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Qashqai, offizielles Herstellerfoto" loading="lazy">
+	<img class="career-banner__image career-banner__image--brand-hero career-banner__image--qashqai" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-nissan-qashqai.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Qashqai, offizielles Herstellerfoto" loading="lazy">
 	<div class="career-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Nissan GT-R High Performance Center seit 2018', 'auto-emotion' ); ?></p>
 		<h2 id="neuwagen-nissan-heading" class="career-banner__headline">NISSAN</h2>

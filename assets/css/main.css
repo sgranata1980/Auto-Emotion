@@ -1483,6 +1483,22 @@ body.has-transparent-header .site-main {
 	object-position: center 53%;
 }
 
+/* Gemeinsame Höhe für die drei Marken-Hero-Bilder (Seat/Cupra/Nissan auf
+   der Neuwagen-Seite) - einheitlich statt je Bild unterschiedlich, sonst
+   wirkt die Abfolge der drei Banner unsymmetrisch (Nutzer-Feedback). Die
+   560px orientieren sich am SEAT-Bild, das als einziges zwingend mehr
+   Höhe braucht (siehe unten), die anderen beiden zeigen bei der größeren
+   Höhe einfach etwas mehr Bildkontext um denselben Fokuspunkt. */
+.career-banner__image--brand-hero {
+	height: 560px;
+}
+
+@media (max-width: 700px) {
+	.career-banner__image--brand-hero {
+		height: 260px;
+	}
+}
+
 .career-banner__image--formentor {
 	/* Offizielles CUPRA-Pressefoto (4:3), Fahrzeug samt Spiegelung im
 	   Wasserbecken - per Helligkeitsprofil vermessen: Fahrzeugbereich
@@ -1498,15 +1514,10 @@ body.has-transparent-header .site-main {
 	   Standard-Bannerhöhe (420px) ist das sichtbare Fenster rechnerisch
 	   zu schmal, um beides gleichzeitig zu zeigen (Skaterkopf bis
 	   Räder sind ca. 54% der Bildhöhe, das Fenster bei 420px deckt nur
-	   ~44% ab) - deshalb eigene, größere Bannerhöhe nur für dieses Bild. */
-	height: 560px;
+	   ~44% ab) - deshalb braucht dieses Bild die zusätzliche Höhe aus
+	   --brand-hero zwingend, die anderen beiden bekommen sie nur der
+	   Einheitlichkeit halber. */
 	object-position: center 52%;
-}
-
-@media (max-width: 700px) {
-	.career-banner__image--seat-leon {
-		height: 260px;
-	}
 }
 
 .career-banner__wltp {
