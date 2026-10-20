@@ -1446,7 +1446,10 @@ body.has-transparent-header .site-main {
 .entry-content,
 .section-heading {
 	max-width: 760px;
-	margin-left: auto;
+	/* Linksbündig statt zentriert: sonst fluchtet die Textspalte nicht
+	   mit der linken Kante der vollbreiten Grids/Galerien darunter
+	   (gleiche .container-Außenkante), wirkt dann "schwebend" statt
+	   wie eine gemeinsame Seitenspalte. */
 	margin-right: auto;
 }
 
