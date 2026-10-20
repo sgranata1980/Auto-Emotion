@@ -42,6 +42,20 @@ function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
 ?>
 
 <?php
+/**
+ * get_header() öffnet auf allen Nicht-Startseiten ein .container-Div
+ * (max-width 1440px, zentriert) direkt um den gesamten Seiteninhalt.
+ * Der Video-Hero ist wie auf der Startseite als vollflächige Section
+ * gedacht - bricht hier kurz aus dem Container aus, damit er auf
+ * breiten Bildschirmen (>1440px) nicht mit weißen Rändern links/rechts
+ * mittig "schwebt", und öffnet ihn danach für den restigen, auf
+ * Lesebreite begrenzten Seiteninhalt wieder (footer.php schließt ihn
+ * final).
+ */
+?>
+</div>
+
+<?php
 get_template_part(
 	'template-parts/hero',
 	null,
@@ -59,6 +73,8 @@ get_template_part(
 	)
 );
 ?>
+
+<div class="container">
 
 <div class="section-heading" id="marken-liste">
 	<h2 class="section-heading__title"><?php esc_html_e( 'Neuwagen', 'auto-emotion' ); ?></h2>
