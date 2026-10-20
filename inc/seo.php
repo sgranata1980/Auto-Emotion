@@ -91,7 +91,7 @@ function auto_emotion_get_og_image() {
 		}
 	}
 
-	return AUTO_EMOTION_URI . '/assets/images/cupra-header-poster.jpg';
+	return AUTO_EMOTION_URI . '/assets/images/cupra-formentor-vz5-interior.jpg';
 }
 
 function auto_emotion_get_canonical_url() {

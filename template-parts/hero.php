@@ -35,9 +35,9 @@ $auto_emotion_hero = wp_parse_args(
 		'cta_url'         => '#marken',
 		'cta2_text'       => __( 'Fahrzeug finden', 'auto-emotion' ),
 		'cta2_url'        => '#fahrzeugsuche',
-		'image'           => AUTO_EMOTION_URI . '/assets/images/cupra-header-poster.jpg?ver=' . AUTO_EMOTION_VERSION,
-		'video'           => AUTO_EMOTION_URI . '/assets/videos/cupra-header-spot.mp4?ver=' . AUTO_EMOTION_VERSION,
-		'video_webm'      => AUTO_EMOTION_URI . '/assets/videos/cupra-header-spot.webm?ver=' . AUTO_EMOTION_VERSION,
+		'image'           => AUTO_EMOTION_URI . '/assets/images/cupra-formentor-vz5-interior.jpg?ver=' . AUTO_EMOTION_VERSION,
+		'video'           => '',
+		'video_webm'      => '',
 	)
 );
 ?>
