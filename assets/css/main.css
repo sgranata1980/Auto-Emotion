@@ -1407,6 +1407,15 @@ body.has-transparent-header .site-main {
 	margin-top: 0;
 }
 
+/* Das übrig gebliebene Container-Div bekommt seit dem Footer-Abstand-
+   Fix (.container padding-bottom) selbst wieder Höhe, obwohl es sonst
+   leer ist - dieselbe Lücke wie oben, nur durch Eigen-Padding statt
+   Geschwister-Margin. :has() statt :empty, da es Geschwister-Elemente
+   prüft statt auf Whitespace-Textknoten hereinzufallen. */
+.site-main > .container:has(+ .hero-stage) {
+	padding-bottom: 0;
+}
+
 .container {
 	max-width: var(--page-max-width);
 	margin: 0 auto;
