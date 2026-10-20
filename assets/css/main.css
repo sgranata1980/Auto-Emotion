@@ -1621,9 +1621,11 @@ body.has-transparent-header .site-main {
 }
 
 .career-banner__image--fleet {
-	/* Fahrzeuge sitzen im unteren Bilddrittel, oben viel Himmel –
-	   Crop etwas tiefer ansetzen, damit die Fahrzeuge nicht wegfallen. */
-	object-position: center 65%;
+	/* Echtes Nissan-Pressefoto (Primastar in Fahrt): Fahrzeug sitzt
+	   mittig im Bild statt im unteren Drittel wie beim vorherigen
+	   KI-Bild - zentrierter Crop, damit Kühlergrill/Scheinwerfer bei
+	   der sehr flachen Banner-Höhe nicht wegfallen. */
+	object-position: center 45%;
 }
 
 .career-banner__image--garage {

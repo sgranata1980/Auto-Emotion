@@ -166,8 +166,8 @@ $auto_emotion_news = new WP_Query(
 <section class="career-banner" aria-labelledby="b2b-heading">
 	<img
 		class="career-banner__image career-banner__image--fleet"
-		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-nutzfahrzeuge.jpg' ); ?>"
-		alt=""
+		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-nutzfahrzeuge.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>"
+		alt="Nissan Primastar, offizielles Herstellerfoto"
 		loading="lazy"
 	>
 	<div class="career-banner__content">
