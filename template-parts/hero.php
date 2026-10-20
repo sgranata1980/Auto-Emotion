@@ -36,8 +36,8 @@ $auto_emotion_hero = wp_parse_args(
 		'cta2_text'       => __( 'Fahrzeug finden', 'auto-emotion' ),
 		'cta2_url'        => '#fahrzeugsuche',
 		'image'           => AUTO_EMOTION_URI . '/assets/images/cupra-formentor-vz5-interior.jpg?ver=' . AUTO_EMOTION_VERSION,
-		'video'           => '',
-		'video_webm'      => '',
+		'video'           => AUTO_EMOTION_URI . '/assets/videos/cupra-raval-hero.mp4?ver=' . AUTO_EMOTION_VERSION,
+		'video_webm'      => AUTO_EMOTION_URI . '/assets/videos/cupra-raval-hero.webm?ver=' . AUTO_EMOTION_VERSION,
 	)
 );
 ?>
