@@ -39,9 +39,7 @@ function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
 	</article>
 	<?php
 }
-?>
 
-<?php
 /**
  * get_header() öffnet auf allen Nicht-Startseiten ein .container-Div
  * (max-width 1440px, zentriert) direkt um den gesamten Seiteninhalt.
@@ -50,12 +48,13 @@ function auto_emotion_neuwagen_model_card( $slug, $title, $text ) {
  * breiten Bildschirmen (>1440px) nicht mit weißen Rändern links/rechts
  * mittig "schwebt", und öffnet ihn danach für den restigen, auf
  * Lesebreite begrenzten Seiteninhalt wieder (footer.php schließt ihn
- * final).
+ * final). Bewusst per echo statt </div>-Literal in eigenem HTML-Block:
+ * so bleibt das Container-Div wirklich leer (kein Whitespace-Textknoten
+ * zwischen den Tags), sonst greift die CSS-:empty-Selektor-Regel dafür
+ * nicht, die den sonst entstehenden weißen Spalt vor dem Hero entfernt.
  */
-?>
-</div>
+echo '</div>';
 
-<?php
 get_template_part(
 	'template-parts/hero',
 	null,
@@ -72,9 +71,9 @@ get_template_part(
 		'video_webm'      => AUTO_EMOTION_URI . '/assets/videos/cupra-neuwagen-hero.webm?ver=' . AUTO_EMOTION_VERSION,
 	)
 );
-?>
 
-<div class="container">
+echo '<div class="container">';
+?>
 
 <div class="section-heading" id="marken-liste">
 	<h2 class="section-heading__title"><?php esc_html_e( 'Neuwagen', 'auto-emotion' ); ?></h2>
