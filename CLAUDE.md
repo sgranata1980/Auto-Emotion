@@ -144,3 +144,29 @@ sichtbar ist (siehe „Kennzeichen auf generierten Fahrzeugbildern" oben):
   (kein fremdes Logo), Kennzeichen auf jedem sichtbaren Schild lesbar
   „AUTOEMOTION", Wagen über alle Einstellungen hinweg identisch (Farbe,
   Felgen, Details).
+
+## Arbeitsweise und Modell-Wahl
+
+Zwei Grundregeln:
+
+1. **Mach die Arbeit nie selbst. Schick immer einen Sub-Agenten.**
+2. **Nimm nicht immer Fable. Für leichte Aufgaben nimm Opus 5.5.**
+
+Rollen klar trennen:
+
+- **Planen**: Die Hauptsession liest die Aufgabe, klärt offene Fragen
+  und teilt die Arbeit in klare, kleine Schritte auf.
+- **Ausführen**: Jeder Schritt geht an einen Sub-Agenten (Code, Recherche,
+  Bild-/Videoarbeit, Texte). Die Hauptsession schreibt selbst keinen
+  Code und macht selbst keine Recherche.
+- **Prüfen**: Die Hauptsession prüft jedes Ergebnis eines Sub-Agenten,
+  bevor es übernommen, committed oder deployed wird. Bei Fehlern geht
+  die Aufgabe mit genauerem Auftrag an einen neuen Sub-Agenten zurück.
+
+Modell-Wahl:
+
+- **Leichte Aufgabe** (kleine Textänderung, einfacher Check, kurze
+  Recherche, kleiner Bugfix): **Opus 5.5**.
+- **Schwere Aufgabe** (große Umbauten, viele Dateien, heikle
+  Entscheidungen): das jeweils am besten passende Modell wählen, nicht
+  automatisch Fable nehmen.
