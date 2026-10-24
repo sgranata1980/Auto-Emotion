@@ -145,28 +145,25 @@ sichtbar ist (siehe „Kennzeichen auf generierten Fahrzeugbildern" oben):
   „AUTOEMOTION", Wagen über alle Einstellungen hinweg identisch (Farbe,
   Felgen, Details).
 
-## Arbeitsweise und Modell-Wahl
+## Arbeitsweise und Modell-Wahl (spart Nutzungslimit)
 
-Zwei Grundregeln:
-
-1. **Mach die Arbeit nie selbst. Schick immer einen Sub-Agenten.**
-2. **Nimm nicht immer Fable. Für leichte Aufgaben nimm Opus 5.5.**
-
-Rollen klar trennen:
-
-- **Planen**: Die Hauptsession liest die Aufgabe, klärt offene Fragen
-  und teilt die Arbeit in klare, kleine Schritte auf.
-- **Ausführen**: Jeder Schritt geht an einen Sub-Agenten (Code, Recherche,
-  Bild-/Videoarbeit, Texte). Die Hauptsession schreibt selbst keinen
-  Code und macht selbst keine Recherche.
-- **Prüfen**: Die Hauptsession prüft jedes Ergebnis eines Sub-Agenten,
-  bevor es übernommen, committed oder deployed wird. Bei Fehlern geht
-  die Aufgabe mit genauerem Auftrag an einen neuen Sub-Agenten zurück.
-
-Modell-Wahl:
-
-- **Leichte Aufgabe** (kleine Textänderung, einfacher Check, kurze
-  Recherche, kleiner Bugfix): **Opus 5.5**.
-- **Schwere Aufgabe** (große Umbauten, viele Dateien, heikle
-  Entscheidungen): das jeweils am besten passende Modell wählen, nicht
-  automatisch Fable nehmen.
+1. Mach die Arbeit nie selbst. Du bist die Projektleitung: Du planst,
+   teilst auf und prüfst am Ende. Alles Ausführende (Texte schreiben,
+   Dateien ändern, recherchieren, Tests laufen lassen) erledigt immer
+   ein Sub-Agent.
+2. Nimm nicht immer Fable. Wähle für jeden Sub-Agenten das günstigste
+   Modell, das die Aufgabe fehlerfrei schafft. Für leichte und
+   mittlere Aufgaben nimm Opus 5.5.
+3. Das stärkste Modell (Fable) ist nur für drei Dinge da: Planung,
+   schwierige Entscheidungen und die Abnahme des Ergebnisses.
+4. Gib jedem Sub-Agenten einen klaren Auftrag: Ziel, betroffene
+   Dateien, gewünschtes Ergebnis und woran man erkennt, dass er
+   fertig ist.
+5. Sub-Agenten berichten kurz zurück, in wenigen Sätzen. Keine langen
+   Zusammenfassungen, die dein Fenster füllen.
+6. Prüfe jedes Ergebnis kurz, bevor du es mir als fertig meldest. Bei
+   Zweifeln startest du einen weiteren Prüf-Agenten, statt es selbst
+   zu tun.
+7. Frag mich nur, wenn eine Entscheidung wirklich von mir abhängt.
+   Bei Kleinigkeiten entscheide selbst und sag mir, was du
+   entschieden hast.
