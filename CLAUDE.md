@@ -167,3 +167,68 @@ sichtbar ist (siehe „Kennzeichen auf generierten Fahrzeugbildern" oben):
 7. Frag mich nur, wenn eine Entscheidung wirklich von mir abhängt.
    Bei Kleinigkeiten entscheide selbst und sag mir, was du
    entschieden hast.
+
+## Zeiterfassung per E-Mail nach jedem Arbeitsblock
+
+Nach jedem abgeschlossenen oder sinnvoll abgrenzbaren Arbeitsblock wird
+genau eine strukturierte Zeiterfassungs-E-Mail an
+momentistudioai@gmail.com erstellt und versendet.
+
+**Betreff** (exaktes Format):
+`ZEITERFASSUNG | YYYY-MM-DD | KUNDE | VORGANGS-ID`
+Beispiel: `ZEITERFASSUNG | 2026-10-26 | AUTO EMOTION | CLAUDE-20261026-001`
+
+**Inhalt** (immer exakt diese Felder):
+```
+DATUM: YYYY-MM-DD
+ZEITZONE: Europe/Berlin
+START: HH
+ENDE: HH
+KUNDE:
+PROJEKT:
+LEISTUNG:
+STATUS: abgeschlossen / Entwurf / Zwischenstand
+VERÖFFENTLICHT: ja / nein
+VORGANGS-ID:
+TÄTIGKEIT:
+Konkrete und sachliche Beschreibung aller ausgeführten Arbeiten.
+ERGEBNIS:
+Bearbeitete Websites, erstellte Inhalte, durchgeführte Prüfungen und
+konkretes Arbeitsergebnis.
+NÄCHSTER SCHRITT:
+Nur angeben, wenn weitere Arbeiten erforderlich sind.
+```
+
+**Kundenzuordnung** (gilt kontoweit, nicht nur für dieses Projekt – diese
+Session arbeitet nur für Auto Emotion, daher hier i. d. R. nur der
+Auto-Emotion-Fall relevant):
+- Hotel, mainplaza.net, suiteresidenz.net oder Hausverwaltung:
+  KUNDE: Michael Schramm / PROJEKT: Main Plaza
+- Restaurant Isoletta Main Plaza: KUNDE: Isoletta Group / PROJEKT: Main Plaza
+- Isoletta Westend oder Feldbergstraße: KUNDE: Isoletta Group / PROJEKT: Westend
+- Arbeit für beide Isoletta-Standorte: KUNDE: Isoletta Group / PROJEKT: Standortübergreifend
+- **Auto Emotion: KUNDE: AUTO EMOTION / PROJEKT: AUTO EMOTION**
+- Carmelo Greco: KUNDE: Carmelo Greco / PROJEKT: Carmelo Greco
+
+**Mögliche Leistungen**: Entwicklung, SEO-Optimierung, Social Media
+Management, Reel-Erstellung, Video Aufnahmen, Fotoshooting,
+Bildbearbeitung, Grafik Design, Projektmanagement.
+
+**Regeln**:
+1. Niemals Arbeitszeiten erfinden.
+2. Sind Start oder Ende unbekannt, UNBEKANNT schreiben und die E-Mail
+   trotzdem zur Klärung versenden.
+3. Immer Zeitzone Europe/Berlin.
+4. Pro zusammenhängendem Arbeitsblock nur eine E-Mail.
+5. Jede VORGANGS-ID nur einmal vergeben.
+6. Bei einer Korrektur dieselbe VORGANGS-ID verwenden und im Betreff
+   KORREKTUR ergänzen.
+7. Eindeutig angeben, ob etwas veröffentlicht oder nur vorbereitet wurde.
+8. Bei technischen Arbeiten immer die bearbeitete Website nennen.
+9. Niemals Passwörter, Zugangsdaten, API-Schlüssel oder andere Geheimnisse
+   übermitteln.
+10. Konkret und nachvollziehbar formulieren, ohne Tätigkeiten künstlich zu
+    übertreiben.
+11. Die E-Mail direkt nach Abschluss des Arbeitsblocks versenden.
+12. Ohne E-Mail-Zugriff: Nachricht trotzdem vollständig erstellen und
+    ausdrücklich melden, dass sie noch nicht versendet wurde.
