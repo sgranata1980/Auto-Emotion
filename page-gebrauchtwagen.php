@@ -50,6 +50,37 @@ get_template_part(
 echo '<div class="container">';
 ?>
 
+<div class="section-heading" id="bestand">
+	<h2 class="section-heading__title"><?php esc_html_e( 'Aktueller Fahrzeugbestand', 'auto-emotion' ); ?></h2>
+</div>
+
+<div class="entry-content">
+	<p><?php esc_html_e( 'Unser Gebrauchtwagenbestand ändert sich praktisch täglich. Den vollständigen, tagesaktuellen Bestand finden Sie direkt auf mobile.de und AutoScout24 – beide Plattformen pflegen wir laufend.', 'auto-emotion' ); ?></p>
+</div>
+
+<div class="quick-actions">
+	<a class="quick-action quick-action--featured" href="https://home.mobile.de/home/index.html?customerId=456599" target="_blank" rel="noopener">
+		<svg class="quick-action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.2" y1="16.2" x2="21" y2="21"/></svg>
+		<span class="quick-action__title"><?php esc_html_e( 'Bestand auf mobile.de', 'auto-emotion' ); ?></span>
+		<span class="btn btn-outline quick-action__btn"><?php esc_html_e( 'Fahrzeuge ansehen', 'auto-emotion' ); ?></span>
+	</a>
+	<a class="quick-action quick-action--featured" href="https://www.autoscout24.de/haendler/auto-emotion-gmbh-und-co-kg-offenbach" target="_blank" rel="noopener">
+		<svg class="quick-action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.2" y1="16.2" x2="21" y2="21"/></svg>
+		<span class="quick-action__title"><?php esc_html_e( 'Bestand auf AutoScout24', 'auto-emotion' ); ?></span>
+		<span class="btn btn-outline quick-action__btn"><?php esc_html_e( 'Fahrzeuge ansehen', 'auto-emotion' ); ?></span>
+	</a>
+	<a class="quick-action" href="<?php echo esc_url( home_url( '/fahrzeugankauf/' ) ); ?>">
+		<svg class="quick-action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V6a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v14M4 20h10M7 20v-6h4v6M15 9l2.3 2.3a1 1 0 0 1 .3.7V17a1.3 1.3 0 0 0 2.6 0v-3.2a1 1 0 0 0-.3-.7L17.5 10.7M8 8h2"/></svg>
+		<span class="quick-action__title"><?php esc_html_e( 'Ihr Auto in Zahlung geben', 'auto-emotion' ); ?></span>
+		<span class="btn btn-outline quick-action__btn"><?php esc_html_e( 'Fahrzeugankauf', 'auto-emotion' ); ?></span>
+	</a>
+	<a class="quick-action" href="<?php echo esc_url( home_url( '/finanzierung-leasing/' ) ); ?>">
+		<svg class="quick-action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="10.5" y2="12"/><line x1="13.5" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="10.5" y2="16"/><line x1="13.5" y1="16" x2="16" y2="16"/></svg>
+		<span class="quick-action__title"><?php esc_html_e( 'Finanzierung berechnen', 'auto-emotion' ); ?></span>
+		<span class="btn btn-outline quick-action__btn"><?php esc_html_e( 'Rechner öffnen', 'auto-emotion' ); ?></span>
+	</a>
+</div>
+
 <div class="section-heading">
 	<h2 class="section-heading__title"><?php esc_html_e( 'Gebrauchtwagen', 'auto-emotion' ); ?></h2>
 </div>
@@ -65,37 +96,6 @@ echo '<div class="container">';
 	<figure>
 		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-lounge-seat.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Seat-Fahrzeug im Auto Emotion Showroom" loading="lazy">
 	</figure>
-</div>
-
-<div class="section-heading" id="bestand">
-	<h2 class="section-heading__title"><?php esc_html_e( 'Aktueller Fahrzeugbestand', 'auto-emotion' ); ?></h2>
-</div>
-
-<div class="entry-content">
-	<p><?php esc_html_e( 'Unser Gebrauchtwagenbestand ändert sich praktisch täglich – eine eigene Live-Fahrzeugsuche direkt auf dieser Seite ist in Vorbereitung. Bis die Anbindung steht, finden Sie unseren vollständigen, tagesaktuellen Bestand bereits jetzt auf mobile.de und AutoScout24.', 'auto-emotion' ); ?></p>
-</div>
-
-<div class="quick-actions">
-	<a class="quick-action" href="https://home.mobile.de/home/index.html?customerId=456599" target="_blank" rel="noopener">
-		<svg class="quick-action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.2" y1="16.2" x2="21" y2="21"/></svg>
-		<span class="quick-action__title"><?php esc_html_e( 'Bestand auf mobile.de', 'auto-emotion' ); ?></span>
-		<span class="btn btn-outline quick-action__btn"><?php esc_html_e( 'Fahrzeuge ansehen', 'auto-emotion' ); ?></span>
-	</a>
-	<a class="quick-action" href="https://www.autoscout24.de/haendler/auto-emotion-gmbh-und-co-kg-offenbach" target="_blank" rel="noopener">
-		<svg class="quick-action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.2" y1="16.2" x2="21" y2="21"/></svg>
-		<span class="quick-action__title"><?php esc_html_e( 'Bestand auf AutoScout24', 'auto-emotion' ); ?></span>
-		<span class="btn btn-outline quick-action__btn"><?php esc_html_e( 'Fahrzeuge ansehen', 'auto-emotion' ); ?></span>
-	</a>
-	<a class="quick-action" href="<?php echo esc_url( home_url( '/fahrzeugankauf/' ) ); ?>">
-		<svg class="quick-action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V6a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v14M4 20h10M7 20v-6h4v6M15 9l2.3 2.3a1 1 0 0 1 .3.7V17a1.3 1.3 0 0 0 2.6 0v-3.2a1 1 0 0 0-.3-.7L17.5 10.7M8 8h2"/></svg>
-		<span class="quick-action__title"><?php esc_html_e( 'Ihr Auto in Zahlung geben', 'auto-emotion' ); ?></span>
-		<span class="btn btn-outline quick-action__btn"><?php esc_html_e( 'Fahrzeugankauf', 'auto-emotion' ); ?></span>
-	</a>
-	<a class="quick-action" href="<?php echo esc_url( home_url( '/finanzierung-leasing/' ) ); ?>">
-		<svg class="quick-action__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="10.5" y2="12"/><line x1="13.5" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="10.5" y2="16"/><line x1="13.5" y1="16" x2="16" y2="16"/></svg>
-		<span class="quick-action__title"><?php esc_html_e( 'Finanzierung berechnen', 'auto-emotion' ); ?></span>
-		<span class="btn btn-outline quick-action__btn"><?php esc_html_e( 'Rechner öffnen', 'auto-emotion' ); ?></span>
-	</a>
 </div>
 
 <div class="section-heading">

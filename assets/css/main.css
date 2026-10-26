@@ -2300,6 +2300,21 @@ body.has-transparent-header .site-main {
 	pointer-events: none;
 }
 
+/* Hervorgehobene Kachel (z.B. externe Bestandslinks mobile.de/AutoScout24
+   auf der Gebrauchtwagen-Seite): dunkler Rahmen, schmale Akzentlinie oben
+   in der Projekt-Akzentfarbe und gefüllter Button - klar unterscheidbar
+   von den übrigen Kacheln, ohne Badge oder Fremdlogo. */
+.quick-action--featured {
+	border-color: var(--color-carbony-black);
+	box-shadow: inset 0 3px 0 var(--color-rosso-vivo);
+}
+
+.quick-action--featured .quick-action__btn {
+	background: var(--color-carbony-black);
+	border-color: var(--color-carbony-black);
+	color: var(--surface-canvas-white);
+}
+
 /* ---------------------------------------------------------------- */
 /* Modell-Kartenraster (Neuwagen-Seite u.ä.) - ersetzt reine          */
 /* H3+Absatz-Textwände durch kompakte Karten mit Karosserieform-Icon, */
