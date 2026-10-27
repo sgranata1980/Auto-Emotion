@@ -44,7 +44,7 @@ get_header();
 
 <div class="photo-gallery">
 	<figure>
-		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/zubehoer-reifenwand.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Präsentationswand mit Kompletträdern, Zubehörteilen und Wallbox im Auto Emotion Showroom" loading="lazy">
+		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/zubehoer-reifenwand.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" style="object-position: center 75%;" alt="Präsentationswand mit Kompletträdern, Zubehörteilen und Wallbox im Auto Emotion Showroom" loading="lazy">
 	</figure>
 </div>
 
