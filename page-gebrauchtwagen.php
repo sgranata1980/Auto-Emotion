@@ -96,6 +96,12 @@ echo '<div class="container">';
 	<figure>
 		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-lounge-seat.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Seat-Fahrzeug im Auto Emotion Showroom" loading="lazy">
 	</figure>
+	<figure>
+		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-fahrzeugausstellung.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Verkaufsfläche im Auto Emotion Showroom mit mehreren ausgestellten Fahrzeugen, darunter ein Nissan X-Trail" loading="lazy">
+	</figure>
+	<figure>
+		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/werkstatt-hebebuehnen.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Fahrzeuge auf Hebebühnen in der Auto Emotion Werkstatt" loading="lazy">
+	</figure>
 </div>
 
 <div class="section-heading">

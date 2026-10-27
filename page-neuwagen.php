@@ -202,6 +202,18 @@ echo '<div class="container">';
 	?>
 </div>
 
+<div class="section-heading">
+	<h2 class="section-heading__title"><?php esc_html_e( 'Bei uns vor Ort', 'auto-emotion' ); ?></h2>
+</div>
+<div class="photo-gallery">
+	<figure>
+		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-nissan-lounge.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan-Bereich im Auto Emotion Showroom mit Sitzgruppe, ausgestellten Nissan-Modellen und NISMO-Schriftzug" loading="lazy">
+	</figure>
+	<figure>
+		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-cupra-vwall.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Cupra-Bereich im Auto Emotion Showroom mit Cupra Born und Cupra Formentor" loading="lazy">
+	</figure>
+</div>
+
 <div class="entry-content">
 	<p>
 		<?php

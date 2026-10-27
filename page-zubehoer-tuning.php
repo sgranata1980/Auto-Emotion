@@ -42,5 +42,11 @@ get_header();
 	</p>
 </div>
 
+<div class="photo-gallery">
+	<figure>
+		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/zubehoer-reifenwand.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Präsentationswand mit Kompletträdern, Zubehörteilen und Wallbox im Auto Emotion Showroom" loading="lazy">
+	</figure>
+</div>
+
 <?php
 get_footer();

@@ -23,6 +23,15 @@ $auto_emotion_status = isset( $_GET['anfrage'] ) ? sanitize_text_field( wp_unsla
 	<p><?php esc_html_e( 'Ob Inspektion, Reifenwechsel oder HU-Vorstellung: Füllen Sie das Formular aus, und wir melden uns zeitnah bei Ihnen, um einen passenden Termin abzustimmen.', 'auto-emotion' ); ?></p>
 </div>
 
+<div class="photo-gallery">
+	<figure>
+		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/service-empfang-seat-anmeldung.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Serviceannahme bei Auto Emotion mit Anmeldung, Beratungsplätzen und ausgestelltem Cupra Leon" loading="lazy">
+	</figure>
+	<figure>
+		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/werkstatt-hebebuehnen.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Qashqai und Seat Ibiza auf Hebebühnen in der Auto Emotion Werkstatt" loading="lazy">
+	</figure>
+</div>
+
 <?php if ( 'ok' === $auto_emotion_status ) : ?>
 	<div class="application-notice application-notice--success">
 		<?php esc_html_e( 'Danke für Ihre Anfrage! Wir melden uns, um einen Termin abzustimmen.', 'auto-emotion' ); ?>
