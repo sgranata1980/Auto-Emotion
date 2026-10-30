@@ -74,8 +74,13 @@ h6 {
 	   an einer beliebigen Stelle mitten im Wort ("FAHRZEUGSUC-HE") –
 	   mit "hyphens: auto" nutzt er stattdessen die echten deutschen
 	   Trennregeln ("FAHRZEUG-SUCHE"). overflow-wrap bleibt als
-	   Sicherheitsnetz für Browser ohne Trennwörterbuch. */
+	   Sicherheitsnetz für Browser ohne Trennwörterbuch.
+	   hyphenate-limit-chars erzwingt eine Mindestwortlänge, bevor
+	   überhaupt getrennt wird - sonst trennt der Browser technisch
+	   korrekt, aber in schmalen Karten/Headlines hässlich auch kurze
+	   Wörter wie "Leasing" oder "Mietwagen" ("LEA-SING", "MIETWA-GEN"). */
 	hyphens: auto;
+	hyphenate-limit-chars: 12 4 4;
 	overflow-wrap: break-word;
 }
 
@@ -1680,6 +1685,46 @@ body.has-transparent-header .site-main {
 	   --brand-hero zwingend, die anderen beiden bekommen sie nur der
 	   Einheitlichkeit halber. */
 	object-position: center 52%;
+}
+
+.career-banner__image--werk {
+	/* Seat/Cupra-Pressefoto Batteriesystem-Fertigung Martorell (3:2):
+	   Fertigungslinie im oberen Drittel, Team ab ca. 45% der Bildhöhe.
+	   48% zeigt bei der flachen Bannerhöhe Linie und Gesichter zugleich. */
+	object-position: center 48%;
+}
+
+/* Kleines Zweitbild (eigene Werkstatt) unten rechts im Bildbereich -
+   sitzt komplett innerhalb von .career-banner__media und überlappt
+   damit nie Text oder Button darunter. Eckig + Hairline wie die
+   übrigen Banner-Elemente. */
+.career-banner__inset-image {
+	position: absolute;
+	right: var(--spacing-24);
+	bottom: var(--spacing-24);
+	width: 260px;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+	object-position: center 22%;
+	border: 1px solid rgba(255, 255, 255, 0.22);
+	border-radius: 0;
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 900px) {
+	.career-banner__inset-image {
+		right: var(--spacing-16);
+		bottom: var(--spacing-16);
+		width: 180px;
+	}
+}
+
+@media (max-width: 700px) {
+	/* Bildbereich nur 220px hoch - Inset würde das Hauptmotiv fast
+	   komplett verdecken, daher ausblenden. */
+	.career-banner__inset-image {
+		display: none;
+	}
 }
 
 .career-banner__wltp {

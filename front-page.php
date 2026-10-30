@@ -42,10 +42,20 @@ $auto_emotion_marken = get_terms(
 <section class="career-banner" aria-labelledby="career-heading">
 	<div class="career-banner__media">
 		<img
-			class="career-banner__image"
-			src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/career-mechatroniker.jpg' ); ?>"
-			alt=""
+			class="career-banner__image career-banner__image--werk"
+			src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/career-werk-produktion.jpg' ); ?>"
+			alt="<?php esc_attr_e( 'Team der Batteriesystem-Fertigung im Seat/Cupra-Werk Martorell', 'auto-emotion' ); ?>"
+			width="2400"
+			height="1600"
 			loading="lazy"
+			decoding="async"
+		>
+		<img
+			class="career-banner__inset-image"
+			src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/career-mechatroniker.jpg' ); ?>"
+			alt="<?php esc_attr_e( 'Werkstatt bei Auto Emotion', 'auto-emotion' ); ?>"
+			loading="lazy"
+			decoding="async"
 		>
 	</div>
 	<div class="career-banner__content">
