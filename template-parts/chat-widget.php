@@ -37,7 +37,7 @@ $auto_emotion_idle_src     = auto_emotion_emo_video_url( 'idle' );
 		</div>
 		<div class="chat-widget__header">
 			<span class="chat-widget__header-label">
-				<?php esc_html_e( 'Emo – Auto Emotion Assistent', 'auto-emotion' ); ?>
+				<?php esc_html_e( 'Auto Emotion Chatbot', 'auto-emotion' ); ?>
 				<span class="ai-badge" title="<?php esc_attr_e( 'KI-generierte Inhalte', 'auto-emotion' ); ?>">
 					<?php auto_emotion_ai_badge_icon( 16 ); ?>
 				</span>
@@ -46,7 +46,7 @@ $auto_emotion_idle_src     = auto_emotion_emo_video_url( 'idle' );
 		</div>
 		<div class="chat-widget__messages" id="chat-widget-messages">
 			<div class="chat-widget__message chat-widget__message--bot">
-				<?php esc_html_e( 'Willkommen auf unserer neuen Website! Ich bin Emo, euer Auto-Emotion-Chatbot. Meld dich einfach, wann immer du eine Frage hast – ich helfe dir gerne weiter.', 'auto-emotion' ); ?>
+				<?php esc_html_e( 'Willkommen auf unserer neuen Website! Ich bin unser Chatbot. Meld dich einfach, wann immer du eine Frage hast – ich helfe dir gerne weiter.', 'auto-emotion' ); ?>
 			</div>
 		</div>
 		<form id="chat-widget-form" class="chat-widget__form">

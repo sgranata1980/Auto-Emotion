@@ -102,7 +102,7 @@ echo '<div class="container">';
 	<button type="button" class="quick-action js-open-chat">
 		<?php auto_emotion_ai_badge_icon( 24 ); ?>
 		<span class="quick-action__title"><?php esc_html_e( 'Welches Modell passt zu mir?', 'auto-emotion' ); ?></span>
-		<span class="btn btn-outline quick-action__btn"><?php esc_html_e( 'Emo fragen', 'auto-emotion' ); ?></span>
+		<span class="btn btn-outline quick-action__btn"><?php esc_html_e( 'Rede mit unserem Chatbot', 'auto-emotion' ); ?></span>
 	</button>
 </div>
 
