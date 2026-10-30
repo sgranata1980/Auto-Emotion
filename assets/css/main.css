@@ -1705,42 +1705,6 @@ body.has-transparent-header .site-main {
 	}
 }
 
-/* Textbereich + kleines Zweitbild (eigene Werkstatt). Ab 1000px sitzt
-   das Bild rechts neben dem Text im sonst leeren roten Glow-Bereich,
-   darunter folgt es im normalen Fluss unter dem Button. */
-.career-banner__body {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr);
-}
-
-.career-banner__inset-image {
-	display: block;
-	width: min(340px, calc(100% - 2 * var(--spacing-24)));
-	margin: 0 var(--spacing-24) var(--spacing-64);
-	aspect-ratio: 4 / 3;
-	object-fit: cover;
-	object-position: center 22%;
-	/* Eckig + Hairline wie die übrigen Banner-Elemente. */
-	border: 1px solid rgba(255, 255, 255, 0.22);
-	border-radius: 0;
-	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
-}
-
-@media (min-width: 1000px) {
-	.career-banner__body {
-		grid-template-columns: minmax(0, 780px) 320px;
-		justify-content: space-between;
-		align-items: center;
-		column-gap: var(--spacing-64);
-		padding-right: var(--spacing-64);
-	}
-
-	.career-banner__inset-image {
-		width: 100%;
-		margin: var(--spacing-64) 0;
-	}
-}
-
 .career-banner__wltp {
 	margin: var(--spacing-24) 0 0;
 	font-size: var(--text-caption);
