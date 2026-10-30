@@ -69,18 +69,18 @@ h6 {
 	text-transform: uppercase;
 	letter-spacing: 0.0230em;
 	line-height: 1;
-	/* Lange deutsche Komposita (z. B. "Fahrzeugsuche") haben keine
-	   Leerzeichen zum Umbrechen. Ohne "hyphens" bricht der Browser sie
-	   an einer beliebigen Stelle mitten im Wort ("FAHRZEUGSUC-HE") –
-	   mit "hyphens: auto" nutzt er stattdessen die echten deutschen
-	   Trennregeln ("FAHRZEUG-SUCHE"). overflow-wrap bleibt als
-	   Sicherheitsnetz für Browser ohne Trennwörterbuch.
-	   hyphenate-limit-chars erzwingt eine Mindestwortlänge, bevor
-	   überhaupt getrennt wird - sonst trennt der Browser technisch
-	   korrekt, aber in schmalen Karten/Headlines hässlich auch kurze
-	   Wörter wie "Leasing" oder "Mietwagen" ("LEA-SING", "MIETWA-GEN"). */
-	hyphens: auto;
-	hyphenate-limit-chars: 12 4 4;
+	/* Automatische Silbentrennung ist bewusst deaktiviert: Mit
+	   "hyphens: auto" trennen Browser auch kurze Wörter in schmalen
+	   Headlines/Karten falsch bzw. hässlich ("LEA-SING", "SER-VICE"),
+	   und die Mindestlängen-Eigenschaft hyphenate-limit-chars wird
+	   nicht zuverlässig unterstützt (u. a. kein Safari). "manual" statt
+	   "none": keine automatische Trennung, aber gezielt gesetzte weiche
+	   Trennzeichen (&shy;, z. B. "Fahrzeug-suche" in vehicle-search.php)
+	   greifen weiterhin - bei "none" würden auch diese ignoriert.
+	   overflow-wrap bleibt nur als Sicherheitsnetz für extrem lange,
+	   unteilbare Wörter, die sonst aus dem Container laufen würden. */
+	-webkit-hyphens: manual;
+	hyphens: manual;
 	overflow-wrap: break-word;
 }
 
@@ -1688,42 +1688,56 @@ body.has-transparent-header .site-main {
 }
 
 .career-banner__image--werk {
-	/* Seat/Cupra-Pressefoto Batteriesystem-Fertigung Martorell (3:2):
-	   Fertigungslinie im oberen Drittel, Team ab ca. 45% der Bildhöhe.
-	   48% zeigt bei der flachen Bannerhöhe Linie und Gesichter zugleich. */
-	object-position: center 48%;
+	/* Seat/Cupra-Pressefoto Batteriesystem-Fertigung Martorell (3:2),
+	   ca. 120 Personen: Köpfe der hintersten Reihe bei ca. 36% der
+	   Bildhöhe, Hüfte der vorderen Reihe bei ca. 65%, Füße bei ~80%.
+	   Die Standardhöhe (420px) schnitt die Gruppe oben/unten ab, daher
+	   eigene, mit der Viewport-Breite wachsende Höhe (wie --brand-hero)
+	   und ein nach unten verschobener Fokus, damit das ganze Team von
+	   Kopf bis mindestens Hüfte im Bild bleibt. */
+	height: clamp(420px, 36vw, 720px);
+	object-position: center 62%;
 }
 
-/* Kleines Zweitbild (eigene Werkstatt) unten rechts im Bildbereich -
-   sitzt komplett innerhalb von .career-banner__media und überlappt
-   damit nie Text oder Button darunter. Eckig + Hairline wie die
-   übrigen Banner-Elemente. */
+@media (max-width: 700px) {
+	.career-banner__image--werk {
+		height: 320px;
+	}
+}
+
+/* Textbereich + kleines Zweitbild (eigene Werkstatt). Ab 1000px sitzt
+   das Bild rechts neben dem Text im sonst leeren roten Glow-Bereich,
+   darunter folgt es im normalen Fluss unter dem Button. */
+.career-banner__body {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+}
+
 .career-banner__inset-image {
-	position: absolute;
-	right: var(--spacing-24);
-	bottom: var(--spacing-24);
-	width: 260px;
+	display: block;
+	width: min(340px, calc(100% - 2 * var(--spacing-24)));
+	margin: 0 var(--spacing-24) var(--spacing-64);
 	aspect-ratio: 4 / 3;
 	object-fit: cover;
 	object-position: center 22%;
+	/* Eckig + Hairline wie die übrigen Banner-Elemente. */
 	border: 1px solid rgba(255, 255, 255, 0.22);
 	border-radius: 0;
 	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
 }
 
-@media (max-width: 900px) {
-	.career-banner__inset-image {
-		right: var(--spacing-16);
-		bottom: var(--spacing-16);
-		width: 180px;
+@media (min-width: 1000px) {
+	.career-banner__body {
+		grid-template-columns: minmax(0, 780px) 320px;
+		justify-content: space-between;
+		align-items: center;
+		column-gap: var(--spacing-64);
+		padding-right: var(--spacing-64);
 	}
-}
 
-@media (max-width: 700px) {
-	/* Bildbereich nur 220px hoch - Inset würde das Hauptmotiv fast
-	   komplett verdecken, daher ausblenden. */
 	.career-banner__inset-image {
-		display: none;
+		width: 100%;
+		margin: var(--spacing-64) 0;
 	}
 }
 
