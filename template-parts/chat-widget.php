@@ -1,0 +1,58 @@
+<?php
+/**
+ * Chat-Widget (Auto Emotion Assistent). Icon, Video-Avatar und
+ * Chat-Oberfläche sind immer sichtbar; nur das tatsächliche Senden
+ * einer Nachricht schlägt fehl, solange kein Claude API-Key im
+ * Customizer hinterlegt ist (siehe inc/chatbot.php).
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+$auto_emotion_greeting_src = auto_emotion_emo_video_url( 'greeting' );
+$auto_emotion_idle_src     = auto_emotion_emo_video_url( 'idle' );
+?>
+<div class="chat-widget" data-state="closed">
+	<button type="button" class="chat-widget__toggle" aria-expanded="false" aria-controls="chat-widget-panel">
+		<span class="chat-widget__toggle-label">
+			<svg class="chat-widget__toggle-sparkle" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3l1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3Z"/></svg>
+			<?php esc_html_e( 'Chatbot', 'auto-emotion' ); ?>
+		</span>
+		<span class="chat-widget__toggle-icon-wrap">
+			<span class="chat-widget__toggle-icon" aria-hidden="true"></span>
+		</span>
+		<span class="screen-reader-text"><?php esc_html_e( 'Chat öffnen', 'auto-emotion' ); ?></span>
+	</button>
+
+	<div id="chat-widget-panel" class="chat-widget__panel" data-state="closed">
+		<div class="chat-widget__avatar">
+			<video
+				id="chat-widget-avatar-video"
+				class="chat-widget__avatar-video"
+				playsinline
+				data-greeting-src="<?php echo esc_url( $auto_emotion_greeting_src ); ?>"
+				data-idle-src="<?php echo esc_url( $auto_emotion_idle_src ); ?>"
+			></video>
+		</div>
+		<div class="chat-widget__header">
+			<span class="chat-widget__header-label">
+				<?php esc_html_e( 'Auto Emotion Chatbot', 'auto-emotion' ); ?>
+				<span class="ai-badge" title="<?php esc_attr_e( 'KI-generierte Inhalte', 'auto-emotion' ); ?>">
+					<?php auto_emotion_ai_badge_icon( 16 ); ?>
+				</span>
+			</span>
+			<button type="button" class="chat-widget__close" aria-label="<?php esc_attr_e( 'Chat schließen', 'auto-emotion' ); ?>">&times;</button>
+		</div>
+		<div class="chat-widget__messages" id="chat-widget-messages">
+			<div class="chat-widget__message chat-widget__message--bot">
+				<?php esc_html_e( 'Willkommen auf unserer neuen Website! Ich bin unser Chatbot. Meld dich einfach, wann immer du eine Frage hast – ich helfe dir gerne weiter.', 'auto-emotion' ); ?>
+			</div>
+		</div>
+		<form id="chat-widget-form" class="chat-widget__form">
+			<label class="screen-reader-text" for="chat-widget-input"><?php esc_html_e( 'Deine Nachricht', 'auto-emotion' ); ?></label>
+			<input type="text" id="chat-widget-input" autocomplete="off" placeholder="<?php esc_attr_e( 'Deine Frage …', 'auto-emotion' ); ?>" maxlength="500" required>
+			<button type="submit"><?php esc_html_e( 'Senden', 'auto-emotion' ); ?></button>
+		</form>
+	</div>
+</div>

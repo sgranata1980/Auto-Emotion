@@ -1,0 +1,108 @@
+<?php
+/**
+ * Auto Emotion theme bootstrap.
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Manche Nginx/PHP-FPM-Hosting-Setups reichen den Authorization-Header
+ * nicht automatisch an PHP durch. Ohne diesen Fallback kommen
+ * REST-API-Anmeldungen per Anwendungspasswort nie an (401
+ * rest_not_logged_in), obwohl das Feature aktiv ist.
+ */
+if ( ! isset( $_SERVER['HTTP_AUTHORIZATION'] ) && isset( $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ) ) {
+	$_SERVER['HTTP_AUTHORIZATION'] = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+}
+
+if ( ! isset( $_SERVER['PHP_AUTH_USER'] ) && isset( $_SERVER['HTTP_AUTHORIZATION'] ) && 0 === stripos( $_SERVER['HTTP_AUTHORIZATION'], 'basic ' ) ) {
+	$auto_emotion_basic_auth = base64_decode( substr( $_SERVER['HTTP_AUTHORIZATION'], 6 ) );
+	if ( false !== $auto_emotion_basic_auth && false !== strpos( $auto_emotion_basic_auth, ':' ) ) {
+		list( $_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'] ) = explode( ':', $auto_emotion_basic_auth, 2 );
+	}
+}
+
+define( 'AUTO_EMOTION_VERSION', '1.80.0' );
+define( 'AUTO_EMOTION_DIR', get_template_directory() );
+define( 'AUTO_EMOTION_URI', get_template_directory_uri() );
+
+/**
+ * Verhindert, dass ein Cache zwischen Server und Besucher (Hosting-
+ * Reverse-Proxy, Mobilfunk-/ISP-Proxy, o.ä.) eine alte Version einer
+ * Seite hartnäckig hält, nachdem Inhalte über WP Pusher aktualisiert
+ * wurden – WordPress selbst setzt für normale Frontend-Aufrufe sonst
+ * keinerlei Cache-Header, sodass jede dazwischenliegende Instanz nach
+ * eigenem Ermessen zwischenspeichern darf.
+ */
+function auto_emotion_no_cache_headers() {
+	if ( is_admin() ) {
+		return;
+	}
+	nocache_headers();
+}
+add_action( 'send_headers', 'auto_emotion_no_cache_headers' );
+
+require AUTO_EMOTION_DIR . '/inc/contact-info.php';
+require AUTO_EMOTION_DIR . '/inc/theme-setup.php';
+require AUTO_EMOTION_DIR . '/inc/primary-menu.php';
+require AUTO_EMOTION_DIR . '/inc/footer-menu.php';
+require AUTO_EMOTION_DIR . '/inc/enqueue.php';
+require AUTO_EMOTION_DIR . '/inc/customizer.php';
+require AUTO_EMOTION_DIR . '/inc/cpt.php';
+require AUTO_EMOTION_DIR . '/inc/seo.php';
+require AUTO_EMOTION_DIR . '/inc/schema.php';
+require AUTO_EMOTION_DIR . '/inc/recruiting.php';
+require AUTO_EMOTION_DIR . '/inc/recruiting-backend.php';
+require AUTO_EMOTION_DIR . '/inc/recruiting-bewerbungen.php';
+require AUTO_EMOTION_DIR . '/inc/recruiting-profil.php';
+require AUTO_EMOTION_DIR . '/inc/recruiting-kontakte.php';
+require AUTO_EMOTION_DIR . '/inc/recruiting-nachrichten.php';
+require AUTO_EMOTION_DIR . '/inc/recruiting-feedback.php';
+require AUTO_EMOTION_DIR . '/inc/recruiting-stellenbibliothek.php';
+require AUTO_EMOTION_DIR . '/inc/recruiting-automatisierung.php';
+require AUTO_EMOTION_DIR . '/inc/recruiting-matching.php';
+require AUTO_EMOTION_DIR . '/inc/b2b.php';
+require AUTO_EMOTION_DIR . '/inc/finance-trade-in.php';
+require AUTO_EMOTION_DIR . '/inc/testdrive.php';
+require AUTO_EMOTION_DIR . '/inc/newsletter.php';
+require AUTO_EMOTION_DIR . '/inc/feedback.php';
+require AUTO_EMOTION_DIR . '/inc/servicetermin.php';
+require AUTO_EMOTION_DIR . '/inc/woocommerce.php';
+require AUTO_EMOTION_DIR . '/inc/chatbot.php';
+require AUTO_EMOTION_DIR . '/inc/traumauto-finder.php';
+
+/**
+ * Emo-Avatar-Video ermitteln: Mediathek-Datei mit passendem Namen
+ * (z.B. "emo-greeting.mp4" hochladen) schlägt den Customizer-Wert,
+ * der wiederum das im Theme gebündelte Standardvideo schlägt. So
+ * lässt sich das Video jederzeit per Mediathek-Upload austauschen,
+ * ganz ohne Theme-Update.
+ */
+function auto_emotion_emo_video_url( $slug ) {
+	$query = new WP_Query(
+		array(
+			'post_type'      => 'attachment',
+			'post_status'    => 'inherit',
+			'title'          => 'emo-' . $slug . '.mp4',
+			'posts_per_page' => 1,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+			'no_found_rows'  => true,
+		)
+	);
+	if ( $query->have_posts() ) {
+		$url = wp_get_attachment_url( $query->posts[0]->ID );
+		if ( $url ) {
+			return $url;
+		}
+	}
+
+	$mod = get_theme_mod( 'ae_emo_' . $slug . '_video' );
+	if ( $mod ) {
+		return $mod;
+	}
+
+	return AUTO_EMOTION_URI . '/assets/videos/emo-' . $slug . '.mp4?ver=' . AUTO_EMOTION_VERSION;
+}
