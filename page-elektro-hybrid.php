@@ -116,7 +116,7 @@ echo '</div>';
 		<img
 			class="career-banner__image"
 			src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/elektro-geschichte-illustration.png?ver=' . AUTO_EMOTION_VERSION ); ?>"
-			alt="Illustration: Von der Tesla-Spule über frühe Elektrofahrzeug-Entwürfe bis zum modernen Concept-Car"
+			alt="Illustration: Von der Tesla-Spule über ein frühes Elektrofahrzeug bis zu Seat, Cupra und Nissan als elektrische Skizzen"
 			loading="lazy"
 		>
 	</div>
