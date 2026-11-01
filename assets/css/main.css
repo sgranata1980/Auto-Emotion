@@ -2993,11 +2993,10 @@ body.has-transparent-header .site-main {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: var(--spacing-64);
-	/* "start" statt "center": die zwei Service-Teaser-Karten rechts
-	   sind zusammen niedriger als das 420px hohe Foto links - bei
-	   center-Ausrichtung hing das Foto dadurch oben UND unten über die
-	   Karten hinaus ("nicht bündig"), start richtet beide oben aus. */
-	align-items: start;
+	/* "stretch": die Service-Teaser-Karten rechts werden auf die volle
+	   Höhe des 420px-Fotos links gestreckt, damit beide Kartenunterkanten
+	   bündig mit der Fotounterkante enden. */
+	align-items: stretch;
 }
 
 .finance-section__grid > * {
@@ -3024,7 +3023,9 @@ body.has-transparent-header .site-main {
 .service-teaser-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	grid-auto-rows: 1fr;
 	gap: var(--spacing-24);
+	height: 100%;
 }
 
 .service-teaser-grid > * {
@@ -3038,6 +3039,12 @@ body.has-transparent-header .site-main {
 	flex-direction: column;
 	gap: var(--spacing-16);
 	transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.service-teaser .btn {
+	/* schiebt den Button in beiden Karten auf dieselbe Höhe,
+	   egal wie viele Zeilen der Beschreibungstext braucht */
+	margin-top: auto;
 }
 
 .service-teaser:hover {
