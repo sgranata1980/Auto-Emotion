@@ -114,9 +114,9 @@ echo '</div>';
 <section class="career-banner" aria-labelledby="geschichte-heading">
 	<div class="career-banner__media">
 		<img
-			class="career-banner__image"
-			src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/elektro-geschichte-illustration.png?ver=' . AUTO_EMOTION_VERSION ); ?>"
-			alt="Illustration: Von der Tesla-Spule über ein frühes Elektrofahrzeug bis zu Seat, Cupra und Nissan als elektrische Skizzen"
+			class="career-banner__image career-banner__image--brand-hero career-banner__image--leaf"
+			src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-modell-leaf.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>"
+			alt="Nissan Leaf, eines der meistverkauften Elektrofahrzeuge weltweit"
 			loading="lazy"
 		>
 	</div>

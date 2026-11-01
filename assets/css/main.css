@@ -1687,6 +1687,15 @@ body.has-transparent-header .site-main {
 	object-position: center 52%;
 }
 
+.career-banner__image--leaf {
+	/* Offizielles Nissan-Pressefoto (Studioaufnahme, 1.79:1), Fahrzeug
+	   nimmt den mittleren Bildbereich ein - per Helligkeitsprofil
+	   vermessen: Dach bis Räder liegen bei ca. 12-75% der Bildhöhe,
+	   Zentrum bei ~43%. Bei der Standardhöhe (420px) schneidet das
+	   Dach ab, daher zusätzliche Höhe aus --brand-hero. */
+	object-position: center 43%;
+}
+
 .career-banner__image--werk {
 	/* Seat/Cupra-Pressefoto Batteriesystem-Fertigung Martorell (3:2),
 	   ca. 120 Personen: Köpfe der hintersten Reihe bei ca. 36% der
