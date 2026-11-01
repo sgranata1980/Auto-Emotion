@@ -49,8 +49,8 @@ get_template_part(
 		'cta2_text'       => __( 'Anfrage senden', 'auto-emotion' ),
 		'cta2_url'        => 'mailto:' . auto_emotion_contact( 'email' ) . '?subject=' . rawurlencode( 'Jahreswagen-Anfrage' ),
 		'image'           => AUTO_EMOTION_URI . '/assets/images/showroom-formentor-born.jpg?ver=' . AUTO_EMOTION_VERSION,
-		'video'           => '',
-		'video_webm'      => '',
+		'video'           => AUTO_EMOTION_URI . '/assets/videos/cupra-formentor-b-roll.mp4?ver=' . AUTO_EMOTION_VERSION,
+		'video_webm'      => AUTO_EMOTION_URI . '/assets/videos/cupra-formentor-b-roll.webm?ver=' . AUTO_EMOTION_VERSION,
 	)
 );
 
@@ -89,34 +89,63 @@ echo '<div class="container">';
 	</a>
 </div>
 
-<div class="section-heading" id="konzept">
-	<h2 class="section-heading__title"><?php esc_html_e( 'Wie ist das Konzept entstanden?', 'auto-emotion' ); ?></h2>
-</div>
-<div class="entry-content">
-	<p><?php esc_html_e( 'Hersteller geben Autohäusern Zulassungsziele und Stückzahl-Boni vor: Je mehr Fahrzeuge ein Händler in einem bestimmten Zeitraum zulässt, desto höher fällt sein Bonus vom Hersteller aus. Eine Tageszulassung – das Autohaus meldet ein fabrikneues Fahrzeug kurz auf sich selbst an und direkt wieder ab – zählt dabei bereits als Verkauf. So entstehen Fahrzeuge, die rechtlich als gebraucht gelten, in Wirklichkeit aber nie bewegt wurden. Einen Teil des dadurch ausgelösten Bonus geben Händler als Preisvorteil an Kundinnen und Kunden weiter.', 'auto-emotion' ); ?></p>
-	<p><?php esc_html_e( 'Jahreswagen haben einen anderen Ursprung: Viele Hersteller lassen Mitarbeitende Neuwagen vergünstigt least oder kaufen, verbunden mit einer Mindesthaltezeit von meist rund einem Jahr. Danach kommen diese Fahrzeuge zurück in den Handel – echt genutzt, aber mit überschaubarer Laufleistung und meist sehr gepflegt.', 'auto-emotion' ); ?></p>
-</div>
+<?php
+/**
+ * Konzept-Erklärung als Career-Banner-Layout (Bild links, Text rechts)
+ * statt reinem Fließtext - gleiches Komponenten-Paar wie auf der
+ * Startseite (career-banner/event-banner), bricht dafür wie der Hero
+ * kurz aus dem .container aus.
+ */
+echo '</div>';
+?>
+<section class="career-banner" aria-labelledby="konzept-heading" id="konzept">
+	<div class="career-banner__media">
+		<img
+			class="career-banner__image"
+			src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-nissan-xtrail.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>"
+			alt="Fahrzeuge auf der Verkaufsfläche von Auto Emotion, darunter ein Nissan X-Trail"
+			loading="lazy"
+		>
+	</div>
+	<div class="career-banner__content">
+		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Hintergrund', 'auto-emotion' ); ?></p>
+		<h2 id="konzept-heading" class="career-banner__headline"><?php esc_html_e( 'Wie ist das Konzept entstanden?', 'auto-emotion' ); ?></h2>
+		<p><?php esc_html_e( 'Hersteller geben Autohäusern Zulassungsziele und Stückzahl-Boni vor: Je mehr Fahrzeuge ein Händler in einem bestimmten Zeitraum zulässt, desto höher fällt sein Bonus vom Hersteller aus. Eine Tageszulassung – das Autohaus meldet ein fabrikneues Fahrzeug kurz auf sich selbst an und direkt wieder ab – zählt dabei bereits als Verkauf. So entstehen Fahrzeuge, die rechtlich als gebraucht gelten, in Wirklichkeit aber nie bewegt wurden. Einen Teil des dadurch ausgelösten Bonus geben Händler als Preisvorteil an Kundinnen und Kunden weiter.', 'auto-emotion' ); ?></p>
+		<p><?php esc_html_e( 'Jahreswagen haben einen anderen Ursprung: Viele Hersteller lassen Mitarbeitende Neuwagen vergünstigt least oder kaufen, verbunden mit einer Mindesthaltezeit von meist rund einem Jahr. Danach kommen diese Fahrzeuge zurück in den Handel – echt genutzt, aber mit überschaubarer Laufleistung und meist sehr gepflegt.', 'auto-emotion' ); ?></p>
+	</div>
+</section>
 
+<section class="event-banner" aria-labelledby="vorteile-heading">
+	<img
+		class="event-banner__image"
+		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-cupra-ecke.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>"
+		alt=""
+		loading="lazy"
+	>
+	<div class="event-banner__content">
+		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Vorteil', 'auto-emotion' ); ?></p>
+		<h2 id="vorteile-heading" class="event-banner__headline"><?php esc_html_e( 'Was bringt mir das als Käufer?', 'auto-emotion' ); ?></h2>
+		<p><?php esc_html_e( 'Der Preisvorteil gegenüber einem echten Neuwagen kann je nach Marke und Modell spürbar ausfallen, gerade bei Tageszulassungen mit praktisch null Kilometern. Dafür verzichten Sie auf die freie Konfiguration eines Neuwagens – Ausstattung, Farbe und Motorisierung stehen bereits fest. Wer sich mit dem verfügbaren Fahrzeug anfreunden kann, bekommt ein de facto neues Auto zu einem günstigeren Preis.', 'auto-emotion' ); ?></p>
+		<a class="btn btn-giallo" href="mailto:<?php echo esc_attr( auto_emotion_contact( 'email' ) ); ?>?subject=<?php echo rawurlencode( 'Jahreswagen-Anfrage' ); ?>">
+			<?php esc_html_e( 'Anfrage senden', 'auto-emotion' ); ?>
+			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
+		</a>
+	</div>
+</section>
+<?php
+echo '<div class="container">';
+?>
+
+<div class="section-heading">
+	<h2 class="section-heading__title"><?php esc_html_e( 'Bei uns im Haus', 'auto-emotion' ); ?></h2>
+</div>
 <div class="photo-gallery">
-	<figure>
-		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-nissan-xtrail.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan X-Trail auf der Verkaufsfläche von Auto Emotion" loading="lazy">
-	</figure>
 	<figure>
 		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-nissan-juke-lounge.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Juke im Showroom von Auto Emotion" loading="lazy">
 	</figure>
 	<figure>
-		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-cupra-ecke.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Cupra-Bereich im Auto Emotion Showroom" loading="lazy">
-	</figure>
-	<figure>
 		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/showroom-lounge.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Seat-Fahrzeug und Lounge-Bereich im Auto Emotion Showroom" loading="lazy">
 	</figure>
-</div>
-
-<div class="section-heading">
-	<h2 class="section-heading__title"><?php esc_html_e( 'Was bringt mir das als Käufer?', 'auto-emotion' ); ?></h2>
-</div>
-<div class="entry-content">
-	<p><?php esc_html_e( 'Der Preisvorteil gegenüber einem echten Neuwagen kann je nach Marke und Modell spürbar ausfallen, gerade bei Tageszulassungen mit praktisch null Kilometern. Dafür verzichten Sie auf die freie Konfiguration eines Neuwagens – Ausstattung, Farbe und Motorisierung stehen bereits fest. Wer sich mit dem verfügbaren Fahrzeug anfreunden kann, bekommt ein de facto neues Auto zu einem günstigeren Preis.', 'auto-emotion' ); ?></p>
 </div>
 
 <div class="section-heading">
