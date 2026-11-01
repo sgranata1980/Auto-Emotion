@@ -3945,3 +3945,71 @@ body.has-transparent-header .site-main {
 		padding: 0 var(--spacing-16) var(--spacing-16);
 	}
 }
+
+/* ---------------------------------------------------------------- */
+/* Prozess-Diagramm - nummerierte Schritte mit Verbindungslinie,     */
+/* erklärt einen eigenen Ablauf (z.B. Anfrage bis Lieferung) grafisch */
+/* statt als Fließtext-Liste.                                        */
+/* ---------------------------------------------------------------- */
+
+.process-diagram {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: var(--spacing-32);
+}
+
+.process-step {
+	position: relative;
+	text-align: center;
+}
+
+.process-step::after {
+	/* Verbindungslinie zum nächsten Schritt, läuft durch die Mitte des
+	   Nummern-Kreises - beim letzten Schritt per :last-child entfernt. */
+	content: '';
+	position: absolute;
+	top: 27px;
+	left: calc(50% + 27px + var(--spacing-16));
+	right: calc(-50% + 27px + var(--spacing-16));
+	height: 1px;
+	background: var(--color-graphite-border);
+}
+
+.process-step:last-child::after {
+	display: none;
+}
+
+.process-step__number {
+	width: 54px;
+	height: 54px;
+	margin: 0 auto var(--spacing-16);
+	border-radius: 50%;
+	background: var(--color-rosso-vivo);
+	color: var(--surface-canvas-white);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: var(--text-heading-sm);
+	font-weight: 600;
+	position: relative;
+	z-index: 1;
+}
+
+.process-step__title {
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	font-size: var(--text-body);
+	margin: 0 0 var(--spacing-8);
+}
+
+.process-step__text {
+	font-size: var(--text-caption);
+	color: var(--color-steel-mid);
+	margin: 0;
+}
+
+@media (max-width: 700px) {
+	.process-step::after {
+		display: none;
+	}
+}

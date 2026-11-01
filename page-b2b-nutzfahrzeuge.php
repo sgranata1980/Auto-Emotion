@@ -11,17 +11,71 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * get_header() öffnet auf Nicht-Startseiten ein .container-Div
+ * (max-width 1440px, zentriert) direkt um den gesamten Seiteninhalt.
+ * Hero, Einsatzzweck-Kacheln sind bewusst außerhalb des Fließtexts
+ * aufgebaut (Nutzer-Feedback: "mehr mit Kästen und Grafiken
+ * arbeiten") statt der bisherigen reinen Text-/Listen-Darstellung.
+ */
+$auto_emotion_b2b_use_cases = array(
+	array(
+		'icon'  => '<path d="M12 3 7 19h10L12 3Z"/><path d="M4.5 19h15"/><path d="M9.3 11h5.4"/><path d="M8 15h8"/>',
+		'title' => __( 'Baustelle & Handwerk', 'auto-emotion' ),
+		'text'  => __( 'Nissan Primastar und Interstar als Kastenwagen mit viel Laderaum und hoher Nutzlast für Werkzeug, Material und Geräte.', 'auto-emotion' ),
+	),
+	array(
+		'icon'  => '<path d="M7 8V6a5 5 0 0 1 10 0v2"/><rect x="4" y="8" width="16" height="13" rx="1.5"/><path d="M4 13h16"/>',
+		'title' => __( 'Lieferservice & Gastronomie', 'auto-emotion' ),
+		'text'  => __( 'Der kompakte Nissan Townstar für den City-Kurierdienst – wendig und sparsam, auch vollelektrisch für emissionsfreie Innenstadtlieferungen.', 'auto-emotion' ),
+	),
+	array(
+		'icon'  => '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2-2 2.6-2.6Z"/>',
+		'title' => __( 'Hausmeister- & Reinigungsdienste', 'auto-emotion' ),
+		'text'  => __( 'Flexibel ausgestattete Kastenwagen für Werkzeug, Maschinen und Reinigungsequipment – passend zur Größe Ihres Fuhrparks.', 'auto-emotion' ),
+	),
+	array(
+		'icon'  => '<rect x="3" y="6" width="18" height="11" rx="2"/><path d="M3 11.5h18"/><path d="M6.5 8.5h3M10.8 8.5h3M15 8.5h2.5"/><circle cx="7.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/>',
+		'title' => __( 'Personentransport', 'auto-emotion' ),
+		'text'  => __( 'Nissan Primastar und Interstar als Kombi-Variante mit mehreren Sitzreihen – für Fahrdienste, Shuttles oder Teamtransporte.', 'auto-emotion' ),
+	),
+	array(
+		'icon'  => '<path d="M12 3v18"/><path d="M4.6 7.5l14.8 9"/><path d="M19.4 7.5 4.6 16.5"/><path d="M12 7.2 9.9 8.9M12 7.2l2.1 1.7M12 16.8l-2.1-1.7M12 16.8l2.1-1.7"/>',
+		'title' => __( 'Feinkost & Kühltransport', 'auto-emotion' ),
+		'text'  => __( 'Unsere Nutzfahrzeuge lassen sich mit Kühl- oder Isolieraufbauten ausstatten – für die Auslieferung temperaturempfindlicher Ware.', 'auto-emotion' ),
+	),
+	array(
+		'icon'  => '<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',
+		'title' => __( 'Fahr- & Rettungsdienste', 'auto-emotion' ),
+		'text'  => __( 'Die Kombi-Ausführung des Interstar bietet Platz für Personentransport – inklusive individueller Beschriftung durch unsere Grafikabteilung.', 'auto-emotion' ),
+	),
+);
+
 get_header();
 
 $auto_emotion_status = isset( $_GET['anfrage'] ) ? sanitize_text_field( wp_unslash( $_GET['anfrage'] ) ) : '';
-?>
 
-<img
-	class="career-banner__image career-banner__image--fleet"
-	src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-nutzfahrzeuge.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>"
-	alt=""
-	loading="lazy"
->
+echo '</div>';
+
+get_template_part(
+	'template-parts/hero',
+	null,
+	array(
+		'eyebrow'         => __( 'Nissan Nutzfahrzeuge · B2B', 'auto-emotion' ),
+		'headline_pre'    => __( 'Wachsen Sie', 'auto-emotion' ),
+		'headline_accent' => __( 'mit Ihrem Business.', 'auto-emotion' ),
+		'cta_text'        => __( 'Einsatzzwecke ansehen', 'auto-emotion' ),
+		'cta_url'         => '#einsatzzwecke',
+		'cta2_text'       => __( 'Anfrage senden', 'auto-emotion' ),
+		'cta2_url'        => '#anfrage',
+		'image'           => AUTO_EMOTION_URI . '/assets/images/nissan-nutzfahrzeuge.jpg?ver=' . AUTO_EMOTION_VERSION,
+		'video'           => '',
+		'video_webm'      => '',
+	)
+);
+
+echo '<div class="container">';
+?>
 
 <div class="section-heading">
 	<h1 class="section-heading__title"><?php esc_html_e( 'Nissan Nutzfahrzeuge für Ihren Fuhrpark', 'auto-emotion' ); ?></h1>
@@ -37,6 +91,45 @@ $auto_emotion_status = isset( $_GET['anfrage'] ) ? sanitize_text_field( wp_unsla
 	<p><?php esc_html_e( 'Ob einzelnes Fahrzeug oder ganzer Fuhrpark: Sprechen Sie uns an, wir erarbeiten ein Angebot für Ihren Betrieb – individuell auf Ihren Bedarf zugeschnitten.', 'auto-emotion' ); ?></p>
 </div>
 
+<div class="section-heading" id="einsatzzwecke">
+	<h2 class="section-heading__title"><?php esc_html_e( 'Für jeden Einsatzzweck das passende Fahrzeug', 'auto-emotion' ); ?></h2>
+</div>
+<div class="model-grid">
+	<?php foreach ( $auto_emotion_b2b_use_cases as $auto_emotion_use_case ) : ?>
+		<article class="model-card">
+			<svg class="model-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><?php echo $auto_emotion_use_case['icon']; // phpcs:ignore WordPress.Security.EscapeOutput -- feste, eigene SVG-Pfade, kein Nutzereingang. ?></svg>
+			<h3 class="model-card__title"><?php echo esc_html( $auto_emotion_use_case['title'] ); ?></h3>
+			<p class="model-card__text"><?php echo esc_html( $auto_emotion_use_case['text'] ); ?></p>
+		</article>
+	<?php endforeach; ?>
+</div>
+
+<div class="section-heading">
+	<h2 class="section-heading__title"><?php esc_html_e( 'So kommen Sie zu Ihrem Fuhrpark', 'auto-emotion' ); ?></h2>
+</div>
+<div class="process-diagram">
+	<div class="process-step">
+		<div class="process-step__number">1</div>
+		<h3 class="process-step__title"><?php esc_html_e( 'Anfrage', 'auto-emotion' ); ?></h3>
+		<p class="process-step__text"><?php esc_html_e( 'Formular ausfüllen oder anrufen – mit oder ohne konkrete Fahrzeugvorstellung.', 'auto-emotion' ); ?></p>
+	</div>
+	<div class="process-step">
+		<div class="process-step__number">2</div>
+		<h3 class="process-step__title"><?php esc_html_e( 'Angebot', 'auto-emotion' ); ?></h3>
+		<p class="process-step__text"><?php esc_html_e( 'Individuelles Angebot für Einzelfahrzeug oder gesamte Flotte, inklusive Finanzierung oder Leasing.', 'auto-emotion' ); ?></p>
+	</div>
+	<div class="process-step">
+		<div class="process-step__number">3</div>
+		<h3 class="process-step__title"><?php esc_html_e( 'Beklebung & Ausstattung', 'auto-emotion' ); ?></h3>
+		<p class="process-step__text"><?php esc_html_e( 'Unsere Grafikabteilung beschriftet Ihre Fahrzeuge nach Ihren Vorgaben.', 'auto-emotion' ); ?></p>
+	</div>
+	<div class="process-step">
+		<div class="process-step__number">4</div>
+		<h3 class="process-step__title"><?php esc_html_e( 'Lieferung & Service', 'auto-emotion' ); ?></h3>
+		<p class="process-step__text"><?php esc_html_e( 'Übergabe und anschließend Wartung, Inspektion und Reparatur in unserer Werkstatt.', 'auto-emotion' ); ?></p>
+	</div>
+</div>
+
 <div class="service-teaser-grid">
 	<div class="service-teaser">
 		<h3 class="service-teaser__title"><?php esc_html_e( 'Beklebung & Beschriftung', 'auto-emotion' ); ?></h3>
@@ -49,6 +142,30 @@ $auto_emotion_status = isset( $_GET['anfrage'] ) ? sanitize_text_field( wp_unsla
 		<a class="btn btn-outline" href="<?php echo esc_url( home_url( '/service/' ) ); ?>"><?php esc_html_e( 'Zu Service & Werkstatt', 'auto-emotion' ); ?><span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
 	</div>
 </div>
+
+<?php
+echo '</div>';
+?>
+<section class="event-banner" aria-labelledby="finanzierung-b2b-heading">
+	<img
+		class="event-banner__image"
+		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/finanzierung-beratung.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>"
+		alt=""
+		loading="lazy"
+	>
+	<div class="event-banner__content">
+		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Finanzierung', 'auto-emotion' ); ?></p>
+		<h2 id="finanzierung-b2b-heading" class="event-banner__headline"><?php esc_html_e( 'Wachsen Sie mit geschäftsfreundlichen Konditionen.', 'auto-emotion' ); ?></h2>
+		<p><?php esc_html_e( 'Leasing statt Kapitalbindung: planbare monatliche Raten für Ihren Fuhrpark, abgestimmt auf Ihr Unternehmen. Ob Einzelfahrzeug oder komplette Flotte – wir erarbeiten gemeinsam mit Ihnen die passende Finanzierungs- oder Leasinglösung. Steuerliche Details klären Sie am besten zusätzlich mit Ihrem Steuerberater.', 'auto-emotion' ); ?></p>
+		<a class="btn btn-giallo" href="<?php echo esc_url( home_url( '/finanzierung-leasing/' ) ); ?>">
+			<?php esc_html_e( 'Zur Finanzierung & Leasing', 'auto-emotion' ); ?>
+			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
+		</a>
+	</div>
+</section>
+<?php
+echo '<div class="container">';
+?>
 
 <?php
 $auto_emotion_nutzfahrzeuge_angebote = new WP_Query(
@@ -89,7 +206,7 @@ $auto_emotion_nutzfahrzeuge_angebote = new WP_Query(
 	</div>
 <?php endif; ?>
 
-<form class="application-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+<form id="anfrage" class="application-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 	<input type="hidden" name="action" value="auto_emotion_b2b_anfrage">
 	<?php wp_nonce_field( 'auto_emotion_b2b', 'auto_emotion_b2b_nonce' ); ?>
 
