@@ -77,25 +77,77 @@ echo '<div class="container">';
 	<h2 class="section-heading__title"><?php esc_html_e( 'Staatliche Förderung', 'auto-emotion' ); ?></h2>
 </div>
 <div class="entry-content">
-	<p><?php esc_html_e( 'Seit Januar 2026 gilt in Deutschland wieder eine soziale Kaufprämie für neu zugelassene Elektroautos und bestimmte Plug-in-Hybride bzw. Fahrzeuge mit Range Extender: 3.000 € Basisförderung für rein elektrische Fahrzeuge, mindestens 1.500 € für Plug-in-Hybride/Range-Extender. Haushalte mit bis zu zwei Kindern und einem zu versteuernden Jahreseinkommen bis 45.000 € können bis zu 6.000 € erhalten, die allgemeine Einkommensgrenze liegt bei 80.000 € (mit Kindern 90.000 €).', 'auto-emotion' ); ?></p>
-	<p><?php esc_html_e( 'Zusätzlich lässt sich über die sogenannte THG-Quote die CO₂-Einsparung eines reinen Elektroautos jährlich an quotenpflichtige Unternehmen verkaufen – die Prämie dafür liegt je nach Anbieter aktuell ungefähr zwischen 100 € und 370 € pro Jahr.', 'auto-emotion' ); ?></p>
+	<p><?php esc_html_e( 'Seit Januar 2026 gilt in Deutschland wieder eine soziale Kaufprämie für neu zugelassene Elektroautos und bestimmte Plug-in-Hybride bzw. Fahrzeuge mit Range Extender.', 'auto-emotion' ); ?></p>
+</div>
+
+<div class="model-grid">
+	<article class="model-card">
+		<svg class="model-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 8.5a4 4 0 1 0 0 7"/><path d="M7 11h6M7 13h6"/></svg>
+		<h3 class="model-card__title"><?php esc_html_e( 'Bis zu 6.000 €', 'auto-emotion' ); ?></h3>
+		<p class="model-card__text"><?php esc_html_e( 'Für rein elektrische Fahrzeuge, bei Haushalten mit bis zu zwei Kindern und einem zu versteuernden Jahreseinkommen bis 45.000 €. Basisförderung sonst 3.000 €.', 'auto-emotion' ); ?></p>
+	</article>
+	<article class="model-card">
+		<svg class="model-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V6a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v14M4 20h10M7 20v-6h4v6M15 9l2.3 2.3a1 1 0 0 1 .3.7V17a1.3 1.3 0 0 0 2.6 0v-3.2a1 1 0 0 0-.3-.7L17.5 10.7M8 8h2"/></svg>
+		<h3 class="model-card__title"><?php esc_html_e( 'Ab 1.500 €', 'auto-emotion' ); ?></h3>
+		<p class="model-card__text"><?php esc_html_e( 'Mindestförderung für Plug-in-Hybride und Fahrzeuge mit Range Extender. Allgemeine Einkommensgrenze: 80.000 € (mit Kindern 90.000 €).', 'auto-emotion' ); ?></p>
+	</article>
+	<article class="model-card">
+		<svg class="model-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3l-9 10h6l-2 8 10-12h-7z"/></svg>
+		<h3 class="model-card__title"><?php esc_html_e( '100–370 € pro Jahr', 'auto-emotion' ); ?></h3>
+		<p class="model-card__text"><?php esc_html_e( 'Über die THG-Quote lässt sich die CO₂-Einsparung eines reinen Elektroautos jährlich an quotenpflichtige Unternehmen verkaufen – Prämie je nach Anbieter.', 'auto-emotion' ); ?></p>
+	</article>
+</div>
+
+<div class="entry-content">
 	<p class="model-card__disclaimer"><?php esc_html_e( 'Stand: Oktober 2026, Angaben ohne Gewähr nach öffentlich zugänglichen Quellen. Fördersätze, Einkommensgrenzen und Fristen ändern sich regelmäßig und hängen von Ihrer individuellen Situation ab – wir prüfen das gerne gemeinsam mit Ihnen, ersetzen aber keine steuerliche oder rechtliche Beratung.', 'auto-emotion' ); ?></p>
 </div>
 
-<div class="section-heading">
-	<h2 class="section-heading__title"><?php esc_html_e( 'Kurze Geschichte des Elektroautos', 'auto-emotion' ); ?></h2>
-</div>
-<div class="entry-content">
-	<p><?php esc_html_e( 'Elektroautos sind keine Erfindung der letzten Jahre: Schon 1881 stellte der Franzose Gustave Trouvé in Paris ein elektrisch angetriebenes Dreirad vor, 1888 baute der deutsche Maschinenfabrikant Andreas Flocken das erste deutsche Elektroauto. Um 1900 waren in vielen Städten sogar mehr Fahrzeuge mit Elektro- als mit Verbrennungsantrieb unterwegs – leiser, einfacher zu bedienen, ohne Kurbelstart.', 'auto-emotion' ); ?></p>
-	<p><?php esc_html_e( 'Auch der Hybridantrieb ist über hundert Jahre alt: Ferdinand Porsche präsentierte 1900 auf der Weltausstellung in Paris ein Fahrzeug, bei dem ein Verbrennungsmotor einen Generator für Elektromotoren in den Radnaben antrieb. Mit besseren, günstigeren Verbrennungsmotoren und der Erfindung des elektrischen Anlassers verschwand die Elektromobilität dann für Jahrzehnte fast vollständig von der Bildfläche – bis steigende Reichweiten, Batteriekosten und Umweltauflagen sie in den letzten rund 15 Jahren zurückgebracht haben.', 'auto-emotion' ); ?></p>
-</div>
+<?php
+/**
+ * "Kurze Geschichte" und "Wie geht es weiter" als Career-/Event-Banner
+ * (Bild+Text bzw. vollflächiges Bild mit Overlay-Box) statt reiner
+ * Textwände - gleiches Komponenten-Paar wie auf Startseite/Jahreswagen,
+ * bricht dafür kurz aus dem .container aus.
+ */
+echo '</div>';
+?>
+<section class="career-banner" aria-labelledby="geschichte-heading">
+	<div class="career-banner__media">
+		<img
+			class="career-banner__image"
+			src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-modell-leaf.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>"
+			alt="Nissan Leaf, Elektrofahrzeug"
+			loading="lazy"
+		>
+	</div>
+	<div class="career-banner__content">
+		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Geschichte', 'auto-emotion' ); ?></p>
+		<h2 id="geschichte-heading" class="career-banner__headline"><?php esc_html_e( 'Kurze Geschichte des Elektroautos', 'auto-emotion' ); ?></h2>
+		<p><?php esc_html_e( 'Elektroautos sind keine Erfindung der letzten Jahre: Schon 1881 stellte der Franzose Gustave Trouvé in Paris ein elektrisch angetriebenes Dreirad vor, 1888 baute der deutsche Maschinenfabrikant Andreas Flocken das erste deutsche Elektroauto. Um 1900 waren in vielen Städten sogar mehr Fahrzeuge mit Elektro- als mit Verbrennungsantrieb unterwegs – leiser, einfacher zu bedienen, ohne Kurbelstart.', 'auto-emotion' ); ?></p>
+		<p><?php esc_html_e( 'Auch der Hybridantrieb ist über hundert Jahre alt: Ferdinand Porsche präsentierte 1900 auf der Weltausstellung in Paris ein Fahrzeug, bei dem ein Verbrennungsmotor einen Generator für Elektromotoren in den Radnaben antrieb. Mit besseren, günstigeren Verbrennungsmotoren und der Erfindung des elektrischen Anlassers verschwand die Elektromobilität dann für Jahrzehnte fast vollständig von der Bildfläche – bis steigende Reichweiten, Batteriekosten und Umweltauflagen sie in den letzten rund 15 Jahren zurückgebracht haben.', 'auto-emotion' ); ?></p>
+	</div>
+</section>
 
-<div class="section-heading">
-	<h2 class="section-heading__title"><?php esc_html_e( 'Wie geht es weiter?', 'auto-emotion' ); ?></h2>
-</div>
-<div class="entry-content">
-	<p><?php esc_html_e( 'Seat, Cupra und Nissan bauen ihre Elektro- und Hybridmodelle kontinuierlich aus – Reichweiten steigen, Ladezeiten sinken, und mit dem Preisverfall bei Batterien rücken E-Autos auch preislich näher an vergleichbare Verbrenner heran. Wie schnell sich das entwickelt und wie die Förderlandschaft sich weiter verändert, lässt sich seriös nicht auf Jahre hinaus vorhersagen – wir halten Sie dazu gerne auf dem Laufenden, wenn Sie sich aktuell mit einem Kauf beschäftigen.', 'auto-emotion' ); ?></p>
-</div>
+<section class="event-banner" aria-labelledby="ausblick-heading">
+	<img
+		class="event-banner__image"
+		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-modell-ariya.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>"
+		alt=""
+		loading="lazy"
+	>
+	<div class="event-banner__content">
+		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Ausblick', 'auto-emotion' ); ?></p>
+		<h2 id="ausblick-heading" class="event-banner__headline"><?php esc_html_e( 'Wie geht es weiter?', 'auto-emotion' ); ?></h2>
+		<p><?php esc_html_e( 'Seat, Cupra und Nissan bauen ihre Elektro- und Hybridmodelle kontinuierlich aus – Reichweiten steigen, Ladezeiten sinken, und mit dem Preisverfall bei Batterien rücken E-Autos auch preislich näher an vergleichbare Verbrenner heran. Wie schnell sich das entwickelt und wie die Förderlandschaft sich weiter verändert, lässt sich seriös nicht auf Jahre hinaus vorhersagen – wir halten Sie dazu gerne auf dem Laufenden, wenn Sie sich aktuell mit einem Kauf beschäftigen.', 'auto-emotion' ); ?></p>
+		<a class="btn btn-giallo" href="mailto:<?php echo esc_attr( auto_emotion_contact( 'email' ) ); ?>?subject=<?php echo rawurlencode( 'Elektro & Hybrid-Anfrage' ); ?>">
+			<?php esc_html_e( 'Anfrage senden', 'auto-emotion' ); ?>
+			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
+		</a>
+	</div>
+</section>
+<?php
+echo '<div class="container">';
+?>
 
 <?php
 /**
@@ -156,10 +208,16 @@ $auto_emotion_elektro_news_featured    = get_post( $auto_emotion_elektro_news_fe
 <div class="section-heading">
 	<h2 class="section-heading__title"><?php esc_html_e( 'Häufige Fragen', 'auto-emotion' ); ?></h2>
 </div>
-<div class="entry-content">
+<div class="faq-list">
 	<?php foreach ( $auto_emotion_elektro_faq as $auto_emotion_faq_item ) : ?>
-		<h3><?php echo esc_html( $auto_emotion_faq_item['q'] ); ?></h3>
-		<p><?php echo esc_html( $auto_emotion_faq_item['a'] ); ?></p>
+		<details class="faq-item">
+			<summary class="faq-item__question">
+				<span class="faq-item__icon" aria-hidden="true">?</span>
+				<h3 class="faq-item__title"><?php echo esc_html( $auto_emotion_faq_item['q'] ); ?></h3>
+				<span class="faq-item__toggle" aria-hidden="true"></span>
+			</summary>
+			<p class="faq-item__answer"><?php echo esc_html( $auto_emotion_faq_item['a'] ); ?></p>
+		</details>
 	<?php endforeach; ?>
 </div>
 

@@ -3854,3 +3854,85 @@ body.has-transparent-header .site-main {
 	border-color: var(--surface-canvas-white);
 	background: rgba(255, 255, 255, 0.12);
 }
+
+/* ---------------------------------------------------------------- */
+/* FAQ-Akkordeon - ersetzt reine H3+Absatz-Textwände auf Content-     */
+/* Seiten durch aufklappbare Fragen mit Icon-Badge, nativ per         */
+/* <details>/<summary> ohne eigenes JS. Bewusst eigene Klassen statt  */
+/* Wiederverwendung von .model-card, das bereits für zwei andere,     */
+/* unterschiedlich gestaltete Komponenten (Icon-Karte auf Neuwagen,   */
+/* Akkordeon-Kachel im Marken-Archiv) überladen ist.                  */
+/* ---------------------------------------------------------------- */
+
+.faq-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-16);
+}
+
+.faq-item {
+	border: 1px solid var(--color-graphite-border);
+}
+
+.faq-item__question {
+	cursor: pointer;
+	list-style: none;
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-16);
+	padding: var(--spacing-24);
+}
+
+.faq-item__question::-webkit-details-marker {
+	display: none;
+}
+
+.faq-item__icon {
+	flex-shrink: 0;
+	width: 36px;
+	height: 36px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background: var(--color-rosso-vivo);
+	color: var(--surface-canvas-white);
+	font-size: var(--text-body);
+	font-weight: 600;
+}
+
+.faq-item__title {
+	flex: 1;
+	font-size: var(--text-heading-sm);
+	margin: 0;
+}
+
+.faq-item__toggle {
+	flex-shrink: 0;
+	width: 12px;
+	height: 12px;
+	border-right: 2px solid currentColor;
+	border-bottom: 2px solid currentColor;
+	transform: rotate(45deg);
+	transition: transform 0.2s ease;
+}
+
+.faq-item[open] .faq-item__toggle {
+	transform: rotate(-135deg);
+}
+
+.faq-item__answer {
+	margin: 0;
+	padding: 0 var(--spacing-24) var(--spacing-24) calc(var(--spacing-24) + 36px + var(--spacing-16));
+	color: var(--color-steel-mid);
+}
+
+@media (max-width: 500px) {
+	.faq-item__question {
+		padding: var(--spacing-16);
+	}
+
+	.faq-item__answer {
+		padding: 0 var(--spacing-16) var(--spacing-16);
+	}
+}
