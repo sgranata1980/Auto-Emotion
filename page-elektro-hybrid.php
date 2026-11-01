@@ -115,8 +115,8 @@ echo '</div>';
 	<div class="career-banner__media">
 		<img
 			class="career-banner__image"
-			src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-modell-leaf.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>"
-			alt="Nissan Leaf, Elektrofahrzeug"
+			src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/elektro-geschichte-illustration.png?ver=' . AUTO_EMOTION_VERSION ); ?>"
+			alt="Illustration: Von der Tesla-Spule über frühe Elektrofahrzeug-Entwürfe bis zum modernen Concept-Car"
 			loading="lazy"
 		>
 	</div>
@@ -131,14 +131,14 @@ echo '</div>';
 <section class="event-banner" aria-labelledby="ausblick-heading">
 	<img
 		class="event-banner__image"
-		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-modell-ariya.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>"
+		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/cupra-tindaya-showcar.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>"
 		alt=""
 		loading="lazy"
 	>
 	<div class="event-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Ausblick', 'auto-emotion' ); ?></p>
 		<h2 id="ausblick-heading" class="event-banner__headline"><?php esc_html_e( 'Wie geht es weiter?', 'auto-emotion' ); ?></h2>
-		<p><?php esc_html_e( 'Seat, Cupra und Nissan bauen ihre Elektro- und Hybridmodelle kontinuierlich aus – Reichweiten steigen, Ladezeiten sinken, und mit dem Preisverfall bei Batterien rücken E-Autos auch preislich näher an vergleichbare Verbrenner heran. Wie schnell sich das entwickelt und wie die Förderlandschaft sich weiter verändert, lässt sich seriös nicht auf Jahre hinaus vorhersagen – wir halten Sie dazu gerne auf dem Laufenden, wenn Sie sich aktuell mit einem Kauf beschäftigen.', 'auto-emotion' ); ?></p>
+		<p><?php esc_html_e( 'Seat, Cupra und Nissan bauen ihre Elektro- und Hybridmodelle kontinuierlich aus – Reichweiten steigen, Ladezeiten sinken, und mit dem Preisverfall bei Batterien rücken E-Autos auch preislich näher an vergleichbare Verbrenner heran. Wohin die Reise geht, zeigen Studien wie der CUPRA Tindaya im Bild: ein Showcar, keine Serienversion, aber eine klare Ansage zur elektrischen Designsprache der Marke. Wie schnell sich das in konkreten Modellen entwickelt und wie die Förderlandschaft sich weiter verändert, lässt sich seriös nicht auf Jahre hinaus vorhersagen – wir halten Sie dazu gerne auf dem Laufenden, wenn Sie sich aktuell mit einem Kauf beschäftigen.', 'auto-emotion' ); ?></p>
 		<a class="btn btn-giallo" href="mailto:<?php echo esc_attr( auto_emotion_contact( 'email' ) ); ?>?subject=<?php echo rawurlencode( 'Elektro & Hybrid-Anfrage' ); ?>">
 			<?php esc_html_e( 'Anfrage senden', 'auto-emotion' ); ?>
 			<span class="btn-arrow" aria-hidden="true">&rarr;</span>
