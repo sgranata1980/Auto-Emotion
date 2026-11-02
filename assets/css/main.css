@@ -1747,19 +1747,6 @@ body.has-transparent-header .site-main {
 	}
 }
 
-.career-banner__image--townstar {
-	/* Aus einem Social-Media-Sujet (1080x1350) freigestelltes Foto -
-	   Familie + Fahrzeug nehmen zusammen einen großen Teil der
-	   Bildhöhe ein (ca. 36-87%). Bei object-fit:cover schnitt das auf
-	   normalen wie auf schmalen Viewports Köpfe/Fahrzeug ab (Nutzer-
-	   Feedback mit Screenshots in zwei Fensterbreiten) - object-fit:
-	   contain zeigt das Bild immer vollständig, unabhängig von der
-	   Viewport-Breite. Dunkler statt weißer Hintergrund, damit der
-	   Übergang zum Farbverlauf darunter nicht reißt. */
-	object-fit: contain;
-	background: var(--color-carbony-black);
-}
-
 .career-banner__wltp {
 	margin: var(--spacing-24) 0 0;
 	font-size: var(--text-caption);
