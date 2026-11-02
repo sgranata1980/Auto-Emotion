@@ -12,29 +12,65 @@ get_header();
 $auto_emotion_term = get_queried_object();
 
 /**
- * Echte Fotos aus dem Showroom statt generischer KI-Bilder, wo
- * bereits welche vorliegen – pro Marke einzeln gepflegt.
+ * Großer Video-/Bild-Hero statt kleinem statischen Kopfbild (Nutzer-
+ * Feedback: "bei Marken ... Header ganz groß, mit einem Video").
+ * Cupra hat mit dem bereits vorhandenen, bislang ungenutzten
+ * cupra-header-spot ein echtes, hochwertiges Video - für Seat und
+ * Nissan liegt uns aktuell kein eigenes Markenvideo vor, daher dort
+ * weiterhin ein hochauflösendes Foto als Hero (kein Video erfinden/
+ * unterschieben).
  */
-$auto_emotion_marke_headers = array(
+$auto_emotion_marke_heroes = array(
 	'nissan' => array(
-		'image' => 'nissan-showroom-juke.jpg',
-		'alt'   => 'Nissan-Bereich im Auto Emotion Showroom mit Nissan Juke und Design Lab',
+		'eyebrow'         => 'Nissan bei Auto Emotion',
+		'headline_pre'    => __( 'Innovation', 'auto-emotion' ),
+		'headline_accent' => __( 'für jeden Tag.', 'auto-emotion' ),
+		'image'           => 'nissan-showroom-juke.jpg',
+		'video'           => '',
+		'video_webm'      => '',
 	),
 	'seat'   => array(
-		'image' => 'marke-seat-header.jpg',
-		'alt'   => 'Seat-Bereich im Auto Emotion Showroom mit Seat Arona und Leon',
+		'eyebrow'         => 'Seat bei Auto Emotion',
+		'headline_pre'    => __( 'Typisch', 'auto-emotion' ),
+		'headline_accent' => __( 'spanisch.', 'auto-emotion' ),
+		'image'           => 'marke-seat-header.jpg',
+		'video'           => '',
+		'video_webm'      => '',
 	),
 	'cupra'  => array(
-		'image' => 'marke-cupra-header.jpg',
-		'alt'   => 'Cupra-Bereich im Auto Emotion Showroom mit Cupra Formentor und Arona zum 25-jährigen Jubiläum',
+		'eyebrow'         => 'Cupra bei Auto Emotion',
+		'headline_pre'    => __( 'Mehr als', 'auto-emotion' ),
+		'headline_accent' => __( 'nur schnell.', 'auto-emotion' ),
+		'image'           => 'cupra-header-poster.jpg',
+		'video'           => 'cupra-header-spot.mp4',
+		'video_webm'      => 'cupra-header-spot.webm',
 	),
 );
-$auto_emotion_marke_header  = $auto_emotion_marke_headers[ $auto_emotion_term->slug ] ?? null;
-?>
+$auto_emotion_marke_hero  = $auto_emotion_marke_heroes[ $auto_emotion_term->slug ] ?? null;
 
-<?php if ( $auto_emotion_marke_header ) : ?>
-	<img class="content-header-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/' . $auto_emotion_marke_header['image'] ); ?>" alt="<?php echo esc_attr( $auto_emotion_marke_header['alt'] ); ?>" loading="lazy">
-<?php endif; ?>
+if ( $auto_emotion_marke_hero ) {
+	echo '</div>';
+
+	get_template_part(
+		'template-parts/hero',
+		null,
+		array(
+			'eyebrow'         => $auto_emotion_marke_hero['eyebrow'],
+			'headline_pre'    => $auto_emotion_marke_hero['headline_pre'],
+			'headline_accent' => $auto_emotion_marke_hero['headline_accent'],
+			'cta_text'        => __( 'Modelle entdecken', 'auto-emotion' ),
+			'cta_url'         => '#modelle',
+			'cta2_text'       => __( 'Anfrage senden', 'auto-emotion' ),
+			'cta2_url'        => 'mailto:' . auto_emotion_contact( 'email' ) . '?subject=' . rawurlencode( $auto_emotion_term->name . '-Anfrage' ),
+			'image'           => AUTO_EMOTION_URI . '/assets/images/' . $auto_emotion_marke_hero['image'] . '?ver=' . AUTO_EMOTION_VERSION,
+			'video'           => $auto_emotion_marke_hero['video'] ? AUTO_EMOTION_URI . '/assets/videos/' . $auto_emotion_marke_hero['video'] . '?ver=' . AUTO_EMOTION_VERSION : '',
+			'video_webm'      => $auto_emotion_marke_hero['video_webm'] ? AUTO_EMOTION_URI . '/assets/videos/' . $auto_emotion_marke_hero['video_webm'] . '?ver=' . AUTO_EMOTION_VERSION : '',
+		)
+	);
+
+	echo '<div class="container">';
+}
+?>
 
 <div class="section-heading">
 	<h1 class="section-heading__title"><?php echo esc_html( $auto_emotion_term->name ); ?></h1>
@@ -42,6 +78,41 @@ $auto_emotion_marke_header  = $auto_emotion_marke_headers[ $auto_emotion_term->s
 
 <?php if ( $auto_emotion_term->description ) : ?>
 	<div class="archive-description"><?php echo wp_kses_post( wpautop( $auto_emotion_term->description ) ); ?></div>
+<?php endif; ?>
+
+<?php
+/**
+ * Ein vollflächiges Imagebild je Marke zwischen Einleitung und
+ * Modellraster (Nutzer-Feedback: "ab und an mal vollflächig ein
+ * paar Imagebilder") - echte, bislang auf dieser Seite ungenutzte
+ * Pressefotos statt generischer Deko.
+ */
+$auto_emotion_marke_bild_full = array(
+	'nissan' => array(
+		'image' => 'nissan-primastar-angebot.jpg',
+		'alt'   => 'Nissan Primastar, offizielles Pressefoto',
+	),
+	'seat'   => array(
+		'image' => 'showroom-lounge-seat.jpg',
+		'alt'   => 'Seat-Fahrzeug im Auto Emotion Showroom',
+	),
+	'cupra'  => array(
+		'image' => 'cupra-formentor-abt-angebot.jpg',
+		'alt'   => 'Cupra Formentor, offizielles Pressefoto',
+	),
+);
+$auto_emotion_bild_full       = $auto_emotion_marke_bild_full[ $auto_emotion_term->slug ] ?? null;
+?>
+
+<?php if ( $auto_emotion_bild_full ) : ?>
+	<?php echo '</div>'; ?>
+	<img
+		class="content-header-image"
+		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/' . $auto_emotion_bild_full['image'] . '?ver=' . AUTO_EMOTION_VERSION ); ?>"
+		alt="<?php echo esc_attr( $auto_emotion_bild_full['alt'] ); ?>"
+		loading="lazy"
+	>
+	<?php echo '<div class="container">'; ?>
 <?php endif; ?>
 
 <?php
@@ -303,7 +374,7 @@ $auto_emotion_modelle       = $auto_emotion_marke_modelle[ $auto_emotion_term->s
 ?>
 
 <?php if ( $auto_emotion_modelle ) : ?>
-	<div class="section-heading">
+	<div class="section-heading" id="modelle">
 		<h2 class="section-heading__title">
 			<?php
 			/* translators: %s: brand name, e.g. "Seat" */
