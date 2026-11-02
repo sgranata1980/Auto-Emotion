@@ -14,19 +14,18 @@ $auto_emotion_term = get_queried_object();
 /**
  * Großer Video-/Bild-Hero statt kleinem statischen Kopfbild (Nutzer-
  * Feedback: "bei Marken ... Header ganz groß, mit einem Video").
- * Cupra hat mit dem bereits vorhandenen, bislang ungenutzten
- * cupra-header-spot ein echtes, hochwertiges Video - für Seat und
- * Nissan liegt uns aktuell kein eigenes Markenvideo vor, daher dort
- * weiterhin ein hochauflösendes Foto als Hero (kein Video erfinden/
- * unterschieben).
+ * Cupra und Nissan nutzen echtes Herstellermaterial (Cupra Born VZ,
+ * Nissan Leaf) - für Seat liegt uns aktuell kein Markenvideo vor,
+ * daher dort weiterhin ein hochauflösendes Foto als Hero (kein Video
+ * erfinden/unterschieben).
  */
 $auto_emotion_marke_heroes = array(
 	'nissan' => array(
 		'eyebrow'         => 'Nissan bei Auto Emotion',
 		'headline_pre'    => "Innova\xC2\xADtion",
 		'headline_accent' => __( 'für jeden Tag.', 'auto-emotion' ),
-		'image'           => 'nissan-showroom-juke.jpg',
-		'video'           => '',
+		'image'           => 'nissan-header-spot-poster.jpg',
+		'video'           => 'nissan-header-spot.mp4',
 		'video_webm'      => '',
 	),
 	'seat'   => array(
@@ -41,9 +40,9 @@ $auto_emotion_marke_heroes = array(
 		'eyebrow'         => 'Cupra bei Auto Emotion',
 		'headline_pre'    => __( 'Mehr als', 'auto-emotion' ),
 		'headline_accent' => __( 'nur schnell.', 'auto-emotion' ),
-		'image'           => 'cupra-header-poster.jpg',
-		'video'           => 'cupra-header-spot.mp4',
-		'video_webm'      => 'cupra-header-spot.webm',
+		'image'           => 'cupra-header-spot-pro-poster.jpg',
+		'video'           => 'cupra-header-spot-pro.mp4',
+		'video_webm'      => '',
 	),
 );
 $auto_emotion_marke_hero  = $auto_emotion_marke_heroes[ $auto_emotion_term->slug ] ?? null;
