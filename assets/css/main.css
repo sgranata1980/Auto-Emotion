@@ -1747,6 +1747,17 @@ body.has-transparent-header .site-main {
 	}
 }
 
+.career-banner__image--townstar {
+	/* Offizielles Nissan-Pressefoto (Studioaufnahme, 2752x1536,
+	   scharfe Originalauflösung statt hochskalierter Social-Media-
+	   Grafik) - Fahrzeug füllt den Bildbereich nahezu symmetrisch
+	   von oben nach unten, daher zentrierter statt nach oben
+	   verschobener Crop (anders als der vererbte Standard-Fokus
+	   "22%", der für ein anderes Foto mit Kopf im oberen Drittel
+	   gedacht ist). */
+	object-position: center 50%;
+}
+
 .career-banner__wltp {
 	margin: var(--spacing-24) 0 0;
 	font-size: var(--text-caption);
