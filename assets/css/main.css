@@ -4013,3 +4013,53 @@ body.has-transparent-header .site-main {
 		display: none;
 	}
 }
+
+/* ---------------------------------------------------------------- */
+/* Formular-Panel mit Kontakt-Aside - rahmt das Anfrageformular als   */
+/* einen Kasten statt es frei auf der Seite stehen zu lassen (sonst   */
+/* bleibt rechts neben dem schmalen .application-form auf breiten     */
+/* Viewports eine große leere Fläche, Nutzer-Feedback). Die Aside     */
+/* füllt den Platz mit echtem Mehrwert (Direktkontakt, Foto) statt    */
+/* reiner Dekoration.                                                 */
+/* ---------------------------------------------------------------- */
+
+.form-panel {
+	display: grid;
+	grid-template-columns: minmax(0, 480px) 1fr;
+	gap: var(--spacing-48);
+	border: 1px solid var(--color-graphite-border);
+	padding: var(--spacing-48);
+}
+
+.form-panel .application-form {
+	max-width: none;
+}
+
+.form-panel__aside-image {
+	width: 100%;
+	height: 240px;
+	object-fit: cover;
+	margin-bottom: var(--spacing-24);
+}
+
+.form-panel__aside h3 {
+	font-size: var(--text-heading-sm);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	margin: 0 0 var(--spacing-16);
+}
+
+.form-panel__aside p {
+	margin: 0 0 var(--spacing-16);
+}
+
+@media (max-width: 900px) {
+	.form-panel {
+		grid-template-columns: 1fr;
+		padding: var(--spacing-24);
+	}
+
+	.form-panel__aside {
+		order: -1;
+	}
+}

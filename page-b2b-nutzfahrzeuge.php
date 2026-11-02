@@ -204,6 +204,10 @@ $auto_emotion_nutzfahrzeuge_angebote = new WP_Query(
 	<?php wp_reset_postdata(); ?>
 <?php endif; ?>
 
+<div class="section-heading">
+	<h2 class="section-heading__title"><?php esc_html_e( 'Anfrage senden', 'auto-emotion' ); ?></h2>
+</div>
+
 <?php if ( 'ok' === $auto_emotion_status ) : ?>
 	<div class="application-notice application-notice--success">
 		<?php esc_html_e( 'Danke für Ihre Anfrage! Wir melden uns innerhalb von 24 Stunden bei Ihnen.', 'auto-emotion' ); ?>
@@ -214,6 +218,7 @@ $auto_emotion_nutzfahrzeuge_angebote = new WP_Query(
 	</div>
 <?php endif; ?>
 
+<div class="form-panel">
 <form id="anfrage" class="application-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 	<input type="hidden" name="action" value="auto_emotion_b2b_anfrage">
 	<?php wp_nonce_field( 'auto_emotion_b2b', 'auto_emotion_b2b_nonce' ); ?>
@@ -263,6 +268,22 @@ $auto_emotion_nutzfahrzeuge_angebote = new WP_Query(
 		<span class="btn-arrow" aria-hidden="true">&rarr;</span>
 	</button>
 </form>
+
+	<aside class="form-panel__aside">
+		<img class="form-panel__aside-image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/service-empfang-nissan.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Service-Empfang bei Auto Emotion" loading="lazy">
+		<h3><?php esc_html_e( 'Lieber direkt sprechen?', 'auto-emotion' ); ?></h3>
+		<p>
+			<?php esc_html_e( 'Telefon', 'auto-emotion' ); ?>:
+			<a href="tel:<?php echo esc_attr( auto_emotion_contact( 'phone_href' ) ); ?>"><?php echo esc_html( auto_emotion_contact( 'phone' ) ); ?></a><br>
+			<?php esc_html_e( 'E-Mail', 'auto-emotion' ); ?>:
+			<a href="mailto:<?php echo esc_attr( auto_emotion_contact( 'email' ) ); ?>"><?php echo esc_html( auto_emotion_contact( 'email' ) ); ?></a>
+		</p>
+		<p>
+			<?php esc_html_e( 'Öffnungszeiten Verkauf', 'auto-emotion' ); ?>:<br>
+			<?php echo esc_html( auto_emotion_contact( 'hours_sales' ) ); ?>
+		</p>
+	</aside>
+</div>
 
 <?php
 get_footer();
