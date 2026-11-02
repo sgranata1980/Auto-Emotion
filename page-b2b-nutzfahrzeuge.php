@@ -107,7 +107,7 @@ echo '<div class="container">';
 </div>
 <div class="photo-gallery">
 	<figure>
-		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-townstar-fahrzeug.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Townstar" loading="lazy">
+		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-townstar-angebot.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Townstar Kastenwagen" loading="lazy">
 	</figure>
 	<figure>
 		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-townstar-familie.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Familie mit Nissan Townstar am Strand" loading="lazy">
