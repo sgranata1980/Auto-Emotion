@@ -99,6 +99,28 @@ echo '<div class="container">';
 	<p><?php esc_html_e( 'Ob einzelnes Fahrzeug oder ganzer Fuhrpark: Sprechen Sie uns an, wir erarbeiten ein Angebot für Ihren Betrieb – individuell auf Ihren Bedarf zugeschnitten.', 'auto-emotion' ); ?></p>
 </div>
 
+<?php
+echo '</div>';
+?>
+<section class="career-banner" aria-labelledby="townstar-heading">
+	<div class="career-banner__media">
+		<img
+			class="career-banner__image"
+			src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-townstar-familie-strand.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>"
+			alt="Nissan Townstar"
+			loading="lazy"
+		>
+	</div>
+	<div class="career-banner__content">
+		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Nissan Townstar', 'auto-emotion' ); ?></p>
+		<h2 id="townstar-heading" class="career-banner__headline"><?php esc_html_e( 'Flexibel für jeden Alltag.', 'auto-emotion' ); ?></h2>
+		<p><?php esc_html_e( 'Ob als Kombi für die Familie oder als Kastenwagen für den Betrieb: Der Townstar ist vielseitig einsetzbar und auch vollelektrisch erhältlich.', 'auto-emotion' ); ?></p>
+	</div>
+</section>
+<?php
+echo '<div class="container">';
+?>
+
 <div class="section-heading" id="einsatzzwecke">
 	<h2 class="section-heading__title"><?php esc_html_e( 'Für jeden Einsatzzweck das passende Fahrzeug', 'auto-emotion' ); ?></h2>
 </div>

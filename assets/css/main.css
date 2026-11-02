@@ -1558,7 +1558,11 @@ body.has-transparent-header .site-main {
 .event-banner__image {
 	display: block;
 	width: 100%;
-	height: 420px;
+	/* Fluid wie .career-banner__image - verhindert dasselbe Problem
+	   (Motive/Gesichter fallen auf sehr breiten Viewports aus dem
+	   Crop-Fenster) auf allen event-banner-Bildern, nicht nur dem
+	   einen bereits gemeldeten Fall. */
+	height: clamp(420px, 30vw, 600px);
 	object-fit: cover;
 	object-position: center 55%;
 }
@@ -1616,7 +1620,13 @@ body.has-transparent-header .site-main {
 .career-banner__image {
 	display: block;
 	width: 100%;
-	height: 420px;
+	/* Fluid statt fest: bei sehr breiten Viewports (27"+-Monitore)
+	   wächst die Bildbreite, aber eine feste Höhe ließ das Crop-Fenster
+	   proportional immer schmaler werden - Gesichter/Motive im oberen
+	   Bilddrittel fielen dann ganz aus dem sichtbaren Ausschnitt
+	   (Nutzer-Feedback, Screenshot von einem 27"-Monitor). 420px bleibt
+	   bis ca. 1400px Viewportbreite unverändert, wächst danach mit. */
+	height: clamp(420px, 30vw, 600px);
 	object-fit: cover;
 	/* Motiv (Kopf/Tablet) sitzt im oberen Bilddrittel – bei der
 	   niedrigen Banner-Höhe sonst würde ein zentrierter Crop nur den
