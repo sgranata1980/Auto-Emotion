@@ -3277,13 +3277,14 @@ body.has-transparent-header .site-main {
 
 /* Foto randlos bis an die Kachelkante, sonst wirkt der helle Rand ums
    graue Studiofoto wieder wie ein zweiter Rahmen. 16:9 entspricht dem
-   Format der Herstellerfotos, das Fahrzeug bleibt vollständig sichtbar. */
+   Format der meisten Herstellerfotos; contain statt cover, damit auch
+   breitere Motive (Nissan) nie angeschnitten werden. */
 .photo-gallery--products img {
 	height: auto;
 	aspect-ratio: 16 / 9;
 	padding: 0;
 	border: 0;
-	object-fit: cover;
+	object-fit: contain;
 }
 
 .photo-gallery--products .model-card__summary figcaption {
