@@ -14,10 +14,8 @@ $auto_emotion_term = get_queried_object();
 /**
  * Großer Video-/Bild-Hero statt kleinem statischen Kopfbild (Nutzer-
  * Feedback: "bei Marken ... Header ganz groß, mit einem Video").
- * Cupra und Nissan nutzen echtes Herstellermaterial (Cupra Born VZ,
- * Nissan Leaf) - für Seat liegt uns aktuell kein Markenvideo vor,
- * daher dort weiterhin ein hochauflösendes Foto als Hero (kein Video
- * erfinden/unterschieben).
+ * Alle drei Marken nutzen echtes Herstellermaterial (Seat Arona,
+ * Cupra Born VZ, Nissan Leaf).
  */
 $auto_emotion_marke_heroes = array(
 	'nissan' => array(
@@ -32,8 +30,8 @@ $auto_emotion_marke_heroes = array(
 		'eyebrow'         => 'Seat bei Auto Emotion',
 		'headline_pre'    => __( 'Typisch', 'auto-emotion' ),
 		'headline_accent' => __( 'spanisch.', 'auto-emotion' ),
-		'image'           => 'marke-seat-header.jpg',
-		'video'           => '',
+		'image'           => 'seat-header-spot-poster.jpg',
+		'video'           => 'seat-header-spot.mp4',
 		'video_webm'      => '',
 	),
 	'cupra'  => array(
