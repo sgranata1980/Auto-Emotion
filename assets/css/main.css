@@ -3264,6 +3264,208 @@ body.has-transparent-header .site-main {
 	margin: 0;
 }
 
+/* Modell-Kacheln im Marken-Archiv: genau ein Rahmen. Die zweite
+   .model-card-Regel (Neuwagen-Seite) bringt Padding und Schatten mit,
+   das Produktfoto oben einen eigenen Rahmen - hier beides eng auf das
+   Produkt-Raster zurückgenommen, die Neuwagen-Seite bleibt unberührt. */
+.photo-gallery--products .model-card {
+	padding: 0;
+	border: 1px solid rgba(0, 0, 0, 0.14);
+	box-shadow: none;
+	transform: none;
+}
+
+.photo-gallery--products img {
+	height: 200px;
+	border: 0;
+}
+
+.photo-gallery--products .model-card__summary figcaption {
+	margin-top: 0;
+	padding: 0 var(--spacing-16) var(--spacing-16);
+	/* Figcaption aus .photo-gallery vererbt sonst nur 10px in Grau -
+	   zu klein für den Modellnamen, gilt für alle Marken. */
+	font-size: var(--text-body);
+	color: var(--color-carbony-black);
+}
+
+/* Name plus Karosserieform. */
+.model-card__name {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	min-width: 0;
+}
+
+.model-card__meta {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 13px;
+	/* Dunkler als --color-steel-mid: bei 13px sonst unter AA-Kontrast. */
+	color: var(--color-graphite-border);
+}
+
+.model-card__meta svg {
+	width: 18px;
+	height: 18px;
+	flex-shrink: 0;
+}
+
+/* Überschrift und Raster gehören zusammen: statt 56px Padding plus
+   56px Sektionsabstand nur noch 24px. */
+.section-heading:has(+ .photo-gallery--products) {
+	padding-bottom: 0;
+}
+
+.section-heading:has(+ .photo-gallery--products) + .photo-gallery--products {
+	margin-top: var(--spacing-24);
+}
+
+/* Genau fünf Modelle: alle in eine Zeile statt eines einzelnen
+   Rests in Zeile 2. Die schmaleren Spalten braucht auch der
+   aufgeklappte Konfigurator - der Button würde sonst mit 16px
+   Versalien und 24px Innenabstand am Kartenrand abgeschnitten. */
+@media (min-width: 1200px) {
+	.photo-gallery--products:has(> :nth-child(5):last-child) {
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+		gap: var(--spacing-16);
+	}
+
+	.photo-gallery--products:has(> :nth-child(5):last-child) .model-card__details {
+		overflow-wrap: break-word;
+	}
+
+	.photo-gallery--products:has(> :nth-child(5):last-child) .configurator__group,
+	.photo-gallery--products:has(> :nth-child(5):last-child) .configurator__select {
+		min-width: 0;
+	}
+
+	.photo-gallery--products:has(> :nth-child(5):last-child) .configurator__cta {
+		gap: var(--spacing-8);
+		padding: 12px;
+		font-size: 13px;
+	}
+}
+
+/* Markenkopf: Logo direkt links neben dem H1. */
+.section-heading--marke {
+	justify-content: flex-start;
+	gap: var(--spacing-24);
+	padding-bottom: var(--spacing-24);
+}
+
+.section-heading__logo {
+	width: auto;
+	height: 56px;
+	flex-shrink: 0;
+}
+
+/* Icon-Leiste unter dem Markenkopf: keine Boxen, nur Haarlinien. */
+.container > .marke-links {
+	margin-top: 0;
+}
+
+.marke-links {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	border-top: 1px solid rgba(0, 0, 0, 0.14);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+.marke-links__link {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	min-width: 0;
+	padding: 20px 16px;
+	font-size: var(--text-body);
+	color: var(--color-carbony-black);
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+.marke-links__link + .marke-links__link {
+	border-left: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+.marke-links__link:first-child {
+	padding-left: 0;
+}
+
+.marke-links__link:hover {
+	color: var(--color-rosso-vivo);
+}
+
+/* Das globale Giallo-Outline ist auf Weiß zu schwach. */
+.marke-links__link:focus-visible {
+	outline: 2px solid var(--color-rosso-vivo);
+	outline-offset: -2px;
+}
+
+.marke-links__icon {
+	width: 24px;
+	height: 24px;
+	flex-shrink: 0;
+	color: var(--color-rosso-vivo);
+}
+
+/* Vollflächiges Pressefoto im Seitenverhältnis statt fester Höhe. Die
+   doppelte Klasse sticht auch die 220px der Mobil-Regel aus. */
+.content-header-image.content-header-image--hoch {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 16 / 9;
+	max-height: 88vh;
+	object-fit: cover;
+	object-position: center;
+	transition: none;
+}
+
+.content-header-image.content-header-image--hoch:hover {
+	transform: none;
+}
+
+/* Vor einem solchen Foto zählt nur dessen Margin, sonst addiert sich
+   das Container-Padding (64px) zu den 56px Sektionsabstand. Nach der
+   Icon-Leiste etwas enger, weil der Markenkopf dazugehört. */
+.site-main > .container:has(+ .content-header-image--hoch) {
+	padding-bottom: 0;
+}
+
+.site-main > .container:has(> .marke-links) + .content-header-image--hoch {
+	margin-top: var(--spacing-48);
+}
+
+@media (max-width: 700px) {
+	.section-heading__logo {
+		height: 44px;
+	}
+
+	.marke-links {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.marke-links__link {
+		min-height: 44px;
+		padding: var(--spacing-16) 12px;
+	}
+
+	.marke-links__link:nth-child(odd) {
+		padding-left: 0;
+		border-left: 0;
+	}
+
+	.marke-links__link:nth-child(n + 3) {
+		border-top: 1px solid rgba(0, 0, 0, 0.14);
+	}
+
+	.content-header-image.content-header-image--hoch {
+		aspect-ratio: 4 / 3;
+		max-height: none;
+	}
+}
+
 /* Konfigurator innerhalb der aufgeklappten Modellkachel. */
 .configurator {
 	margin-top: var(--spacing-16);

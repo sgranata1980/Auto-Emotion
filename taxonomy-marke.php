@@ -67,11 +67,55 @@ if ( $auto_emotion_marke_hero ) {
 
 	echo '<div class="container">';
 }
+
+/**
+ * Markenlogo neben dem H1. Das Seat-Symbol ist aus dem offiziellen
+ * Logo-Motiv freigestellt, nicht nachgezeichnet. alt bleibt leer, weil
+ * der H1 daneben die Marke bereits benennt.
+ */
+$auto_emotion_marke_logos = array(
+	'seat' => array(
+		'file'   => 'seat-logo.png',
+		'width'  => 141,
+		'height' => 126,
+	),
+);
+$auto_emotion_marke_logo  = $auto_emotion_marke_logos[ $auto_emotion_term->slug ] ?? null;
 ?>
 
-<div class="section-heading">
+<div class="section-heading<?php echo $auto_emotion_marke_logo ? ' section-heading--marke' : ''; ?>">
+	<?php if ( $auto_emotion_marke_logo ) : ?>
+		<img
+			class="section-heading__logo"
+			src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/' . $auto_emotion_marke_logo['file'] . '?ver=' . AUTO_EMOTION_VERSION ); ?>"
+			alt=""
+			width="<?php echo (int) $auto_emotion_marke_logo['width']; ?>"
+			height="<?php echo (int) $auto_emotion_marke_logo['height']; ?>"
+		>
+	<?php endif; ?>
 	<h1 class="section-heading__title"><?php echo esc_html( $auto_emotion_term->name ); ?></h1>
 </div>
+
+<?php if ( 'seat' === $auto_emotion_term->slug ) : ?>
+	<nav class="marke-links" aria-label="<?php esc_attr_e( 'Schnellzugriffe', 'auto-emotion' ); ?>">
+		<a class="marke-links__link" href="<?php echo esc_url( get_post_type_archive_link( 'angebot' ) ); ?>">
+			<svg class="marke-links__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><line x1="14.8" y1="14.8" x2="20" y2="20"/></svg>
+			<span><?php esc_html_e( 'Aktuelle Angebote', 'auto-emotion' ); ?></span>
+		</a>
+		<a class="marke-links__link" href="<?php echo esc_url( get_post_type_archive_link( 'angebot' ) ); ?>">
+			<svg class="marke-links__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="3"/><path d="M11 13l8-8 2 2-2 2 1.5 1.5L19 12l-5.5 5.5"/><path d="M15.5 9.5l2 2"/></svg>
+			<span><?php esc_html_e( 'Probefahrt vereinbaren', 'auto-emotion' ); ?></span>
+		</a>
+		<a class="marke-links__link" href="<?php echo esc_url( home_url( '/finanzierung-leasing/' ) ); ?>">
+			<svg class="marke-links__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="10.5" y2="12"/><line x1="13.5" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="10.5" y2="16"/><line x1="13.5" y1="16" x2="16" y2="16"/></svg>
+			<span><?php esc_html_e( 'Finanzierung & Leasing', 'auto-emotion' ); ?></span>
+		</a>
+		<a class="marke-links__link" href="<?php echo esc_url( home_url( '/servicetermin-buchen/' ) ); ?>">
+			<svg class="marke-links__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="1"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>
+			<span><?php esc_html_e( 'Servicetermin buchen', 'auto-emotion' ); ?></span>
+		</a>
+	</nav>
+<?php endif; ?>
 
 <?php if ( $auto_emotion_term->description ) : ?>
 	<div class="archive-description"><?php echo wp_kses_post( wpautop( $auto_emotion_term->description ) ); ?></div>
@@ -82,7 +126,9 @@ if ( $auto_emotion_marke_hero ) {
  * Ein vollflächiges Imagebild je Marke zwischen Einleitung und
  * Modellraster (Nutzer-Feedback: "ab und an mal vollflächig ein
  * paar Imagebilder") - echte, bislang auf dieser Seite ungenutzte
- * Pressefotos statt generischer Deko.
+ * Pressefotos statt generischer Deko. Mit 'hoch' läuft das Bild im
+ * Seitenverhältnis statt in fester Höhe (width/height halten den
+ * Platz frei); ein zweites Foto steht weiter unten nach den Angeboten.
  */
 $auto_emotion_marke_bild_full = array(
 	'nissan' => array(
@@ -90,8 +136,11 @@ $auto_emotion_marke_bild_full = array(
 		'alt'   => 'Nissan Primastar, offizielles Pressefoto',
 	),
 	'seat'   => array(
-		'image' => 'showroom-lounge-seat.jpg',
-		'alt'   => 'Seat-Fahrzeug im Auto Emotion Showroom',
+		'image'  => 'seat-bild-full-1.jpg',
+		'alt'    => 'Seat Arona und Seat Ibiza an der Küste vor einer Altstadt auf dem Hügel, offizielles Pressefoto',
+		'width'  => 2560,
+		'height' => 1707,
+		'hoch'   => true,
 	),
 	'cupra'  => array(
 		'image' => 'cupra-formentor-abt-angebot.jpg',
@@ -99,14 +148,29 @@ $auto_emotion_marke_bild_full = array(
 	),
 );
 $auto_emotion_bild_full       = $auto_emotion_marke_bild_full[ $auto_emotion_term->slug ] ?? null;
+$auto_emotion_bild_full_hoch  = ! empty( $auto_emotion_bild_full['hoch'] );
+
+$auto_emotion_marke_bild_full_2 = array(
+	'seat' => array(
+		'image'  => 'seat-bild-full-2.jpg',
+		'alt'    => 'Roter Seat Ibiza FR an der Küste bei Sonnenuntergang, offizielles Pressefoto',
+		'width'  => 2560,
+		'height' => 1706,
+	),
+);
+$auto_emotion_bild_full_2       = $auto_emotion_marke_bild_full_2[ $auto_emotion_term->slug ] ?? null;
 ?>
 
 <?php if ( $auto_emotion_bild_full ) : ?>
 	<?php echo '</div>'; ?>
 	<img
-		class="content-header-image"
+		class="content-header-image<?php echo $auto_emotion_bild_full_hoch ? ' content-header-image--hoch' : ''; ?>"
 		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/' . $auto_emotion_bild_full['image'] . '?ver=' . AUTO_EMOTION_VERSION ); ?>"
 		alt="<?php echo esc_attr( $auto_emotion_bild_full['alt'] ); ?>"
+		<?php if ( $auto_emotion_bild_full_hoch ) : ?>
+			width="<?php echo (int) $auto_emotion_bild_full['width']; ?>"
+			height="<?php echo (int) $auto_emotion_bild_full['height']; ?>"
+		<?php endif; ?>
 		loading="lazy"
 	>
 	<?php echo '<div class="container">'; ?>
@@ -256,6 +320,7 @@ $auto_emotion_marke_modelle = array(
 		array(
 			'image'       => 'seat-modell-arona.jpg',
 			'name'        => 'Seat Arona',
+			'karosserie'  => 'suv',
 			'description' => __( 'Kompaktes SUV für die Stadt – sparsam, wendig und mit viel Platz für seine Klasse.', 'auto-emotion' ),
 			'specs'       => array(
 				__( '1.0 TSI (81–110 PS)', 'auto-emotion' ),
@@ -266,6 +331,7 @@ $auto_emotion_marke_modelle = array(
 		array(
 			'image'       => 'seat-modell-ateca.jpg',
 			'name'        => 'Seat Ateca',
+			'karosserie'  => 'suv',
 			'description' => __( 'Familientaugliches SUV mit großzügigem Kofferraum und optionalem Allradantrieb.', 'auto-emotion' ),
 			'specs'       => array(
 				__( '1.0–1.5 TSI (110–150 PS), auch mit Allrad', 'auto-emotion' ),
@@ -276,6 +342,7 @@ $auto_emotion_marke_modelle = array(
 		array(
 			'image'       => 'seat-modell-ibiza.jpg',
 			'name'        => 'Seat Ibiza',
+			'karosserie'  => 'kleinwagen',
 			'description' => __( 'Der Kleinwagen-Klassiker von Seat – sparsam im Verbrauch und ideal für den Alltag.', 'auto-emotion' ),
 			'specs'       => array(
 				__( '1.0 MPI/TSI (80–115 PS)', 'auto-emotion' ),
@@ -286,6 +353,7 @@ $auto_emotion_marke_modelle = array(
 		array(
 			'image'       => 'seat-modell-leon.jpg',
 			'name'        => 'Seat Leon',
+			'karosserie'  => 'kompakt',
 			'description' => __( 'Die Kompaktklasse von Seat – sportlich abgestimmt, wahlweise auch als Plug-in-Hybrid.', 'auto-emotion' ),
 			'specs'       => array(
 				__( '1.0–2.0 TSI (110–190 PS), auch als e-HYBRID Plug-in', 'auto-emotion' ),
@@ -296,6 +364,7 @@ $auto_emotion_marke_modelle = array(
 		array(
 			'image'       => 'seat-modell-leon-sportstourer.jpg',
 			'name'        => 'Seat Leon Sportstourer',
+			'karosserie'  => 'kombi',
 			'description' => __( 'Der Kombi zum Leon – gleiche Motoren, mehr Platz für Gepäck und Familie.', 'auto-emotion' ),
 			'specs'       => array(
 				__( 'Gleiche Motoren wie der Seat Leon', 'auto-emotion' ),
@@ -368,6 +437,13 @@ $auto_emotion_marke_modelle = array(
 	),
 );
 $auto_emotion_modelle       = $auto_emotion_marke_modelle[ $auto_emotion_term->slug ] ?? array();
+
+$auto_emotion_karosserie_labels = array(
+	'suv'        => __( 'SUV', 'auto-emotion' ),
+	'kleinwagen' => __( 'Kleinwagen', 'auto-emotion' ),
+	'kompakt'    => __( 'Kompakt', 'auto-emotion' ),
+	'kombi'      => __( 'Kombi', 'auto-emotion' ),
+);
 ?>
 
 <?php if ( $auto_emotion_modelle ) : ?>
@@ -388,7 +464,17 @@ $auto_emotion_modelle       = $auto_emotion_marke_modelle[ $auto_emotion_term->s
 					<figure>
 						<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/' . $auto_emotion_modell['image'] . '?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="<?php echo esc_attr( $auto_emotion_modell['name'] . ', offizielles Herstellerfoto' ); ?>" loading="lazy">
 						<figcaption>
-							<?php echo esc_html( $auto_emotion_modell['name'] ); ?>
+							<?php if ( ! empty( $auto_emotion_modell['karosserie'] ) ) : ?>
+								<span class="model-card__name">
+									<?php echo esc_html( $auto_emotion_modell['name'] ); ?>
+									<span class="model-card__meta">
+										<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><?php auto_emotion_vehicle_filter_icon( $auto_emotion_modell['karosserie'] ); ?></svg>
+										<?php echo esc_html( $auto_emotion_karosserie_labels[ $auto_emotion_modell['karosserie'] ] ?? '' ); ?>
+									</span>
+								</span>
+							<?php else : ?>
+								<?php echo esc_html( $auto_emotion_modell['name'] ); ?>
+							<?php endif; ?>
 							<span class="model-card__toggle" aria-hidden="true"></span>
 						</figcaption>
 					</figure>
@@ -546,6 +632,19 @@ $auto_emotion_angebote = new WP_Query(
 		<?php endwhile; ?>
 	</div>
 	<?php wp_reset_postdata(); ?>
+<?php endif; ?>
+
+<?php if ( $auto_emotion_bild_full_2 ) : ?>
+	<?php echo '</div>'; ?>
+	<img
+		class="content-header-image content-header-image--hoch"
+		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/' . $auto_emotion_bild_full_2['image'] . '?ver=' . AUTO_EMOTION_VERSION ); ?>"
+		alt="<?php echo esc_attr( $auto_emotion_bild_full_2['alt'] ); ?>"
+		width="<?php echo (int) $auto_emotion_bild_full_2['width']; ?>"
+		height="<?php echo (int) $auto_emotion_bild_full_2['height']; ?>"
+		loading="lazy"
+	>
+	<?php echo '<div class="container">'; ?>
 <?php endif; ?>
 
 <?php if ( have_posts() ) : ?>
