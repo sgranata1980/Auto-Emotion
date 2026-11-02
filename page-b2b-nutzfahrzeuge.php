@@ -25,31 +25,39 @@ $auto_emotion_b2b_use_cases = array(
 		'text'  => __( 'Nissan Primastar und Interstar als Kastenwagen mit viel Laderaum und hoher Nutzlast für Werkzeug, Material und Geräte.', 'auto-emotion' ),
 	),
 	array(
-		'icon'  => '<path d="M7 8V6a5 5 0 0 1 10 0v2"/><rect x="4" y="8" width="16" height="13" rx="1.5"/><path d="M4 13h16"/>',
-		'title' => __( 'Lieferservice & Gastronomie', 'auto-emotion' ),
+		'icon'  => '<path d="M3 8l9-5 9 5-9 5-9-5Z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/>',
+		'title' => "Liefer\xC2\xADservice & Gastro\xC2\xADnomie",
 		'text'  => __( 'Der kompakte Nissan Townstar für den City-Kurierdienst – wendig und sparsam, auch vollelektrisch für emissionsfreie Innenstadtlieferungen.', 'auto-emotion' ),
 	),
 	array(
 		'icon'  => '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2-2 2.6-2.6Z"/>',
-		'title' => __( 'Hausmeister- & Reinigungsdienste', 'auto-emotion' ),
+		'title' => "Haus\xC2\xADmeister- & Reinigungs\xC2\xADdienste",
 		'text'  => __( 'Flexibel ausgestattete Kastenwagen für Werkzeug, Maschinen und Reinigungsequipment – passend zur Größe Ihres Fuhrparks.', 'auto-emotion' ),
 	),
 	array(
 		'icon'  => '<rect x="3" y="6" width="18" height="11" rx="2"/><path d="M3 11.5h18"/><path d="M6.5 8.5h3M10.8 8.5h3M15 8.5h2.5"/><circle cx="7.5" cy="19" r="1.6"/><circle cx="16.5" cy="19" r="1.6"/>',
-		'title' => __( 'Personentransport', 'auto-emotion' ),
+		'title' => "Personen\xC2\xADtransport",
 		'text'  => __( 'Nissan Primastar und Interstar als Kombi-Variante mit mehreren Sitzreihen – für Fahrdienste, Shuttles oder Teamtransporte.', 'auto-emotion' ),
 	),
 	array(
 		'icon'  => '<path d="M12 3v18"/><path d="M4.6 7.5l14.8 9"/><path d="M19.4 7.5 4.6 16.5"/><path d="M12 7.2 9.9 8.9M12 7.2l2.1 1.7M12 16.8l-2.1-1.7M12 16.8l2.1-1.7"/>',
-		'title' => __( 'Feinkost & Kühltransport', 'auto-emotion' ),
+		'title' => "Feinkost & K\xC3\xBChl\xC2\xADtransport",
 		'text'  => __( 'Unsere Nutzfahrzeuge lassen sich mit Kühl- oder Isolieraufbauten ausstatten – für die Auslieferung temperaturempfindlicher Ware.', 'auto-emotion' ),
 	),
 	array(
 		'icon'  => '<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',
-		'title' => __( 'Fahr- & Rettungsdienste', 'auto-emotion' ),
+		'title' => "Fahr- & Rettungs\xC2\xADdienste",
 		'text'  => __( 'Die Kombi-Ausführung des Interstar bietet Platz für Personentransport – inklusive individueller Beschriftung durch unsere Grafikabteilung.', 'auto-emotion' ),
 	),
 );
+/**
+ * Weiche Trennzeichen (U+00AD) in den Kacheltiteln statt __(): die
+ * langen deutschen Komposita brechen sonst in der schmalen,
+ * großgeschriebenen Spalte des model-card__title mitten im Wort um
+ * (gleicher Bug wie bei "Fahrzeugsuche", siehe
+ * template-parts/vehicle-search.php) - hyphens:manual + die
+ * unsichtbaren Trennzeichen garantieren den richtigen Umbruchpunkt.
+ */
 
 get_header();
 
