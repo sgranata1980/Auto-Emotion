@@ -186,14 +186,14 @@ echo '</div>';
 ?>
 <section class="event-banner" aria-labelledby="finanzierung-b2b-heading">
 	<img
-		class="event-banner__image"
+		class="event-banner__image event-banner__image--finanzierung-beratung"
 		src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/finanzierung-beratung.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>"
 		alt=""
 		loading="lazy"
 	>
 	<div class="event-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Finanzierung', 'auto-emotion' ); ?></p>
-		<h2 id="finanzierung-b2b-heading" class="event-banner__headline"><?php esc_html_e( 'Wachsen Sie mit geschäftsfreundlichen Konditionen.', 'auto-emotion' ); ?></h2>
+		<h2 id="finanzierung-b2b-heading" class="event-banner__headline"><?php echo esc_html( "Wachsen Sie mit gesch\xC3\xA4fts\xC2\xADfreundlichen Konditionen." ); ?></h2>
 		<p><?php esc_html_e( 'Leasing statt Kapitalbindung: planbare monatliche Raten für Ihren Fuhrpark, abgestimmt auf Ihr Unternehmen. Ob Einzelfahrzeug oder komplette Flotte – wir erarbeiten gemeinsam mit Ihnen die passende Finanzierungs- oder Leasinglösung. Steuerliche Details klären Sie am besten zusätzlich mit Ihrem Steuerberater.', 'auto-emotion' ); ?></p>
 		<a class="btn btn-giallo" href="<?php echo esc_url( home_url( '/finanzierung-leasing/' ) ); ?>">
 			<?php esc_html_e( 'Zur Finanzierung & Leasing', 'auto-emotion' ); ?>

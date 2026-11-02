@@ -1563,6 +1563,17 @@ body.has-transparent-header .site-main {
 	object-position: center 55%;
 }
 
+.event-banner__image--finanzierung-beratung {
+	/* Echtes Pressefoto (Berater + Kundenpaar im Büro, 1.79:1) - die
+	   Gesichter liegen im oberen Bilddrittel (ca. 13-26% der
+	   Bildhöhe). Bei sehr breiten Viewports (27"+-Monitore) deckt das
+	   Crop-Fenster bei der Standard-Bannerhöhe (420px) nur einen
+	   schmalen horizontalen Streifen um 55% ab - dort sind nur Schreib-
+	   tisch und Hände zu sehen, keine Gesichter mehr (Nutzer-Feedback
+	   mit Screenshot von einem 27"-Breitbildmonitor). */
+	object-position: center 22%;
+}
+
 @media (max-width: 700px) {
 	.event-banner__image {
 		height: 220px;
