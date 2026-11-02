@@ -4063,3 +4063,49 @@ body.has-transparent-header .site-main {
 		order: -1;
 	}
 }
+
+/* ---------------------------------------------------------------- */
+/* Flotten-Karte - Bild + Titel + Text, für Dienstwagen-Kategorien   */
+/* (z.B. Kompakt/Kombi/Business-Flaggschiff). Eigene, schlanke       */
+/* Komponente statt der schwereren .model-card--Akkordeon-Variante   */
+/* (Marken-Archiv) oder der reinen Bild+Caption-Kachel .product-tile */
+/* (keine Beschreibung).                                             */
+/* ---------------------------------------------------------------- */
+
+.fleet-card {
+	display: flex;
+	flex-direction: column;
+	background: var(--surface-canvas-white);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 10px 28px rgba(0, 0, 0, 0.07);
+	transition: box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fleet-card:hover {
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.09), 0 20px 40px rgba(0, 0, 0, 0.12);
+	transform: translateY(-3px);
+}
+
+.fleet-card__image {
+	display: block;
+	width: 100%;
+	height: 220px;
+	object-fit: cover;
+}
+
+.fleet-card__body {
+	padding: var(--spacing-24);
+}
+
+.fleet-card__title {
+	font-size: var(--text-heading-sm);
+	text-transform: uppercase;
+	letter-spacing: 0.0230em;
+	margin: 0 0 var(--spacing-8);
+}
+
+.fleet-card__text {
+	font-size: var(--text-body);
+	line-height: var(--leading-body);
+	color: var(--color-steel-mid);
+	margin: 0;
+}

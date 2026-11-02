@@ -113,6 +113,36 @@ echo '<div class="container">';
 </div>
 
 <div class="section-heading">
+	<h2 class="section-heading__title"><?php esc_html_e( 'Nicht nur Nutzfahrzeuge: Dienstwagen für Vertrieb & Geschäftsführung', 'auto-emotion' ); ?></h2>
+</div>
+<div class="entry-content">
+	<p><?php esc_html_e( 'Neben Nissan-Nutzfahrzeugen führen wir auch Seat und Cupra – passend für den gesamten Fuhrpark, vom internen Pool-Fahrzeug bis zum Dienstwagen für die Geschäftsführung.', 'auto-emotion' ); ?></p>
+</div>
+<div class="model-grid">
+	<article class="fleet-card">
+		<img class="fleet-card__image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/seat-modell-ibiza.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Seat Ibiza" loading="lazy">
+		<div class="fleet-card__body">
+			<h3 class="fleet-card__title"><?php esc_html_e( 'Kompakt für den Innendienst', 'auto-emotion' ); ?></h3>
+			<p class="fleet-card__text"><?php esc_html_e( 'Der Seat Ibiza als wendiges Pool-Fahrzeug für kurze Dienstfahrten – sparsam im Unterhalt, einfach in der Verwaltung.', 'auto-emotion' ); ?></p>
+		</div>
+	</article>
+	<article class="fleet-card">
+		<img class="fleet-card__image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/seat-modell-leon-sportstourer.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Seat Leon Sportstourer" loading="lazy">
+		<div class="fleet-card__body">
+			<h3 class="fleet-card__title"><?php esc_html_e( 'Kombi für den Außendienst', 'auto-emotion' ); ?></h3>
+			<p class="fleet-card__text"><?php esc_html_e( 'Der Seat Leon Sportstourer mit viel Platz für Gepäck und lange Strecken – für Vertriebsmitarbeitende, die viel unterwegs sind.', 'auto-emotion' ); ?></p>
+		</div>
+	</article>
+	<article class="fleet-card">
+		<img class="fleet-card__image" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/cupra-modell-tavascan.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Cupra Tavascan" loading="lazy">
+		<div class="fleet-card__body">
+			<h3 class="fleet-card__title"><?php esc_html_e( 'Repräsentativ für die Geschäftsführung', 'auto-emotion' ); ?></h3>
+			<p class="fleet-card__text"><?php esc_html_e( 'Der elektrische Cupra Tavascan als hochwertiges Business-Flaggschiff – für Führungskräfte, die Eindruck hinterlassen möchten.', 'auto-emotion' ); ?></p>
+		</div>
+	</article>
+</div>
+
+<div class="section-heading">
 	<h2 class="section-heading__title"><?php esc_html_e( 'So kommen Sie zu Ihrem Fuhrpark', 'auto-emotion' ); ?></h2>
 </div>
 <div class="process-diagram">
