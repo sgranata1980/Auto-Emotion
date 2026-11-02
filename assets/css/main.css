@@ -997,7 +997,14 @@ body:not(.has-transparent-header) .site-main {
 	display: flex;
 	align-items: flex-end;
 	min-height: 100vh;
-	padding: var(--spacing-80) var(--spacing-24);
+	padding-top: var(--spacing-80);
+	padding-bottom: var(--spacing-80);
+	/* Links mehr Luft auf sehr breiten Viewports (27"+-Monitore): bei
+	   fixem 24px-Rand klebte die Headline auf solchen Bildschirmen am
+	   linken Fensterrand, während rechts viel freie Fläche blieb
+	   (Nutzer-Feedback). Bleibt bis ca. 1400px Breite unverändert. */
+	padding-left: clamp(var(--spacing-24), 6vw, 120px);
+	padding-right: var(--spacing-24);
 	background-color: var(--surface-carbony);
 	background-size: cover;
 	background-position: center center;
@@ -1586,7 +1593,12 @@ body.has-transparent-header .site-main {
 
 .event-banner__content {
 	max-width: 600px;
-	padding: var(--spacing-64) var(--spacing-24);
+	padding-top: var(--spacing-64);
+	padding-bottom: var(--spacing-64);
+	/* Gleiche Begründung wie bei .hero-stage: mehr Luft zum linken
+	   Fensterrand auf sehr breiten Viewports. */
+	padding-left: clamp(var(--spacing-24), 6vw, 120px);
+	padding-right: var(--spacing-24);
 }
 
 .event-banner__headline {
@@ -1744,7 +1756,12 @@ body.has-transparent-header .site-main {
 
 .career-banner__content {
 	max-width: 600px;
-	padding: var(--spacing-64) var(--spacing-24);
+	padding-top: var(--spacing-64);
+	padding-bottom: var(--spacing-64);
+	/* Gleiche Begründung wie bei .hero-stage: mehr Luft zum linken
+	   Fensterrand auf sehr breiten Viewports. */
+	padding-left: clamp(var(--spacing-24), 6vw, 120px);
+	padding-right: var(--spacing-24);
 }
 
 @media (min-width: 1200px) {
