@@ -105,7 +105,7 @@ echo '</div>';
 <section class="career-banner" aria-labelledby="townstar-heading">
 	<div class="career-banner__media">
 		<img
-			class="career-banner__image"
+			class="career-banner__image career-banner__image--townstar"
 			src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-townstar-familie-strand.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>"
 			alt="Nissan Townstar"
 			loading="lazy"
