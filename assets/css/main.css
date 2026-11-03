@@ -4598,20 +4598,20 @@ img[src*="logo"]:not([src*="showroom"]) {
 /* ---------------------------------------------------------------- */
 /* Langes Wort in der Headline: etwas kleiner, damit es auf Desktop in
    eine Zeile passt. Der Verlauf hält den Text auf dem hellen Foto lesbar. */
-.page-template-page-finanzierung-leasing .hero-stage__headline {
+body:has(.finanz-bloecke) .hero-stage__headline {
 	font-size: clamp(40px, 7vw, 96px);
 }
 
-.page-template-page-finanzierung-leasing .hero-stage::before {
+body:has(.finanz-bloecke) .hero-stage::before {
 	content: "";
 	position: absolute;
 	inset: 0;
 	z-index: 1;
 	pointer-events: none;
-	background: linear-gradient(90deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.35) 55%, rgba(0, 0, 0, 0) 80%);
+	background: linear-gradient(0deg, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.55) 40%, rgba(0, 0, 0, 0) 75%), linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 65%);
 }
 
-.page-template-page-finanzierung-leasing .hero-stage__content {
+body:has(.finanz-bloecke) .hero-stage__content {
 	position: relative;
 	z-index: 2;
 }
@@ -4661,11 +4661,11 @@ img[src*="logo"]:not([src*="showroom"]) {
 	margin: 0 0 var(--spacing-24);
 }
 
-.page-template-page-finanzierung-leasing .section-heading:has(+ .entry-content) {
+body:has(.finanz-bloecke) .section-heading:has(+ .entry-content) {
 	padding-bottom: var(--spacing-16);
 }
 
-.page-template-page-finanzierung-leasing .section-heading:has(+ .entry-content) + .entry-content {
+body:has(.finanz-bloecke) .section-heading:has(+ .entry-content) + .entry-content {
 	margin-top: 0;
 }
 
