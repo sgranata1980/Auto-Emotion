@@ -36,6 +36,11 @@ function auto_emotion_service_icon( $name ) {
 		'stift'     => '<path d="m4 20 1-4L16 5l3 3L8 19Z"/><path d="m14 7 3 3"/>',
 		'auto'      => '<path d="M3 17h18M5 17l1.5-6.500a2 2 0 0 1 1.950-1.500h7.100a2 2 0 0 1 1.950 1.500L19 17"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/>',
 		'nachricht' => '<path d="M4 5h16v11H9l-5 4Z"/>',
+		'telefon'   => '<path d="M5 4h3.500l1.500 4.500-2.300 1.700a12.500 12.500 0 0 0 6.100 6.100l1.700-2.300 4.500 1.500V19a1 1 0 0 1-1 1C10.500 20 4 13.500 4 6a1 1 0 0 1 1-2Z"/>',
+		'mail'      => '<rect x="3.500" y="5.500" width="17" height="13" rx="1.500"/><path d="m4 7 8 6 8-6"/>',
+		'ort'       => '<path d="M12 21s7-6.200 7-11.500a7 7 0 0 0-14 0C5 14.800 12 21 12 21Z"/><circle cx="12" cy="9.500" r="2.500"/>',
+		'uhr'       => '<circle cx="12" cy="12" r="8.500"/><path d="M12 7.500V12l3 2"/>',
+		'pokal'     => '<path d="M8 4h8v6a4 4 0 0 1-8 0Z"/><path d="M8 6H4.500c0 3 1.300 4.500 3.700 5M16 6h3.500c0 3-1.300 4.500-3.700 5M12 14v4M8.500 20h7M10 18h4"/>',
 	);
 
 	echo $icons[ $name ] ?? ''; // phpcs:ignore WordPress.Security.EscapeOutput -- feste, eigene SVG-Pfade.

@@ -101,7 +101,7 @@ function auto_emotion_primary_menu_items() {
 				array( 'title' => __( 'Markenevents & Probefahrt-Tage', 'auto-emotion' ), 'url' => $home . 'markenevents-probefahrt-tage/' ),
 				array( 'title' => __( 'Tag der offenen Tür', 'auto-emotion' ), 'url' => $home . 'tag-der-offenen-tuer/' ),
 				array( 'title' => __( 'Werkstatt-Schulungen', 'auto-emotion' ), 'url' => $home . 'werkstatt-schulungen/' ),
-				array( 'title' => __( 'Kundenveranstaltungen', 'auto-emotion' ), 'url' => $home . 'kundenveranstaltungen/' ),
+				array( 'title' => __( "Kunden\xC2\xADveranstaltungen", 'auto-emotion' ), 'url' => $home . 'kundenveranstaltungen/' ),
 				array( 'title' => __( 'Magazin', 'auto-emotion' ), 'url' => $home . 'magazin/' ),
 				array( 'title' => __( 'Blog', 'auto-emotion' ), 'url' => $home . 'blog/' ),
 				array( 'title' => __( 'Vlog', 'auto-emotion' ), 'url' => $home . 'vlog/' ),

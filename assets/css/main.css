@@ -5234,7 +5234,8 @@ body:has(.finanz-bloecke, .service-lead) .section-heading:has(+ .entry-content) 
 		font-size: 14px;
 		line-height: 1.3;
 		white-space: normal;
-		overflow-wrap: anywhere;
+		overflow-wrap: break-word;
+		hyphens: manual;
 		transition: background-color 0.2s ease;
 	}
 
@@ -5338,5 +5339,378 @@ body:not(.has-transparent-header) .site-header {
 	.main-navigation .sub-menu a {
 		font-size: 15px;
 		color: var(--surface-canvas-white);
+	}
+}
+
+/* ---------------------------------------------------------------- */
+/* Unternehmensseiten                                                 */
+/* ---------------------------------------------------------------- */
+.firma-fakten {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: var(--spacing-16);
+	margin: 0 0 var(--spacing-64);
+}
+
+.firma-fakten > div {
+	display: flex;
+	flex-direction: column-reverse;
+	justify-content: flex-end;
+	gap: 6px;
+	padding: var(--spacing-24);
+	border-radius: var(--radius-cards);
+	background: var(--color-marble-gray);
+}
+
+.firma-fakten dd {
+	margin: 0;
+	font-family: var(--font-lambotype);
+	font-size: clamp(28px, 3vw, 42px);
+	font-weight: var(--font-weight-bold);
+	line-height: 1.1;
+	color: var(--color-rosso-vivo);
+}
+
+.firma-fakten dt {
+	font-size: 15px;
+}
+
+.firma-abschnitt {
+	margin-top: var(--spacing-64);
+}
+
+.firma-abschnitt > h2,
+.team-gruppe > h2 {
+	margin: 0 0 var(--spacing-24);
+	font-size: clamp(26px, 3vw, 38px);
+}
+
+.firma-abschnitt .service-punkte {
+	margin-bottom: 0;
+}
+
+.firma-text {
+	max-width: 760px;
+}
+
+.firma-notiz {
+	margin-top: var(--spacing-40);
+	font-size: 14px;
+	color: var(--color-steel-mid);
+}
+
+/* Zeitleiste */
+.zeitleiste {
+	margin: 0 0 var(--spacing-64);
+	padding: 0;
+	list-style: none;
+}
+
+.zeitleiste li {
+	position: relative;
+	display: grid;
+	grid-template-columns: 180px minmax(0, 1fr);
+	gap: var(--spacing-40);
+	padding: 0 0 var(--spacing-40);
+}
+
+.zeitleiste li::before {
+	content: "";
+	position: absolute;
+	top: 8px;
+	bottom: -8px;
+	left: 180px;
+	width: 2px;
+	background: var(--color-marble-gray);
+	transform: translateX(19px);
+}
+
+.zeitleiste li:last-child::before {
+	display: none;
+}
+
+.zeitleiste li::after {
+	content: "";
+	position: absolute;
+	top: 6px;
+	left: 180px;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background: var(--color-rosso-vivo);
+	transform: translateX(13px);
+}
+
+.zeitleiste__datum {
+	font-family: var(--font-lambotype);
+	font-size: 20px;
+	font-weight: var(--font-weight-bold);
+	text-align: right;
+}
+
+.zeitleiste h2 {
+	margin: 0 0 6px;
+	font-size: 22px;
+}
+
+.zeitleiste p {
+	margin: 0;
+	max-width: 620px;
+}
+
+/* Kontaktkarten */
+.kontakt-karten {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: var(--spacing-16);
+	margin: 0 0 var(--spacing-64);
+	padding: 0;
+	list-style: none;
+}
+
+.kontakt-karten li {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: var(--spacing-24);
+	border-radius: var(--radius-cards);
+	background: var(--color-marble-gray);
+}
+
+.kontakt-karten svg {
+	width: 32px;
+	height: 32px;
+	color: var(--color-rosso-vivo);
+}
+
+.kontakt-karten strong {
+	font-size: 17px;
+}
+
+.kontakt-karten span {
+	overflow-wrap: anywhere;
+}
+
+/* Team */
+.team-gruppe {
+	margin-bottom: var(--spacing-48);
+}
+
+.team-karten {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--spacing-16);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.team-karte {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: var(--spacing-24);
+	border-radius: var(--radius-cards);
+	background: var(--color-marble-gray);
+}
+
+.team-karte strong {
+	font-size: 19px;
+}
+
+.team-karte__rolle {
+	margin-bottom: 10px;
+	font-size: 15px;
+	color: var(--color-steel-mid);
+}
+
+.team-karte a {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 15px;
+	color: var(--color-carbony-black);
+	overflow-wrap: anywhere;
+}
+
+.team-karte a:hover {
+	color: var(--color-rosso-vivo);
+}
+
+.team-karte svg {
+	width: 20px;
+	height: 20px;
+	flex-shrink: 0;
+	color: var(--color-rosso-vivo);
+}
+
+/* FAQ */
+.faq-liste {
+	display: grid;
+	gap: 12px;
+	max-width: 860px;
+	margin-bottom: var(--spacing-64);
+}
+
+.faq-liste details {
+	padding: 0 var(--spacing-24);
+	border-radius: var(--radius-cards);
+	background: var(--color-marble-gray);
+}
+
+.faq-liste summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--spacing-16);
+	padding: 20px 0;
+	font-size: 18px;
+	font-weight: var(--font-weight-bold);
+	cursor: pointer;
+	list-style: none;
+}
+
+.faq-liste summary::-webkit-details-marker {
+	display: none;
+}
+
+.faq-liste summary::after {
+	content: "+";
+	flex-shrink: 0;
+	font-size: 26px;
+	font-weight: 400;
+	line-height: 1;
+	color: var(--color-rosso-vivo);
+}
+
+.faq-liste details[open] summary::after {
+	content: "\2212";
+}
+
+.faq-liste details p {
+	margin: 0;
+	padding-bottom: 20px;
+}
+
+/* Stellen */
+.stellen-karten {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--spacing-24);
+	margin: 0 0 var(--spacing-64);
+	padding: 0;
+	list-style: none;
+}
+
+.stellen-karte {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	overflow: hidden;
+	border-radius: var(--radius-cards);
+	background: var(--color-marble-gray);
+	color: var(--color-carbony-black);
+	text-decoration: none;
+}
+
+.stellen-karte img {
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	border-radius: 0;
+}
+
+.stellen-karte__text {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: 8px;
+	padding: var(--spacing-24);
+}
+
+.stellen-karte__text strong {
+	font-size: 20px;
+	line-height: 1.25;
+	overflow-wrap: anywhere;
+}
+
+.stellen-karte__umfang {
+	font-size: 14px;
+	color: var(--color-steel-mid);
+}
+
+.stellen-karte__link {
+	margin-top: auto;
+	padding-top: 8px;
+	font-weight: var(--font-weight-bold);
+	color: var(--color-rosso-vivo);
+}
+
+/* Galerie */
+.firma-galerie {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--spacing-16);
+}
+
+.firma-galerie figure {
+	margin: 0;
+}
+
+.firma-galerie img {
+	width: 100%;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+}
+
+.firma-galerie figcaption {
+	padding-top: 8px;
+	font-size: 14px;
+	color: var(--color-steel-mid);
+}
+
+@media (max-width: 900px) {
+	.firma-fakten,
+	.kontakt-karten {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.team-karten,
+	.stellen-karten {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.firma-galerie {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 600px) {
+	.kontakt-karten {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.firma-fakten > div {
+		padding: var(--spacing-16);
+	}
+
+	.zeitleiste li {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 6px;
+		padding-left: 30px;
+	}
+
+	.zeitleiste li::before {
+		left: 6px;
+		transform: none;
+	}
+
+	.zeitleiste li::after {
+		left: 0;
+		transform: none;
+	}
+
+	.zeitleiste__datum {
+		text-align: left;
 	}
 }
