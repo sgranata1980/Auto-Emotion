@@ -5981,3 +5981,28 @@ body:has(.service-lead) .faq-liste details p {
 		gap: var(--spacing-32);
 	}
 }
+
+/* Blog: leeren Container vor dem Kopf ausblenden, Hauptbeitrag kompakter. */
+.site-main > .container:has(+ .blog-kopf) {
+	display: none;
+}
+
+.blog-karte--gross {
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: var(--spacing-40);
+}
+
+.blog-karte--gross h2 {
+	font-size: clamp(24px, 2.2vw, 32px);
+}
+
+.blog-karte--gross .blog-karte__text > p:not(.blog-meta) {
+	font-size: 17px;
+}
+
+@media (max-width: 900px) {
+	.blog-karte--gross {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--spacing-16);
+	}
+}
