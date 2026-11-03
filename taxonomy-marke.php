@@ -106,27 +106,6 @@ $auto_emotion_marke_logo  = $auto_emotion_marke_logos[ $auto_emotion_term->slug 
 	<h1 class="section-heading__title"><?php echo esc_html( $auto_emotion_term->name ); ?></h1>
 </div>
 
-<?php if ( 'seat' === $auto_emotion_term->slug ) : ?>
-	<nav class="marke-links" aria-label="<?php esc_attr_e( 'Schnellzugriffe', 'auto-emotion' ); ?>">
-		<a class="marke-links__link" href="<?php echo esc_url( get_post_type_archive_link( 'angebot' ) ); ?>">
-			<svg class="marke-links__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><line x1="14.8" y1="14.8" x2="20" y2="20"/></svg>
-			<span><?php esc_html_e( 'Aktuelle Angebote', 'auto-emotion' ); ?></span>
-		</a>
-		<a class="marke-links__link" href="<?php echo esc_url( get_post_type_archive_link( 'angebot' ) ); ?>">
-			<svg class="marke-links__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="3"/><path d="M11 13l8-8 2 2-2 2 1.5 1.5L19 12l-5.5 5.5"/><path d="M15.5 9.5l2 2"/></svg>
-			<span><?php esc_html_e( 'Probefahrt vereinbaren', 'auto-emotion' ); ?></span>
-		</a>
-		<a class="marke-links__link" href="<?php echo esc_url( home_url( '/finanzierung-leasing/' ) ); ?>">
-			<svg class="marke-links__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="10.5" y2="12"/><line x1="13.5" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="10.5" y2="16"/><line x1="13.5" y1="16" x2="16" y2="16"/></svg>
-			<span><?php esc_html_e( 'Finanzierung & Leasing', 'auto-emotion' ); ?></span>
-		</a>
-		<a class="marke-links__link" href="<?php echo esc_url( home_url( '/servicetermin-buchen/' ) ); ?>">
-			<svg class="marke-links__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="1"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>
-			<span><?php esc_html_e( 'Servicetermin buchen', 'auto-emotion' ); ?></span>
-		</a>
-	</nav>
-<?php endif; ?>
-
 <?php if ( $auto_emotion_term->description ) : ?>
 	<div class="archive-description"><?php echo wp_kses_post( wpautop( $auto_emotion_term->description ) ); ?></div>
 <?php endif; ?>
@@ -261,9 +240,8 @@ $auto_emotion_interieur_optionen = array(
 );
 
 /**
- * Modellübersicht je Marke. "specs" sind kurze, allgemein bekannte
- * Herstellerangaben ohne Preise; "engines" sind dieselben Angaben
- * als einzelne, im Konfigurator wählbare Motorisierungen. Details
+ * Modellübersicht je Marke, ohne Preise. "engines" sind die im
+ * Konfigurator wählbaren Motorisierungen. Details
  * klappen pro Kachel per <details> auf, der Konfigurator selbst
  * braucht nur eine kleine, unaufdringliche JS-Datei zur Anzeige der
  * Auswahl (keine Preisberechnung, keine Datenübertragung ohne Klick
@@ -275,117 +253,68 @@ $auto_emotion_marke_modelle = array(
 			'image'       => 'nissan-modell-juke.jpg',
 			'name'        => 'Nissan Juke',
 			'description' => __( 'Coupé-SUV mit auffälligem Design und wendigem Fahrverhalten im Stadtverkehr.', 'auto-emotion' ),
-			'specs'       => array(
-				__( '1.0 DIG-T (114 PS) oder Vollhybrid e-Power (143 PS)', 'auto-emotion' ),
-				__( 'Verbrauch ab ca. 5,0 l/100 km', 'auto-emotion' ),
-			),
 			'engines'     => array( '1.0 DIG-T 114 PS', 'e-Power Vollhybrid 143 PS' ),
 		),
 		array(
 			'image'       => 'nissan-modell-qashqai.jpg',
 			'name'        => 'Nissan Qashqai',
 			'description' => __( 'Nissans meistverkauftes Modell in Europa – geräumiges Kompakt-SUV mit moderner Hybridtechnik.', 'auto-emotion' ),
-			'specs'       => array(
-				__( '1.3 DIG-T Mild-Hybrid (140–158 PS) oder Vollhybrid e-Power (190 PS)', 'auto-emotion' ),
-				__( 'Verbrauch ab ca. 5,3 l/100 km', 'auto-emotion' ),
-			),
 			'engines'     => array( '1.3 DIG-T Mild-Hybrid 140 PS', '1.3 DIG-T Mild-Hybrid 158 PS', 'e-Power Vollhybrid 190 PS' ),
 		),
 		array(
 			'image'       => 'nissan-modell-xtrail.jpg',
 			'name'        => 'Nissan X-Trail',
 			'description' => __( 'Das große SUV der Marke, serienmäßig mit Hybridantrieb – auch mit Allrad und dritter Sitzreihe.', 'auto-emotion' ),
-			'specs'       => array(
-				__( 'Vollhybrid e-Power (204 PS) oder e-4ORCE Allrad-Hybrid (213 PS)', 'auto-emotion' ),
-				__( 'Wahlweise mit 5 oder 7 Sitzen', 'auto-emotion' ),
-			),
 			'engines'     => array( 'e-Power Vollhybrid 204 PS', 'e-4ORCE Allrad-Hybrid 213 PS' ),
 		),
 		array(
 			'image'       => 'nissan-modell-ariya.jpg',
 			'name'        => 'Nissan Ariya',
 			'description' => __( 'Elektrisches Coupé-SUV mit großzügigem Innenraum und leisem Fahrgefühl.', 'auto-emotion' ),
-			'specs'       => array(
-				__( 'Vollelektrisch, 63- oder 87-kWh-Batterie', 'auto-emotion' ),
-				__( 'WLTP-Reichweite ca. 400–530 km, e-4ORCE Allrad optional', 'auto-emotion' ),
-			),
 			'engines'     => array( '63 kWh, 218 PS', '87 kWh, 242 PS', 'e-4ORCE Allrad bis 306 PS' ),
 		),
 		array(
 			'image'       => 'nissan-modell-micra.jpg',
 			'name'        => 'Nissan Micra',
 			'description' => __( 'Kompakter Stadtwagen, jetzt vollelektrisch – wendig und alltagstauglich für die Stadt.', 'auto-emotion' ),
-			'specs'       => array(
-				__( 'Vollelektrisch, 40-kWh-Batterie (122 PS)', 'auto-emotion' ),
-				__( 'Energieverbrauch kombiniert: 14,2 kWh/100 km, CO2-Klasse A', 'auto-emotion' ),
-			),
 			'engines'     => array( '40 kWh, 122 PS' ),
 		),
 		array(
 			'image'       => 'nissan-modell-leaf.jpg',
 			'name'        => 'Nissan Leaf',
 			'description' => __( 'Der Elektro-Pionier von Nissan, komplett neu aufgelegt – geräumiger Kompaktwagen mit langer Serientradition.', 'auto-emotion' ),
-			'specs'       => array(
-				__( 'Vollelektrisch, 52-kWh-Batterie (176 PS)', 'auto-emotion' ),
-				__( 'Energieverbrauch kombiniert: 13,5 kWh/100 km, CO2-Klasse A', 'auto-emotion' ),
-			),
-			'engines'     => array( '52 kWh, 176 PS' ),
+			'engines'     => array( '52 kWh, 176 PS', '75 kWh, 217 PS' ),
 		),
 	),
 	'seat'   => array(
 		array(
 			'image'       => 'seat-modell-arona.jpg',
 			'name'        => 'Seat Arona',
-			'karosserie'  => 'suv',
 			'description' => __( 'Kompaktes SUV für die Stadt – sparsam, wendig und mit viel Platz für seine Klasse.', 'auto-emotion' ),
-			'specs'       => array(
-				__( '1.0 TSI (81–110 PS)', 'auto-emotion' ),
-				__( 'Verbrauch ab ca. 5,3 l/100 km', 'auto-emotion' ),
-			),
 			'engines'     => array( '1.0 TSI 81 PS', '1.0 TSI 95 PS', '1.0 TSI 110 PS' ),
 		),
 		array(
 			'image'       => 'seat-modell-ateca.jpg',
 			'name'        => 'Seat Ateca',
-			'karosserie'  => 'suv',
 			'description' => __( 'Familientaugliches SUV mit großzügigem Kofferraum und optionalem Allradantrieb.', 'auto-emotion' ),
-			'specs'       => array(
-				__( '1.0–1.5 TSI (110–150 PS), auch mit Allrad', 'auto-emotion' ),
-				__( 'Verbrauch ab ca. 6,0 l/100 km', 'auto-emotion' ),
-			),
 			'engines'     => array( '1.0 TSI 110 PS', '1.5 TSI 150 PS', '1.5 TSI 150 PS mit Allrad' ),
 		),
 		array(
 			'image'       => 'seat-modell-ibiza.jpg',
 			'name'        => 'Seat Ibiza',
-			'karosserie'  => 'kleinwagen',
 			'description' => __( 'Der Kleinwagen-Klassiker von Seat – sparsam im Verbrauch und ideal für den Alltag.', 'auto-emotion' ),
-			'specs'       => array(
-				__( '1.0 MPI/TSI (80–115 PS)', 'auto-emotion' ),
-				__( 'Verbrauch ab ca. 5,0 l/100 km', 'auto-emotion' ),
-			),
 			'engines'     => array( '1.0 MPI 80 PS', '1.0 TSI 95 PS', '1.0 TSI 115 PS' ),
 		),
 		array(
 			'image'       => 'seat-modell-leon.jpg',
 			'name'        => 'Seat Leon',
-			'karosserie'  => 'kompakt',
 			'description' => __( 'Die Kompaktklasse von Seat – sportlich abgestimmt, wahlweise auch als Plug-in-Hybrid.', 'auto-emotion' ),
-			'specs'       => array(
-				__( '1.0–2.0 TSI (110–190 PS), auch als e-HYBRID Plug-in', 'auto-emotion' ),
-				__( 'e-HYBRID mit zusätzlicher elektrischer Reichweite', 'auto-emotion' ),
-			),
 			'engines'     => array( '1.0 TSI 110 PS', '1.5 TSI 150 PS', 'e-HYBRID 204 PS (Plug-in)' ),
 		),
 		array(
 			'image'       => 'seat-modell-leon-sportstourer.jpg',
 			'name'        => 'Seat Leon Sportstourer',
-			'karosserie'  => 'kombi',
 			'description' => __( 'Der Kombi zum Leon – gleiche Motoren, mehr Platz für Gepäck und Familie.', 'auto-emotion' ),
-			'specs'       => array(
-				__( 'Gleiche Motoren wie der Seat Leon', 'auto-emotion' ),
-				__( 'Deutlich mehr Kofferraumvolumen als die Fließheck-Variante', 'auto-emotion' ),
-			),
 			'engines'     => array( '1.0 TSI 110 PS', '1.5 TSI 150 PS', 'e-HYBRID 204 PS (Plug-in)' ),
 		),
 	),
@@ -394,61 +323,37 @@ $auto_emotion_marke_modelle = array(
 			'image'       => 'cupra-modell-born.jpg',
 			'name'        => 'Cupra Born',
 			'description' => __( 'Cupras erstes vollelektrisches Modell – sportlich abgestimmtes Fahrwerk in kompakter Karosserie.', 'auto-emotion' ),
-			'specs'       => array(
-				__( 'Vollelektrisch, 59- oder 77-kWh-Batterie (204–231 PS)', 'auto-emotion' ),
-				__( 'WLTP-Reichweite ca. 420–560 km', 'auto-emotion' ),
-			),
-			'engines'     => array( '59 kWh, 204 PS', '77 kWh, 231 PS' ),
+			'engines'     => array( '58 kWh, 190 PS', '79 kWh, 231 PS', 'VZ 79 kWh, 326 PS' ),
 		),
 		array(
 			'image'       => 'cupra-modell-tavascan.jpg',
 			'name'        => 'Cupra Tavascan',
 			'description' => __( 'Elektrisches Coupé-SUV mit markantem Design und sportlicher Auslegung.', 'auto-emotion' ),
-			'specs'       => array(
-				__( 'Vollelektrisch, 77-kWh-Batterie (210–250 PS, VZ mit Allrad)', 'auto-emotion' ),
-				__( 'WLTP-Reichweite ca. 500–560 km', 'auto-emotion' ),
-			),
-			'engines'     => array( '77 kWh, 210 PS', 'VZ 77 kWh, 250 PS Allrad' ),
+			'engines'     => array( '58 kWh, 190 PS', '77 kWh, 286 PS', 'VZ 77 kWh, 340 PS Allrad' ),
 		),
 		array(
 			'image'       => 'cupra-modell-terramar.jpg',
 			'name'        => 'Cupra Terramar',
 			'description' => __( 'Kompaktes SUV von Cupra, auch als Plug-in-Hybrid mit alltagstauglicher elektrischer Reichweite.', 'auto-emotion' ),
-			'specs'       => array(
-				__( '1.5 TSI (150 PS) oder e-HYBRID Plug-in (204–272 PS)', 'auto-emotion' ),
-				__( 'e-HYBRID mit elektrischer Reichweite über 100 km', 'auto-emotion' ),
-			),
 			'engines'     => array( '1.5 TSI 150 PS', 'e-HYBRID 204 PS (Plug-in)', 'e-HYBRID 272 PS (Plug-in)' ),
 		),
 		array(
 			'image'       => 'cupra-modell-formentor.jpg',
 			'name'        => 'Cupra Formentor',
 			'description' => __( 'Das erste eigenständige Cupra-Modell – Coupé-SUV mit sportlichem Anspruch bis zur VZ-Topversion.', 'auto-emotion' ),
-			'specs'       => array(
-				__( '1.5–2.0 TSI (150–190 PS), VZ bis über 300 PS, auch e-HYBRID', 'auto-emotion' ),
-				__( 'Erstes Cupra-Modell ohne direktes Seat-Pendant', 'auto-emotion' ),
-			),
 			'engines'     => array( '1.5 TSI 150 PS', '2.0 TSI 190 PS', 'e-HYBRID 204/272 PS', 'VZ über 300 PS' ),
 		),
 		array(
 			'image'       => 'cupra-modell-leon.jpg',
 			'name'        => 'Cupra Leon',
 			'description' => __( 'Die sportliche Cupra-Version des Leon, mit eigenständigem Fahrwerks-Tuning.', 'auto-emotion' ),
-			'specs'       => array(
-				__( 'TSI und e-HYBRID Plug-in bis 245 PS', 'auto-emotion' ),
-				__( 'Cupra-spezifisches Fahrwerk- und Bremsen-Setup', 'auto-emotion' ),
-			),
-			'engines'     => array( '1.5 TSI 150 PS', 'e-HYBRID 204 PS (Plug-in)', 'e-HYBRID 245 PS (Plug-in)' ),
+			'engines'     => array( '1.5 eTSI 150 PS', 'e-HYBRID 204 PS (Plug-in)', 'VZ e-HYBRID 272 PS (Plug-in)' ),
 		),
 		array(
 			'image'       => 'cupra-modell-leon-sportstourer.jpg',
 			'name'        => 'Cupra Leon Sportstourer',
 			'description' => __( 'Der Cupra Leon als Kombi – gleiche Sportlichkeit, mehr Platz für den Alltag.', 'auto-emotion' ),
-			'specs'       => array(
-				__( 'Gleiche Motoren wie der Cupra Leon', 'auto-emotion' ),
-				__( 'Kombivariante mit mehr Laderaum', 'auto-emotion' ),
-			),
-			'engines'     => array( '1.5 TSI 150 PS', 'e-HYBRID 204 PS (Plug-in)', 'e-HYBRID 245 PS (Plug-in)' ),
+			'engines'     => array( '1.5 eTSI 150 PS', 'e-HYBRID 204 PS (Plug-in)', 'VZ e-HYBRID 272 PS (Plug-in)' ),
 		),
 	),
 );
@@ -459,6 +364,32 @@ $auto_emotion_karosserie_labels = array(
 	'kleinwagen' => __( 'Kleinwagen', 'auto-emotion' ),
 	'kompakt'    => __( 'Kompakt', 'auto-emotion' ),
 	'kombi'      => __( 'Kombi', 'auto-emotion' ),
+);
+
+/**
+ * Eckdaten auf der Kachel: Werte von den deutschen Herstellerseiten
+ * (Stand 11/2026). "wltp" nennt genau eine Beispiel-Motorisierung,
+ * "klasse" deren CO2-Klasse. Ausnahmen, vor Freigabe prüfen: Micra stammt aus dem
+ * bisherigen Theme, Ateca aus der älteren Seat-Preisliste.
+ */
+$auto_emotion_eckdaten = array(
+	'Cupra Born'              => array( 'kompakt', 'elektro', 'Elektrisch', '190–326 PS', 'A', 'CUPRA Born 140 kW (190 PS), 58 kWh: Stromverbrauch kombiniert: 14,3 kWh/100 km; CO₂-Emissionen kombiniert: 0 g/km; CO₂-Klasse: A' ),
+	'Cupra Tavascan'          => array( 'suv', 'elektro', 'Elektrisch', '190–340 PS', 'A', 'CUPRA Tavascan 140 kW (190 PS), 58 kWh: Stromverbrauch kombiniert: 15,4–17,2 kWh/100 km; CO₂-Emissionen kombiniert: 0 g/km; CO₂-Klasse: A' ),
+	'Cupra Terramar'          => array( 'suv', 'benzin', 'Benzin, Plug-in-Hybrid', '150–272 PS', 'E', 'CUPRA Terramar 1.5 eTSI 110 kW (150 PS), 7-Gang-DSG: Kraftstoffverbrauch kombiniert: 6,1 l/100 km; CO₂-Emissionen kombiniert: 136 g/km; CO₂-Klasse: E' ),
+	'Cupra Formentor'         => array( 'suv', 'benzin', 'Benzin, Diesel, Plug-in-Hybrid', '150–390 PS', 'E', 'CUPRA Formentor 1.5 TSI 110 kW (150 PS): Kraftstoffverbrauch kombiniert: 6,0 l/100 km; CO₂-Emissionen kombiniert: 136 g/km; CO₂-Klasse: E' ),
+	'Cupra Leon'              => array( 'kompakt', 'benzin', 'Benzin, Diesel, Plug-in-Hybrid', '150–325 PS', 'D', 'CUPRA Leon 1.5 eTSI 110 kW (150 PS): Kraftstoffverbrauch kombiniert: 5,3–5,7 l/100 km; CO₂-Emissionen kombiniert: 121–129 g/km; CO₂-Klasse: D' ),
+	'Cupra Leon Sportstourer' => array( 'kombi', 'benzin', 'Benzin, Diesel, Plug-in-Hybrid', '150–333 PS', 'D', 'CUPRA Leon Sportstourer 1.5 eTSI 110 kW (150 PS): Kraftstoffverbrauch kombiniert: 5,8 l/100 km; CO₂-Emissionen kombiniert: 133 g/km; CO₂-Klasse: D' ),
+	'Seat Arona'              => array( 'suv', 'benzin', 'Benzin', 'FR 116–150 PS', 'D', 'Seat Arona FR 1.0 TSI 85 kW (116 PS): Kraftstoffverbrauch kombiniert: 5,3–5,6 l/100 km; CO₂-Emissionen kombiniert: 120–128 g/km; CO₂-Klasse: D' ),
+	'Seat Ateca'              => array( 'suv', 'benzin', 'Benzin', '150 PS', 'E–F', 'Seat Ateca 1.5 TSI 110 kW (150 PS), 6-Gang: Kraftstoffverbrauch kombiniert: 6,2–6,9 l/100 km; CO₂-Emissionen kombiniert: 141–156 g/km; CO₂-Klasse: E–F' ),
+	'Seat Ibiza'              => array( 'kleinwagen', 'benzin', 'Benzin', 'FR 95–150 PS', 'D', 'Seat Ibiza FR 1.0 TSI 70 kW (95 PS): Kraftstoffverbrauch kombiniert: 5,1–5,6 l/100 km; CO₂-Emissionen kombiniert: 115–127 g/km; CO₂-Klasse: D' ),
+	'Seat Leon'               => array( 'kompakt', 'benzin', 'Benzin, Diesel, Plug-in-Hybrid', 'FR ab 116 PS', 'D', 'Seat Leon FR 1.5 TSI 85 kW (116 PS): Kraftstoffverbrauch kombiniert: 5,5–5,9 l/100 km; CO₂-Emissionen kombiniert: 126–134 g/km; CO₂-Klasse: D' ),
+	'Seat Leon Sportstourer'  => array( 'kombi', 'benzin', 'Benzin, Diesel, Plug-in-Hybrid', 'FR 116–204 PS', 'D–E', 'Seat Leon Sportstourer FR 1.5 TSI 85 kW (116 PS): Kraftstoffverbrauch kombiniert: 5,6–6,0 l/100 km; CO₂-Emissionen kombiniert: 128–136 g/km; CO₂-Klasse: D–E' ),
+	'Nissan Juke'             => array( 'suv', 'hybrid', 'Hybrid', '143 PS', 'C', 'Nissan Juke N-Connecta 1,6 l Hybrid 105 kW (143 PS), Automatik: Energieverbrauch kombiniert: 4,7 l/100 km; CO₂-Emissionen kombiniert: 107–108 g/km; CO₂-Klasse: C' ),
+	'Nissan Qashqai'          => array( 'suv', 'hybrid', 'Mild-Hybrid, e-POWER', '158–205 PS', 'C', 'Nissan Qashqai Acenta 1,5 l e-POWER 151 kW (205 PS), Automatik: Energieverbrauch kombiniert: 4,3 l/100 km; CO₂-Emissionen kombiniert: 98 g/km; CO₂-Klasse: C' ),
+	'Nissan X-Trail'          => array( 'suv', 'hybrid', 'e-POWER', '204–213 PS', 'D', 'Nissan X-Trail Acenta 1,5 l e-POWER 150 kW (204 PS): Energieverbrauch kombiniert: 5,6 l/100 km; CO₂-Emissionen kombiniert: 128 g/km; CO₂-Klasse: D' ),
+	'Nissan Ariya'            => array( 'suv', 'elektro', 'Elektrisch', '306 PS', 'A', 'Nissan ARIYA 87 kWh, 225 kW (306 PS), e-4ORCE: Energieverbrauch kombiniert: 20,4 kWh/100 km; CO₂-Emissionen kombiniert: 0 g/km; CO₂-Klasse: A' ),
+	'Nissan Micra'            => array( 'kleinwagen', 'elektro', 'Elektrisch', '122 PS', 'A', 'Nissan Micra 40 kWh (122 PS): Energieverbrauch kombiniert: 14,2 kWh/100 km; CO₂-Klasse: A' ),
+	'Nissan Leaf'             => array( 'kompakt', 'elektro', 'Elektrisch', '176–217 PS', 'A', 'Nissan Leaf 52 kWh, 130 kW (176 PS): Energieverbrauch kombiniert: 13,5 kWh/100 km; CO₂-Emissionen kombiniert: 0 g/km; CO₂-Klasse: A' ),
 );
 ?>
 
@@ -475,36 +406,34 @@ $auto_emotion_karosserie_labels = array(
 	<div class="photo-gallery photo-gallery--products">
 		<?php foreach ( $auto_emotion_modelle as $auto_emotion_index => $auto_emotion_modell ) : ?>
 			<?php $auto_emotion_field_id = $auto_emotion_term->slug . '-' . $auto_emotion_index; ?>
+			<?php $auto_emotion_eckdaten_modell = $auto_emotion_eckdaten[ $auto_emotion_modell['name'] ] ?? null; ?>
 			<details class="model-card">
 				<summary class="model-card__summary">
 					<figure>
 						<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/' . $auto_emotion_modell['image'] . '?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="<?php echo esc_attr( $auto_emotion_modell['name'] . ', offizielles Herstellerfoto' ); ?>" loading="lazy">
 						<figcaption>
-							<?php if ( ! empty( $auto_emotion_modell['karosserie'] ) ) : ?>
-								<span class="model-card__name">
-									<?php echo esc_html( $auto_emotion_modell['name'] ); ?>
-									<span class="model-card__meta">
-										<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><?php auto_emotion_vehicle_filter_icon( $auto_emotion_modell['karosserie'] ); ?></svg>
-										<?php echo esc_html( $auto_emotion_karosserie_labels[ $auto_emotion_modell['karosserie'] ] ?? '' ); ?>
-									</span>
+							<span class="model-card__name"><?php echo esc_html( $auto_emotion_modell['name'] ); ?></span>
+							<?php if ( $auto_emotion_eckdaten_modell ) : ?>
+								<span class="model-card__fakten">
+									<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><?php auto_emotion_vehicle_filter_icon( $auto_emotion_eckdaten_modell[0] ); ?></svg><?php echo esc_html( $auto_emotion_karosserie_labels[ $auto_emotion_eckdaten_modell[0] ] ); ?></span>
+									<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><?php auto_emotion_vehicle_filter_icon( $auto_emotion_eckdaten_modell[1] ); ?></svg><?php echo esc_html( $auto_emotion_eckdaten_modell[2] ); ?></span>
+									<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16a8 8 0 1 1 16 0"/><path d="m12 16 3.5-5"/></svg><?php echo esc_html( $auto_emotion_eckdaten_modell[3] ); ?></span>
 								</span>
-							<?php else : ?>
-								<?php echo esc_html( $auto_emotion_modell['name'] ); ?>
+								<span class="model-card__wltp">
+									<span class="co2-badge co2-badge--<?php echo esc_attr( strtolower( substr( $auto_emotion_eckdaten_modell[4], 0, 1 ) ) ); ?>" aria-hidden="true"><?php echo esc_html( $auto_emotion_eckdaten_modell[4] ); ?></span>
+									<span><?php echo esc_html( $auto_emotion_eckdaten_modell[5] ); ?></span>
+								</span>
 							<?php endif; ?>
-							<span class="model-card__toggle" aria-hidden="true"></span>
+							<span class="model-card__mehr">
+								<?php esc_html_e( 'Konfigurieren', 'auto-emotion' ); ?>
+								<span class="model-card__toggle" aria-hidden="true"></span>
+							</span>
 						</figcaption>
 					</figure>
 				</summary>
 				<div class="model-card__details">
 					<?php if ( ! empty( $auto_emotion_modell['description'] ) ) : ?>
 						<p><?php echo esc_html( $auto_emotion_modell['description'] ); ?></p>
-					<?php endif; ?>
-					<?php if ( ! empty( $auto_emotion_modell['specs'] ) ) : ?>
-						<ul class="model-card__specs">
-							<?php foreach ( $auto_emotion_modell['specs'] as $auto_emotion_spec ) : ?>
-								<li><?php echo esc_html( $auto_emotion_spec ); ?></li>
-							<?php endforeach; ?>
-						</ul>
 					<?php endif; ?>
 
 					<div class="configurator" data-model="<?php echo esc_attr( $auto_emotion_modell['name'] ); ?>">
@@ -578,6 +507,40 @@ $auto_emotion_karosserie_labels = array(
 	<p class="model-card__disclaimer">
 		<?php esc_html_e( 'Motorisierungen, Verbrauchs-/Reichweitenangaben und Farben sind allgemeine Herstellerangaben ohne Anspruch auf aktuelle Verfügbarkeit für jede Ausstattungslinie. Verbindliche Auskunft und Preise erhalten Sie auf Anfrage.', 'auto-emotion' ); ?>
 	</p>
+
+
+	<nav class="service-kacheln" aria-label="<?php esc_attr_e( 'Rund um Ihr Fahrzeug', 'auto-emotion' ); ?>">
+		<a class="service-kachel" href="<?php echo esc_url( get_post_type_archive_link( 'angebot' ) ); ?>">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><line x1="14.8" y1="14.8" x2="20" y2="20"/></svg>
+			<strong><?php esc_html_e( 'Aktuelle Angebote', 'auto-emotion' ); ?></strong>
+			<span><?php esc_html_e( 'Unsere Fahrzeugangebote ansehen.', 'auto-emotion' ); ?></span>
+		</a>
+		<a class="service-kachel" href="<?php echo esc_url( home_url( '/gebrauchtwagen/' ) ); ?>">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17h18M5 17l1.5-6.5a2 2 0 0 1 1.95-1.5h7.1a2 2 0 0 1 1.95 1.5L19 17"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></svg>
+			<strong><?php esc_html_e( 'Gebrauchtwagen', 'auto-emotion' ); ?></strong>
+			<span><?php esc_html_e( 'Gebrauchte Fahrzeuge in unserem Bestand.', 'auto-emotion' ); ?></span>
+		</a>
+		<a class="service-kachel" href="<?php echo esc_url( home_url( '/finanzierung-leasing/' ) ); ?>">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="10.5" y2="12"/><line x1="13.5" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="10.5" y2="16"/><line x1="13.5" y1="16" x2="16" y2="16"/></svg>
+			<strong><?php esc_html_e( 'Finanzierung & Leasing', 'auto-emotion' ); ?></strong>
+			<span><?php esc_html_e( 'Die passende Rate für Ihr Fahrzeug finden.', 'auto-emotion' ); ?></span>
+		</a>
+		<a class="service-kachel" href="<?php echo esc_url( home_url( '/servicetermin-buchen/' ) ); ?>">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1"/><line x1="3.5" y1="10" x2="20.5" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>
+			<strong><?php esc_html_e( 'Servicetermin', 'auto-emotion' ); ?></strong>
+			<span><?php esc_html_e( 'Ihren Termin in der Werkstatt buchen.', 'auto-emotion' ); ?></span>
+		</a>
+		<a class="service-kachel" href="<?php echo esc_url( home_url( '/fahrzeugankauf/' ) ); ?>">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h13l-3-3"/><path d="M20 16H7l3 3"/></svg>
+			<strong><?php esc_html_e( 'Fahrzeugankauf', 'auto-emotion' ); ?></strong>
+			<span><?php esc_html_e( 'Ihr Auto verkaufen oder in Zahlung geben.', 'auto-emotion' ); ?></span>
+		</a>
+		<a class="service-kachel" href="<?php echo esc_url( home_url( '/kontakt/' ) ); ?>">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4Z"/></svg>
+			<strong><?php esc_html_e( 'Kontakt', 'auto-emotion' ); ?></strong>
+			<span><?php esc_html_e( 'So erreichen Sie uns in Offenbach.', 'auto-emotion' ); ?></span>
+		</a>
+	</nav>
 <?php endif; ?>
 
 <?php

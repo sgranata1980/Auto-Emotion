@@ -3324,33 +3324,9 @@ body.has-transparent-header .site-main {
 .photo-gallery--products .model-card__summary figcaption {
 	margin-top: 0;
 	padding: var(--spacing-16);
-	/* Figcaption aus .photo-gallery vererbt sonst nur 10px in Grau -
-	   zu klein für den Modellnamen, gilt für alle Marken. */
+	/* Figcaption aus .photo-gallery vererbt sonst nur 10px in Grau. */
 	font-size: var(--text-body);
 	color: var(--color-carbony-black);
-}
-
-/* Name plus Karosserieform. */
-.model-card__name {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-	min-width: 0;
-}
-
-.model-card__meta {
-	display: inline-flex;
-	align-items: center;
-	gap: 6px;
-	font-size: 13px;
-	/* Dunkler als --color-steel-mid: bei 13px sonst unter AA-Kontrast. */
-	color: var(--color-graphite-border);
-}
-
-.model-card__meta svg {
-	width: 18px;
-	height: 18px;
-	flex-shrink: 0;
 }
 
 /* Überschrift und Raster gehören zusammen: statt 56px Padding plus
@@ -3368,37 +3344,164 @@ body.has-transparent-header .site-main {
 	align-items: start;
 }
 
-/* Genau fünf Modelle: alle in eine Zeile statt eines einzelnen
-   Rests in Zeile 2. Die schmaleren Spalten braucht auch der
-   aufgeklappte Konfigurator - der Button würde sonst mit 16px
-   Versalien und 24px Innenabstand am Kartenrand abgeschnitten. */
-@media (min-width: 1200px) {
-	.photo-gallery--products:has(> :nth-child(5):last-child) {
-		grid-template-columns: repeat(5, minmax(0, 1fr));
-		grid-auto-flow: dense;
-		gap: var(--spacing-16);
+/* Große Kacheln mit lesbaren Eckdaten: sechs Modelle 3+3, fünf 3+2. */
+@media (min-width: 900px) {
+	.photo-gallery--products:has(> :nth-child(6):last-child) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
 
-	/* Der Konfigurator braucht mehr als eine Fünftel-Spalte, sonst
-	   werden die Auswahlfelder abgeschnitten. */
-	.photo-gallery--products:has(> :nth-child(5):last-child) .model-card[open] {
+	.photo-gallery--products:has(> :nth-child(5):last-child) {
+		grid-template-columns: repeat(6, minmax(0, 1fr));
+	}
+
+	.photo-gallery--products:has(> :nth-child(5):last-child) > :nth-child(-n + 3) {
 		grid-column: span 2;
 	}
 
-	.photo-gallery--products:has(> :nth-child(5):last-child) .model-card__details {
-		overflow-wrap: break-word;
+	.photo-gallery--products:has(> :nth-child(5):last-child) > :nth-child(n + 4) {
+		grid-column: span 3;
+	}
+}
+
+.photo-gallery--products .model-card__summary figcaption {
+	flex-direction: column;
+	align-items: stretch;
+	gap: 14px;
+	padding: var(--spacing-24);
+}
+
+.model-card__name {
+	font-family: var(--font-lambotype);
+	font-size: 22px;
+	font-weight: var(--font-weight-bold);
+	line-height: 1.2;
+}
+
+.model-card__fakten {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 18px;
+	font-size: 14px;
+	line-height: 1.3;
+}
+
+.model-card__fakten > span {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.model-card__fakten svg {
+	width: 20px;
+	height: 20px;
+	flex-shrink: 0;
+	color: var(--color-rosso-vivo);
+}
+
+.model-card__wltp {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	min-height: 4.2em;
+	padding-top: 14px;
+	border-top: 1px solid rgba(0, 0, 0, 0.14);
+	font-size: 12px;
+	line-height: 1.4;
+	color: var(--color-graphite-border);
+}
+
+.co2-badge {
+	flex-shrink: 0;
+	min-width: 26px;
+	padding: 2px 6px;
+	font-size: 12px;
+	font-weight: var(--font-weight-bold);
+	text-align: center;
+	color: #fff;
+}
+
+/* Farben der gesetzlichen CO2-Skala, A grün bis G rot. */
+.co2-badge--a { background: #00743f; }
+.co2-badge--b { background: #2f8f3a; }
+.co2-badge--c { background: #6c8f12; }
+.co2-badge--d { background: #b58a00; color: #000; }
+.co2-badge--e { background: #d9730d; color: #000; }
+.co2-badge--f { background: #c94f12; }
+.co2-badge--g { background: #b3121d; }
+
+.model-card__mehr {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-size: var(--text-body);
+	font-weight: var(--font-weight-bold);
+	color: var(--color-rosso-vivo);
+}
+
+/* Service-Kacheln unter den Modellen: ruhige Flächen ohne Rahmen. */
+.service-kacheln {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--spacing-24);
+	margin-top: var(--spacing-56);
+}
+
+.service-kachel {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+	padding: var(--spacing-32) var(--spacing-24);
+	background: var(--color-marble-gray);
+	color: var(--color-carbony-black);
+	text-align: center;
+	text-decoration: none;
+	transition: background-color 0.2s ease;
+}
+
+.service-kachel:hover {
+	background: #ebebeb;
+}
+
+.service-kachel:focus-visible {
+	outline: 2px solid var(--color-rosso-vivo);
+	outline-offset: 2px;
+}
+
+.service-kachel svg {
+	width: 36px;
+	height: 36px;
+	margin-bottom: 6px;
+	color: var(--color-rosso-vivo);
+}
+
+.service-kachel strong {
+	font-size: 18px;
+}
+
+.service-kachel span {
+	font-size: 15px;
+	line-height: 1.4;
+}
+
+@media (max-width: 700px) {
+	.service-kacheln {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 12px;
 	}
 
-	.photo-gallery--products:has(> :nth-child(5):last-child) .configurator__group,
-	.photo-gallery--products:has(> :nth-child(5):last-child) .configurator__select {
-		min-width: 0;
+	.service-kachel {
+		padding: var(--spacing-24) 12px;
 	}
+}
 
-	.photo-gallery--products:has(> :nth-child(5):last-child) .configurator__cta {
-		gap: var(--spacing-8);
-		padding: 12px;
-		font-size: 13px;
-	}
+/* Vor Ort: Überschrift und Galerie enger zusammen. */
+.tax-marke .section-heading:has(+ .photo-gallery) {
+	padding-bottom: 0;
+}
+
+.tax-marke .section-heading:has(+ .photo-gallery) + .photo-gallery {
+	margin-top: var(--spacing-24);
 }
 
 /* Markenkopf: Logo direkt links neben dem H1. */
@@ -3412,55 +3515,6 @@ body.has-transparent-header .site-main {
 	width: auto;
 	height: 56px;
 	flex-shrink: 0;
-}
-
-/* Icon-Leiste unter dem Markenkopf: keine Boxen, nur Haarlinien. */
-.container > .marke-links {
-	margin-top: 0;
-}
-
-.marke-links {
-	display: grid;
-	grid-template-columns: repeat(4, minmax(0, 1fr));
-	border-top: 1px solid rgba(0, 0, 0, 0.14);
-	border-bottom: 1px solid rgba(0, 0, 0, 0.14);
-}
-
-.marke-links__link {
-	display: flex;
-	align-items: center;
-	gap: 12px;
-	min-width: 0;
-	padding: 20px 16px;
-	font-size: var(--text-body);
-	color: var(--color-carbony-black);
-	text-decoration: none;
-	transition: color 0.2s ease;
-}
-
-.marke-links__link + .marke-links__link {
-	border-left: 1px solid rgba(0, 0, 0, 0.14);
-}
-
-.marke-links__link:first-child {
-	padding-left: 0;
-}
-
-.marke-links__link:hover {
-	color: var(--color-rosso-vivo);
-}
-
-/* Das globale Giallo-Outline ist auf Weiß zu schwach. */
-.marke-links__link:focus-visible {
-	outline: 2px solid var(--color-rosso-vivo);
-	outline-offset: -2px;
-}
-
-.marke-links__icon {
-	width: 24px;
-	height: 24px;
-	flex-shrink: 0;
-	color: var(--color-rosso-vivo);
 }
 
 /* Vollflächiges Pressefoto im Seitenverhältnis statt fester Höhe. Die
@@ -3486,10 +3540,6 @@ body.has-transparent-header .site-main {
 	padding-bottom: 0;
 }
 
-.site-main > .container:has(> .marke-links) + .content-header-image--hoch {
-	margin-top: var(--spacing-48);
-}
-
 /* Marken ohne Icon-Leiste: Nur die Überschrift steht über dem Foto,
    sonst addieren sich ihr Padding und der Sektionsabstand. */
 .site-main > .container:has(+ .content-header-image--hoch) > .section-heading:last-child {
@@ -3499,24 +3549,6 @@ body.has-transparent-header .site-main {
 @media (max-width: 700px) {
 	.section-heading__logo {
 		height: 44px;
-	}
-
-	.marke-links {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-
-	.marke-links__link {
-		min-height: 44px;
-		padding: var(--spacing-16) 12px;
-	}
-
-	.marke-links__link:nth-child(odd) {
-		padding-left: 0;
-		border-left: 0;
-	}
-
-	.marke-links__link:nth-child(n + 3) {
-		border-top: 1px solid rgba(0, 0, 0, 0.14);
 	}
 
 	.content-header-image.content-header-image--hoch {
