@@ -1836,6 +1836,29 @@ body.has-transparent-header .site-main {
 	}
 }
 
+/* Banner mit Bild links und Text rechts (Nissan): Dort ist neben dem
+   Text kein Platz, also unten rechts in der freien Fläche. */
+.career-banner--logo-unten {
+	position: relative;
+}
+
+.career-banner--logo-unten .career-banner__marke-logo {
+	position: absolute;
+	right: clamp(var(--spacing-24), 6vw, 120px);
+	bottom: var(--spacing-32);
+	width: clamp(84px, 8vw, 124px);
+	margin: 0;
+}
+
+@media (max-width: 900px) {
+	.career-banner--logo-unten .career-banner__marke-logo {
+		position: static;
+		display: block;
+		width: 64px;
+		margin: 0 0 var(--spacing-40) clamp(var(--spacing-24), 6vw, 120px);
+	}
+}
+
 /* ---------------------------------------------------------------- */
 /* Bewerbungsformular                                                  */
 /* ---------------------------------------------------------------- */
