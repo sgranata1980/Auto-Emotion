@@ -4600,6 +4600,13 @@ img[src*="logo"]:not([src*="showroom"]) {
    eine Zeile passt. Der Verlauf hält den Text auf dem hellen Foto lesbar. */
 body:has(.finanz-bloecke) .hero-stage__headline {
 	font-size: clamp(40px, 7vw, 96px);
+	text-wrap: wrap;
+}
+
+@media (min-width: 900px) {
+	body:has(.finanz-bloecke) .hero-stage__content {
+		max-width: min(900px, 80vw);
+	}
 }
 
 body:has(.finanz-bloecke) .hero-stage::before {
