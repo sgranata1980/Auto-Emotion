@@ -1802,29 +1802,37 @@ body.has-transparent-header .site-main {
 	color: var(--surface-canvas-white);
 }
 
-/* Markenlogo rechts im dunklen Textbereich. Liegt auf der Höhe des
-   Textblocks: Die Unterkante orientiert sich am Abschnittsende, weil
-   das Bild darüber je nach Viewport unterschiedlich hoch ist. */
+/* Markenlogo rechts im dunklen Textbereich: Raster statt fester
+   Position, damit es bei jeder Texthöhe mittig neben dem Block sitzt. */
 .career-banner--marke {
-	position: relative;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+}
+
+.career-banner--marke .career-banner__media {
+	grid-column: 1 / -1;
 }
 
 .career-banner__marke-logo {
-	position: absolute;
-	right: clamp(var(--spacing-24), 10vw, 200px);
-	bottom: var(--spacing-80);
-	width: clamp(150px, 17vw, 280px);
+	width: clamp(120px, 13vw, 220px);
 	height: auto;
+	margin-right: clamp(var(--spacing-24), 10vw, 200px);
 }
 
 @media (max-width: 900px) {
-	/* Mobil kein Platz neben dem Text: klein neben die Zeile
-	   „Seit 2001 …“ statt über Text und Buttons. */
+	/* Mobil kein Platz neben dem Text: klein unter den Textblock. */
+	.career-banner--marke {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.career-banner--marke .career-banner__content {
+		padding-bottom: var(--spacing-32);
+	}
+
 	.career-banner__marke-logo {
-		position: static;
-		display: block;
-		width: 72px;
-		margin: 0 0 var(--spacing-32) clamp(var(--spacing-24), 6vw, 120px);
+		width: 64px;
+		margin: 0 0 var(--spacing-40) clamp(var(--spacing-24), 6vw, 120px);
 	}
 }
 
