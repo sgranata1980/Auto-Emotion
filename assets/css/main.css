@@ -4573,6 +4573,26 @@ body.has-transparent-header .site-main {
 /* ---------------------------------------------------------------- */
 /* Finanzierung & Leasing                                             */
 /* ---------------------------------------------------------------- */
+/* Langes Wort in der Headline: etwas kleiner, damit es auf Desktop in
+   eine Zeile passt. Der Verlauf hält den Text auf dem hellen Foto lesbar. */
+.page-template-page-finanzierung-leasing .hero-stage__headline {
+	font-size: clamp(40px, 7vw, 96px);
+}
+
+.page-template-page-finanzierung-leasing .hero-stage::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	pointer-events: none;
+	background: linear-gradient(90deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.35) 55%, rgba(0, 0, 0, 0) 80%);
+}
+
+.page-template-page-finanzierung-leasing .hero-stage__content {
+	position: relative;
+	z-index: 2;
+}
+
 .finanz-bloecke {
 	display: grid;
 	gap: var(--spacing-64);

@@ -20,7 +20,7 @@ get_template_part(
 	null,
 	array(
 		'eyebrow'         => __( 'Seat, Cupra und Nissan bei Auto Emotion', 'auto-emotion' ),
-		'headline_pre'    => __( 'Finanzierung', 'auto-emotion' ),
+		'headline_pre'    => "Finan\xC2\xADzierung",
 		'headline_accent' => __( '& Leasing.', 'auto-emotion' ),
 		'cta_text'        => __( 'Beratung vereinbaren', 'auto-emotion' ),
 		'cta_url'         => '#beratung',
@@ -137,7 +137,7 @@ echo '<div class="container">';
 </div>
 
 <div class="section-heading">
-	<h2 class="section-heading__title"><?php esc_html_e( 'Unsere Finanzierungspartner', 'auto-emotion' ); ?></h2>
+	<h2 class="section-heading__title"><?php echo esc_html( "Unsere Finanzierungs\xC2\xADpartner" ); ?></h2>
 </div>
 <div class="entry-content">
 	<p><?php esc_html_e( 'Je nach Marke und Fahrzeug arbeiten wir unter anderem mit den herstellereigenen Finanzdienstleistern zusammen – ergänzt um weitere, unabhängige Finanzierungspartner, deren Konditionen wir für Sie vergleichen.', 'auto-emotion' ); ?></p>
