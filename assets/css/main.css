@@ -4496,6 +4496,29 @@ body.has-transparent-header .site-main {
 	overflow: hidden;
 }
 
+/* Logos nie runden, das würde ihre Form verändern. Das Showroom-Foto
+   mit „logo“ im Dateinamen ist ein normales Bild. */
+img[src*="logo"]:not([src*="showroom"]) {
+	border-radius: 0;
+}
+
+/* Marken im Hauptmenü mit Logo. */
+.main-navigation .sub-menu a.sub-menu__marke {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-16);
+	padding-block: var(--spacing-8);
+	font-size: var(--text-body);
+	color: var(--surface-canvas-white);
+}
+
+.sub-menu__marke img {
+	width: 44px;
+	height: 36px;
+	object-fit: contain;
+	flex-shrink: 0;
+}
+
 /* Bilder in einem gerundeten Kasten nur vom Kasten beschneiden lassen,
    sonst entstehen helle Ecken zwischen Bild und Textbereich. */
 .model-card img,
