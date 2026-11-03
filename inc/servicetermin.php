@@ -27,6 +27,7 @@ function auto_emotion_handle_servicetermin() {
 	$kennzeichen = isset( $_POST['service_kennzeichen'] ) ? sanitize_text_field( wp_unslash( $_POST['service_kennzeichen'] ) ) : '';
 	$termin    = isset( $_POST['service_termin'] ) ? sanitize_text_field( wp_unslash( $_POST['service_termin'] ) ) : '';
 	$nachricht = isset( $_POST['service_nachricht'] ) ? sanitize_textarea_field( wp_unslash( $_POST['service_nachricht'] ) ) : '';
+	$leistungen = isset( $_POST['service_leistungen'] ) ? array_map( 'sanitize_text_field', array_map( 'wp_unslash', (array) $_POST['service_leistungen'] ) ) : array();
 	$consent   = ! empty( $_POST['service_dsgvo'] );
 
 	$redirect_base = wp_get_referer() ?: home_url( '/' );
@@ -45,6 +46,7 @@ function auto_emotion_handle_servicetermin() {
 		. 'Hersteller: ' . $hersteller . "\n"
 		. 'Modell: ' . $modell . "\n"
 		. 'Kennzeichen: ' . ( $kennzeichen ? $kennzeichen : '-' ) . "\n"
+		. 'Gewünschte Leistung: ' . ( $leistungen ? implode( ', ', $leistungen ) : '-' ) . "\n"
 		. 'Wunschtermin: ' . ( $termin ? $termin : '-' ) . "\n";
 
 	if ( $nachricht ) {
