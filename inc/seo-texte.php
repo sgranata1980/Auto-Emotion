@@ -337,6 +337,15 @@ function auto_emotion_seo_seiten() {
 		'team-ansprechpartner' => array(
 			'title' => 'Team und Ansprechpartner in Offenbach | Auto Emotion',
 			'desc'  => 'Ihre Ansprechpartner bei Auto Emotion in Offenbach: Geschäftsführung, Verkauf, Service und Teiledienst, direkt per Telefon oder E-Mail erreichbar.',
+			'abschnitte' => array(
+				array(
+					'Der schnellste Weg zur richtigen Person',
+					array(
+						'Für Fragen zu Neu- und Gebrauchtwagen wenden Sie sich an den Verkauf, für Termine und Reparaturen an den Service, für Teile an den Teiledienst. Wenn Sie nicht sicher sind, wer zuständig ist, erreichen Sie uns unter der zentralen Nummer 069 8740334-0.',
+						'Einen Werkstatttermin können Sie auch <a href="/servicetermin-buchen/">online anfragen</a>. Anfahrt und Öffnungszeiten finden Sie beim <a href="/standorte/">Standort</a>.',
+					),
+				),
+			),
 		),
 		'unsere-kunden' => array(
 			'title'      => 'Unsere Kunden: seit 2001 in Offenbach | Auto Emotion',
@@ -416,30 +425,96 @@ function auto_emotion_seo_seiten() {
 		'warum-auto-emotion' => array(
 			'title' => 'Warum Auto Emotion? Arbeiten in Offenbach | Auto Emotion',
 			'desc'  => 'Moderne Werkstatt mit 12 Hebebühnen, gestelltes Werkzeug, bezahlte Schulungen und ein eingespieltes Team: Das bietet Auto Emotion in Offenbach.',
+			'abschnitte' => array(
+				array(
+					'Arbeiten in einer Werkstatt in Offenbach',
+					array(
+						'Die Werkstatt an der Sprendlinger Landstraße ist beheizt und klimatisiert, gearbeitet wird an Seat, Cupra und Nissan. Du arbeitest selbstständig, Herstellerzeiten dienen dir zur Orientierung. Dein Werkzeug wird gestellt, Hochvolt- und Diagnoseschulungen werden bezahlt.',
+						'Eine Bewerbung ist unkompliziert: Eine Rückmeldung bekommst du in der Regel innerhalb von 24 Stunden, das erste Gespräch führst du persönlich mit Agostino Cisternino. Die aktuellen Ausschreibungen findest du unter <a href="/offene-stellen/">Offene Stellen</a>. Ist nichts Passendes dabei, geht auch eine <a href="/initiativbewerbung/">Initiativbewerbung</a>.',
+					),
+				),
+			),
 		),
 		'events-schulungen' => array(
 			'title' => 'Events und Schulungen in Offenbach | Auto Emotion',
 			'desc'  => 'Tag der offenen Tür, Probefahrt-Tage, Kundenveranstaltungen und Werkstatt-Schulungen: die Anlässe rund um Auto Emotion in Offenbach im Überblick.',
+			'abschnitte' => array(
+				array(
+					'Veranstaltungen rund um Seat, Cupra und Nissan',
+					array(
+						'Sobald Termine feststehen, kündigen wir sie auf unseren Social-Media-Kanälen an. Eine Probefahrt müssen Sie aber nicht an einen Aktionstag koppeln: Einen individuellen Termin können Sie jederzeit vereinbaren.',
+						'Die Weiterbildung unseres Teams läuft unabhängig von Veranstaltungen. Unsere Mitarbeiter schulen sich regelmäßig bei den Herstellern, damit Ihr Fahrzeug nach deren Vorgaben gewartet wird.',
+					),
+				),
+			),
 		),
 		'markenevents-probefahrt-tage' => array(
 			'title' => 'Probefahrt und Markenevents in Offenbach | Auto Emotion',
 			'desc'  => 'Neue Modelle von Seat, Cupra und Nissan testen: Probefahrt-Aktionen und individuelle Termine bei Auto Emotion in Offenbach, auch ohne Aktionstag.',
+			'abschnitte' => array(
+				array(
+					'Probefahrt in Offenbach vereinbaren',
+					array(
+						'Wählen Sie unter unseren <a href="/angebote/">Angeboten</a> das Modell, das Sie interessiert, oder rufen Sie uns an. Ob <a href="/marke/seat/">Seat</a>, <a href="/marke/cupra/">Cupra</a> oder <a href="/marke/nissan/">Nissan</a>: Wir stimmen einen Termin für Ihr Wunschmodell ab.',
+						'Bringen Sie zur Probefahrt Ihren gültigen Führerschein mit. Nutzen Sie die Fahrt, um das Auto auf Ihren üblichen Strecken zu erleben, und fragen Sie gern nach dem, was Ihnen im Alltag wichtig ist.',
+					),
+				),
+			),
+			'fragen'     => array(
+				array( 'Brauche ich für eine Probefahrt einen Aktionstag?', 'Nein. Einen individuellen Termin für das Modell Ihrer Wahl können Sie jederzeit vereinbaren.' ),
+				array( 'Wo erfahre ich von neuen Aktionstagen?', 'Am schnellsten über unsere Social-Media-Kanäle, sobald Termine feststehen.' ),
+			),
 		),
 		'tag-der-offenen-tuer' => array(
 			'title' => 'Tag der offenen Tür in Offenbach | Auto Emotion',
 			'desc'  => 'Tag der offenen Tür bei Auto Emotion in Offenbach: Showroom, Werkstatt und Modelle ohne Terminzwang. Aktuell ist kein Termin geplant, wir kündigen ihn an.',
+			'abschnitte' => array(
+				array(
+					'Was Sie an diesem Tag erwartet',
+					array(
+						'Sie können sich in Ruhe im Showroom an der Sprendlinger Landstraße umsehen, das aktuelle Modellprogramm von Seat, Cupra und Nissan anschauen und einen Blick in die Werkstatt werfen. Eine Anmeldung ist dafür nicht nötig.',
+						'Sie möchten nicht warten? Unser Showroom ist auch sonst geöffnet. Die Zeiten finden Sie beim <a href="/standorte/">Standort</a>, unsere weiteren Formate unter <a href="/events-schulungen/">Events & Schulungen</a>.',
+					),
+				),
+			),
 		),
 		'werkstatt-schulungen' => array(
 			'title' => 'Werkstatt-Schulungen in Offenbach | Auto Emotion',
 			'desc'  => 'Unser Werkstattteam bildet sich regelmäßig bei Cupra, Seat und Nissan weiter, von neuen Modellreihen über Assistenzsysteme bis zu Elektro und Hybrid.',
+			'abschnitte' => array(
+				array(
+					'Warum Schulungen für Ihr Auto wichtig sind',
+					array(
+						'Neue Modellreihen, Assistenzsysteme sowie Elektro- und Hybridantriebe verändern die Arbeit in der Werkstatt ständig. Darum bilden sich unsere Mitarbeiter regelmäßig bei Cupra, Seat und Nissan weiter.',
+						'Davon profitieren Sie bei jedem Werkstattbesuch, von der <a href="/inspektion-wartung/">Inspektion</a> bis zur Reparatur: Ihr Fahrzeug wird fachgerecht nach Herstellervorgaben gewartet und repariert. Auch Hochvolt- und Diagnoseschulungen gehören dazu.',
+					),
+				),
+			),
 		),
 		'kundenveranstaltungen' => array(
 			'title' => 'Kundenveranstaltungen in Offenbach | Auto Emotion',
 			'desc'  => 'Zu Modellpremieren oder Jubiläen lädt Auto Emotion auch gezielt Kunden nach Offenbach ein. Termine kündigen wir unter anderem auf Social Media an.',
+			'abschnitte' => array(
+				array(
+					'Persönlicher Kontakt nach dem Autokauf',
+					array(
+						'Als inhabergeführtem Familienunternehmen ist uns der Kontakt über den Fahrzeugkauf hinaus wichtig. Einige Kunden begleiten uns seit der Gründung 2001. Darum laden wir zu Anlässen wie Modellpremieren oder Jubiläen auch gezielt Kunden ein.',
+						'Wie es zu dieser engen Bindung kam, lesen Sie bei <a href="/unsere-kunden/">Unsere Kunden</a>. Offen für alle ist dagegen der <a href="/tag-der-offenen-tuer/">Tag der offenen Tür</a>.',
+					),
+				),
+			),
 		),
 		'magazin' => array(
 			'title' => 'Magazin: Neues rund ums Auto | Auto Emotion Offenbach',
 			'desc'  => 'Ratgeber, Einblicke und Themen rund um Seat, Cupra und Nissan im Blog und auf Social Media. Ein gedrucktes Auto-Emotion-Magazin ist in Planung.',
+			'abschnitte' => array(
+				array(
+					'Themen rund um Seat, Cupra und Nissan',
+					array(
+						'Im <a href="/blog/">Blog</a> erscheinen Beiträge zu aktuellen Modellen und Angeboten. Einblicke aus Showroom und Werkstatt zeigen wir auf Instagram und Facebook. Antworten auf häufige Fragen haben wir in den <a href="/faq/">FAQ</a> zusammengestellt.',
+					),
+				),
+			),
 		),
 		'blog' => array(
 			'title' => 'Blog: Seat, Cupra und Nissan | Auto Emotion Offenbach',
@@ -460,6 +535,15 @@ function auto_emotion_seo_seiten() {
 		'kontakt' => array(
 			'title' => 'Kontakt und Öffnungszeiten | Auto Emotion Offenbach',
 			'desc'  => 'So erreichen Sie Auto Emotion in Offenbach: Adresse, Telefon, E-Mail und Öffnungszeiten von Verkauf und Werkstatt, dazu die Route per Google Maps.',
+			'abschnitte' => array(
+				array(
+					'Der richtige Weg für Ihr Anliegen',
+					array(
+						'Für einen Werkstatttermin nutzen Sie am einfachsten das Formular <a href="/servicetermin-buchen/">Servicetermin online buchen</a>. Für eine Probefahrt wählen Sie Ihr Modell unter den <a href="/angebote/">Angeboten</a>. Wenn Sie eine bestimmte Person sprechen möchten, finden Sie die Durchwahlen bei <a href="/team-ansprechpartner/">Team und Ansprechpartner</a>.',
+						'Bewerbungen bearbeiten wir ausschließlich über die Formulare unter <a href="/karriere/">Karriere</a>.',
+					),
+				),
+			),
 		),
 	);
 }
