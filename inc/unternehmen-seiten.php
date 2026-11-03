@@ -130,7 +130,7 @@ function auto_emotion_unternehmen_seiten() {
 				array( __( 'Januar 2015', 'auto-emotion' ), __( 'Nissan kommt dazu', 'auto-emotion' ), __( 'Start der Partnerschaft mit Nissan.', 'auto-emotion' ) ),
 				array( '2016', __( 'Neues Gelände', 'auto-emotion' ), __( 'Kauf eines 19.400 Quadratmeter großen Gewerbeareals. Dort ist Platz für Neufahrzeuge, Vorführwagen, Transport- und Nutzfahrzeuge sowie Elektrofahrzeuge.', 'auto-emotion' ) ),
 				array( '2018', __( 'Zwei Auszeichnungen', 'auto-emotion' ), __( 'Auto Emotion wird Nissan GT-R High Performance Center und CUPRA Specialist.', 'auto-emotion' ) ),
-				array( __( 'Oktober 2018', 'auto-emotion' ), __( 'Umbau der Filiale', 'auto-emotion' ), __( 'Die Filiale wird umgebaut.', 'auto-emotion' ) ),
+				array( __( 'Oktober 2018', 'auto-emotion' ), __( 'Umbau der Filiale', 'auto-emotion' ), '' ),
 			),
 			'bloecke'    => array(
 				array( 'service-eingang-aussen.jpg', __( 'Eingang des Auto Emotion Standorts in Offenbach', 'auto-emotion' ), __( 'Bis heute', 'auto-emotion' ), __( 'Inhabergeführt, mit vielen Stammkunden.', 'auto-emotion' ), __( 'Auto Emotion ist ein Familienunternehmen geblieben. Viele Stammkunden betreuen wir seit dem ersten Tag.', 'auto-emotion' ), $url( 'unsere-kunden' ), __( 'Unsere Kunden', 'auto-emotion' ) ),

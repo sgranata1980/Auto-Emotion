@@ -5714,3 +5714,21 @@ body:not(.has-transparent-header) .site-header {
 		text-align: left;
 	}
 }
+
+/* Rot gesetzter Teil der Headline immer in eigener Zeile. */
+body:has(.service-lead) .hero-stage__accent {
+	display: block;
+}
+
+@media (min-width: 901px) {
+	.stellen-karten {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.termin-form .application-form__field legend {
+	font-size: 14px;
+	text-transform: none;
+	letter-spacing: 0;
+	color: var(--color-carbony-black);
+}

@@ -81,7 +81,9 @@ echo '<div class="container">';
 				<span class="zeitleiste__datum"><?php echo esc_html( $auto_emotion_eintrag[0] ); ?></span>
 				<div>
 					<h2><?php echo esc_html( $auto_emotion_eintrag[1] ); ?></h2>
-					<p><?php echo esc_html( $auto_emotion_eintrag[2] ); ?></p>
+					<?php if ( $auto_emotion_eintrag[2] ) : ?>
+						<p><?php echo esc_html( $auto_emotion_eintrag[2] ); ?></p>
+					<?php endif; ?>
 				</div>
 			</li>
 		<?php endforeach; ?>
