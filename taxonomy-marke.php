@@ -157,7 +157,7 @@ $auto_emotion_marke_bild_full = array(
 	),
 	'cupra'  => array(
 		'image'  => 'cupra-bild-full-raval.jpg',
-		'alt'    => 'Cupra Raval in einer Hofeinfahrt unter dem beleuchteten Cupra-Logo, offizielles Pressefoto',
+		'alt'    => 'Cupra Raval in einer Hofeinfahrt unter einem großen weißen Cupra-Logo, offizielles Pressefoto',
 		'width'  => 2560,
 		'height' => 1707,
 		'hoch'   => true,
