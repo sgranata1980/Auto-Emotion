@@ -132,8 +132,11 @@ $auto_emotion_marke_logo  = $auto_emotion_marke_logos[ $auto_emotion_term->slug 
  */
 $auto_emotion_marke_bild_full = array(
 	'nissan' => array(
-		'image' => 'nissan-primastar-angebot.jpg',
-		'alt'   => 'Nissan Primastar, offizielles Pressefoto',
+		'image'  => 'nissan-bild-full-primastar.jpg',
+		'alt'    => 'Nissan Primastar Kombi auf einer Landstraße bei tief stehender Sonne, offizielles Pressefoto',
+		'width'  => 2560,
+		'height' => 2003,
+		'hoch'   => true,
 	),
 	'seat'   => array(
 		'image'  => 'seat-bild-full-1.jpg',

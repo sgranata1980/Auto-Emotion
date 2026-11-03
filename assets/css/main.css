@@ -3456,6 +3456,12 @@ body.has-transparent-header .site-main {
 	margin-top: var(--spacing-48);
 }
 
+/* Marken ohne Icon-Leiste: Nur die Überschrift steht über dem Foto,
+   sonst addieren sich ihr Padding und der Sektionsabstand. */
+.site-main > .container:has(+ .content-header-image--hoch) > .section-heading:last-child {
+	padding-bottom: 0;
+}
+
 @media (max-width: 700px) {
 	.section-heading__logo {
 		height: 44px;
