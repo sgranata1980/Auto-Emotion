@@ -6006,3 +6006,22 @@ body:has(.service-lead) .faq-liste details p {
 		gap: var(--spacing-16);
 	}
 }
+
+/* Blog-Kopf: hoch genug, damit das Auto vollständig im Bild ist. */
+.blog-kopf {
+	height: clamp(340px, 34vw, 620px);
+}
+
+.blog-kopf > img {
+	object-position: 50% 88%;
+}
+
+@media (max-width: 600px) {
+	.blog-kopf {
+		height: auto;
+	}
+
+	.blog-kopf > img {
+		height: 240px;
+	}
+}
