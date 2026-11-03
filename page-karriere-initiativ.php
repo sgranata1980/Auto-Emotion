@@ -26,8 +26,8 @@ get_template_part(
 	null,
 	array(
 		'eyebrow'         => __( 'Initiativbewerbung', 'auto-emotion' ),
-		'headline_pre'    => __( 'Keine passende Stelle?', 'auto-emotion' ),
-		'headline_accent' => __( 'Schreib uns trotzdem.', 'auto-emotion' ),
+		'headline_pre'    => "Initiativ\xC2\xADbewerbung",
+		'headline_accent' => __( 'bei Auto Emotion.', 'auto-emotion' ),
 		'cta_text'        => __( 'Zum Formular', 'auto-emotion' ),
 		'cta_url'         => '#bewerbung',
 		'cta2_text'       => __( 'Offene Stellen', 'auto-emotion' ),

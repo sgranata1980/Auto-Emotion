@@ -168,6 +168,8 @@ $auto_emotion_termin_svg = 'viewBox="0 0 24 24" fill="none" stroke="currentColor
 	</aside>
 </div>
 
+<?php get_template_part( 'template-parts/seo-text' ); ?>
+
 <nav class="termin-bilder" aria-label="<?php esc_attr_e( 'Mehr aus unserem Service', 'auto-emotion' ); ?>">
 	<?php
 	$auto_emotion_termin_bilder = array(

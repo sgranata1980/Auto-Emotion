@@ -69,6 +69,8 @@ echo '<div class="container">';
 	</section>
 </div>
 
+<?php get_template_part( 'template-parts/seo-text' ); ?>
+
 <section class="service-cta" aria-labelledby="service-cta-titel">
 	<div>
 		<h2 id="service-cta-titel"><?php esc_html_e( 'Sprechen wir über Ihr Auto.', 'auto-emotion' ); ?></h2>

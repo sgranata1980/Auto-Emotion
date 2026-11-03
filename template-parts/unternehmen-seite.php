@@ -219,6 +219,8 @@ echo '<div class="container">';
 	</section>
 <?php endif; ?>
 
+<?php get_template_part( 'template-parts/seo-text' ); ?>
+
 <?php if ( ! empty( $auto_emotion_seite['notiz'] ) ) : ?>
 	<p class="firma-notiz"><?php echo esc_html( $auto_emotion_seite['notiz'] ); ?></p>
 <?php endif; ?>

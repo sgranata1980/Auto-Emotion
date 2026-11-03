@@ -16,8 +16,8 @@ if ( is_home() && ! is_front_page() ) {
 		null,
 		array(
 			'eyebrow'         => __( 'Blog', 'auto-emotion' ),
-			'headline_pre'    => __( 'Neues aus', 'auto-emotion' ),
-			'headline_accent' => __( 'dem Autohaus.', 'auto-emotion' ),
+			'headline_pre'    => __( 'Blog:', 'auto-emotion' ),
+			'headline_accent' => __( 'Neues aus dem Autohaus.', 'auto-emotion' ),
 			'cta_text'        => __( 'Beiträge lesen', 'auto-emotion' ),
 			'cta_url'         => '#beitraege',
 			'cta2_text'       => auto_emotion_contact( 'phone' ),

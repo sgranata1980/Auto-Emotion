@@ -5732,3 +5732,75 @@ body:has(.service-lead) .hero-stage__accent {
 	letter-spacing: 0;
 	color: var(--color-carbony-black);
 }
+
+/* ---------------------------------------------------------------- */
+/* Größere Schrift und längere Texte                                  */
+/* ---------------------------------------------------------------- */
+body:has(.service-lead) .service-lead {
+	max-width: 960px;
+	font-size: clamp(22px, 2.3vw, 32px);
+	line-height: 1.35;
+}
+
+body:has(.service-lead) .service-punkt strong {
+	font-size: 22px;
+}
+
+body:has(.service-lead) .service-punkt span,
+body:has(.service-lead) .finanz-block__text p:not(.finanz-block__eyebrow),
+body:has(.service-lead) .zeitleiste p,
+body:has(.service-lead) .kontakt-karten span,
+body:has(.service-lead) .stellen-karte__text > span:not(.stellen-karte__umfang, .stellen-karte__link),
+body:has(.service-lead) .firma-text p {
+	font-size: 18px;
+	line-height: 1.55;
+}
+
+body:has(.service-lead) .faq-liste summary {
+	font-size: 20px;
+}
+
+body:has(.service-lead) .faq-liste details p {
+	font-size: 18px;
+	line-height: 1.55;
+}
+
+.seo-text {
+	display: grid;
+	gap: var(--spacing-48);
+	max-width: 960px;
+	margin: var(--spacing-64) 0;
+}
+
+.seo-text h2 {
+	margin: 0 0 var(--spacing-16);
+	font-size: clamp(28px, 3.2vw, 44px);
+	line-height: 1.15;
+}
+
+.seo-text p {
+	margin: 0 0 var(--spacing-16);
+	font-size: clamp(18px, 1.5vw, 20px);
+	line-height: 1.6;
+}
+
+.seo-text section > p a {
+	color: var(--color-rosso-vivo);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.seo-text .faq-liste {
+	margin-bottom: 0;
+	max-width: none;
+}
+
+.seo-text .faq-liste details p {
+	margin: 0;
+}
+
+@media (min-width: 1400px) {
+	.main-navigation .sub-menu a.menu-item__link:not(.sub-menu__overview-link) {
+		font-size: 16px;
+	}
+}
