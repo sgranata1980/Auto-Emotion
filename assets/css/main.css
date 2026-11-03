@@ -1880,7 +1880,7 @@ body.has-transparent-header .site-main {
 	font-size: var(--text-body);
 	padding: var(--spacing-16);
 	border: 1px solid var(--color-ash-border);
-	border-radius: 0;
+	border-radius: var(--radius-buttons);
 	background: var(--surface-canvas-white);
 }
 
@@ -2142,7 +2142,7 @@ body.has-transparent-header .site-main {
 	font-size: var(--text-body);
 	padding: var(--spacing-16);
 	border: 1px solid var(--color-graphite-border);
-	border-radius: 0;
+	border-radius: var(--radius-buttons);
 	background: var(--surface-canvas-white);
 	color: var(--color-carbony-black);
 	appearance: none;
@@ -3943,7 +3943,7 @@ body.has-transparent-header .site-main {
 	font-size: var(--text-body);
 	padding: var(--spacing-16);
 	border: 1px solid var(--color-ash-border);
-	border-radius: 0;
+	border-radius: var(--radius-buttons);
 	background: var(--surface-canvas-white);
 }
 
@@ -4450,4 +4450,100 @@ body.has-transparent-header .site-main {
 	line-height: var(--leading-body);
 	color: var(--color-steel-mid);
 	margin: 0;
+}
+
+/* ---------------------------------------------------------------- */
+/* Abgerundete Kästen und Bilder, seitenweit                          */
+/* ---------------------------------------------------------------- */
+.model-card,
+.product-tile,
+.brand-tile,
+.quick-action,
+.service-kachel,
+.date-card,
+.press-news__card,
+.press-news__featured-panel,
+.career-banner,
+.event-banner,
+.faq-item,
+.chat-widget__panel,
+.chat-widget__toggle,
+.cookie-banner,
+.feedback-popup__dialog {
+	border-radius: var(--radius-cards);
+	overflow: hidden;
+}
+
+/* Bilder in einem gerundeten Kasten nur vom Kasten beschneiden lassen,
+   sonst entstehen helle Ecken zwischen Bild und Textbereich. */
+.model-card img,
+.product-tile img,
+.career-banner img,
+.event-banner img,
+.press-news__card img {
+	border-radius: 0;
+}
+
+.co2-badge {
+	border-radius: var(--radius-badges);
+}
+
+/* Bild in Seitenbreite: gleicher Rand wie die Banner, damit die Rundung
+   nicht am Fensterrand verloren geht. */
+.content-header-image,
+.content-header-image.content-header-image--hoch {
+	width: calc(100% - 2 * var(--spacing-24));
+	margin-inline: auto;
+	border-radius: var(--radius-images);
+}
+
+/* Teilen-Knopf auf der Modellkachel. */
+.model-card {
+	position: relative;
+}
+
+.model-card__teilen {
+	position: absolute;
+	top: 14px;
+	right: 14px;
+	z-index: 2;
+	display: grid;
+	place-items: center;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: var(--color-rosso-vivo);
+	color: #fff;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+.model-card__teilen:hover {
+	background: var(--color-rosso-ombra);
+}
+
+.model-card__teilen:focus-visible {
+	outline: 2px solid var(--color-carbony-black);
+	outline-offset: 2px;
+}
+
+.model-card__teilen svg {
+	width: 20px;
+	height: 20px;
+}
+
+.model-card__teilen[data-kopiert]::after {
+	content: attr(data-kopiert);
+	position: absolute;
+	top: 50%;
+	right: calc(100% + 8px);
+	transform: translateY(-50%);
+	padding: 4px 10px;
+	border-radius: var(--radius-badges);
+	background: var(--color-carbony-black);
+	color: #fff;
+	font-size: 13px;
+	white-space: nowrap;
 }

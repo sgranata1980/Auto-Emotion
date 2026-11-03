@@ -90,11 +90,11 @@
 	--card-padding: 24px;
 	--element-gap: 24px;
 
-	/* Named Radii — brand is 0px everywhere */
-	--radius-cards: 0px;
-	--radius-badges: 0px;
-	--radius-images: 0px;
-	--radius-buttons: 0px;
+	/* Named Radii */
+	--radius-cards: 16px;
+	--radius-badges: 6px;
+	--radius-images: 16px;
+	--radius-buttons: 10px;
 
 	/* Surfaces */
 	--surface-canvas-white: #ffffff;
