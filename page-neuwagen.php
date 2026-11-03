@@ -138,7 +138,7 @@ echo '<div class="container">';
 	?>
 </div>
 
-<section class="career-banner" aria-labelledby="neuwagen-cupra-heading">
+<section class="career-banner career-banner--marke" aria-labelledby="neuwagen-cupra-heading">
 	<div class="career-banner__media">
 		<img class="career-banner__image career-banner__image--brand-hero career-banner__image--formentor" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-cupra-formentor.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="CUPRA Formentor, offizielles Herstellerfoto" loading="lazy">
 	</div>
@@ -159,6 +159,7 @@ echo '<div class="container">';
 			<?php esc_html_e( 'Abgebildet: CUPRA Formentor. Kraftstoffverbrauch kombiniert: 1,4–10,2 l/100 km; CO₂-Emissionen kombiniert: 32–231 g/km; CO₂-Klasse: B–G (Werte je nach Motorisierung, gemäß WLTP).', 'auto-emotion' ); ?>
 		</p>
 	</div>
+	<img class="career-banner__marke-logo" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/cupra-logo-weiss.png?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="" loading="lazy">
 </section>
 
 <div class="model-grid">
@@ -172,7 +173,7 @@ echo '<div class="container">';
 	?>
 </div>
 
-<section class="career-banner" aria-labelledby="neuwagen-nissan-heading">
+<section class="career-banner career-banner--marke" aria-labelledby="neuwagen-nissan-heading">
 	<img class="career-banner__image career-banner__image--brand-hero career-banner__image--qashqai" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-nissan-qashqai.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Qashqai, offizielles Herstellerfoto" loading="lazy">
 	<div class="career-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Nissan GT-R High Performance Center seit 2018', 'auto-emotion' ); ?></p>
@@ -190,6 +191,7 @@ echo '<div class="container">';
 			<?php esc_html_e( 'Abgebildet: Nissan Qashqai. Kraftstoffverbrauch kombiniert: 4,3–6,4 l/100 km; CO₂-Emissionen kombiniert: 98–145 g/km; CO₂-Klasse: C–E (Werte je nach Motorisierung, gemäß WLTP).', 'auto-emotion' ); ?>
 		</p>
 	</div>
+	<img class="career-banner__marke-logo" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/nissan-logo-weiss.png?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="" loading="lazy">
 </section>
 
 <div class="model-grid">
