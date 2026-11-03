@@ -106,7 +106,7 @@ echo '<div class="container">';
 	</button>
 </div>
 
-<section class="career-banner" aria-labelledby="neuwagen-seat-heading">
+<section class="career-banner career-banner--marke" aria-labelledby="neuwagen-seat-heading">
 	<div class="career-banner__media">
 		<img class="career-banner__image career-banner__image--brand-hero career-banner__image--seat-leon" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-seat-leon.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="SEAT Leon, offizielles Herstellerfoto" loading="lazy">
 	</div>
@@ -126,6 +126,7 @@ echo '<div class="container">';
 			<?php esc_html_e( 'Abgebildet: SEAT Leon. Kraftstoffverbrauch kombiniert: 1,2–5,9 l/100 km; CO₂-Emissionen kombiniert: 27–134 g/km; CO₂-Klasse: B–D (Werte je nach Motorisierung, gemäß WLTP).', 'auto-emotion' ); ?>
 		</p>
 	</div>
+	<img class="career-banner__marke-logo" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/seat-logo-weiss.png?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="" loading="lazy">
 </section>
 
 <div class="model-grid">

@@ -1802,6 +1802,32 @@ body.has-transparent-header .site-main {
 	color: var(--surface-canvas-white);
 }
 
+/* Markenlogo rechts im dunklen Textbereich. Liegt auf der Höhe des
+   Textblocks: Die Unterkante orientiert sich am Abschnittsende, weil
+   das Bild darüber je nach Viewport unterschiedlich hoch ist. */
+.career-banner--marke {
+	position: relative;
+}
+
+.career-banner__marke-logo {
+	position: absolute;
+	right: clamp(var(--spacing-24), 10vw, 200px);
+	bottom: var(--spacing-80);
+	width: clamp(150px, 17vw, 280px);
+	height: auto;
+}
+
+@media (max-width: 900px) {
+	/* Mobil kein Platz neben dem Text: klein neben die Zeile
+	   „Seit 2001 …“ statt über Text und Buttons. */
+	.career-banner__marke-logo {
+		position: static;
+		display: block;
+		width: 72px;
+		margin: 0 0 var(--spacing-32) clamp(var(--spacing-24), 6vw, 120px);
+	}
+}
+
 /* ---------------------------------------------------------------- */
 /* Bewerbungsformular                                                  */
 /* ---------------------------------------------------------------- */
