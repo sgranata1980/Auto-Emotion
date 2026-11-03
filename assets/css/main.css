@@ -6025,3 +6025,7 @@ body:has(.service-lead) .faq-liste details p {
 		height: 240px;
 	}
 }
+
+.site-main > .blog-kopf {
+	margin-top: 0;
+}
