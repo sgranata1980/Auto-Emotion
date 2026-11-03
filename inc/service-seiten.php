@@ -82,7 +82,7 @@ function auto_emotion_service_seiten() {
 				array( 'teil', __( 'Original-Ersatzteile', 'auto-emotion' ), __( 'Verbaut werden Original-Teile.', 'auto-emotion' ) ),
 				array( 'person', __( 'Geschultes Fachpersonal', 'auto-emotion' ), __( 'Auf Cupra, Seat und Nissan spezialisiert.', 'auto-emotion' ) ),
 			),
-			'block'   => array( 'service-empfang-cupra.jpg', __( 'Serviceannahme von Auto Emotion mit Service-Schild von Nissan', 'auto-emotion' ), __( 'Seat und Cupra', 'auto-emotion' ), __( 'Wartungskosten, die sich planen lassen.', 'auto-emotion' ), __( 'Für Seat und Cupra sorgt „Wartung & Inspektion“ der SEAT Leasing für planbare, niedrige Wartungskosten. Sprechen Sie uns darauf an.', 'auto-emotion' ) ),
+			'block'   => array( 'service-empfang-cupra.jpg', __( 'Servicehalle von Auto Emotion mit Cupra-Logo', 'auto-emotion' ), __( 'Seat und Cupra', 'auto-emotion' ), __( 'Wartungskosten, die sich planen lassen.', 'auto-emotion' ), __( 'Für Seat und Cupra sorgt „Wartung & Inspektion“ der SEAT Leasing für planbare, niedrige Wartungskosten. Sprechen Sie uns darauf an.', 'auto-emotion' ) ),
 			'weitere' => array( 'hu-au', 'klimaservice', 'reifenservice-reifeneinlagerung' ),
 		),
 		'reifenservice-reifeneinlagerung' => array(
@@ -99,8 +99,8 @@ function auto_emotion_service_seiten() {
 			'weitere' => array( 'reifen-felgen', 'achsvermessung', 'inspektion-wartung' ),
 		),
 		'klimaservice' => array(
-			'pre'     => __( 'Klima', 'auto-emotion' ),
-			'accent'  => __( 'service.', 'auto-emotion' ),
+			'pre'     => __( 'Klimaservice', 'auto-emotion' ),
+			'accent'  => __( 'für saubere Luft.', 'auto-emotion' ),
 			'hero'    => 'service-klima-innenraum.jpg',
 			'lead'    => __( 'Eine Klimaanlage kühlt nicht nur, sie filtert auch die Luft im Innenraum. Mit der Zeit verliert sie aber Kältemittel, und Bakterien oder Pollen können sich im System festsetzen.', 'auto-emotion' ),
 			'punkte'  => array(
@@ -121,12 +121,12 @@ function auto_emotion_service_seiten() {
 				array( 'dokument', __( 'Kostenvoranschlag', 'auto-emotion' ), __( 'Unverbindlich, bevor die Reparatur beginnt.', 'auto-emotion' ) ),
 				array( 'haken', __( 'Versicherung', 'auto-emotion' ), __( 'Die Abwicklung übernehmen wir für Sie.', 'auto-emotion' ) ),
 			),
-			'block'   => array( 'service-empfang-nissan.jpg', __( 'Annahme und Beratungsbereich im Showroom von Auto Emotion', 'auto-emotion' ), __( 'Nach dem Schaden', 'auto-emotion' ), __( 'Der Papierkram bleibt nicht an Ihnen hängen.', 'auto-emotion' ), __( 'Sie wissen vorab, was die Reparatur kostet, und wir kümmern uns um die Abwicklung mit Ihrer Versicherung.', 'auto-emotion' ) ),
+			'block'   => array( 'service-empfang-nissan.jpg', __( 'Serviceannahme von Auto Emotion mit Nissan-Schriftzug', 'auto-emotion' ), __( 'Nach dem Schaden', 'auto-emotion' ), __( 'Der Papierkram bleibt nicht an Ihnen hängen.', 'auto-emotion' ), __( 'Sie wissen vorab, was die Reparatur kostet, und wir kümmern uns um die Abwicklung mit Ihrer Versicherung.', 'auto-emotion' ) ),
 			'weitere' => array( 'achsvermessung', 'fahrzeugaufbereitung', 'freie-werkstatt' ),
 		),
 		'achsvermessung' => array(
 			'pre'     => "Achs\xC2\xADvermessung",
-			'accent'  => __( 'mit System.', 'auto-emotion' ),
+			'accent'  => __( 'Spur und Sturz.', 'auto-emotion' ),
 			'hero'    => 'werkstatt-hebebuehnen.jpg',
 			'lead'    => __( 'Eine falsch eingestellte Achse merken Sie oft erst am Reifen: einseitiger Verschleiß, höherer Kraftstoffverbrauch, ein schlechteres Fahrverhalten. Wir prüfen und justieren Spur und Sturz mit modernem Messequipment.', 'auto-emotion' ),
 			'punkte'  => array(
@@ -139,7 +139,7 @@ function auto_emotion_service_seiten() {
 		),
 		'fahrzeugaufbereitung' => array(
 			'pre'     => "Fahrzeug\xC2\xADaufbereitung",
-			'accent'  => __( 'innen wie außen.', 'auto-emotion' ),
+			'accent'  => __( 'innen und außen.', 'auto-emotion' ),
 			'hero'    => 'service-aufbereitung-lack.jpg',
 			'lead'    => __( 'Vor dem Verkauf, nach dem Gebrauchtwagenkauf oder einfach zwischendurch: Wir bringen Ihr Auto innen und außen wieder auf Vordermann.', 'auto-emotion' ),
 			'punkte'  => array(
@@ -160,7 +160,7 @@ function auto_emotion_service_seiten() {
 				array( 'auto', __( 'Beschriftung bis Vollfolierung', 'auto-emotion' ), __( 'Vom einzelnen Schriftzug bis zum ganzen Auto.', 'auto-emotion' ) ),
 				array( 'werkzeug', __( 'Anbringung', 'auto-emotion' ), __( 'Die Beklebung übernehmen wir ebenfalls.', 'auto-emotion' ) ),
 			),
-			'block'   => array( 'nissan-nutzfahrzeuge.jpg', __( 'Nissan Nutzfahrzeuge von Auto Emotion', 'auto-emotion' ), __( 'Einzelfahrzeug oder Fuhrpark', 'auto-emotion' ), __( 'Das Angebot richtet sich nach Ihrem Fahrzeug.', 'auto-emotion' ), __( 'Angebote schneiden wir individuell auf Fahrzeug und Anforderung zu, auch für einen ganzen Fuhrpark.', 'auto-emotion' ) ),
+			'block'   => array( 'nissan-nutzfahrzeuge.jpg', __( 'Nissan Primastar auf einer Landstraße', 'auto-emotion' ), __( 'Einzelfahrzeug oder Fuhrpark', 'auto-emotion' ), __( 'Das Angebot richtet sich nach Ihrem Fahrzeug.', 'auto-emotion' ), __( 'Angebote schneiden wir individuell auf Fahrzeug und Anforderung zu, auch für einen ganzen Fuhrpark.', 'auto-emotion' ) ),
 			'mail'    => 'Anfrage Beklebungsservice',
 			'weitere' => array( 'fahrzeugaufbereitung', 'zubehoer-tuning', 'unfallinstandsetzung-lackierung' ),
 		),
@@ -188,7 +188,7 @@ function auto_emotion_service_seiten() {
 				array( 'werkzeug', __( 'Auch als Einzelteil', 'auto-emotion' ), __( 'Für alle, die selbst schrauben möchten.', 'auto-emotion' ) ),
 				array( 'dokument', __( 'Mit Fahrgestellnummer', 'auto-emotion' ), __( 'So finden wir am einfachsten das richtige Teil.', 'auto-emotion' ) ),
 			),
-			'block'   => array( 'career-kfz-serviceberater.jpg', __( 'Serviceannahme von Auto Emotion', 'auto-emotion' ), __( 'So geht es', 'auto-emotion' ), __( 'Fahrzeug und Teil nennen, fertig.', 'auto-emotion' ), __( 'Teilen Sie uns Ihr Fahrzeug und das benötigte Teil mit, am einfachsten mit der Fahrgestellnummer. Wir prüfen Verfügbarkeit und Preis.', 'auto-emotion' ) ),
+			'block'   => array( 'career-kfz-serviceberater.jpg', __( 'Servicehalle von Auto Emotion', 'auto-emotion' ), __( 'So geht es', 'auto-emotion' ), __( 'Fahrzeug und Teil nennen, fertig.', 'auto-emotion' ), __( 'Teilen Sie uns Ihr Fahrzeug und das benötigte Teil mit, am einfachsten mit der Fahrgestellnummer. Wir prüfen Verfügbarkeit und Preis.', 'auto-emotion' ) ),
 			'mail'    => 'Ersatzteil-Anfrage',
 			'weitere' => array( 'zubehoer-tuning', 'inspektion-wartung', 'reifen-felgen' ),
 		),
