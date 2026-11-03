@@ -79,6 +79,16 @@ $auto_emotion_marke_logos = array(
 		'width'  => 141,
 		'height' => 126,
 	),
+	'cupra' => array(
+		'file'   => 'cupra-logo.png',
+		'width'  => 856,
+		'height' => 659,
+	),
+	'nissan' => array(
+		'file'   => 'nissan-logo.png',
+		'width'  => 729,
+		'height' => 610,
+	),
 );
 $auto_emotion_marke_logo  = $auto_emotion_marke_logos[ $auto_emotion_term->slug ] ?? null;
 ?>
@@ -146,8 +156,11 @@ $auto_emotion_marke_bild_full = array(
 		'hoch'   => true,
 	),
 	'cupra'  => array(
-		'image' => 'cupra-formentor-abt-angebot.jpg',
-		'alt'   => 'Cupra Formentor, offizielles Pressefoto',
+		'image'  => 'cupra-bild-full-raval.jpg',
+		'alt'    => 'Cupra Raval in einer Hofeinfahrt unter dem beleuchteten Cupra-Logo, offizielles Pressefoto',
+		'width'  => 2560,
+		'height' => 1707,
+		'hoch'   => true,
 	),
 );
 $auto_emotion_bild_full       = $auto_emotion_marke_bild_full[ $auto_emotion_term->slug ] ?? null;

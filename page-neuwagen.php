@@ -173,8 +173,10 @@ echo '<div class="container">';
 	?>
 </div>
 
-<section class="career-banner career-banner--logo-unten" aria-labelledby="neuwagen-nissan-heading">
-	<img class="career-banner__image career-banner__image--brand-hero career-banner__image--qashqai" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-nissan-qashqai.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Qashqai, offizielles Herstellerfoto" loading="lazy">
+<section class="career-banner career-banner--marke" aria-labelledby="neuwagen-nissan-heading">
+	<div class="career-banner__media">
+		<img class="career-banner__image career-banner__image--brand-hero career-banner__image--qashqai" src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/neuwagen-nissan-qashqai.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Qashqai, offizielles Herstellerfoto" loading="lazy">
+	</div>
 	<div class="career-banner__content">
 		<p class="hero-stage__eyebrow"><?php esc_html_e( 'Nissan GT-R High Performance Center seit 2018', 'auto-emotion' ); ?></p>
 		<h2 id="neuwagen-nissan-heading" class="career-banner__headline">NISSAN</h2>
