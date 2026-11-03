@@ -219,6 +219,10 @@ echo '<div class="container">';
 	</section>
 <?php endif; ?>
 
+<?php if ( in_array( get_post_field( 'post_name' ), array( 'vlog', 'magazin' ), true ) ) : ?>
+	<?php get_template_part( 'template-parts/instagram-feed' ); ?>
+<?php endif; ?>
+
 <?php get_template_part( 'template-parts/seo-text' ); ?>
 
 <?php if ( ! empty( $auto_emotion_seite['notiz'] ) ) : ?>
