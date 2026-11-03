@@ -1875,6 +1875,9 @@ body.has-transparent-header .site-main {
 
 .application-form__field input[type="text"],
 .application-form__field input[type="tel"],
+.application-form__field input[type="email"],
+.application-form__field input[type="number"],
+.application-form__field select,
 .application-form__field textarea {
 	font-family: var(--font-lambotype);
 	font-size: var(--text-body);
@@ -2010,11 +2013,17 @@ body.has-transparent-header .site-main {
 }
 
 .finance-calculator__result-item--highlight {
-	border-color: var(--color-giallo-vivo);
+	border-color: var(--color-rosso-vivo);
+	background: var(--color-rosso-vivo);
+	color: #fff;
+}
+
+.finance-calculator__result-item--highlight .finance-calculator__result-label {
+	color: #fff;
 }
 
 .finance-calculator__result-label {
-	font-size: var(--text-caption);
+	font-size: 14px;
 	color: var(--color-steel-mid);
 }
 
@@ -4476,6 +4485,9 @@ body.has-transparent-header .site-main {
 .career-banner,
 .event-banner,
 .faq-item,
+.finance-calculator,
+.finance-calculator__result-item,
+.service-teaser,
 .chat-widget__panel,
 .chat-widget__toggle,
 .cookie-banner,
@@ -4556,4 +4568,106 @@ body.has-transparent-header .site-main {
 	color: #fff;
 	font-size: 13px;
 	white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------- */
+/* Finanzierung & Leasing                                             */
+/* ---------------------------------------------------------------- */
+.finanz-bloecke {
+	display: grid;
+	gap: var(--spacing-64);
+	margin-top: var(--spacing-56);
+}
+
+.finanz-block {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--spacing-64);
+	align-items: center;
+}
+
+.finanz-block img {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+}
+
+.finanz-block:nth-child(even) img {
+	order: 2;
+}
+
+.finanz-block__text {
+	max-width: 520px;
+}
+
+.finanz-block__eyebrow {
+	margin: 0 0 var(--spacing-8);
+	font-size: 14px;
+	font-weight: var(--font-weight-bold);
+	color: var(--color-rosso-vivo);
+}
+
+.finanz-block h2 {
+	margin: 0 0 var(--spacing-16);
+	font-size: clamp(26px, 3vw, var(--text-heading-lg));
+	line-height: 1.15;
+}
+
+.finanz-block__text p:not(.finanz-block__eyebrow) {
+	margin: 0 0 var(--spacing-24);
+}
+
+.page-template-page-finanzierung-leasing .section-heading:has(+ .entry-content) {
+	padding-bottom: var(--spacing-16);
+}
+
+.page-template-page-finanzierung-leasing .section-heading:has(+ .entry-content) + .entry-content {
+	margin-top: 0;
+}
+
+.finanz-beratung {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--spacing-64);
+	align-items: start;
+	margin-top: var(--spacing-80);
+}
+
+.finanz-beratung .application-form {
+	max-width: none;
+}
+
+.finanz-beratung__text {
+	position: sticky;
+	top: 120px;
+}
+
+.finanz-beratung__text h2 {
+	margin-bottom: var(--spacing-16);
+}
+
+.finanz-beratung__zeiten {
+	margin-top: var(--spacing-16);
+	font-size: 14px;
+}
+
+@media (max-width: 800px) {
+	.finanz-bloecke {
+		gap: var(--spacing-48);
+	}
+
+	.finanz-block,
+	.finanz-beratung {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--spacing-24);
+	}
+
+	.finanz-block:nth-child(even) img {
+		order: 0;
+	}
+
+	.finanz-beratung__text {
+		position: static;
+	}
 }
