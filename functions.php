@@ -24,7 +24,7 @@ if ( ! isset( $_SERVER['PHP_AUTH_USER'] ) && isset( $_SERVER['HTTP_AUTHORIZATION
 	}
 }
 
-define( 'AUTO_EMOTION_VERSION', '2.20.0' );
+define( 'AUTO_EMOTION_VERSION', '2.21.0' );
 define( 'AUTO_EMOTION_DIR', get_template_directory() );
 define( 'AUTO_EMOTION_URI', get_template_directory_uri() );
 
@@ -69,6 +69,7 @@ require AUTO_EMOTION_DIR . '/inc/testdrive.php';
 require AUTO_EMOTION_DIR . '/inc/newsletter.php';
 require AUTO_EMOTION_DIR . '/inc/feedback.php';
 require AUTO_EMOTION_DIR . '/inc/servicetermin.php';
+require AUTO_EMOTION_DIR . '/inc/service-seiten.php';
 require AUTO_EMOTION_DIR . '/inc/woocommerce.php';
 require AUTO_EMOTION_DIR . '/inc/chatbot.php';
 require AUTO_EMOTION_DIR . '/inc/traumauto-finder.php';

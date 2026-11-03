@@ -4598,18 +4598,18 @@ img[src*="logo"]:not([src*="showroom"]) {
 /* ---------------------------------------------------------------- */
 /* Langes Wort in der Headline: etwas kleiner, damit es auf Desktop in
    eine Zeile passt. Der Verlauf hält den Text auf dem hellen Foto lesbar. */
-body:has(.finanz-bloecke) .hero-stage__headline {
+body:has(.finanz-bloecke, .service-lead) .hero-stage__headline {
 	font-size: clamp(40px, 7vw, 96px);
 	text-wrap: wrap;
 }
 
 @media (min-width: 900px) {
-	body:has(.finanz-bloecke) .hero-stage__content {
+	body:has(.finanz-bloecke, .service-lead) .hero-stage__content {
 		max-width: min(900px, 80vw);
 	}
 }
 
-body:has(.finanz-bloecke) .hero-stage::before {
+body:has(.finanz-bloecke, .service-lead) .hero-stage::before {
 	content: "";
 	position: absolute;
 	inset: 0;
@@ -4618,7 +4618,7 @@ body:has(.finanz-bloecke) .hero-stage::before {
 	background: linear-gradient(0deg, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.55) 40%, rgba(0, 0, 0, 0) 75%), linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 65%);
 }
 
-body:has(.finanz-bloecke) .hero-stage__content {
+body:has(.finanz-bloecke, .service-lead) .hero-stage__content {
 	position: relative;
 	z-index: 2;
 }
@@ -4668,11 +4668,11 @@ body:has(.finanz-bloecke) .hero-stage__content {
 	margin: 0 0 var(--spacing-24);
 }
 
-body:has(.finanz-bloecke) .section-heading:has(+ .entry-content) {
+body:has(.finanz-bloecke, .service-lead) .section-heading:has(+ .entry-content) {
 	padding-bottom: var(--spacing-16);
 }
 
-body:has(.finanz-bloecke) .section-heading:has(+ .entry-content) + .entry-content {
+body:has(.finanz-bloecke, .service-lead) .section-heading:has(+ .entry-content) + .entry-content {
 	margin-top: 0;
 }
 
@@ -4719,5 +4719,99 @@ body:has(.finanz-bloecke) .section-heading:has(+ .entry-content) + .entry-conten
 
 	.finanz-beratung__text {
 		position: static;
+	}
+}
+
+/* ---------------------------------------------------------------- */
+/* Service-Seiten                                                     */
+/* ---------------------------------------------------------------- */
+.service-lead {
+	max-width: 900px;
+	margin: var(--spacing-64) 0 var(--spacing-48);
+	font-size: clamp(20px, 2.2vw, 28px);
+	line-height: 1.4;
+}
+
+.service-punkte {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--spacing-24);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.service-punkt {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: var(--spacing-32);
+	border-radius: var(--radius-cards);
+	background: var(--color-marble-gray);
+}
+
+.service-punkt svg {
+	width: 36px;
+	height: 36px;
+	margin-bottom: var(--spacing-8);
+	color: var(--color-rosso-vivo);
+}
+
+.service-punkt strong {
+	font-size: 18px;
+	line-height: 1.25;
+}
+
+.service-punkt span {
+	font-size: 15px;
+	line-height: 1.4;
+}
+
+.service-cta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--spacing-32);
+	margin-top: var(--spacing-64);
+	padding: var(--spacing-48);
+	border-radius: var(--radius-cards);
+	background: radial-gradient(ellipse 900px 700px at 100% 0%, var(--color-rosso-vivo) 0%, var(--color-carbony-black) 60%, var(--color-pure-black) 100%);
+	color: var(--surface-canvas-white);
+}
+
+.service-cta h2 {
+	margin: 0 0 var(--spacing-8);
+	font-size: clamp(26px, 3vw, var(--text-heading-lg));
+	line-height: 1.15;
+}
+
+.service-cta p {
+	margin: 0;
+}
+
+.service-cta__knoepfe {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.service-cta .btn-outline {
+	border-color: var(--surface-canvas-white);
+	color: var(--surface-canvas-white);
+}
+
+@media (max-width: 800px) {
+	.service-punkte {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 12px;
+	}
+
+	.service-punkt {
+		padding: var(--spacing-24);
+	}
+
+	.service-cta {
+		padding: var(--spacing-32) var(--spacing-24);
 	}
 }

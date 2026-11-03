@@ -15,13 +15,28 @@ get_header();
 $auto_emotion_status = isset( $_GET['anfrage'] ) ? sanitize_text_field( wp_unslash( $_GET['anfrage'] ) ) : '';
 ?>
 
-<div class="section-heading">
-	<h1 class="section-heading__title"><?php esc_html_e( 'Servicetermin online buchen', 'auto-emotion' ); ?></h1>
-</div>
+<?php
+echo '</div>';
+get_template_part(
+	'template-parts/hero',
+	null,
+	array(
+		'eyebrow'         => __( 'Service bei Auto Emotion in Offenbach', 'auto-emotion' ),
+		'headline_pre'    => "Service\xC2\xADtermin",
+		'headline_accent' => __( 'online buchen.', 'auto-emotion' ),
+		'cta_text'        => __( 'Zum Formular', 'auto-emotion' ),
+		'cta_url'         => '#termin',
+		'cta2_text'       => auto_emotion_contact( 'phone' ),
+		'cta2_url'        => 'tel:' . auto_emotion_contact( 'phone_href' ),
+		'image'           => AUTO_EMOTION_URI . '/assets/images/career-mechatroniker.jpg?ver=' . AUTO_EMOTION_VERSION,
+		'video'           => '',
+		'video_webm'      => '',
+	)
+);
+echo '<div class="container">';
+?>
 
-<div class="entry-content">
-	<p><?php esc_html_e( 'Ob Inspektion, Reifenwechsel oder HU-Vorstellung: Füllen Sie das Formular aus, und wir melden uns zeitnah bei Ihnen, um einen passenden Termin abzustimmen.', 'auto-emotion' ); ?></p>
-</div>
+<p class="service-lead" id="termin"><?php esc_html_e( 'Ob Inspektion, Reifenwechsel oder HU-Vorstellung: Füllen Sie das Formular aus, und wir melden uns zeitnah bei Ihnen, um einen passenden Termin abzustimmen.', 'auto-emotion' ); ?></p>
 
 <div class="photo-gallery">
 	<figure>
