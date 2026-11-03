@@ -3385,6 +3385,17 @@ body.has-transparent-header .site-main {
 	line-height: 1.3;
 }
 
+/* Platz für zwei Zeilen Eckdaten und drei Zeilen Pflichtangabe, damit
+   die Kacheln einer Reihe gleich hoch bleiben. */
+.model-card__fakten {
+	min-height: 56px;
+	align-content: flex-start;
+}
+
+.model-card__wltp {
+	min-height: calc(3 * 1.4em + 15px);
+}
+
 .model-card__fakten > span {
 	display: inline-flex;
 	align-items: center;
@@ -3402,7 +3413,6 @@ body.has-transparent-header .site-main {
 	display: flex;
 	align-items: flex-start;
 	gap: 10px;
-	min-height: 4.2em;
 	padding-top: 14px;
 	border-top: 1px solid rgba(0, 0, 0, 0.14);
 	font-size: 12px;
