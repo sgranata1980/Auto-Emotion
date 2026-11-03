@@ -5242,3 +5242,41 @@ body:has(.finanz-bloecke, .service-lead) .section-heading:has(+ .entry-content) 
 		color: var(--surface-canvas-white);
 	}
 }
+
+/* Hauptzeile: Rot auf Dunkel war schlecht lesbar. Aktive Punkte bleiben
+   weiß und bekommen eine rote Linie. */
+.header-actions .glink.gt-current-lang {
+	color: #ff3b45;
+}
+
+@media (min-width: 1200px) {
+	.main-navigation .menu-item__link,
+	.main-navigation__ai-trigger {
+		font-size: 13px;
+	}
+
+	.main-navigation > div > ul > .menu-item > .menu-item__link:hover,
+	.main-navigation > div > ul > .menu-item > .menu-item__link:focus-visible,
+	.main-navigation .submenu-toggle[aria-expanded="true"] {
+		color: var(--surface-canvas-white);
+		box-shadow: inset 0 -3px 0 #ff3b45;
+	}
+
+	.main-navigation__ai-trigger:hover,
+	.main-navigation__ai-trigger:focus-visible {
+		color: #ff3b45;
+	}
+}
+
+/* Servicetermin: gut lesbare Feldbezeichnungen. */
+.termin-form .application-form__field label {
+	font-size: 14px;
+	text-transform: none;
+	letter-spacing: 0;
+	color: var(--color-carbony-black);
+}
+
+.termin-form .application-form__consent {
+	font-size: 14px;
+	line-height: 1.45;
+}
