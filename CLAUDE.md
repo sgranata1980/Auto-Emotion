@@ -7,6 +7,18 @@ Bildgeneratoren, Illustrationen), immer eine der drei echten Marken
 verwenden, die Auto Emotion tatsächlich verkauft: **Seat, Cupra oder
 Nissan**. Keine generischen oder anderen Marken-Fahrzeuge.
 
+## CO2-Werte bei jeder Fahrzeugnennung (Website, Social Media, Anzeigen)
+
+Bei jeder Bewerbung eines konkreten Fahrzeugmodells (Website-Seiten,
+Instagram-/Facebook-Posts, Reels, Anzeigen) müssen die Pflichtangaben
+nach Pkw-EnVKV genannt werden: CO2-Emissionen (kombiniert, g/km) und
+Kraftstoff-/Stromverbrauch (kombiniert). Bei reinen Elektrofahrzeugen
+zusätzlich der Stromverbrauch in kWh/100 km, CO2-Ausstoß dann 0 g/km.
+Werte nur aus echten, bestätigten Herstellerangaben übernehmen, niemals
+schätzen oder erfinden (siehe Grundsatz "nichts erfinden"). Fehlen die
+Werte für ein Modell, vor Veröffentlichung beim Nutzer nachfragen statt
+den Post ohne Angabe rauszulassen oder einen Platzhalter zu erfinden.
+
 ## Kennzeichen auf generierten Fahrzeugbildern
 
 Das Nummernschild des Fahrzeugs muss immer **„AUTOEMOTION"** zeigen (sauber
