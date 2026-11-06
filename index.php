@@ -8,6 +8,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+
+if ( is_home() && ! is_front_page() ) {
+	get_template_part( 'template-parts/blog-uebersicht' );
+	get_footer();
+	return;
+}
 ?>
 
 <?php if ( have_posts() ) : ?>

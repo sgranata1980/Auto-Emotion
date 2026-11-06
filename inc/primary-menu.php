@@ -55,9 +55,9 @@ function auto_emotion_primary_menu_items() {
 			'url'      => $home . '#marken',
 			'overview' => true,
 			'children' => array(
-				array( 'title' => __( 'Seat', 'auto-emotion' ), 'url' => $home . 'marke/seat/' ),
-				array( 'title' => __( 'Cupra', 'auto-emotion' ), 'url' => $home . 'marke/cupra/' ),
-				array( 'title' => __( 'Nissan', 'auto-emotion' ), 'url' => $home . 'marke/nissan/' ),
+				array( 'title' => __( 'Seat', 'auto-emotion' ), 'url' => $home . 'marke/seat/', 'logo' => 'seat-logo-weiss.png' ),
+				array( 'title' => __( 'Cupra', 'auto-emotion' ), 'url' => $home . 'marke/cupra/', 'logo' => 'cupra-logo-weiss.png' ),
+				array( 'title' => __( 'Nissan', 'auto-emotion' ), 'url' => $home . 'marke/nissan/', 'logo' => 'nissan-logo-weiss.png' ),
 			),
 		),
 		array(
@@ -101,7 +101,7 @@ function auto_emotion_primary_menu_items() {
 				array( 'title' => __( 'Markenevents & Probefahrt-Tage', 'auto-emotion' ), 'url' => $home . 'markenevents-probefahrt-tage/' ),
 				array( 'title' => __( 'Tag der offenen Tür', 'auto-emotion' ), 'url' => $home . 'tag-der-offenen-tuer/' ),
 				array( 'title' => __( 'Werkstatt-Schulungen', 'auto-emotion' ), 'url' => $home . 'werkstatt-schulungen/' ),
-				array( 'title' => __( 'Kundenveranstaltungen', 'auto-emotion' ), 'url' => $home . 'kundenveranstaltungen/' ),
+				array( 'title' => __( "Kunden\xC2\xADveranstaltungen", 'auto-emotion' ), 'url' => $home . 'kundenveranstaltungen/' ),
 				array( 'title' => __( 'Magazin', 'auto-emotion' ), 'url' => $home . 'magazin/' ),
 				array( 'title' => __( 'Blog', 'auto-emotion' ), 'url' => $home . 'blog/' ),
 				array( 'title' => __( 'Vlog', 'auto-emotion' ), 'url' => $home . 'vlog/' ),
@@ -164,7 +164,8 @@ function auto_emotion_render_primary_menu() {
 
 			foreach ( $item['children'] as $child ) {
 				echo '<li class="menu-item">';
-				echo '<a href="' . esc_url( $child['url'] ) . '" class="menu-item__link">' . esc_html( $child['title'] ) . '</a>';
+				$logo = empty( $child['logo'] ) ? '' : '<img src="' . esc_url( AUTO_EMOTION_URI . '/assets/images/' . $child['logo'] . '?ver=' . AUTO_EMOTION_VERSION ) . '" alt="" loading="lazy">';
+				echo '<a href="' . esc_url( $child['url'] ) . '" class="menu-item__link' . ( $logo ? ' sub-menu__marke' : '' ) . '">' . $logo . esc_html( $child['title'] ) . '</a>'; // phpcs:ignore WordPress.Security.EscapeOutput -- $logo ist oben fertig escaped.
 				echo '</li>';
 			}
 

@@ -51,6 +51,11 @@ function auto_emotion_get_meta_description() {
 		return __( 'Auto Emotion – Ihr Vertragshändler für Seat, Cupra und Nissan in Offenbach, für Frankfurt, Offenbach und Umgebung.', 'auto-emotion' );
 	}
 
+	$auto_emotion_seo = auto_emotion_seo_eintrag();
+	if ( ! empty( $auto_emotion_seo['desc'] ) ) {
+		return $auto_emotion_seo['desc'];
+	}
+
 	if ( is_singular() ) {
 		$overrides = auto_emotion_meta_description_overrides();
 		$slug      = get_post_field( 'post_name', get_queried_object_id() );

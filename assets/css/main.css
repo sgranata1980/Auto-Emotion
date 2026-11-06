@@ -1802,6 +1802,40 @@ body.has-transparent-header .site-main {
 	color: var(--surface-canvas-white);
 }
 
+/* Markenlogo rechts im dunklen Textbereich: Raster statt fester
+   Position, damit es bei jeder Texthöhe mittig neben dem Block sitzt. */
+.career-banner--marke {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+}
+
+.career-banner--marke .career-banner__media {
+	grid-column: 1 / -1;
+}
+
+.career-banner__marke-logo {
+	width: clamp(120px, 13vw, 220px);
+	height: auto;
+	margin-right: clamp(var(--spacing-24), 10vw, 200px);
+}
+
+@media (max-width: 900px) {
+	/* Mobil kein Platz neben dem Text: klein unter den Textblock. */
+	.career-banner--marke {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.career-banner--marke .career-banner__content {
+		padding-bottom: var(--spacing-32);
+	}
+
+	.career-banner__marke-logo {
+		width: 64px;
+		margin: 0 0 var(--spacing-40) clamp(var(--spacing-24), 6vw, 120px);
+	}
+}
+
 /* ---------------------------------------------------------------- */
 /* Bewerbungsformular                                                  */
 /* ---------------------------------------------------------------- */
@@ -1841,12 +1875,15 @@ body.has-transparent-header .site-main {
 
 .application-form__field input[type="text"],
 .application-form__field input[type="tel"],
+.application-form__field input[type="email"],
+.application-form__field input[type="number"],
+.application-form__field select,
 .application-form__field textarea {
 	font-family: var(--font-lambotype);
 	font-size: var(--text-body);
 	padding: var(--spacing-16);
 	border: 1px solid var(--color-ash-border);
-	border-radius: 0;
+	border-radius: var(--radius-buttons);
 	background: var(--surface-canvas-white);
 }
 
@@ -1976,11 +2013,17 @@ body.has-transparent-header .site-main {
 }
 
 .finance-calculator__result-item--highlight {
-	border-color: var(--color-giallo-vivo);
+	border-color: var(--color-rosso-vivo);
+	background: var(--color-rosso-vivo);
+	color: #fff;
+}
+
+.finance-calculator__result-item--highlight .finance-calculator__result-label {
+	color: #fff;
 }
 
 .finance-calculator__result-label {
-	font-size: var(--text-caption);
+	font-size: 14px;
 	color: var(--color-steel-mid);
 }
 
@@ -2108,7 +2151,7 @@ body.has-transparent-header .site-main {
 	font-size: var(--text-body);
 	padding: var(--spacing-16);
 	border: 1px solid var(--color-graphite-border);
-	border-radius: 0;
+	border-radius: var(--radius-buttons);
 	background: var(--surface-canvas-white);
 	color: var(--color-carbony-black);
 	appearance: none;
@@ -3264,6 +3307,275 @@ body.has-transparent-header .site-main {
 	margin: 0;
 }
 
+/* Modell-Kacheln im Marken-Archiv: genau ein Rahmen. Die zweite
+   .model-card-Regel (Neuwagen-Seite) bringt Padding und Schatten mit,
+   das Produktfoto oben einen eigenen Rahmen - hier beides eng auf das
+   Produkt-Raster zurückgenommen, die Neuwagen-Seite bleibt unberührt. */
+.photo-gallery--products .model-card {
+	padding: 0;
+	border: 1px solid rgba(0, 0, 0, 0.14);
+	box-shadow: none;
+	transform: none;
+}
+
+/* Foto randlos bis an die Kachelkante, sonst wirkt der helle Rand ums
+   graue Studiofoto wieder wie ein zweiter Rahmen. 16:9 entspricht dem
+   Format der meisten Herstellerfotos; contain statt cover, damit auch
+   breitere Motive (Nissan) nie angeschnitten werden. */
+.photo-gallery--products img {
+	height: auto;
+	aspect-ratio: 16 / 9;
+	padding: 0;
+	border: 0;
+	object-fit: contain;
+}
+
+.photo-gallery--products .model-card__summary figcaption {
+	margin-top: 0;
+	padding: var(--spacing-16);
+	/* Figcaption aus .photo-gallery vererbt sonst nur 10px in Grau. */
+	font-size: var(--text-body);
+	color: var(--color-carbony-black);
+}
+
+/* Überschrift und Raster gehören zusammen: statt 56px Padding plus
+   56px Sektionsabstand nur noch 24px. */
+.section-heading:has(+ .photo-gallery--products) {
+	padding-bottom: 0;
+}
+
+.section-heading:has(+ .photo-gallery--products) + .photo-gallery--products {
+	margin-top: var(--spacing-24);
+}
+
+/* Aufgeklappte Kachel wächst allein, die Nachbarn bleiben kompakt. */
+.photo-gallery--products {
+	align-items: start;
+}
+
+/* Große Kacheln mit lesbaren Eckdaten: sechs Modelle 3+3, fünf 3+2. */
+@media (min-width: 900px) {
+	.photo-gallery--products:has(> :nth-child(6):last-child) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.photo-gallery--products:has(> :nth-child(5):last-child) {
+		grid-template-columns: repeat(6, minmax(0, 1fr));
+	}
+
+	.photo-gallery--products:has(> :nth-child(5):last-child) > :nth-child(-n + 3) {
+		grid-column: span 2;
+	}
+
+	.photo-gallery--products:has(> :nth-child(5):last-child) > :nth-child(n + 4) {
+		grid-column: span 3;
+	}
+}
+
+.photo-gallery--products .model-card__summary figcaption {
+	flex-direction: column;
+	align-items: stretch;
+	gap: 14px;
+	padding: var(--spacing-24);
+}
+
+.model-card__name {
+	font-family: var(--font-lambotype);
+	font-size: 22px;
+	font-weight: var(--font-weight-bold);
+	line-height: 1.2;
+}
+
+.model-card__fakten {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 18px;
+	font-size: 14px;
+	line-height: 1.3;
+}
+
+/* Platz für zwei Zeilen Eckdaten und drei Zeilen Pflichtangabe, damit
+   die Kacheln einer Reihe gleich hoch bleiben. */
+.model-card__fakten {
+	min-height: 56px;
+	align-content: flex-start;
+}
+
+.model-card__wltp {
+	min-height: calc(3 * 1.4em + 15px);
+}
+
+.model-card__fakten > span {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.model-card__fakten svg {
+	width: 20px;
+	height: 20px;
+	flex-shrink: 0;
+	color: var(--color-rosso-vivo);
+}
+
+.model-card__wltp {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	padding-top: 14px;
+	border-top: 1px solid rgba(0, 0, 0, 0.14);
+	font-size: 12px;
+	line-height: 1.4;
+	color: var(--color-graphite-border);
+}
+
+.co2-badge {
+	flex-shrink: 0;
+	min-width: 26px;
+	padding: 2px 6px;
+	font-size: 12px;
+	font-weight: var(--font-weight-bold);
+	text-align: center;
+	color: #fff;
+}
+
+/* Farben der gesetzlichen CO2-Skala, A grün bis G rot. */
+.co2-badge--a { background: #00743f; }
+.co2-badge--b { background: #2f8f3a; }
+.co2-badge--c { background: #6c8f12; }
+.co2-badge--d { background: #b58a00; color: #000; }
+.co2-badge--e { background: #d9730d; color: #000; }
+.co2-badge--f { background: #c94f12; }
+.co2-badge--g { background: #b3121d; }
+
+.model-card__mehr {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-size: var(--text-body);
+	font-weight: var(--font-weight-bold);
+	color: var(--color-rosso-vivo);
+}
+
+/* Service-Kacheln unter den Modellen: ruhige Flächen ohne Rahmen. */
+.service-kacheln {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--spacing-24);
+	margin-top: var(--spacing-56);
+}
+
+.service-kachel {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+	padding: var(--spacing-32) var(--spacing-24);
+	background: var(--color-marble-gray);
+	color: var(--color-carbony-black);
+	text-align: center;
+	text-decoration: none;
+	transition: background-color 0.2s ease;
+}
+
+.service-kachel:hover {
+	background: #ebebeb;
+}
+
+.service-kachel:focus-visible {
+	outline: 2px solid var(--color-rosso-vivo);
+	outline-offset: 2px;
+}
+
+.service-kachel svg {
+	width: 36px;
+	height: 36px;
+	margin-bottom: 6px;
+	color: var(--color-rosso-vivo);
+}
+
+.service-kachel strong {
+	font-size: 18px;
+}
+
+.service-kachel span {
+	font-size: 15px;
+	line-height: 1.4;
+}
+
+@media (max-width: 700px) {
+	.service-kacheln {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 12px;
+	}
+
+	.service-kachel {
+		padding: var(--spacing-24) 12px;
+	}
+}
+
+/* Vor Ort: Überschrift und Galerie enger zusammen. */
+.tax-marke .section-heading:has(+ .photo-gallery) {
+	padding-bottom: 0;
+}
+
+.tax-marke .section-heading:has(+ .photo-gallery) + .photo-gallery {
+	margin-top: var(--spacing-24);
+}
+
+/* Markenkopf: Logo direkt links neben dem H1. */
+.section-heading--marke {
+	justify-content: flex-start;
+	gap: var(--spacing-24);
+	padding-bottom: var(--spacing-24);
+}
+
+.section-heading__logo {
+	width: auto;
+	height: 56px;
+	flex-shrink: 0;
+}
+
+/* Vollflächiges Pressefoto im Seitenverhältnis statt fester Höhe. Die
+   doppelte Klasse sticht auch die 220px der Mobil-Regel aus. */
+.content-header-image.content-header-image--hoch {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 16 / 9;
+	max-height: 88vh;
+	object-fit: cover;
+	object-position: center;
+	transition: none;
+}
+
+.content-header-image.content-header-image--hoch:hover {
+	transform: none;
+}
+
+/* Vor einem solchen Foto zählt nur dessen Margin, sonst addiert sich
+   das Container-Padding (64px) zu den 56px Sektionsabstand. Nach der
+   Icon-Leiste etwas enger, weil der Markenkopf dazugehört. */
+.site-main > .container:has(+ .content-header-image--hoch) {
+	padding-bottom: 0;
+}
+
+/* Marken ohne Icon-Leiste: Nur die Überschrift steht über dem Foto,
+   sonst addieren sich ihr Padding und der Sektionsabstand. */
+.site-main > .container:has(+ .content-header-image--hoch) > .section-heading:last-child {
+	padding-bottom: 0;
+}
+
+@media (max-width: 700px) {
+	.section-heading__logo {
+		height: 44px;
+	}
+
+	.content-header-image.content-header-image--hoch {
+		aspect-ratio: 4 / 3;
+		max-height: none;
+	}
+}
+
 /* Konfigurator innerhalb der aufgeklappten Modellkachel. */
 .configurator {
 	margin-top: var(--spacing-16);
@@ -3650,7 +3962,7 @@ body.has-transparent-header .site-main {
 	font-size: var(--text-body);
 	padding: var(--spacing-16);
 	border: 1px solid var(--color-ash-border);
-	border-radius: 0;
+	border-radius: var(--radius-buttons);
 	background: var(--surface-canvas-white);
 }
 
@@ -4157,4 +4469,1563 @@ body.has-transparent-header .site-main {
 	line-height: var(--leading-body);
 	color: var(--color-steel-mid);
 	margin: 0;
+}
+
+/* ---------------------------------------------------------------- */
+/* Abgerundete Kästen und Bilder, seitenweit                          */
+/* ---------------------------------------------------------------- */
+.model-card,
+.product-tile,
+.brand-tile,
+.quick-action,
+.service-kachel,
+.date-card,
+.press-news__card,
+.press-news__featured-panel,
+.career-banner,
+.event-banner,
+.faq-item,
+.finance-calculator,
+.finance-calculator__result-item,
+.service-teaser,
+.chat-widget__panel,
+.chat-widget__toggle,
+.cookie-banner,
+.feedback-popup__dialog {
+	border-radius: var(--radius-cards);
+	overflow: hidden;
+}
+
+/* Logos nie runden, das würde ihre Form verändern. Das Showroom-Foto
+   mit „logo“ im Dateinamen ist ein normales Bild. */
+img[src*="logo"]:not([src*="showroom"]) {
+	border-radius: 0;
+}
+
+/* Marken im Hauptmenü mit Logo. */
+.main-navigation .sub-menu a.sub-menu__marke {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-16);
+	padding-block: var(--spacing-8);
+	font-size: var(--text-body);
+	color: var(--surface-canvas-white);
+}
+
+.sub-menu__marke img {
+	width: 44px;
+	height: 36px;
+	object-fit: contain;
+	flex-shrink: 0;
+}
+
+/* Bilder in einem gerundeten Kasten nur vom Kasten beschneiden lassen,
+   sonst entstehen helle Ecken zwischen Bild und Textbereich. */
+.model-card img,
+.product-tile img,
+.career-banner img,
+.event-banner img,
+.press-news__card img {
+	border-radius: 0;
+}
+
+.co2-badge {
+	border-radius: var(--radius-badges);
+}
+
+/* Bild in Seitenbreite: gleicher Rand wie die Banner, damit die Rundung
+   nicht am Fensterrand verloren geht. */
+.content-header-image,
+.content-header-image.content-header-image--hoch {
+	width: calc(100% - 2 * var(--spacing-24));
+	margin-inline: auto;
+	border-radius: var(--radius-images);
+}
+
+/* Teilen-Knopf auf der Modellkachel. */
+.model-card {
+	position: relative;
+}
+
+.model-card__teilen {
+	position: absolute;
+	top: 14px;
+	right: 14px;
+	z-index: 2;
+	display: grid;
+	place-items: center;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: var(--color-rosso-vivo);
+	color: #fff;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+.model-card__teilen:hover {
+	background: var(--color-rosso-ombra);
+}
+
+.model-card__teilen:focus-visible {
+	outline: 2px solid var(--color-carbony-black);
+	outline-offset: 2px;
+}
+
+.model-card__teilen svg {
+	width: 20px;
+	height: 20px;
+}
+
+.model-card__teilen[data-kopiert]::after {
+	content: attr(data-kopiert);
+	position: absolute;
+	top: 50%;
+	right: calc(100% + 8px);
+	transform: translateY(-50%);
+	padding: 4px 10px;
+	border-radius: var(--radius-badges);
+	background: var(--color-carbony-black);
+	color: #fff;
+	font-size: 13px;
+	white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------- */
+/* Finanzierung & Leasing                                             */
+/* ---------------------------------------------------------------- */
+/* Langes Wort in der Headline: etwas kleiner, damit es auf Desktop in
+   eine Zeile passt. Der Verlauf hält den Text auf dem hellen Foto lesbar. */
+body:has(.finanz-bloecke, .service-lead) .hero-stage__headline {
+	font-size: clamp(40px, 7vw, 96px);
+	text-wrap: wrap;
+}
+
+@media (min-width: 900px) {
+	body:has(.finanz-bloecke, .service-lead) .hero-stage__content {
+		max-width: min(900px, 80vw);
+	}
+}
+
+body:has(.finanz-bloecke, .service-lead) .hero-stage::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	pointer-events: none;
+	background: linear-gradient(0deg, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.55) 40%, rgba(0, 0, 0, 0) 75%), linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 65%);
+}
+
+/* Das CI-Rot ist auf dunklen Fotos zu schwach lesbar. */
+body:has(.finanz-bloecke, .service-lead) .hero-stage__accent {
+	color: #ff3b45;
+}
+
+body:has(.finanz-bloecke, .service-lead) .hero-stage__content {
+	position: relative;
+	z-index: 2;
+}
+
+.finanz-bloecke {
+	display: grid;
+	gap: var(--spacing-64);
+	margin-top: var(--spacing-56);
+}
+
+.finanz-block {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--spacing-64);
+	align-items: center;
+}
+
+.finanz-block img {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+}
+
+.finanz-block:nth-child(even) img {
+	order: 2;
+}
+
+.finanz-block__text {
+	max-width: 520px;
+}
+
+.finanz-block__eyebrow {
+	margin: 0 0 var(--spacing-8);
+	font-size: 14px;
+	font-weight: var(--font-weight-bold);
+	color: var(--color-rosso-vivo);
+}
+
+.finanz-block h2 {
+	margin: 0 0 var(--spacing-16);
+	font-size: clamp(26px, 3vw, var(--text-heading-lg));
+	line-height: 1.15;
+}
+
+.finanz-block__text p:not(.finanz-block__eyebrow) {
+	margin: 0 0 var(--spacing-24);
+}
+
+body:has(.finanz-bloecke, .service-lead) .section-heading:has(+ .entry-content) {
+	padding-bottom: var(--spacing-16);
+}
+
+body:has(.finanz-bloecke, .service-lead) .section-heading:has(+ .entry-content) + .entry-content {
+	margin-top: 0;
+}
+
+.finanz-beratung {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--spacing-64);
+	align-items: start;
+	margin-top: var(--spacing-80);
+}
+
+.finanz-beratung .application-form {
+	max-width: none;
+}
+
+.finanz-beratung__text {
+	position: sticky;
+	top: 120px;
+}
+
+.finanz-beratung__text h2 {
+	margin-bottom: var(--spacing-16);
+}
+
+.finanz-beratung__zeiten {
+	margin-top: var(--spacing-16);
+	font-size: 14px;
+}
+
+@media (max-width: 800px) {
+	.finanz-bloecke {
+		gap: var(--spacing-48);
+	}
+
+	.finanz-block,
+	.finanz-beratung {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--spacing-24);
+	}
+
+	.finanz-block:nth-child(even) img {
+		order: 0;
+	}
+
+	.finanz-beratung__text {
+		position: static;
+	}
+}
+
+/* ---------------------------------------------------------------- */
+/* Service-Seiten                                                     */
+/* ---------------------------------------------------------------- */
+.service-lead {
+	max-width: 900px;
+	margin: var(--spacing-64) 0 var(--spacing-48);
+	font-size: clamp(20px, 2.2vw, 28px);
+	line-height: 1.4;
+}
+
+.service-punkte {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--spacing-24);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.service-punkt {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: var(--spacing-32);
+	border-radius: var(--radius-cards);
+	background: var(--color-marble-gray);
+}
+
+.service-punkt svg {
+	width: 36px;
+	height: 36px;
+	margin-bottom: var(--spacing-8);
+	color: var(--color-rosso-vivo);
+}
+
+.service-punkt strong {
+	font-size: 18px;
+	line-height: 1.25;
+}
+
+.service-punkt span {
+	font-size: 15px;
+	line-height: 1.4;
+}
+
+.service-cta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--spacing-32);
+	margin-top: var(--spacing-64);
+	padding: var(--spacing-48);
+	border-radius: var(--radius-cards);
+	background: radial-gradient(ellipse 900px 700px at 100% 0%, var(--color-rosso-vivo) 0%, var(--color-carbony-black) 60%, var(--color-pure-black) 100%);
+	color: var(--surface-canvas-white);
+}
+
+.service-cta h2 {
+	margin: 0 0 var(--spacing-8);
+	font-size: clamp(26px, 3vw, var(--text-heading-lg));
+	line-height: 1.15;
+}
+
+.service-cta p {
+	margin: 0;
+}
+
+.service-cta__knoepfe {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.service-cta .btn-outline {
+	border-color: var(--surface-canvas-white);
+	color: var(--surface-canvas-white);
+}
+
+@media (max-width: 800px) {
+	.service-punkte {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 12px;
+	}
+
+	.service-punkt {
+		padding: var(--spacing-24);
+	}
+
+	.service-cta {
+		padding: var(--spacing-32) var(--spacing-24);
+	}
+}
+
+/* Auswahlfelder einheitlich statt Browser-Optik (v. a. Safari). */
+.application-form__field select {
+	appearance: none;
+	-webkit-appearance: none;
+	padding-right: 44px;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' fill='none' stroke='%23202020' stroke-width='1.6'%3E%3Cpath d='m1 1 6 6 6-6'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 16px center;
+	color: var(--color-carbony-black);
+}
+
+/* ---------------------------------------------------------------- */
+/* Servicetermin                                                      */
+/* ---------------------------------------------------------------- */
+.termin-layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+	gap: var(--spacing-48);
+	align-items: start;
+}
+
+.termin-form.application-form {
+	max-width: none;
+	gap: var(--spacing-40);
+}
+
+.termin-schritt {
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.termin-schritt legend {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: var(--spacing-16);
+	padding: 0;
+	font-family: var(--font-lambotype);
+	font-size: 22px;
+	font-weight: var(--font-weight-bold);
+}
+
+.termin-schritt legend span {
+	display: grid;
+	place-items: center;
+	width: 34px;
+	height: 34px;
+	border-radius: 50%;
+	background: var(--color-rosso-vivo);
+	color: #fff;
+	font-size: 15px;
+}
+
+.termin-marken {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--spacing-16);
+}
+
+.termin-marke {
+	position: relative;
+	display: block;
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+	border-radius: var(--radius-cards);
+	background: var(--color-carbony-black);
+	cursor: pointer;
+}
+
+/* Radio bleibt echt und bedienbar, liegt nur unsichtbar über der Kachel. */
+.termin-marke input,
+.termin-leistung input {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	opacity: 0;
+	cursor: pointer;
+}
+
+.termin-marke__foto {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 0;
+	filter: brightness(0.62);
+	transition: filter 0.25s ease, transform 0.4s ease;
+}
+
+.termin-marke:hover .termin-marke__foto,
+.termin-marke:has(input:checked) .termin-marke__foto {
+	filter: brightness(0.8);
+	transform: scale(1.04);
+}
+
+.termin-marke__logo {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 34%;
+	max-height: 46%;
+	object-fit: contain;
+	transform: translate(-50%, -62%);
+	pointer-events: none;
+}
+
+.termin-marke__name {
+	position: absolute;
+	right: 0;
+	bottom: 12px;
+	left: 0;
+	color: #fff;
+	font-weight: var(--font-weight-bold);
+	text-align: center;
+	pointer-events: none;
+}
+
+.termin-marke:has(input:checked) {
+	box-shadow: 0 0 0 3px var(--color-rosso-vivo);
+}
+
+.termin-marke:has(input:focus-visible),
+.termin-leistung:has(input:focus-visible) {
+	outline: 2px solid var(--color-carbony-black);
+	outline-offset: 3px;
+}
+
+.termin-leistungen {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 12px;
+}
+
+.termin-leistung {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	padding: 18px 8px;
+	border-radius: var(--radius-cards);
+	background: var(--color-marble-gray);
+	font-size: 15px;
+	text-align: center;
+	cursor: pointer;
+	transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.termin-leistung svg {
+	width: 30px;
+	height: 30px;
+	color: var(--color-rosso-vivo);
+}
+
+.termin-leistung:hover {
+	background: #ebebeb;
+}
+
+.termin-leistung:has(input:checked) {
+	background: var(--color-rosso-vivo);
+	color: #fff;
+}
+
+.termin-leistung:has(input:checked) svg {
+	color: #fff;
+}
+
+.termin-felder {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--spacing-16);
+}
+
+.termin-felder__breit {
+	grid-column: 1 / -1;
+}
+
+.termin-info {
+	position: sticky;
+	top: 120px;
+	overflow: hidden;
+	border-radius: var(--radius-cards);
+	background: radial-gradient(ellipse 600px 700px at 100% 100%, var(--color-rosso-vivo) 0%, var(--color-carbony-black) 62%, var(--color-pure-black) 100%);
+	color: var(--surface-canvas-white);
+}
+
+.termin-info > img {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	border-radius: 0;
+}
+
+.termin-info__text {
+	padding: var(--spacing-32);
+}
+
+.termin-info h2 {
+	margin: 0 0 var(--spacing-16);
+	font-size: 26px;
+}
+
+.termin-info__schritte {
+	display: grid;
+	gap: 14px;
+	margin: 0 0 var(--spacing-24);
+	padding: 0;
+	list-style: none;
+}
+
+.termin-info__schritte li {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.termin-info__schritte svg {
+	width: 26px;
+	height: 26px;
+	flex-shrink: 0;
+	color: #ff3b45;
+}
+
+.termin-info__zeiten {
+	margin: 0 0 var(--spacing-16);
+	font-size: 14px;
+}
+
+.termin-info .btn-outline {
+	border-color: var(--surface-canvas-white);
+	color: var(--surface-canvas-white);
+}
+
+.termin-bilder {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--spacing-24);
+	margin-top: var(--spacing-64);
+}
+
+.termin-bild {
+	position: relative;
+	display: block;
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+	border-radius: var(--radius-cards);
+	color: #fff;
+	text-decoration: none;
+}
+
+.termin-bild img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 0;
+	transition: transform 0.4s ease;
+}
+
+.termin-bild:hover img {
+	transform: scale(1.04);
+}
+
+.termin-bild::after {
+	content: "";
+	position: absolute;
+	inset: 40% 0 0;
+	background: linear-gradient(0deg, rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0));
+}
+
+.termin-bild > span {
+	position: absolute;
+	right: 20px;
+	bottom: 18px;
+	left: 20px;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 18px;
+	font-weight: var(--font-weight-bold);
+}
+
+.termin-bild svg {
+	width: 26px;
+	height: 26px;
+	flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+	.termin-layout {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.termin-info {
+		position: static;
+	}
+
+	.termin-bilder {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 12px;
+	}
+}
+
+@media (max-width: 600px) {
+	.termin-marken {
+		gap: 8px;
+	}
+
+	.termin-marke {
+		aspect-ratio: 4 / 5;
+	}
+
+	.termin-leistungen {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.termin-felder {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+/* ---------------------------------------------------------------- */
+/* Hauptmenü-Panel                                                    */
+/* ---------------------------------------------------------------- */
+/* Das Panel hängt am Header statt am Fenster: Vorher lag es fest bei
+   64px und verdeckte über der Infoleiste die halbe Menüzeile. */
+@media (min-width: 1200px) {
+	.site-header,
+	body:not(.has-transparent-header) .site-header {
+		position: relative;
+	}
+
+	body.has-transparent-header .site-header {
+		position: fixed;
+	}
+
+	.main-navigation .menu-item-has-children {
+		position: static;
+	}
+
+	.main-navigation .sub-menu,
+	.main-navigation .sub-menu[data-state="open"] {
+		position: absolute;
+		top: 100%;
+		background: var(--surface-carbon-deep);
+		border-top: 1px solid var(--color-graphite-border);
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: 12px;
+		z-index: 30;
+	}
+
+	.main-navigation .sub-menu {
+		padding-block: 0;
+		padding-inline: var(--spacing-56);
+		border-top-width: 0;
+		box-shadow: none;
+	}
+
+	.main-navigation .sub-menu[data-state="open"] {
+		padding-block: var(--spacing-32) var(--spacing-40);
+		border-top-width: 1px;
+		box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+	}
+
+	/* Offenes Menü: Kopfzeile auch über dem Startseiten-Hero deckend. */
+	.site-header:has(.sub-menu[data-state="open"]),
+	body.has-transparent-header .site-header:has(.sub-menu[data-state="open"]) {
+		background: var(--surface-carbony);
+	}
+
+	.submenu-toggle[aria-expanded="true"] {
+		color: #ff3b45;
+	}
+
+	.main-navigation .sub-menu .sub-menu__overview {
+		margin-bottom: 4px;
+		padding-bottom: var(--spacing-16);
+	}
+
+	.main-navigation .sub-menu .sub-menu__overview-link {
+		height: auto;
+		margin: 0;
+		padding: 0;
+		font-size: 15px;
+	}
+
+	.main-navigation .sub-menu .sub-menu__overview-link span {
+		color: #ff3b45;
+	}
+
+	.main-navigation .sub-menu > .menu-item:not(.sub-menu__overview) {
+		display: flex;
+		min-width: 0;
+	}
+
+	.main-navigation .sub-menu a.menu-item__link:not(.sub-menu__overview-link) {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		height: auto;
+		min-height: 60px;
+		margin: 0;
+		padding: 12px 14px;
+		border-radius: var(--radius-buttons);
+		background: rgba(255, 255, 255, 0.07);
+		color: var(--surface-canvas-white);
+		font-size: 14px;
+		line-height: 1.3;
+		white-space: normal;
+		overflow-wrap: break-word;
+		hyphens: manual;
+		transition: background-color 0.2s ease;
+	}
+
+	.main-navigation .sub-menu a.menu-item__link:not(.sub-menu__overview-link):hover,
+	.main-navigation .sub-menu a.menu-item__link:not(.sub-menu__overview-link):focus-visible {
+		background: var(--color-rosso-vivo);
+		color: var(--surface-canvas-white);
+	}
+}
+
+/* Hauptzeile: Rot auf Dunkel war schlecht lesbar. Aktive Punkte bleiben
+   weiß und bekommen eine rote Linie. */
+.header-actions .glink.gt-current-lang {
+	color: #ff3b45;
+}
+
+@media (min-width: 1200px) {
+	.main-navigation .menu-item__link,
+	.main-navigation__ai-trigger {
+		font-size: 13px;
+	}
+
+	.main-navigation > ul > .menu-item > .menu-item__link:hover,
+	.main-navigation > ul > .menu-item > .menu-item__link:focus-visible,
+	.main-navigation .submenu-toggle[aria-expanded="true"] {
+		color: var(--surface-canvas-white);
+		box-shadow: inset 0 -3px 0 #ff3b45;
+	}
+
+	.main-navigation__ai-trigger:hover,
+	.main-navigation__ai-trigger:focus-visible {
+		color: #ff3b45;
+	}
+}
+
+/* Servicetermin: gut lesbare Feldbezeichnungen. */
+.termin-form .application-form__field label {
+	font-size: 14px;
+	text-transform: none;
+	letter-spacing: 0;
+	color: var(--color-carbony-black);
+}
+
+.termin-form .application-form__consent {
+	font-size: 14px;
+	line-height: 1.45;
+}
+
+/* Kopfzeile als Bezugsrahmen, auf jeder Bildschirmbreite: Menü und Suche
+   liegen direkt darunter und über dem Seiteninhalt. Vorher verschwand das
+   Handy-Menü auf Unterseiten hinter dem Hero. */
+body:not(.has-transparent-header) .site-header {
+	position: relative;
+	z-index: 20;
+}
+
+.header-search {
+	top: 100%;
+}
+
+@media (max-width: 1199.98px) {
+	.site-header {
+		gap: 12px;
+		padding-inline: 16px;
+	}
+
+	.nav-toggle,
+	.site-branding {
+		flex-shrink: 0;
+	}
+
+	/* Sprachen laufen seitlich, statt die Zeile zu sprengen. */
+	.header-actions {
+		min-width: 0;
+		margin-left: auto;
+		overflow-x: auto;
+		scrollbar-width: none;
+	}
+
+	.header-actions::-webkit-scrollbar {
+		display: none;
+	}
+
+	.header-actions > * {
+		flex-shrink: 0;
+	}
+
+	.header-actions .glink {
+		white-space: nowrap;
+	}
+
+	.main-navigation {
+		top: 100%;
+		max-height: calc(100dvh - 100px);
+	}
+
+	body.has-transparent-header .main-navigation {
+		max-height: calc(100dvh - 64px);
+	}
+
+	.main-navigation .sub-menu a {
+		font-size: 15px;
+		color: var(--surface-canvas-white);
+	}
+}
+
+/* ---------------------------------------------------------------- */
+/* Unternehmensseiten                                                 */
+/* ---------------------------------------------------------------- */
+.firma-fakten {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: var(--spacing-16);
+	margin: 0 0 var(--spacing-64);
+}
+
+.firma-fakten > div {
+	display: flex;
+	flex-direction: column-reverse;
+	justify-content: flex-end;
+	gap: 6px;
+	padding: var(--spacing-24);
+	border-radius: var(--radius-cards);
+	background: var(--color-marble-gray);
+}
+
+.firma-fakten dd {
+	margin: 0;
+	font-family: var(--font-lambotype);
+	font-size: clamp(28px, 3vw, 42px);
+	font-weight: var(--font-weight-bold);
+	line-height: 1.1;
+	color: var(--color-rosso-vivo);
+}
+
+.firma-fakten dt {
+	font-size: 15px;
+}
+
+.firma-abschnitt {
+	margin-top: var(--spacing-64);
+}
+
+.firma-abschnitt > h2,
+.team-gruppe > h2 {
+	margin: 0 0 var(--spacing-24);
+	font-size: clamp(26px, 3vw, 38px);
+}
+
+.firma-abschnitt .service-punkte {
+	margin-bottom: 0;
+}
+
+.firma-text {
+	max-width: 760px;
+}
+
+.firma-notiz {
+	margin-top: var(--spacing-40);
+	font-size: 14px;
+	color: var(--color-steel-mid);
+}
+
+/* Zeitleiste */
+.zeitleiste {
+	margin: 0 0 var(--spacing-64);
+	padding: 0;
+	list-style: none;
+}
+
+.zeitleiste li {
+	position: relative;
+	display: grid;
+	grid-template-columns: 180px minmax(0, 1fr);
+	gap: var(--spacing-40);
+	padding: 0 0 var(--spacing-40);
+}
+
+.zeitleiste li::before {
+	content: "";
+	position: absolute;
+	top: 8px;
+	bottom: -8px;
+	left: 180px;
+	width: 2px;
+	background: var(--color-marble-gray);
+	transform: translateX(19px);
+}
+
+.zeitleiste li:last-child::before {
+	display: none;
+}
+
+.zeitleiste li::after {
+	content: "";
+	position: absolute;
+	top: 6px;
+	left: 180px;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background: var(--color-rosso-vivo);
+	transform: translateX(13px);
+}
+
+.zeitleiste__datum {
+	font-family: var(--font-lambotype);
+	font-size: 20px;
+	font-weight: var(--font-weight-bold);
+	text-align: right;
+}
+
+.zeitleiste h2 {
+	margin: 0 0 6px;
+	font-size: 22px;
+}
+
+.zeitleiste p {
+	margin: 0;
+	max-width: 620px;
+}
+
+/* Kontaktkarten */
+.kontakt-karten {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: var(--spacing-16);
+	margin: 0 0 var(--spacing-64);
+	padding: 0;
+	list-style: none;
+}
+
+.kontakt-karten li {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: var(--spacing-24);
+	border-radius: var(--radius-cards);
+	background: var(--color-marble-gray);
+}
+
+.kontakt-karten svg {
+	width: 32px;
+	height: 32px;
+	color: var(--color-rosso-vivo);
+}
+
+.kontakt-karten strong {
+	font-size: 17px;
+}
+
+.kontakt-karten span {
+	overflow-wrap: anywhere;
+}
+
+/* Team */
+.team-gruppe {
+	margin-bottom: var(--spacing-48);
+}
+
+.team-karten {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--spacing-16);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.team-karte {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: var(--spacing-24);
+	border-radius: var(--radius-cards);
+	background: var(--color-marble-gray);
+}
+
+.team-karte strong {
+	font-size: 19px;
+}
+
+.team-karte__rolle {
+	margin-bottom: 10px;
+	font-size: 15px;
+	color: var(--color-steel-mid);
+}
+
+.team-karte a {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 15px;
+	color: var(--color-carbony-black);
+	overflow-wrap: anywhere;
+}
+
+.team-karte a:hover {
+	color: var(--color-rosso-vivo);
+}
+
+.team-karte svg {
+	width: 20px;
+	height: 20px;
+	flex-shrink: 0;
+	color: var(--color-rosso-vivo);
+}
+
+/* FAQ */
+.faq-liste {
+	display: grid;
+	gap: 12px;
+	max-width: 860px;
+	margin-bottom: var(--spacing-64);
+}
+
+.faq-liste details {
+	padding: 0 var(--spacing-24);
+	border-radius: var(--radius-cards);
+	background: var(--color-marble-gray);
+}
+
+.faq-liste summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--spacing-16);
+	padding: 20px 0;
+	font-size: 18px;
+	font-weight: var(--font-weight-bold);
+	cursor: pointer;
+	list-style: none;
+}
+
+.faq-liste summary::-webkit-details-marker {
+	display: none;
+}
+
+.faq-liste summary::after {
+	content: "+";
+	flex-shrink: 0;
+	font-size: 26px;
+	font-weight: 400;
+	line-height: 1;
+	color: var(--color-rosso-vivo);
+}
+
+.faq-liste details[open] summary::after {
+	content: "\2212";
+}
+
+.faq-liste details p {
+	margin: 0;
+	padding-bottom: 20px;
+}
+
+/* Stellen */
+.stellen-karten {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--spacing-24);
+	margin: 0 0 var(--spacing-64);
+	padding: 0;
+	list-style: none;
+}
+
+.stellen-karte {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	overflow: hidden;
+	border-radius: var(--radius-cards);
+	background: var(--color-marble-gray);
+	color: var(--color-carbony-black);
+	text-decoration: none;
+}
+
+.stellen-karte img {
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	border-radius: 0;
+}
+
+.stellen-karte__text {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: 8px;
+	padding: var(--spacing-24);
+}
+
+.stellen-karte__text strong {
+	font-size: 20px;
+	line-height: 1.25;
+	overflow-wrap: anywhere;
+}
+
+.stellen-karte__umfang {
+	font-size: 14px;
+	color: var(--color-steel-mid);
+}
+
+.stellen-karte__link {
+	margin-top: auto;
+	padding-top: 8px;
+	font-weight: var(--font-weight-bold);
+	color: var(--color-rosso-vivo);
+}
+
+/* Galerie */
+.firma-galerie {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--spacing-16);
+}
+
+.firma-galerie figure {
+	margin: 0;
+}
+
+.firma-galerie img {
+	width: 100%;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+}
+
+.firma-galerie figcaption {
+	padding-top: 8px;
+	font-size: 14px;
+	color: var(--color-steel-mid);
+}
+
+@media (max-width: 900px) {
+	.firma-fakten,
+	.kontakt-karten {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.team-karten,
+	.stellen-karten {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.firma-galerie {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 600px) {
+	.kontakt-karten {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.firma-fakten > div {
+		padding: var(--spacing-16);
+	}
+
+	.zeitleiste li {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 6px;
+		padding-left: 30px;
+	}
+
+	.zeitleiste li::before {
+		left: 6px;
+		transform: none;
+	}
+
+	.zeitleiste li::after {
+		left: 0;
+		transform: none;
+	}
+
+	.zeitleiste__datum {
+		text-align: left;
+	}
+}
+
+/* Rot gesetzter Teil der Headline immer in eigener Zeile. */
+body:has(.service-lead) .hero-stage__accent {
+	display: block;
+}
+
+@media (min-width: 901px) {
+	.stellen-karten {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.termin-form .application-form__field legend {
+	font-size: 14px;
+	text-transform: none;
+	letter-spacing: 0;
+	color: var(--color-carbony-black);
+}
+
+/* ---------------------------------------------------------------- */
+/* Größere Schrift und längere Texte                                  */
+/* ---------------------------------------------------------------- */
+body:has(.service-lead) .service-lead {
+	max-width: 960px;
+	font-size: clamp(22px, 2.3vw, 32px);
+	line-height: 1.35;
+}
+
+body:has(.service-lead) .service-punkt strong {
+	font-size: 22px;
+}
+
+body:has(.service-lead) .service-punkt span,
+body:has(.service-lead) .finanz-block__text p:not(.finanz-block__eyebrow),
+body:has(.service-lead) .zeitleiste p,
+body:has(.service-lead) .kontakt-karten span,
+body:has(.service-lead) .stellen-karte__text > span:not(.stellen-karte__umfang, .stellen-karte__link),
+body:has(.service-lead) .firma-text p {
+	font-size: 18px;
+	line-height: 1.55;
+}
+
+body:has(.service-lead) .faq-liste summary {
+	font-size: 20px;
+}
+
+body:has(.service-lead) .faq-liste details p {
+	font-size: 18px;
+	line-height: 1.55;
+}
+
+.seo-text {
+	display: grid;
+	gap: var(--spacing-48);
+	max-width: 960px;
+	margin: var(--spacing-64) 0;
+}
+
+.seo-text h2 {
+	margin: 0 0 var(--spacing-16);
+	font-size: clamp(28px, 3.2vw, 44px);
+	line-height: 1.15;
+}
+
+.seo-text p {
+	margin: 0 0 var(--spacing-16);
+	font-size: clamp(18px, 1.5vw, 20px);
+	line-height: 1.6;
+}
+
+.seo-text section > p a {
+	color: var(--color-rosso-vivo);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.seo-text .faq-liste {
+	margin-bottom: 0;
+	max-width: none;
+}
+
+.seo-text .faq-liste details p {
+	margin: 0;
+}
+
+@media (min-width: 1400px) {
+	.main-navigation .sub-menu a.menu-item__link:not(.sub-menu__overview-link) {
+		font-size: 16px;
+	}
+}
+
+/* ---------------------------------------------------------------- */
+/* Blog                                                               */
+/* ---------------------------------------------------------------- */
+.blog-kopf {
+	position: relative;
+	height: 260px;
+	margin-bottom: var(--spacing-48);
+	overflow: hidden;
+	background: var(--color-carbony-black);
+}
+
+.blog-kopf > img {
+	width: 62%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 0;
+}
+
+.blog-kopf__titel {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 62%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: var(--spacing-24) var(--spacing-48);
+	color: var(--surface-canvas-white);
+}
+
+.blog-kopf h1 {
+	margin: 0 0 8px;
+	font-size: clamp(40px, 5vw, 72px);
+	line-height: 1;
+	color: inherit;
+}
+
+.blog-kopf p {
+	margin: 0;
+	font-size: 17px;
+	line-height: 1.4;
+}
+
+.blog-liste {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--spacing-40) var(--spacing-32);
+}
+
+.blog-karte__bild {
+	display: block;
+	aspect-ratio: 16 / 10;
+	overflow: hidden;
+	border-radius: var(--radius-images);
+	background: var(--color-marble-gray);
+}
+
+.blog-karte__bild img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 0;
+	transition: transform 0.4s ease;
+}
+
+.blog-karte:hover .blog-karte__bild img {
+	transform: scale(1.03);
+}
+
+.blog-meta {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin: 14px 0 10px;
+	font-size: 14px;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	color: var(--color-rosso-vivo);
+}
+
+.blog-meta__linie {
+	flex: 1;
+	max-width: 90px;
+	height: 1px;
+	background: currentColor;
+}
+
+.blog-karte h2 {
+	margin: 0;
+	font-size: 19px;
+	line-height: 1.25;
+}
+
+.blog-karte h2 a {
+	color: var(--color-carbony-black);
+	text-decoration: none;
+}
+
+.blog-karte h2 a:hover {
+	color: var(--color-rosso-vivo);
+}
+
+.blog-karte--gross {
+	grid-column: 1 / -1;
+	display: grid;
+	grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+	gap: var(--spacing-48);
+	align-items: center;
+}
+
+.blog-karte--gross .blog-meta {
+	margin-top: 0;
+}
+
+.blog-karte--gross h2 {
+	margin-bottom: var(--spacing-16);
+	font-size: clamp(26px, 2.8vw, 38px);
+	line-height: 1.12;
+}
+
+.blog-karte--gross .blog-karte__text > p:not(.blog-meta) {
+	margin: 0 0 var(--spacing-16);
+	font-size: 18px;
+	line-height: 1.5;
+}
+
+.blog-karte__mehr {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	font-weight: var(--font-weight-bold);
+	text-transform: uppercase;
+	color: var(--color-carbony-black);
+}
+
+.blog-karte__mehr::before {
+	content: "";
+	width: 30px;
+	height: 1px;
+	background: currentColor;
+}
+
+@media (max-width: 900px) {
+	.blog-liste {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.blog-karte--gross {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--spacing-16);
+	}
+}
+
+@media (max-width: 600px) {
+	.blog-kopf {
+		height: auto;
+		margin-bottom: var(--spacing-32);
+	}
+
+	.blog-kopf > img {
+		display: block;
+		width: 100%;
+		height: 150px;
+	}
+
+	.blog-kopf__titel {
+		position: static;
+		padding: var(--spacing-24) 16px;
+	}
+
+	.blog-liste {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--spacing-32);
+	}
+}
+
+/* Blog: leeren Container vor dem Kopf ausblenden, Hauptbeitrag kompakter. */
+.site-main > .container:has(+ .blog-kopf) {
+	display: none;
+}
+
+.blog-karte--gross {
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: var(--spacing-40);
+}
+
+.blog-karte--gross h2 {
+	font-size: clamp(24px, 2.2vw, 32px);
+}
+
+.blog-karte--gross .blog-karte__text > p:not(.blog-meta) {
+	font-size: 17px;
+}
+
+@media (max-width: 900px) {
+	.blog-karte--gross {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--spacing-16);
+	}
+}
+
+/* Blog-Kopf: hoch genug, damit das Auto vollständig im Bild ist. */
+.blog-kopf {
+	height: clamp(340px, 34vw, 620px);
+}
+
+.blog-kopf > img {
+	object-position: 50% 88%;
+}
+
+@media (max-width: 600px) {
+	.blog-kopf {
+		height: auto;
+	}
+
+	.blog-kopf > img {
+		height: 240px;
+	}
+}
+
+.site-main > .blog-kopf {
+	margin-top: 0;
 }

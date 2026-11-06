@@ -8,6 +8,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+
+$auto_emotion_service_seiten = auto_emotion_service_seiten();
+$auto_emotion_seiten_slug    = get_post_field( 'post_name' );
+
+if ( isset( $auto_emotion_service_seiten[ $auto_emotion_seiten_slug ] ) ) {
+	get_template_part( 'template-parts/service-seite', null, array( 'seite' => $auto_emotion_service_seiten[ $auto_emotion_seiten_slug ] ) );
+	get_footer();
+	return;
+}
 ?>
 
 <?php while ( have_posts() ) : the_post(); ?>

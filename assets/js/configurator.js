@@ -50,4 +50,43 @@
 	} else {
 		init();
 	}
+	// Teilen: natives Menü, wo vorhanden, sonst Link kopieren.
+	document.querySelectorAll( '.model-card__teilen' ).forEach( function ( knopf ) {
+		knopf.addEventListener( 'click', function ( event ) {
+			event.preventDefault();
+			event.stopPropagation();
+
+			var karte = knopf.closest( '.model-card' );
+			var url   = location.href.split( '#' )[ 0 ] + '#' + karte.id;
+
+			if ( navigator.share ) {
+				navigator.share( { title: knopf.getAttribute( 'data-titel' ), url: url } ).catch( function () {} );
+				return;
+			}
+
+			var melden = function ( text ) {
+				knopf.setAttribute( 'data-kopiert', text );
+				setTimeout( function () {
+					knopf.removeAttribute( 'data-kopiert' );
+				}, 2000 );
+			};
+
+			if ( navigator.clipboard ) {
+				navigator.clipboard.writeText( url ).then(
+					function () { melden( 'Link kopiert' ); },
+					function () { window.prompt( 'Link kopieren:', url ); }
+				);
+			} else {
+				window.prompt( 'Link kopieren:', url );
+			}
+		} );
+	} );
+
+	// Geteilter Link öffnet die passende Kachel.
+	if ( location.hash.indexOf( '#modell-' ) === 0 ) {
+		var geteilt = document.getElementById( location.hash.slice( 1 ) );
+		if ( geteilt && geteilt.tagName === 'DETAILS' ) {
+			geteilt.open = true;
+		}
+	}
 } )();

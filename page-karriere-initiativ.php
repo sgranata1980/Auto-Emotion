@@ -19,13 +19,29 @@ $auto_emotion_prefill  = isset( $_GET['stelle'] ) ? sanitize_text_field( wp_unsl
 $auto_emotion_herkunft_referrer = isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
 ?>
 
-<div class="section-heading">
-	<h1 class="section-heading__title"><?php esc_html_e( 'Initiativbewerbung', 'auto-emotion' ); ?></h1>
-</div>
+<?php
+echo '</div>';
+get_template_part(
+	'template-parts/hero',
+	null,
+	array(
+		'eyebrow'         => __( 'Initiativbewerbung', 'auto-emotion' ),
+		'headline_pre'    => "Initiativ\xC2\xADbewerbung",
+		'headline_accent' => __( 'bei Auto Emotion.', 'auto-emotion' ),
+		'cta_text'        => __( 'Zum Formular', 'auto-emotion' ),
+		'cta_url'         => '#bewerbung',
+		'cta2_text'       => __( 'Offene Stellen', 'auto-emotion' ),
+		'cta2_url'        => home_url( '/offene-stellen/' ),
+		'image'           => AUTO_EMOTION_URI . '/assets/images/career-serviceassistentin.jpg?ver=' . AUTO_EMOTION_VERSION,
+		'video'           => '',
+		'video_webm'      => '',
+	)
+);
+echo '<div class="container">';
+$auto_emotion_svg = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+?>
 
-<?php while ( have_posts() ) : the_post(); ?>
-	<div class="entry-content"><?php the_content(); ?></div>
-<?php endwhile; ?>
+<p class="service-lead" id="bewerbung"><?php esc_html_e( 'Du hast Interesse an Auto Emotion, aber keine passende Ausschreibung gefunden? Schreib uns kurz, welche Position dich interessiert.', 'auto-emotion' ); ?></p>
 
 <?php if ( 'ok' === $auto_emotion_status ) : ?>
 	<div class="application-notice application-notice--success">
@@ -37,7 +53,8 @@ $auto_emotion_herkunft_referrer = isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_ra
 	</div>
 <?php endif; ?>
 
-<form class="application-form" method="post" enctype="multipart/form-data" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+<div class="termin-layout">
+<form class="application-form termin-form" method="post" enctype="multipart/form-data" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 	<input type="hidden" name="action" value="auto_emotion_bewerbung">
 	<input type="hidden" name="bewerbung_herkunft_referrer" value="<?php echo esc_attr( $auto_emotion_herkunft_referrer ); ?>">
 	<?php wp_nonce_field( 'auto_emotion_bewerbung', 'auto_emotion_bewerbung_nonce' ); ?>
@@ -104,6 +121,20 @@ $auto_emotion_herkunft_referrer = isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_ra
 		<span class="btn-arrow" aria-hidden="true">&rarr;</span>
 	</button>
 </form>
+
+	<aside class="termin-info">
+		<img src="<?php echo esc_url( AUTO_EMOTION_URI . '/assets/images/werkstatt-hebebuehnen.jpg?ver=' . AUTO_EMOTION_VERSION ); ?>" alt="Nissan Qashqai und Seat Ibiza auf Hebebühnen in der Werkstatt von Auto Emotion" loading="lazy">
+		<div class="termin-info__text">
+			<h2><?php esc_html_e( 'So läuft deine Bewerbung ab', 'auto-emotion' ); ?></h2>
+			<ol class="termin-info__schritte">
+				<?php foreach ( auto_emotion_bewerbung_schritte() as $auto_emotion_schritt ) : ?>
+					<li><svg <?php echo $auto_emotion_svg; // phpcs:ignore WordPress.Security.EscapeOutput -- feste Attribute. ?>><?php auto_emotion_service_icon( $auto_emotion_schritt[0] ); ?></svg><?php echo esc_html( $auto_emotion_schritt[2] ); ?></li>
+				<?php endforeach; ?>
+			</ol>
+			<a class="btn btn-outline" href="tel:<?php echo esc_attr( auto_emotion_contact( 'phone_href' ) ); ?>"><?php echo esc_html( auto_emotion_contact( 'phone' ) ); ?> <span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
+		</div>
+	</aside>
+</div>
 
 <?php
 get_footer();
