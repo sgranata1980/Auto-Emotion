@@ -1,0 +1,1133 @@
+/*
+ * Mitarbeiter-Bereich (Recruiting-Backend) – bewusst NICHT im
+ * Website-/Formular-Look der öffentlichen Seite gestaltet, sondern wie
+ * eine native Desktop-Anwendung: Sidebar-Navigation, Karten, System-
+ * Schriftart (rendert automatisch als San Francisco unter macOS, Segoe
+ * UI unter Windows, die GNOME/KDE-Systemschrift unter Linux). Lädt
+ * ausschließlich auf den /mitarbeiter/-Routen, komplett unabhängig vom
+ * öffentlichen Seiten-Stylesheet und dessen Marken-Look.
+ */
+
+:root {
+	--ae-bg: #ffffff;
+	--ae-sidebar-bg: #f5f5f7;
+	--ae-surface: #ffffff;
+	--ae-border: #e3e3e6;
+	--ae-border-strong: #d1d1d6;
+	--ae-text: #1d1d1f;
+	--ae-text-secondary: #6e6e73;
+	--ae-text-tertiary: #a1a1a6;
+	--ae-accent: #0071e3;
+	--ae-accent-hover: #0060c2;
+	--ae-accent-soft: #eaf3fe;
+	--ae-danger: #d70015;
+	--ae-danger-soft: #fdeceb;
+	--ae-success: #1e8e3e;
+	--ae-warning: #b25000;
+	--ae-radius: 12px;
+	--ae-radius-sm: 8px;
+	--ae-shadow: 0 1px 2px rgba(0, 0, 0, .04), 0 6px 16px rgba(0, 0, 0, .06);
+	--ae-shadow-sm: 0 1px 2px rgba(0, 0, 0, .05);
+	--ae-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, Cantarell, Arial, sans-serif;
+}
+
+/* Bewusst kein automatischer Dunkelmodus (prefers-color-scheme) –
+   dieser Bereich soll immer hell/weiß bleiben, unabhängig von
+   Geräte-/Browser-Einstellungen. */
+
+* {
+	box-sizing: border-box;
+}
+
+body.ae-app {
+	margin: 0;
+	font-family: var(--ae-font);
+	background: var(--ae-bg);
+	color: var(--ae-text);
+	font-size: 14px;
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+	color-scheme: light;
+}
+
+.ae-app a {
+	color: inherit;
+}
+
+/* App-Shell: Sidebar + Content, wie Finder/Explorer/Einstellungen-Apps */
+
+.ae-shell {
+	display: flex;
+	min-height: 100vh;
+	align-items: stretch;
+}
+
+.ae-sidebar {
+	width: 232px;
+	flex-shrink: 0;
+	background: var(--ae-sidebar-bg);
+	border-right: 1px solid var(--ae-border);
+	display: flex;
+	flex-direction: column;
+	padding: 20px 12px;
+	position: sticky;
+	top: 0;
+	height: 100vh;
+}
+
+.ae-sidebar__brand {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-weight: 600;
+	font-size: 14px;
+	letter-spacing: -0.01em;
+	padding: 4px 10px 22px;
+	color: var(--ae-text);
+	text-decoration: none;
+}
+
+.ae-sidebar__brand img {
+	display: block;
+	flex-shrink: 0;
+}
+
+.ae-sidebar__brand small {
+	display: block;
+	font-size: 11px;
+	font-weight: 500;
+	color: var(--ae-text-secondary);
+	letter-spacing: 0.01em;
+}
+
+.ae-sidebar__nav {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	flex: 1;
+}
+
+.ae-sidebar__section {
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--ae-text-tertiary);
+	padding: 16px 10px 6px;
+}
+
+.ae-sidebar__section:first-child {
+	padding-top: 0;
+}
+
+.ae-sidebar__nav a {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 7px 10px;
+	border-radius: var(--ae-radius-sm);
+	text-decoration: none;
+	color: var(--ae-text);
+	font-size: 13.5px;
+	font-weight: 500;
+}
+
+.ae-sidebar__nav a svg {
+	flex-shrink: 0;
+	opacity: .75;
+}
+
+.ae-sidebar__nav a:hover {
+	background: rgba(127, 127, 127, .12);
+}
+
+.ae-sidebar__nav a.is-active {
+	background: var(--ae-accent);
+	color: #fff;
+}
+
+.ae-sidebar__nav a.is-active svg {
+	opacity: 1;
+}
+
+.ae-sidebar__badge {
+	margin-left: auto;
+	background: var(--ae-danger);
+	color: #fff;
+	font-size: 11px;
+	font-weight: 600;
+	padding: 1px 7px;
+	border-radius: 999px;
+}
+
+.ae-sidebar__nav a.is-active .ae-sidebar__badge {
+	background: rgba(255, 255, 255, .3);
+}
+
+.ae-sidebar__footer {
+	border-top: 1px solid var(--ae-border);
+	padding-top: 12px;
+	margin-top: 12px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 12.5px;
+	color: var(--ae-text-secondary);
+	padding-left: 10px;
+	padding-right: 4px;
+}
+
+.ae-sidebar__footer a {
+	color: var(--ae-text-secondary);
+	text-decoration: none;
+}
+
+.ae-sidebar__footer a:hover {
+	color: var(--ae-text);
+}
+
+.ae-content {
+	flex: 1;
+	padding: 36px 44px 64px;
+	max-width: 1120px;
+	min-width: 0;
+}
+
+.ae-topbar {
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 20px;
+}
+
+.ae-topbar__user {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	text-decoration: none;
+	color: var(--ae-text);
+	padding: 6px 10px 6px 6px;
+	border-radius: 999px;
+	border: 1px solid var(--ae-border);
+	background: var(--ae-surface);
+}
+
+.ae-topbar__user:hover {
+	border-color: var(--ae-border-strong);
+}
+
+.ae-topbar__user img {
+	border-radius: 50%;
+	display: block;
+}
+
+.ae-topbar__userinfo {
+	display: flex;
+	flex-direction: column;
+	line-height: 1.3;
+}
+
+.ae-topbar__userinfo strong {
+	font-size: 13px;
+	font-weight: 600;
+}
+
+.ae-topbar__userinfo small {
+	font-size: 11.5px;
+	color: var(--ae-text-secondary);
+}
+
+.ae-footer {
+	margin-top: 56px;
+	padding-top: 16px;
+	border-top: 1px solid var(--ae-border);
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+	gap: 8px 20px;
+	font-size: 11.5px;
+	color: var(--ae-text-tertiary);
+}
+
+.ae-footer__links {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+
+.ae-footer__links a {
+	color: var(--ae-text-tertiary);
+	text-decoration: none;
+}
+
+.ae-footer__links a:hover {
+	color: var(--ae-text-secondary);
+	text-decoration: underline;
+}
+
+.ae-content h1 {
+	font-size: 24px;
+	font-weight: 700;
+	letter-spacing: -0.01em;
+	margin: 0 0 6px;
+}
+
+.ae-content h2 {
+	font-size: 16px;
+	font-weight: 600;
+	margin: 0 0 12px;
+}
+
+.ae-intro {
+	color: var(--ae-text-secondary);
+	margin: 0 0 28px;
+	max-width: 62ch;
+	font-size: 13.5px;
+}
+
+/* KPI-Kacheln */
+
+.ae-kpis {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+	gap: 14px;
+	margin-bottom: 32px;
+}
+
+.ae-kpi {
+	background: var(--ae-surface);
+	border: 1px solid var(--ae-border);
+	border-radius: var(--ae-radius);
+	padding: 16px 18px;
+	box-shadow: var(--ae-shadow-sm);
+}
+
+.ae-kpi__icon {
+	width: 30px;
+	height: 30px;
+	border-radius: 8px;
+	background: var(--ae-accent-soft);
+	color: var(--ae-accent);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 10px;
+}
+
+.ae-kpi__value {
+	font-size: 26px;
+	font-weight: 700;
+	letter-spacing: -0.01em;
+	line-height: 1.1;
+}
+
+.ae-kpi__label {
+	font-size: 12.5px;
+	color: var(--ae-text-secondary);
+	margin-top: 4px;
+}
+
+/* Buttons */
+
+.ae-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	width: 100%;
+	text-align: center;
+	background: var(--ae-accent);
+	color: #fff;
+	border: none;
+	padding: 9px 16px;
+	font-family: var(--ae-font);
+	font-weight: 500;
+	font-size: 13.5px;
+	cursor: pointer;
+	border-radius: var(--ae-radius-sm);
+	text-decoration: none;
+	transition: background-color .12s ease;
+}
+
+.ae-btn:hover {
+	background: var(--ae-accent-hover);
+}
+
+.ae-btn--ghost {
+	width: auto;
+	background: var(--ae-surface);
+	border: 1px solid var(--ae-border-strong);
+	color: var(--ae-text);
+}
+
+.ae-btn--ghost:hover {
+	background: rgba(127, 127, 127, .08);
+}
+
+.ae-btn--danger {
+	width: auto;
+	background: var(--ae-surface);
+	border: 1px solid var(--ae-border-strong);
+	color: var(--ae-danger);
+}
+
+.ae-btn--danger:hover {
+	background: var(--ae-danger-soft);
+	border-color: var(--ae-danger);
+}
+
+/* Login */
+
+.ae-staff-login {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+	background: var(--ae-bg);
+	font-family: var(--ae-font);
+}
+
+.ae-staff-login__card {
+	width: 100%;
+	max-width: 360px;
+	background: var(--ae-surface);
+	border: 1px solid var(--ae-border);
+	border-radius: var(--ae-radius);
+	box-shadow: var(--ae-shadow);
+	padding: 36px 32px;
+}
+
+.ae-staff-login__logo {
+	display: block;
+	margin: 0 auto 12px;
+}
+
+.ae-staff-login__brand {
+	display: block;
+	text-align: center;
+	font-weight: 700;
+	font-size: 18px;
+	letter-spacing: -0.01em;
+	text-decoration: none;
+	color: var(--ae-text);
+	margin-bottom: 4px;
+}
+
+.ae-staff-login__hint {
+	text-align: center;
+	color: var(--ae-text-secondary);
+	font-size: 13px;
+	margin-bottom: 28px;
+}
+
+.ae-staff-login__error {
+	background: var(--ae-danger-soft);
+	color: var(--ae-danger);
+	border-radius: var(--ae-radius-sm);
+	padding: 10px 14px;
+	margin-bottom: 20px;
+	font-size: 13px;
+}
+
+/* Formularfelder */
+
+.ae-field {
+	margin-bottom: 16px;
+}
+
+.ae-field label {
+	display: block;
+	font-size: 12.5px;
+	font-weight: 500;
+	color: var(--ae-text-secondary);
+	margin-bottom: 5px;
+}
+
+.ae-field input[type="text"],
+.ae-field input[type="password"],
+.ae-field input[type="search"],
+.ae-field input[type="email"],
+.ae-field input[type="url"],
+.ae-field select,
+.ae-field textarea {
+	width: 100%;
+	background: var(--ae-surface);
+	border: 1px solid var(--ae-border-strong);
+	color: var(--ae-text);
+	padding: 9px 11px;
+	font-family: var(--ae-font);
+	font-size: 13.5px;
+	border-radius: var(--ae-radius-sm);
+}
+
+.ae-field input:focus,
+.ae-field select:focus,
+.ae-field textarea:focus {
+	outline: none;
+	border-color: var(--ae-accent);
+	box-shadow: 0 0 0 3px var(--ae-accent-soft);
+}
+
+/* Karten */
+
+.ae-card {
+	background: var(--ae-surface);
+	border: 1px solid var(--ae-border);
+	border-radius: var(--ae-radius);
+	box-shadow: var(--ae-shadow-sm);
+	padding: 20px 24px;
+	margin-bottom: 20px;
+}
+
+.ae-toolbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+	gap: 14px;
+	flex-wrap: wrap;
+}
+
+.ae-toolbar .ae-btn {
+	width: auto;
+}
+
+/* Liste (Suchprofile/Bewerbungen) */
+
+.ae-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	background: var(--ae-surface);
+	border: 1px solid var(--ae-border);
+	border-radius: var(--ae-radius);
+	overflow: hidden;
+	box-shadow: var(--ae-shadow-sm);
+}
+
+.ae-list li {
+	border-bottom: 1px solid var(--ae-border);
+	padding: 16px 20px;
+	display: flex;
+	justify-content: space-between;
+	gap: 20px;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.ae-list li:last-child {
+	border-bottom: none;
+}
+
+.ae-list__main {
+	flex: 1;
+	min-width: 240px;
+}
+
+.ae-list__title {
+	font-weight: 600;
+	font-size: 14.5px;
+	margin: 0 0 3px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.ae-list__title a {
+	text-decoration: none;
+	color: var(--ae-text);
+}
+
+.ae-list__title a:hover {
+	color: var(--ae-accent);
+}
+
+.ae-list__meta {
+	color: var(--ae-text-secondary);
+	font-size: 12.5px;
+}
+
+.ae-status {
+	display: inline-flex;
+	align-items: center;
+	padding: 2px 9px;
+	font-size: 11px;
+	font-weight: 600;
+	border-radius: 999px;
+}
+
+.ae-status--aktiv,
+.ae-status--neu {
+	background: var(--ae-accent-soft);
+	color: var(--ae-accent);
+}
+
+.ae-status--pausiert,
+.ae-status--pruefung {
+	background: rgba(127, 127, 127, .14);
+	color: var(--ae-text-secondary);
+}
+
+.ae-status--besetzt,
+.ae-status--eingestellt {
+	background: rgba(30, 142, 62, .12);
+	color: var(--ae-success);
+}
+
+.ae-status--interview {
+	background: rgba(178, 80, 0, .12);
+	color: var(--ae-warning);
+}
+
+.ae-status--angebot {
+	background: var(--ae-accent-soft);
+	color: var(--ae-accent);
+}
+
+.ae-status--abgesagt {
+	background: var(--ae-danger-soft);
+	color: var(--ae-danger);
+}
+
+.ae-sterne {
+	color: #f5a623;
+	letter-spacing: 1px;
+	font-size: 12px;
+}
+
+.ae-status-tabs {
+	display: flex;
+	gap: 4px;
+	flex-wrap: wrap;
+	margin-bottom: 20px;
+	background: var(--ae-surface);
+	border: 1px solid var(--ae-border);
+	border-radius: var(--ae-radius-sm);
+	padding: 4px;
+	width: fit-content;
+}
+
+.ae-status-tabs a {
+	text-decoration: none;
+	color: var(--ae-text-secondary);
+	font-size: 12.5px;
+	font-weight: 500;
+	padding: 6px 12px;
+	border-radius: 6px;
+}
+
+.ae-status-tabs a:hover {
+	color: var(--ae-text);
+}
+
+.ae-status-tabs a.is-active {
+	color: #fff;
+	background: var(--ae-accent);
+}
+
+.ae-list__links {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	font-size: 12.5px;
+}
+
+.ae-list__links a {
+	color: var(--ae-accent);
+	text-decoration: none;
+}
+
+.ae-list__links a:hover {
+	text-decoration: underline;
+}
+
+.ae-list__hinweis {
+	display: block;
+	color: var(--ae-warning);
+	font-size: 11.5px;
+	margin: -2px 0 4px;
+}
+
+.ae-list__actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+/* Avatar-Initialen (Liste, Board, Detailansicht) */
+
+.ae-avatar {
+	flex-shrink: 0;
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	font-weight: 600;
+	font-size: 14px;
+	letter-spacing: 0.02em;
+}
+
+.ae-avatar--sm {
+	width: 24px;
+	height: 24px;
+	font-size: 10.5px;
+}
+
+.ae-avatar--lg {
+	width: 44px;
+	height: 44px;
+	font-size: 17px;
+}
+
+/* Tags/Labels */
+
+.ae-tag {
+	display: inline-block;
+	padding: 2px 9px;
+	border-radius: 999px;
+	background: var(--ae-sidebar-bg);
+	color: var(--ae-text-secondary);
+	font-size: 11px;
+	font-weight: 500;
+	margin-right: 4px;
+}
+
+/* Suchfeld in der Bewerbungsliste */
+
+.ae-suche {
+	display: flex;
+	gap: 8px;
+	margin-left: auto;
+}
+
+.ae-suche input[type="search"] {
+	border: 1px solid var(--ae-border-strong);
+	border-radius: var(--ae-radius-sm);
+	padding: 7px 12px;
+	font-family: var(--ae-font);
+	font-size: 13px;
+	min-width: 220px;
+	background: var(--ae-surface);
+	color: var(--ae-text);
+}
+
+.ae-suche .ae-btn--ghost {
+	width: auto;
+	padding: 7px 14px;
+}
+
+.ae-empty {
+	color: var(--ae-text-secondary);
+	padding: 48px 0;
+	text-align: center;
+	background: var(--ae-surface);
+	border: 1px dashed var(--ae-border-strong);
+	border-radius: var(--ae-radius);
+}
+
+.ae-form-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0 16px;
+}
+
+.ae-form-grid .ae-field--full {
+	grid-column: 1 / -1;
+}
+
+@media (max-width: 720px) {
+	.ae-shell {
+		flex-direction: column;
+	}
+
+	.ae-sidebar {
+		width: 100%;
+		height: auto;
+		position: static;
+		flex-direction: row;
+		align-items: center;
+		overflow-x: auto;
+	}
+
+	.ae-sidebar__nav {
+		flex-direction: row;
+	}
+
+	.ae-sidebar__footer {
+		display: none;
+	}
+
+	.ae-content {
+		padding: 24px 20px 48px;
+	}
+
+	.ae-form-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.ae-form-actions {
+	display: flex;
+	gap: 10px;
+	margin-top: 20px;
+}
+
+.ae-form-actions .ae-btn {
+	width: auto;
+}
+
+.ae-back-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	margin-bottom: 20px;
+	color: var(--ae-text-secondary);
+	text-decoration: none;
+	font-size: 13px;
+}
+
+.ae-back-link:hover {
+	color: var(--ae-text);
+}
+
+/* Bewerbungs-Detail */
+
+.ae-detail-block {
+	border-top: 1px solid var(--ae-border);
+	padding: 12px 0;
+	display: grid;
+	grid-template-columns: 150px 1fr;
+	gap: 16px;
+	font-size: 13.5px;
+}
+
+.ae-detail-block:first-of-type {
+	border-top: none;
+}
+
+.ae-detail-block dt {
+	color: var(--ae-text-secondary);
+	font-size: 12.5px;
+}
+
+.ae-detail-block dd {
+	margin: 0;
+	white-space: pre-line;
+}
+
+.ae-file-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.ae-file-list li {
+	margin-bottom: 6px;
+}
+
+.ae-file-list a {
+	color: var(--ae-accent);
+	text-decoration: none;
+}
+
+.ae-file-list a:hover {
+	text-decoration: underline;
+}
+
+.ae-notice {
+	background: rgba(30, 142, 62, .1);
+	border: 1px solid var(--ae-success);
+	color: var(--ae-success);
+	border-radius: var(--ae-radius-sm);
+	padding: 10px 14px;
+	margin-bottom: 20px;
+	font-size: 13px;
+}
+
+.ae-inline-form {
+	display: flex;
+	gap: 8px;
+	align-items: flex-end;
+	flex-wrap: wrap;
+	margin-top: 4px;
+}
+
+.ae-inline-form .ae-field {
+	margin-bottom: 0;
+	flex: 1;
+	min-width: 220px;
+}
+
+.ae-inline-form .ae-btn {
+	width: auto;
+}
+
+/* Kandidatenliste */
+
+.ae-kandidaten-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
+	background: var(--ae-surface);
+	border: 1px solid var(--ae-border);
+	border-radius: var(--ae-radius);
+	overflow: hidden;
+	box-shadow: var(--ae-shadow-sm);
+}
+
+.ae-kandidaten-table th,
+.ae-kandidaten-table td {
+	text-align: left;
+	padding: 10px 14px;
+	border-bottom: 1px solid var(--ae-border);
+	font-size: 13.5px;
+}
+
+.ae-kandidaten-table tr:last-child td {
+	border-bottom: none;
+}
+
+.ae-kandidaten-table th {
+	font-size: 11.5px;
+	font-weight: 600;
+	color: var(--ae-text-secondary);
+	background: var(--ae-bg);
+}
+
+.ae-kandidaten-table a.ae-remove {
+	color: var(--ae-text-tertiary);
+	text-decoration: none;
+	font-size: 12.5px;
+}
+
+.ae-kandidaten-table a.ae-remove:hover {
+	color: var(--ae-danger);
+}
+
+/* Pipeline-Trichter (Übersicht) */
+
+.ae-funnel {
+	display: flex;
+	align-items: flex-end;
+	gap: 12px;
+	padding-top: 16px;
+}
+
+.ae-funnel__step {
+	flex: 1;
+	text-align: center;
+	text-decoration: none;
+	color: var(--ae-text);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+}
+
+.ae-funnel__bar {
+	width: 100%;
+	max-width: 56px;
+	background: var(--ae-accent);
+	border-radius: 6px 6px 0 0;
+	align-self: flex-end;
+}
+
+.ae-funnel__value {
+	font-size: 18px;
+	font-weight: 700;
+}
+
+.ae-funnel__label {
+	font-size: 11.5px;
+	color: var(--ae-text-secondary);
+}
+
+.ae-funnel__step:hover .ae-funnel__bar {
+	background: var(--ae-accent-hover);
+}
+
+/* Rangliste mit Balken (Dashboard: Bewerbungen je Position) */
+
+.ae-rangliste {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.ae-rangliste li {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 2fr auto;
+	align-items: center;
+	gap: 12px;
+}
+
+.ae-rangliste__label {
+	font-size: 13.5px;
+	text-decoration: none;
+	color: var(--ae-text);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.ae-rangliste__label:hover {
+	text-decoration: underline;
+}
+
+.ae-rangliste__bar-track {
+	background: var(--ae-sidebar-bg);
+	border-radius: 999px;
+	overflow: hidden;
+	height: 8px;
+}
+
+.ae-rangliste__bar {
+	display: block;
+	height: 100%;
+	background: var(--ae-accent);
+	border-radius: 999px;
+}
+
+.ae-rangliste__value {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--ae-text-secondary);
+	min-width: 1.5em;
+	text-align: right;
+}
+
+/* Kanban-Board */
+
+.ae-board {
+	display: flex;
+	gap: 14px;
+	overflow-x: auto;
+	padding-bottom: 12px;
+	align-items: flex-start;
+}
+
+.ae-board__column {
+	background: var(--ae-bg);
+	border: 1px solid var(--ae-border);
+	border-radius: var(--ae-radius);
+	width: 240px;
+	flex-shrink: 0;
+	padding: 10px;
+}
+
+.ae-board__column-title {
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--ae-text-secondary);
+	padding: 4px 6px 10px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.ae-board__card {
+	background: var(--ae-surface);
+	border: 1px solid var(--ae-border);
+	border-radius: var(--ae-radius-sm);
+	padding: 10px 12px;
+	margin-bottom: 8px;
+	box-shadow: var(--ae-shadow-sm);
+	text-decoration: none;
+	color: var(--ae-text);
+	display: block;
+}
+
+.ae-board__card:hover {
+	border-color: var(--ae-accent);
+}
+
+.ae-board__card-title {
+	font-size: 13px;
+	font-weight: 600;
+	margin-bottom: 3px;
+}
+
+.ae-board__card-meta {
+	font-size: 11.5px;
+	color: var(--ae-text-secondary);
+}
+
+/* Automatisierung & KI: Kartenraster statt einfacher Liste, mit Icon
+   und farbigem linkem Rand je Status (live/teilweise/geplant). */
+.ae-automation-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	gap: 16px;
+	margin-bottom: 8px;
+}
+
+.ae-automation-card {
+	background: var(--ae-surface);
+	border: 1px solid var(--ae-border);
+	border-left: 3px solid var(--ae-border-strong);
+	border-radius: var(--ae-radius);
+	box-shadow: var(--ae-shadow-sm);
+	padding: 18px 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	transition: box-shadow .15s ease, transform .15s ease;
+}
+
+.ae-automation-card:hover {
+	box-shadow: var(--ae-shadow);
+	transform: translateY(-1px);
+}
+
+.ae-automation-card--live {
+	border-left-color: var(--ae-success);
+}
+
+.ae-automation-card--teilweise {
+	border-left-color: var(--ae-warning);
+}
+
+.ae-automation-card--geplant {
+	border-left-color: var(--ae-text-tertiary);
+}
+
+.ae-automation-card__top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.ae-automation-card__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	border-radius: 10px;
+	background: var(--ae-accent-soft);
+	color: var(--ae-accent);
+	flex-shrink: 0;
+}
+
+.ae-automation-card__title {
+	font-size: 14.5px;
+	font-weight: 600;
+	margin: 2px 0 0;
+}
+
+.ae-automation-card__beschreibung {
+	font-size: 12.5px;
+	line-height: 1.5;
+	color: var(--ae-text-secondary);
+	margin: 0 0 4px;
+	flex: 1;
+}
