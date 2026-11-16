@@ -334,3 +334,84 @@ function auto_emotion_save_angebot_meta( $post_id ) {
 	update_post_meta( $post_id, '_auto_emotion_ist_elektro', ! empty( $_POST['auto_emotion_ist_elektro'] ) ? '1' : '' );
 }
 add_action( 'save_post_angebot', 'auto_emotion_save_angebot_meta' );
+
+/**
+ * Einmalige Anlage des Angebots "Nissan Pixo – Vorverkauf", analog zum
+ * Vorgehen bei den anderen einmaligen Seed-Funktionen in dieser Datei.
+ * Daten (Finanzierung, Verbrauch/CO2, Bank) stammen aus der Mail von
+ * Christopher Placzek vom 13.11.2026 ("WERBEANZEIGE: Nissan Pixo") und
+ * der offiziellen Nissan-Preisliste (Stand 02.11.2026) – nichts erfunden.
+ * Bildmaterial: offizielles Nissan-Pressefoto aus dem freigegebenen
+ * Marketing-Portal-Material.
+ */
+function auto_emotion_seed_pixo_angebot() {
+	if ( get_option( 'auto_emotion_pixo_angebot_seeded' ) ) {
+		return;
+	}
+
+	auto_emotion_register_cpt();
+
+	$inhalt = "<p>Der Vorverkauf für den neuen Nissan PIXO hat begonnen – das vollelektrische Stadtauto steht ab Januar 2027 bei uns im Showroom in Offenbach.</p>\n\n"
+		. "<h2>Der Nissan PIXO ENGAGE</h2>\n"
+		. "<ul>\n"
+		. '<li>27 kWh LFP-Batterie, 60 kW (82 PS)</li>' . "\n"
+		. '<li>Reichweite (WLTP) bis zu 259 km</li>' . "\n"
+		. '<li>7-Zoll-Farb-TFT-Fahrerdisplay, 10,1-Zoll-Infotainmentsystem</li>' . "\n"
+		. '<li>Kabelloses Apple CarPlay und Android Auto</li>' . "\n"
+		. "</ul>\n\n"
+		. "<h2>Unser Finanzierungsangebot</h2>\n"
+		. "<ul>\n"
+		. '<li>Kaufpreis: 19.390,00 €</li>' . "\n"
+		. '<li>Anzahlung: 6.000,00 € (entspricht der möglichen Elektroförderung)</li>' . "\n"
+		. '<li>Laufzeit: 36 Monate, 10.000 km p.a.</li>' . "\n"
+		. '<li>Rate: 85,00 € monatlich</li>' . "\n"
+		. '<li>Zinsen: 2,49 % (912,90 €), Schlussrate: 11.328,20 €</li>' . "\n"
+		. "</ul>\n"
+		. '<p>Die einmaligen Überführungs-/Bereitstellungskosten werden separat mit 1.290,- € in Rechnung gestellt. Lieferzeit ca. 3–4 Monate ab Bestellung.</p>' . "\n\n"
+		. '<p class="legal-disclaimer">Nissan Pixo ENGAGE 27 kWh, 60 kW (82 PS), elektro: Stromverbrauch kombiniert 12,4&ndash;12,6 kWh/100 km; CO&#8322;-Emissionen kombiniert 0 g/km; CO&#8322;-Klasse A. Finanzierungsbeispiel eines Angebots der RCI Banque S.A. Niederlassung Deutschland. Bonit&auml;t vorausgesetzt. Anspruch auf die staatliche F&ouml;rderung besteht nur bei Vorliegen der gesetzlichen Voraussetzungen.</p>';
+
+	$post_id = wp_insert_post(
+		array(
+			'post_type'    => 'angebot',
+			'post_status'  => 'publish',
+			'post_title'   => 'Nissan PIXO – Vorverkauf gestartet, ab 85 € im Monat',
+			'post_name'    => 'nissan-pixo-vorverkauf-ab-85-e-im-monat',
+			'post_content' => $inhalt,
+		)
+	);
+
+	if ( is_wp_error( $post_id ) || ! $post_id ) {
+		return;
+	}
+
+	wp_set_object_terms( $post_id, 'Nissan', 'marke' );
+	wp_set_object_terms( $post_id, 'Kleinwagen', 'karosserie' );
+	wp_set_object_terms( $post_id, 'Elektro', 'antrieb' );
+	update_post_meta( $post_id, '_auto_emotion_ist_elektro', '1' );
+
+	$bild_pfad = get_template_directory() . '/assets/images/nissan-pixo-vorverkauf-hero.jpg';
+	if ( file_exists( $bild_pfad ) ) {
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+
+		$upload_dir = wp_upload_dir();
+		$ziel_pfad  = trailingslashit( $upload_dir['path'] ) . 'nissan-pixo-vorverkauf-hero.jpg';
+
+		if ( copy( $bild_pfad, $ziel_pfad ) ) {
+			$anhang = array(
+				'post_mime_type' => 'image/jpeg',
+				'post_title'     => 'Nissan PIXO – offizielles Pressefoto',
+				'post_status'    => 'inherit',
+			);
+			$anhang_id = wp_insert_attachment( $anhang, $ziel_pfad, $post_id );
+			if ( ! is_wp_error( $anhang_id ) && $anhang_id ) {
+				wp_update_attachment_metadata( $anhang_id, wp_generate_attachment_metadata( $anhang_id, $ziel_pfad ) );
+				set_post_thumbnail( $post_id, $anhang_id );
+			}
+		}
+	}
+
+	update_option( 'auto_emotion_pixo_angebot_seeded', '1' );
+}
+add_action( 'init', 'auto_emotion_seed_pixo_angebot', 20 );
