@@ -467,3 +467,56 @@ function auto_emotion_fix_pixo_angebot_bild() {
 	update_option( 'auto_emotion_pixo_angebot_bild_quer_fixed', '1' );
 }
 add_action( 'init', 'auto_emotion_fix_pixo_angebot_bild', 21 );
+
+/**
+ * Zweite Korrektur: der vollständige Pflichttext zur Finanzierung
+ * (Nettodarlehensbetrag, Sollzinssatz gebunden, Gesamtbeträge,
+ * Gültigkeitsdatum) fehlte beim ersten Entwurf. Werte bestätigt von
+ * Christopher Placzek per Mail am 16.11.2026: Sollzins gebunden
+ * 2,462 % p.a., Angebot gültig bis 31.12.2026. Die vier Gesamtbeträge
+ * sind reine Arithmetik aus den bereits bestätigten Zahlen (Kaufpreis,
+ * Anzahlung, Rate, Schlussrate, Überführungskosten), die dort implizit
+ * mitbestätigt wurden. Außerdem: CTA "Jetzt vorbestellen" statt
+ * "Jetzt vormerken" (die Landingpage nutzte diesen Text ohnehin nicht,
+ * daher betrifft das hier nur den Slogan-Zusatz) und der neue Slogan
+ * "Leidenschaft ist unser Antrieb".
+ */
+function auto_emotion_fix_pixo_angebot_text() {
+	if ( get_option( 'auto_emotion_pixo_angebot_text_v2_fixed' ) ) {
+		return;
+	}
+
+	$post = get_page_by_path( 'nissan-pixo-vorverkauf-ab-85-e-im-monat', OBJECT, 'angebot' );
+	if ( ! $post ) {
+		return;
+	}
+
+	$inhalt = "<p>Der Vorverkauf für den neuen Nissan PIXO hat begonnen – das vollelektrische Stadtauto steht ab Januar 2027 bei uns im Showroom in Offenbach.</p>\n"
+		. '<p><em>Leidenschaft ist unser Antrieb.</em></p>' . "\n\n"
+		. "<h2>Der Nissan PIXO ENGAGE</h2>\n"
+		. "<ul>\n"
+		. '<li>27 kWh LFP-Batterie, 60 kW (82 PS)</li>' . "\n"
+		. '<li>Reichweite (WLTP) bis zu 259 km</li>' . "\n"
+		. '<li>7-Zoll-Farb-TFT-Fahrerdisplay, 10,1-Zoll-Infotainmentsystem</li>' . "\n"
+		. '<li>Kabelloses Apple CarPlay und Android Auto</li>' . "\n"
+		. "</ul>\n\n"
+		. "<h2>Unser Finanzierungsangebot</h2>\n"
+		. "<ul>\n"
+		. '<li>Kaufpreis: 19.390,00 €</li>' . "\n"
+		. '<li>Anzahlung: 6.000,00 € (entspricht der möglichen Elektroförderung)</li>' . "\n"
+		. '<li>Laufzeit: 36 Monate (35 Monate à 85,00 € und eine Schlussrate von 11.328,20 €), 10.000 km p.a.</li>' . "\n"
+		. '<li>Effektiver Jahreszins: 2,49 % (912,90 €), gebundener Sollzinssatz: 2,462 %</li>' . "\n"
+		. "</ul>\n"
+		. '<p>Die einmaligen Überführungs-/Bereitstellungskosten werden separat mit 1.290,- € in Rechnung gestellt. Lieferzeit ca. 3–4 Monate ab Bestellung.</p>' . "\n\n"
+		. '<p class="legal-disclaimer">Nissan Pixo ENGAGE 27 kWh, 60 kW (82 PS), 2WD, elektro: Stromverbrauch kombiniert 12,4&ndash;12,6 kWh/100 km; CO&#8322;-Emissionen kombiniert 0 g/km; CO&#8322;-Klasse A. Nissan Angebotspreis: 19.390,- &euro; zzgl. 1.290,- &euro; &Uuml;berf&uuml;hrungskosten. Anzahlung 6.000,- &euro;, Nettodarlehensbetrag 13.390,- &euro;, Laufzeit 36 Monate (35 Monate &agrave; 85,- &euro; und eine Schlussrate von 11.328,20 &euro;), eff. Jahreszins 2,49&nbsp;%, Sollzinssatz gebunden 2,462&nbsp;%, Gesamtbetrag inkl. &Uuml;berf&uuml;hrungskosten 15.593,20 &euro;, Gesamtbetrag inkl. Anzahlung und &Uuml;berf&uuml;hrungskosten 21.593,20 &euro;. Ein Angebotsbeispiel f&uuml;r Privatkunden von Nissan Financial Services, Gesch&auml;ftsbereich der RCI Banque S.A. Niederlassung Deutschland, Jagenbergstra&szlig;e 1, 41468 Neuss. Nur g&uuml;ltig f&uuml;r Kaufvertr&auml;ge bis zum 31.12.2026. Bonit&auml;t vorausgesetzt. Anspruch auf die staatliche F&ouml;rderung besteht nur bei Vorliegen der gesetzlichen Voraussetzungen. Details zur staatlichen F&ouml;rderung finden Sie unter BAFA &ndash; F&ouml;rdervoraussetzungen.</p>';
+
+	wp_update_post(
+		array(
+			'ID'           => $post->ID,
+			'post_content' => $inhalt,
+		)
+	);
+
+	update_option( 'auto_emotion_pixo_angebot_text_v2_fixed', '1' );
+}
+add_action( 'init', 'auto_emotion_fix_pixo_angebot_text', 22 );
