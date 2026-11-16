@@ -389,7 +389,7 @@ function auto_emotion_seed_pixo_angebot() {
 	wp_set_object_terms( $post_id, 'Elektro', 'antrieb' );
 	update_post_meta( $post_id, '_auto_emotion_ist_elektro', '1' );
 
-	$bild_pfad = get_template_directory() . '/assets/images/nissan-pixo-vorverkauf-hero.jpg';
+	$bild_pfad = get_template_directory() . '/assets/images/nissan-pixo-vorverkauf-hero-quer.jpg';
 	if ( file_exists( $bild_pfad ) ) {
 		require_once ABSPATH . 'wp-admin/includes/image.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -415,3 +415,55 @@ function auto_emotion_seed_pixo_angebot() {
 	update_option( 'auto_emotion_pixo_angebot_seeded', '1' );
 }
 add_action( 'init', 'auto_emotion_seed_pixo_angebot', 20 );
+
+/**
+ * Korrektur zum Seed oben: Das erste Beitragsbild war ein Social-Media-
+ * Hochkant-Crop (1080x1350) und fiel zwischen den sonst durchgängig
+ * querformatigen Angebots-Kacheln auf der Startseite auf. Ersetzt es
+ * einmalig durch das querformatige Pressefoto (gleiches echtes
+ * Nissan-Material, andere Perspektive/anderer Bildausschnitt).
+ */
+function auto_emotion_fix_pixo_angebot_bild() {
+	if ( get_option( 'auto_emotion_pixo_angebot_bild_quer_fixed' ) ) {
+		return;
+	}
+
+	$post = get_page_by_path( 'nissan-pixo-vorverkauf-ab-85-e-im-monat', OBJECT, 'angebot' );
+	if ( ! $post ) {
+		return;
+	}
+
+	$bild_pfad = get_template_directory() . '/assets/images/nissan-pixo-vorverkauf-hero-quer.jpg';
+	if ( ! file_exists( $bild_pfad ) ) {
+		return;
+	}
+
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	require_once ABSPATH . 'wp-admin/includes/media.php';
+
+	$alte_anhang_id = get_post_thumbnail_id( $post->ID );
+
+	$upload_dir = wp_upload_dir();
+	$ziel_pfad  = trailingslashit( $upload_dir['path'] ) . 'nissan-pixo-vorverkauf-hero-quer.jpg';
+
+	if ( copy( $bild_pfad, $ziel_pfad ) ) {
+		$anhang = array(
+			'post_mime_type' => 'image/jpeg',
+			'post_title'     => 'Nissan PIXO – offizielles Pressefoto (Querformat)',
+			'post_status'    => 'inherit',
+		);
+		$anhang_id = wp_insert_attachment( $anhang, $ziel_pfad, $post->ID );
+		if ( ! is_wp_error( $anhang_id ) && $anhang_id ) {
+			wp_update_attachment_metadata( $anhang_id, wp_generate_attachment_metadata( $anhang_id, $ziel_pfad ) );
+			set_post_thumbnail( $post->ID, $anhang_id );
+
+			if ( $alte_anhang_id ) {
+				wp_delete_attachment( $alte_anhang_id, true );
+			}
+		}
+	}
+
+	update_option( 'auto_emotion_pixo_angebot_bild_quer_fixed', '1' );
+}
+add_action( 'init', 'auto_emotion_fix_pixo_angebot_bild', 21 );
