@@ -7,6 +7,26 @@ Bildgeneratoren, Illustrationen), immer eine der drei echten Marken
 verwenden, die Auto Emotion tatsächlich verkauft: **Seat, Cupra oder
 Nissan**. Keine generischen oder anderen Marken-Fahrzeuge.
 
+## Bildformat bei Instagram Reels und Stories (goldene Regel)
+
+Reels und Stories müssen immer im korrekten, für das Format vorgesehenen
+Seitenverhältnis veröffentlicht werden:
+
+- **Stories**: 9:16 (1080×1920), Bild/Video füllt den Rahmen vollständig,
+  keine gestreckten oder verwischten Füllflächen. Texte/Logos nicht in den
+  oberen/unteren ca. 250–270 px platzieren (wird von Instagram mit eigenen
+  Bedienelementen überdeckt).
+- **Reels**: 9:16 (1080×1920), vollbildfüllend, kein Querformat-Footage
+  hochkant gestreckt oder mit Balken eingepasst.
+- **Feed-Posts (Bild/Video)**: Seitenverhältnis zwischen 4:5 (0,8) und
+  1,91:1, niemals breiter oder schmaler.
+
+Vor jeder Veröffentlichung (auch bei Entwürfen, die später freigegeben
+werden) das tatsächliche Seitenverhältnis des verwendeten Bild-/Video-
+materials prüfen und bei Abweichung vor dem Hochladen zuschneiden oder neu
+bauen – nicht Instagram/Metricool überlassen, das Material automatisch
+zurechtzuschneiden oder zu strecken.
+
 ## CO2-Werte bei jeder Fahrzeugnennung (Website, Social Media, Anzeigen)
 
 Bei jeder Bewerbung eines konkreten Fahrzeugmodells (Website-Seiten,
