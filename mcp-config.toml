@@ -1,0 +1,12 @@
+# MCP-Server-Konfiguration für dieses Projekt.
+# WICHTIG: Echte Zugangsdaten gehören NICHT in diese Datei (sie wird committed).
+# Stattdessen die Umgebungsvariable REFERO_API_KEY setzen, oder lokal eine
+# Kopie unter mcp-config.local.toml mit dem echten Token anlegen
+# (mcp-config.local.toml ist in .gitignore und wird nie committed).
+
+[mcp_servers.refero]
+enabled = true
+url = "https://api.refero.design/mcp"
+
+[mcp_servers.refero.http_headers]
+Authorization = "Bearer ${REFERO_API_KEY}"
