@@ -7,6 +7,15 @@ Bildgeneratoren, Illustrationen), immer eine der drei echten Marken
 verwenden, die Auto Emotion tatsächlich verkauft: **Seat, Cupra oder
 Nissan**. Keine generischen oder anderen Marken-Fahrzeuge.
 
+## Logo-Farbe
+
+Das Auto-Emotion-Logo wird in generierten Bildern und Videos (Social
+Media, Anzeigen, Website) ausschließlich in **Rot** verwendet
+(`assets/images/logo-icon-red.png` bzw. die rote Variante des Logos).
+Niemals die kupfer-/bronzefarbene Variante (`logo-full.png`) oder andere
+eingefärbte Varianten verwenden, auch nicht wenn sie farblich besser zu
+einer Szene (z. B. Neon-/Synthwave-Looks) passen würde.
+
 ## Bildformat bei Instagram Reels und Stories (goldene Regel)
 
 Reels und Stories müssen immer im korrekten, für das Format vorgesehenen
